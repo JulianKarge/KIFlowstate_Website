@@ -1,74 +1,156 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fang das Quadrat</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f0f0f0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      name="description"
+      content="KIFlowstate – AI‑driven automation agency that streamlines your business processes."
+    />
+    <title>KIFlowstate | AI Automation Agency</title>
 
-    h1 {
-      margin-top: 30px;
-    }
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-    #score {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
+    <!-- Local assets -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="js/script.js"></script>
+  </head>
 
-    #gameArea {
-      margin: 0 auto;
-      position: relative;
-      width: 600px;
-      height: 400px;
-      border: 2px solid #333;
-      background-color: #fff;
-    }
+  <body>
+    <!-- ▸▸ NAVBAR ---------------------------------------------------------- -->
+    <header class="navbar">
+      <div class="container nav-wrapper">
+        <div class="logo">KIFlowstate</div>
 
-    #box {
-      width: 50px;
-      height: 50px;
-      background-color: crimson;
-      position: absolute;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <h1>🎯 Fang das Quadrat!</h1>
-  <div id="score">Punkte: 0</div>
-  <div id="gameArea">
-    <div id="box"></div>
-  </div>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#appointment">Appointment</a></li>
+            <li><a href="impressum.html">Impressum</a></li>
+            <li><a href="datenschutz.html">Datenschutz</a></li>
+          </ul>
+        </nav>
 
-  <script>
-    const box = document.getElementById("box");
-    const gameArea = document.getElementById("gameArea");
-    const scoreDisplay = document.getElementById("score");
-    let score = 0;
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
 
-    function moveBox() {
-      const maxX = gameArea.clientWidth - box.clientWidth;
-      const maxY = gameArea.clientHeight - box.clientHeight;
-      const x = Math.floor(Math.random() * maxX);
-      const y = Math.floor(Math.random() * maxY);
+    <!-- ▸▸ HERO ------------------------------------------------------------ -->
+    <section class="hero">
+      <div class="container hero-content">
+        <h1>
+          Unlock&nbsp;<span class="highlight">Flow</span>&nbsp;with AI‑Driven
+          Automation
+        </h1>
+        <p>
+          We design, build &amp; maintain end‑to‑end automations that give you
+          back your focus time.
+        </p>
+        <a href="#appointment" class="cta-btn">Book a Free Discovery Call</a>
+      </div>
 
-      box.style.left = x + "px";
-      box.style.top = y + "px";
-    }
+      <!-- animierte Welle -->
+      <svg
+        class="wave"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+      >
+        <path
+          fill="rgba(255,255,255,0.07)"
+          d="M0,160L60,165.3C120,171,240,181,360,160C480,139,600,85,720,96C840,107,960,181,1080,202.7C1200,224,1320,192,1440,160L1440,320L0,320Z"
+        ></path>
+      </svg>
+    </section>
 
-    box.addEventListener("click", () => {
-      score++;
-      scoreDisplay.textContent = "Punkte: " + score;
-      moveBox();
-    });
+    <!-- ▸▸ ABOUT ----------------------------------------------------------- -->
+    <section id="about" class="about">
+      <div class="container">
+        <h2>Who We Are</h2>
+        <p>
+          Hey, we're <strong>Luca</strong> &amp; <strong>[Your Name]</strong>
+          — cousins, makers and relentless optimisers. At
+          <em>KIFlowstate</em> we combine cutting‑edge AI models with rock‑solid
+          business‑process design to level‑up your operations.
+        </p>
+      </div>
+    </section>
 
-    // Initial platzieren
-    moveBox();
-  </script>
-</body>
+    <!-- ▸▸ SERVICES -------------------------------------------------------- -->
+    <section id="services" class="services">
+      <div class="container">
+        <h2>What We Do</h2>
+
+        <div class="service-grid">
+          <article class="service-card">
+            <i class="fas fa-robot service-icon"></i>
+            <h3>Process Automation</h3>
+            <p>
+              From repetitive data entry to complex workflows — we automate the
+              grunt work so your team can shine.
+            </p>
+          </article>
+
+          <article class="service-card">
+            <i class="fas fa-brain service-icon"></i>
+            <h3>AI Chatbots</h3>
+            <p>
+              24/7 conversational agents trained on your knowledge base and
+              brand voice.
+            </p>
+          </article>
+
+          <article class="service-card">
+            <i class="fas fa-chart-line service-icon"></i>
+            <h3>Insights &amp; Analytics</h3>
+            <p>
+              Turn raw data into actionable insights with custom dashboards and
+              predictive models.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ▸▸ APPOINTMENT ----------------------------------------------------- -->
+    <section id="appointment" class="appointment">
+      <div class="container">
+        <h2>Book an Appointment</h2>
+        <p>Pick a time slot that suits you best for a 30‑minute strategy call.</p>
+
+        <div class="calendar-wrapper">
+          <iframe
+            class="calendar-embed"
+            src=""
+            loading="lazy"
+            title="KIFlowstate Calendar Placeholder"
+          ></iframe>
+          <p class="calendar-note">
+            To activate online booking, connect your Google Calendar via their
+            API or embed an Appointment Schedule link here.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ▸▸ FOOTER ---------------------------------------------------------- -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <p>© <span id="year"></span> KIFlowstate. All rights reserved.</p>
+        <ul class="footer-links">
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
 </html>
