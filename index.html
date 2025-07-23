@@ -7,7 +7,42 @@
       name="description"
       content="KIFlowstate – AI‑driven automation agency that streamlines your business processes."
     />
-    <title>KIFlowstate | AI Automation Agency</title>
+    <meta
+      name="keywords"
+      content="AI Automation, Business Process Automation, Chatbots, Data Analytics, KIFlowstate, Luca, Julian"
+    />
+    <title>KIFlowstate | AI Automation Agency</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/logo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="images/logo.png" />
+
+    <!-- SEO & Social Sharing Meta Tags (Update content with your URL) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.your-website.com/" />
+    <meta property="og:title" content="KIFlowstate | AI Automation Agency" />
+    <meta
+      property="og:description"
+      content="We design, build & maintain end‑to‑end automations that give you back your focus time."
+    />
+    <meta
+      property="og:image"
+      content="https://www.your-website.com/images/social-share-banner.jpg"
+    />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.your-website.com/" />
+    <meta
+      property="twitter:title"
+      content="KIFlowstate | AI Automation Agency"
+    />
+    <meta
+      property="twitter:description"
+      content="We design, build & maintain end‑to‑end automations that give you back your focus time."
+    />
+    <meta
+      property="twitter:image"
+      content="https://www.your-website.com/images/social-share-banner.jpg"
+    />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,6 +50,15 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
+    />
+
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
 
     <!-- Local assets -->
@@ -26,10 +70,12 @@
     <!-- ▸▸ NAVBAR ---------------------------------------------------------- -->
     <header class="navbar">
       <div class="container nav-wrapper">
-        <div class="logo">KIFlowstate</div>
+        <a href="/" class="logo">
+          <img src="images/logo.png" alt="KIFlowstate Logo" />
+        </a>
 
         <nav>
-          <ul class="nav-links">
+          <ul class="nav-links" id="main-nav">
             <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#appointment">Appointment</a></li>
@@ -38,7 +84,13 @@
           </ul>
         </nav>
 
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+        <button
+          class="hamburger"
+          id="hamburger"
+          aria-label="Toggle navigation"
+          aria-controls="main-nav"
+          aria-expanded="false"
+        >
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -48,17 +100,16 @@
     <section class="hero">
       <div class="container hero-content">
         <h1>
-          Unlock&nbsp;<span class="highlight">Flow</span>&nbsp;with AI‑Driven
+          Unlock <span class="highlight">Flow</span> with AI‑Driven
           Automation
         </h1>
         <p>
-          We design, build &amp; maintain end‑to‑end automations that give you
+          We design, build & maintain end‑to‑end automations that give you
           back your focus time.
         </p>
         <a href="#appointment" class="cta-btn">Book a Free Discovery Call</a>
       </div>
 
-      <!-- animierte Welle -->
       <svg
         class="wave"
         xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +128,7 @@
       <div class="container">
         <h2>Who We Are</h2>
         <p>
-          Hey, we're <strong>Luca</strong> &amp; <strong>Julian</strong>
+          Hey, we're <strong>Luca</strong> & <strong>Julian</strong>
           — cousins, makers and relentless optimisers. At
           <em>KIFlowstate</em> we combine cutting‑edge AI models with rock‑solid
           business‑process design to level‑up your operations.
@@ -92,7 +143,7 @@
 
         <div class="service-grid">
           <article class="service-card">
-            <i class="fas fa-robot service-icon"></i>
+            <i class="fas fa-robot service-icon" aria-hidden="true"></i>
             <h3>Process Automation</h3>
             <p>
               From repetitive data entry to complex workflows — we automate the
@@ -101,7 +152,7 @@
           </article>
 
           <article class="service-card">
-            <i class="fas fa-brain service-icon"></i>
+            <i class="fas fa-brain service-icon" aria-hidden="true"></i>
             <h3>AI Chatbots</h3>
             <p>
               24/7 conversational agents trained on your knowledge base and
@@ -110,8 +161,8 @@
           </article>
 
           <article class="service-card">
-            <i class="fas fa-chart-line service-icon"></i>
-            <h3>Insights &amp; Analytics</h3>
+            <i class="fas fa-chart-line service-icon" aria-hidden="true"></i>
+            <h3>Insights & Analytics</h3>
             <p>
               Turn raw data into actionable insights with custom dashboards and
               predictive models.
@@ -132,7 +183,7 @@
             class="calendar-embed"
             src=""
             loading="lazy"
-            title="KIFlowstate Calendar Placeholder"
+            title="KIFlowstate Online Booking Calendar"
           ></iframe>
           <p class="calendar-note">
             To activate online booking, connect your Google Calendar via their
