@@ -5,25 +5,30 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <meta
       name="description"
-      content="KIFlowstate – AI‑driven automation agency that streamlines your business processes."
+      content="KIFlowstate – AI-gesteuerte Automationsagentur, die Ihre Geschäftsprozesse optimiert."
+      data-translate="meta_description"
     />
     <meta
       name="keywords"
-      content="AI Automation, Business Process Automation, Chatbots, Data Analytics, KIFlowstate, Luca, Julian"
+      content="KI-Automation, Geschäftsprozessautomatisierung, Chatbots, Datenanalyse, KIFlowstate, Luca, Julian"
     />
-    <title>KIFlowstate | AI Automation Agency</title>
+    <title>KIFlowstate | AI Automation Agency</title>
 
-    <!-- Favicon (using root-relative paths) -->
+    <!-- Favicon -->
     <link rel="icon" href="/images/logo.png" type="image/png" />
     <link rel="apple-touch-icon" href="/images/logo.png" />
 
-    <!-- SEO & Social Sharing Meta Tags (Update content with your URL) -->
+    <!-- SEO & Social Sharing -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.kiflowstate.de/" />
-    <meta property="og:title" content="KIFlowstate | AI Automation Agency" />
+    <meta
+      property="og:title"
+      content="KIFlowstate | AI Automation Agency"
+    />
     <meta
       property="og:description"
-      content="We design, build & maintain end‑to‑end automations that give you back your focus time."
+      content="Wir entwerfen, bauen und warten End-to-End-Automatisierungen, die Ihnen Ihre Fokuszeit zurückgeben."
+      data-translate="og_description"
     />
     <meta
       property="og:image"
@@ -37,7 +42,8 @@
     />
     <meta
       property="twitter:description"
-      content="We design, build & maintain end‑to‑end automations that give you back your focus time."
+      content="Wir entwerfen, bauen und warten End-to-End-Automatisierungen, die Ihnen Ihre Fokuszeit zurückgeben."
+      data-translate="twitter_description"
     />
     <meta
       property="twitter:image"
@@ -61,8 +67,10 @@
       referrerpolicy="no-referrer"
     />
 
-    <!-- Local assets (using root-relative paths) -->
+    <!-- Local assets -->
     <link rel="stylesheet" href="/css/styles.css" />
+    <!-- IMPORTANT: Load translations before the main script -->
+    <script defer src="/js/translations.js"></script>
     <script defer src="/js/script.js"></script>
   </head>
 
@@ -71,19 +79,24 @@
     <header class="navbar">
       <div class="container nav-wrapper">
         <a href="/" class="logo">
-          <!-- THE KEY CHANGE IS HERE -->
           <img src="/images/logo.png" alt="KIFlowstate Logo" />
         </a>
 
         <nav>
           <ul class="nav-links" id="main-nav">
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#appointment">Appointment</a></li>
-            <li><a href="impressum.html">Impressum</a></li>
-            <li><a href="datenschutz.html">Datenschutz</a></li>
+            <li><a href="#about" data-translate="nav_about">Über Uns</a></li>
+            <li><a href="#services" data-translate="nav_services">Leistungen</a></li>
+            <li><a href="#appointment" data-translate="nav_appointment">Termin</a></li>
+            <li><a href="impressum.html" data-translate="nav_imprint">Impressum</a></li>
+            <li><a href="datenschutz.html" data-translate="nav_privacy">Datenschutz</a></li>
           </ul>
         </nav>
+
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+          <button id="lang-de" class="lang-btn active">DE</button>
+          <button id="lang-en" class="lang-btn">EN</button>
+        </div>
 
         <button
           class="hamburger"
@@ -97,42 +110,71 @@
       </div>
     </header>
 
-    <!-- ▸▸ HERO ------------------------------------------------------------ -->
+    <!-- ▸▸ HERO (REVERTED TO DARK THEME) ----------------------------------- -->
     <section class="hero">
       <div class="container hero-content">
         <h1>
-          Unlock <span class="highlight">Flow</span> with AI‑Driven
-          Automation
+          <span data-translate="hero_title_1">Erreiche den</span>
+          <span class="highlight">Flow</span>
+          <span data-translate="hero_title_2">mit KI-gesteuerter Automation</span>
         </h1>
-        <p>
-          We design, build & maintain end‑to‑end automations that give you
-          back your focus time.
+        <p data-translate="hero_subtitle">
+          Wir entwerfen, bauen & warten End‑to‑End-Automatisierungen, die Ihnen
+          Ihre Fokuszeit zurückgeben.
         </p>
-        <a href="#appointment" class="cta-btn">Book a Free Discovery Call</a>
+        <a href="#appointment" class="cta-btn" data-translate="hero_cta">Kostenloses Erstgespräch buchen</a>
+
+        <!-- START: Hero Social Icons -->
+        <div class="social-links hero-social-links">
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+        <!-- END: Hero Social Icons -->
       </div>
 
-      <svg
-        class="wave"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1440 320"
-        preserveAspectRatio="none"
-      >
-        <path
-          fill="rgba(255,255,255,0.07)"
-          d="M0,160L60,165.3C120,171,240,181,360,160C480,139,600,85,720,96C840,107,960,181,1080,202.7C1200,224,1320,192,1440,160L1440,320L0,320Z"
-        ></path>
-      </svg>
+      <!-- Wave Animation-->
+      <div class="wave-container-professional">
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+          <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+          </defs>
+          <g class="parallax">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.25)" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.2)" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.15)" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(255,255,255,0.1)" />
+          </g>
+        </svg>
+      </div>
     </section>
 
     <!-- ▸▸ ABOUT ----------------------------------------------------------- -->
     <section id="about" class="about">
       <div class="container">
-        <h2>Who We Are</h2>
-        <p>
-          Hey, we're <strong>Luca</strong> & <strong>Julian</strong>
-          — cousins, makers and relentless optimisers. At
-          <em>KIFlowstate</em> we combine cutting‑edge AI models with rock‑solid
-          business‑process design to level‑up your operations.
+        <h2 data-translate="about_title">Wer Wir Sind</h2>
+        <p data-translate="about_text">
+          Hey, wir sind <strong>Luca</strong> & <strong>Julian</strong>
+          — Cousins, Macher und unermüdliche Optimierer. Bei
+          <em>KIFlowstate</em> kombinieren wir hochmoderne KI‑Modelle mit
+          praxiserprobtem Prozessdesign, um Ihre Abläufe auf das nächste Level
+          zu heben.
         </p>
       </div>
     </section>
@@ -140,33 +182,33 @@
     <!-- ▸▸ SERVICES -------------------------------------------------------- -->
     <section id="services" class="services">
       <div class="container">
-        <h2>What We Do</h2>
+        <h2 data-translate="services_title">Was Wir Tun</h2>
 
         <div class="service-grid">
           <article class="service-card">
             <i class="fas fa-robot service-icon" aria-hidden="true"></i>
-            <h3>Process Automation</h3>
-            <p>
-              From repetitive data entry to complex workflows — we automate the
-              grunt work so your team can shine.
+            <h3 data-translate="service1_title">Prozessautomatisierung</h3>
+            <p data-translate="service1_text">
+              Von repetitiver Dateneingabe bis zu komplexen Workflows — wir
+              automatisieren die Routinearbeit, damit Ihr Team glänzen kann.
             </p>
           </article>
 
           <article class="service-card">
             <i class="fas fa-brain service-icon" aria-hidden="true"></i>
-            <h3>AI Chatbots</h3>
-            <p>
-              24/7 conversational agents trained on your knowledge base and
-              brand voice.
+            <h3 data-translate="service2_title">KI‑Chatbots</h3>
+            <p data-translate="service2_text">
+              Rund um die Uhr verfügbare Gesprächsagenten, trainiert auf Ihre
+              Wissensdatenbank und Markenstimme.
             </p>
           </article>
 
           <article class="service-card">
             <i class="fas fa-chart-line service-icon" aria-hidden="true"></i>
-            <h3>Insights & Analytics</h3>
-            <p>
-              Turn raw data into actionable insights with custom dashboards and
-              predictive models.
+            <h3 data-translate="service3_title">Einblicke & Analysen</h3>
+            <p data-translate="service3_text">
+              Verwandeln Sie Rohdaten mit benutzerdefinierten Dashboards und
+              prädiktiven Modellen in handlungsrelevante Erkenntnisse.
             </p>
           </article>
         </div>
@@ -176,20 +218,19 @@
     <!-- ▸▸ APPOINTMENT ----------------------------------------------------- -->
     <section id="appointment" class="appointment">
       <div class="container">
-        <h2>Book an Appointment</h2>
-        <p>Pick a time slot that suits you best for a 30‑minute strategy call.</p>
+        <h2 data-translate="appointment_title">Termin Buchen</h2>
+        <p data-translate="appointment_text">
+          Wählen Sie einen passenden Zeitpunkt für ein 30‑minütiges
+          Strategiegespräch.
+        </p>
 
         <div class="calendar-wrapper">
           <iframe
             class="calendar-embed"
-            src=""
+            src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy?gv=true" style="border: 0" width="100%" height="600" frameborder="0"
             loading="lazy"
             title="KIFlowstate Online Booking Calendar"
           ></iframe>
-          <p class="calendar-note">
-            To activate online booking, connect your Google Calendar via their
-            API or embed an Appointment Schedule link here.
-          </p>
         </div>
       </div>
     </section>
@@ -197,10 +238,34 @@
     <!-- ▸▸ FOOTER ---------------------------------------------------------- -->
     <footer class="footer">
       <div class="container footer-content">
-        <p>© <span id="year"></span> KIFlowstate. All rights reserved.</p>
+        <p data-translate="footer_copyright">© <span id="year"></span> KIFlowstate. Alle Rechte vorbehalten.</p>
+
+        <!-- START: Social Media Icons -->
+        <div class="social-links">
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+        <!-- END: Social Media Icons -->
+
         <ul class="footer-links">
-          <li><a href="impressum.html">Impressum</a></li>
-          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="impressum.html" data-translate="footer_imprint">Impressum</a></li>
+          <li><a href="datenschutz.html" data-translate="footer_privacy">Datenschutz</a></li>
         </ul>
       </div>
     </footer>

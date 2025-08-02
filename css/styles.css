@@ -16,9 +16,8 @@
   padding: 0;
 }
 
-/* Fluid typography for the root element */
 html {
-  font-size: 100%; /* Base font size */
+  font-size: 100%;
 }
 
 body {
@@ -40,7 +39,7 @@ svg {
   width: 90%;
   max-width: 1100px;
   margin-inline: auto;
-  padding-block: 3rem; /* Adjusted base padding */
+  padding-block: 3rem;
 }
 
 h1,
@@ -52,7 +51,6 @@ h3 {
 }
 
 h1 {
-  /* Fluid font size: scales from 2.25rem to 3.5rem */
   font-size: clamp(2.25rem, 1.65rem + 2.67vw, 3.5rem);
 }
 
@@ -61,10 +59,9 @@ h2 {
 }
 
 p {
-  max-width: 65ch; /* Improve readability for long paragraphs */
+  max-width: 65ch;
 }
 
-/* Accessibility: Add a clear focus indicator */
 a:focus-visible,
 button:focus-visible {
   outline: 3px solid var(--primary-dark);
@@ -75,6 +72,7 @@ button:focus-visible {
 /* ─── NAVBAR ────────────────────────────────────────────────── */
 .navbar {
   background: #fff;
+  border-top: 4px solid var(--primary);
   box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
   position: sticky;
   top: 0;
@@ -85,12 +83,12 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 70px; /* Ensure space for the logo */
-  padding-block: 0.5rem; /* Use padding instead of fixed height */
+  min-height: 70px;
+  padding-block: 0.5rem;
 }
 
 .logo img {
-  height: 40px; /* Increased logo size */
+  height: 40px;
   width: auto;
   display: block;
 }
@@ -113,7 +111,6 @@ button:focus-visible {
   color: var(--primary);
 }
 
-/* Hamburger button */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -142,7 +139,6 @@ button:focus-visible {
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Mobile dropdown nav */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
@@ -171,7 +167,7 @@ button:focus-visible {
   }
 }
 
-/* ─── HERO ─────────────────────────────────────────────────── */
+/* ─── HERO (DARK THEME) ────────────────────────────────────── */
 .hero {
   position: relative;
   overflow: hidden;
@@ -181,7 +177,7 @@ button:focus-visible {
 }
 
 .hero p {
-  margin-inline: auto; /* Center paragraph */
+  margin-inline: auto;
 }
 
 .hero::before {
@@ -210,52 +206,72 @@ button:focus-visible {
   }
 }
 
-.wave {
+/* ─── PROFESSIONAL HERO WAVE ANIMATION ─────────────────────── */
+.wave-container-professional {
   position: absolute;
-  bottom: -1px;
+  bottom: 0;
   left: 0;
-  width: 200%;
-  height: 120px;
+  width: 100%;
   z-index: -1;
-  animation: waveMove 10s linear infinite;
 }
 
-@keyframes waveMove {
+.waves {
+  position: relative;
+  width: 100%;
+  height: 15vh;
+  margin-bottom: -7px;
+  min-height: 100px;
+  max-height: 150px;
+}
+
+.parallax > use {
+  animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+.parallax > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+.parallax > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+.parallax > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+.parallax > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+@keyframes move-forever {
   0% {
-    transform: translateX(0);
+   transform: translate3d(-90px,0,0);
   }
-  100% {
-    transform: translateX(-50%);
+  100% { 
+    transform: translate3d(85px,0,0);
+  }
+}
+@media (max-width: 768px) {
+  .waves {
+    height: 100px;
+    min-height: 100px;
   }
 }
 
 /* ─── Wiggle für das Wort “Flow” ───────────────────────────── */
 .highlight {
-  display: inline-block; /* braucht eigenes Box‑Modell */
+  display: inline-block;
   animation: wiggle 2.4s ease-in-out infinite;
-  transform-origin: 50% 60%; /* Pivot leicht unterhalb der Mitte */
+  transform-origin: 50% 60%;
 }
 
 @keyframes wiggle {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  15% {
-    transform: rotate(-3deg);
-  }
-  30% {
-    transform: rotate(3deg);
-  }
-  45% {
-    transform: rotate(-2deg);
-  }
-  60% {
-    transform: rotate(2deg);
-  }
-  75% {
-    transform: rotate(-1deg);
-  }
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(-3deg); }
+  30% { transform: rotate(3deg); }
+  45% { transform: rotate(-2deg); }
+  60% { transform: rotate(2deg); }
+  75% { transform: rotate(-1deg); }
 }
 
 .cta-btn {
@@ -274,6 +290,34 @@ button:focus-visible {
   transform: translateY(-2px);
 }
 
+/* Social Links in Hero Section */
+.hero-social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.hero-social-links a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+  text-decoration: none; /* Explicitly remove underline */
+}
+
+.hero-social-links a:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.1);
+}
+
 /* ─── SECTIONS (General) ──────────────────────────────────── */
 section:not(.hero) .container {
   text-align: center;
@@ -282,10 +326,14 @@ section:not(.hero) .container {
 /* ─── ABOUT ────────────────────────────────────────────────── */
 .about p {
   max-width: 60ch;
-  margin-inline: auto; /* Center the text block */
+  margin-inline: auto;
 }
 
 /* ─── SERVICES ─────────────────────────────────────────────── */
+.services {
+  background-color: #dbf0f5;
+  border-radius: 40px; 
+}
 .service-grid {
   display: grid;
   gap: 1.5rem;
@@ -312,15 +360,16 @@ section:not(.hero) .container {
   margin-bottom: 1rem;
 }
 
+
 /* ─── APPOINTMENT ─────────────────────────────────────────── */
 .appointment p {
-  margin-inline: auto; /* Center paragraph */
+  margin-inline: auto;
 }
 .calendar-wrapper {
   margin-top: 2rem;
   border: 2px dashed #cbd5e1;
   border-radius: var(--radius);
-  padding: 1.5rem; /* Padding for mobile */
+  padding: 1.5rem;
   background: #fff;
   text-align: center;
 }
@@ -331,12 +380,6 @@ section:not(.hero) .container {
   width: 100%;
 }
 
-.calendar-note {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #64748b;
-}
-
 /* ─── FOOTER ───────────────────────────────────────────────── */
 .footer {
   background: var(--primary-dark);
@@ -345,27 +388,103 @@ section:not(.hero) .container {
   text-align: center;
 }
 
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.footer-content p {
+  order: 1;
+}
+
+/* This selector ONLY targets social links in the footer */
+.footer .social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block: 1.25rem;
+  order: 2;
+}
+
+.footer .social-links a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.footer .social-links a:hover {
+  background-color: var(--primary);
+  transform: translateY(-3px);
+}
+
 .footer-links {
   list-style: none;
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  margin-top: 1rem;
   padding-left: 0;
+  order: 3;
 }
+
 .footer-links a {
   color: inherit;
   text-decoration: none;
   transition: color 0.25s;
 }
+
 .footer-links a:hover {
   color: #fff;
 }
 
-/* Responsive adjustments for the footer */
 @media (max-width: 480px) {
   .footer-links {
     flex-direction: column;
     gap: 0.75rem;
+  }
+}
+
+/* ─── LANGUAGE SWITCHER ───────────────────────────────────── */
+.lang-switcher {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1.5rem;
+}
+
+.lang-btn {
+  background: none;
+  border: 2px solid transparent;
+  color: var(--gray-900);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius);
+  transition: all 0.2s ease-in-out;
+}
+
+.lang-btn:hover {
+  color: var(--primary);
+  background-color: #f1f5ff;
+}
+
+.lang-btn.active {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .lang-switcher {
+    margin-left: auto;
+    margin-right: 1rem;
   }
 }
