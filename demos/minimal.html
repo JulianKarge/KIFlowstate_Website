@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Minimal — Demo</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--ink:#111;--muted:#6b7280;--bg:#fafaf7;--accent:#111}
+  html,body{background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.6}
+  .wrap{max-width:880px;margin:0 auto;padding:2.5rem 1.5rem}
+  header{display:flex;justify-content:space-between;align-items:center;padding-bottom:2rem;border-bottom:1px solid #eee}
+  .brand{font-weight:700;font-size:1.1rem;letter-spacing:0.02em}
+  nav a{color:var(--ink);text-decoration:none;margin-left:1.5rem;font-size:0.95rem}
+  nav a:hover{text-decoration:underline}
+  .hero{padding:5rem 0 3rem;text-align:left}
+  .hero .eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:0.18em;font-size:0.75rem;font-family:system-ui,sans-serif;margin-bottom:1.5rem}
+  .hero h1{font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem;max-width:18ch}
+  .hero p{color:var(--muted);max-width:48ch;font-size:1.05rem;margin-bottom:2rem}
+  .btn{display:inline-block;padding:0.85rem 1.5rem;background:var(--ink);color:#fff;text-decoration:none;font-family:system-ui,sans-serif;font-size:0.9rem;letter-spacing:0.04em}
+  .btn:hover{background:#000}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:3rem 0;border-top:1px solid #eee}
+  .grid h3{font-size:1rem;font-weight:600;margin-bottom:0.5rem}
+  .grid p{color:var(--muted);font-size:0.95rem}
+  footer{padding:2rem 0;color:var(--muted);font-size:0.85rem;border-top:1px solid #eee;text-align:center;font-family:system-ui,sans-serif}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}nav a{margin-left:0.75rem;font-size:0.85rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">Atelier &mdash; M.</div>
+    <nav>
+      <a href="#">Werk</a>
+      <a href="#">Über</a>
+      <a href="#">Kontakt</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Studio · Est. 2024</div>
+    <h1>Ruhige Räume für klare Ideen.</h1>
+    <p>Wir gestalten zurückhaltend und genau. Marken, Drucksachen und digitale Auftritte — geformt um das, was bleibt.</p>
+    <a class="btn" href="#">Projekt anfragen &rarr;</a>
+  </section>
+
+  <section class="grid">
+    <div><h3>Identität</h3><p>Logos, Typografie, Farbsysteme.</p></div>
+    <div><h3>Print</h3><p>Bücher, Editionen, Verpackung.</p></div>
+    <div><h3>Web</h3><p>Statische Seiten, schnell und langlebig.</p></div>
+  </section>
+
+  <footer>&copy; Atelier &mdash; M.</footer>
+</div>
+</body>
+</html>

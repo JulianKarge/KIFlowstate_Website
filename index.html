@@ -82,11 +82,12 @@
         </a>
 
         <nav>
-          <!-- UPDATED NAV-LINKS -->
           <ul class="nav-links" id="main-nav">
             <li><a href="#about" data-translate="nav_about">Über Uns</a></li>
             <li><a href="#services" data-translate="nav_services">Leistungen</a></li>
+            <li><a href="#showcase" data-translate="nav_showcase">Webdesign</a></li>
             <li><a href="#appointment" data-translate="nav_appointment">Termin</a></li>
+            <li><a href="#contact" data-translate="nav_contact">Kontakt</a></li>
           </ul>
         </nav>
 
@@ -163,8 +164,26 @@
       </div>
     </section>
 
+    <!-- ▸▸ STATS STRIP ---------------------------------------------------- -->
+    <section class="stats reveal" aria-label="KIFlowstate in Zahlen">
+      <div class="container stats-grid">
+        <div class="stat">
+          <span class="stat-number" data-count-to="40">0</span><span class="stat-suffix">+</span>
+          <p class="stat-label" data-translate="stat1_label">Automatisierungen ausgeliefert</p>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-count-to="1200">0</span><span class="stat-suffix">+</span>
+          <p class="stat-label" data-translate="stat2_label">Stunden monatlich gespart</p>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-count-to="98">0</span><span class="stat-suffix">%</span>
+          <p class="stat-label" data-translate="stat3_label">Kundenzufriedenheit</p>
+        </div>
+      </div>
+    </section>
+
     <!-- ▸▸ ABOUT ----------------------------------------------------------- -->
-    <section id="about" class="about">
+    <section id="about" class="about reveal">
       <div class="container">
         <h2 data-translate="about_title">Wer Wir Sind</h2>
         <p data-translate="about_text">
@@ -178,18 +197,18 @@
       
       <div class="founder-images">
         <div class="founder-portrait" tabindex="0">
-          <img src="images/luca.png" alt="Luca, Mitgründer von KIFlowstate" />
+          <img src="images/luca.png" alt="Luca, Mitgründer von KIFlowstate" loading="lazy" />
           <span class="founder-name">Luca</span>
         </div>
         <div class="founder-portrait" tabindex="0">
-          <img src="images/julian.png" alt="Julian, Mitgründer von KIFlowstate" />
+          <img src="images/julian.png" alt="Julian, Mitgründer von KIFlowstate" loading="lazy" />
           <span class="founder-name">Julian</span>
         </div>
       </div>
     </section>
 
     <!-- ▸▸ SERVICES -------------------------------------------------------- -->
-    <section id="services" class="services">
+    <section id="services" class="services reveal">
       <div class="container">
         <h2 data-translate="services_title">Was Wir Tun</h2>
 
@@ -201,6 +220,9 @@
               Von repetitiver Dateneingabe bis zu komplexen Workflows — wir
               automatisieren die Routinearbeit, damit Ihr Team glänzen kann.
             </p>
+            <p class="service-outcome" data-translate="service1_outcome">
+              Ergebnis: bis zu 70 % weniger manuelle Arbeit.
+            </p>
           </article>
 
           <article class="service-card">
@@ -209,6 +231,9 @@
             <p data-translate="service2_text">
               Rund um die Uhr verfügbare Gesprächsagenten, trainiert auf Ihre
               Wissensdatenbank und Markenstimme.
+            </p>
+            <p class="service-outcome" data-translate="service2_outcome">
+              Ergebnis: Antworten in Sekunden statt Stunden.
             </p>
           </article>
 
@@ -219,13 +244,174 @@
               Verwandeln Sie Rohdaten mit benutzerdefinierten Dashboards und
               prädiktiven Modellen in handlungsrelevante Erkenntnisse.
             </p>
+            <p class="service-outcome" data-translate="service3_outcome">
+              Ergebnis: Entscheidungen, die auf Daten basieren – nicht auf Bauchgefühl.
+            </p>
           </article>
         </div>
       </div>
     </section>
 
+    <!-- ▸▸ INTEGRATIONS (wave-flow marquee) ------------------------------ -->
+    <section id="integrations" class="integrations reveal" aria-label="Integrationen">
+      <!-- Top wave divider -->
+      <svg class="wave-divider wave-top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 L1440,0 L0,0 Z"></path>
+      </svg>
+
+      <div class="container integrations-inner">
+        <h2 data-translate="integrations_title">Im Flow mit Ihren Tools</h2>
+        <p class="section-lead" data-translate="integrations_lead">
+          Wir verbinden, was Sie bereits nutzen — und schließen die Lücken dazwischen.
+        </p>
+
+        <div class="marquee" id="integrations-marquee">
+          <div class="marquee-track" id="integrations-track">
+            <!-- Track items (will be duplicated by JS for seamless loop) -->
+            <div class="int-pill" data-tip="OpenAI">
+              <span class="int-mark int-mark-openai" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M22.28 9.82a5.94 5.94 0 0 0-.51-4.91 6 6 0 0 0-6.46-2.87A6 6 0 0 0 4.98 4.18a5.94 5.94 0 0 0-3.97 2.87 6 6 0 0 0 .74 7.05 5.94 5.94 0 0 0 .51 4.91 6 6 0 0 0 6.46 2.87 5.99 5.99 0 0 0 4.51 2.02 6 6 0 0 0 5.72-4.18 5.94 5.94 0 0 0 3.97-2.87 6 6 0 0 0-.64-7.03Zm-9.06 12.62a4.46 4.46 0 0 1-2.86-1.04l.14-.08 4.74-2.74a.78.78 0 0 0 .39-.68v-6.69l2 1.16c.02 0 .04.03.04.06v5.54a4.5 4.5 0 0 1-4.45 4.47ZM3.6 17.97a4.43 4.43 0 0 1-.53-3l.14.09 4.74 2.74a.77.77 0 0 0 .78 0l5.79-3.34v2.31c0 .02-.01.05-.03.06l-4.79 2.77a4.5 4.5 0 0 1-6.1-1.63ZM2.36 7.6a4.5 4.5 0 0 1 2.34-1.97v5.65a.77.77 0 0 0 .39.68l5.78 3.33-2 1.16c-.01.01-.04.02-.06.01L4.02 13.7a4.5 4.5 0 0 1-1.66-6.1Zm16.41 3.81-5.79-3.36 2-1.15c.02-.01.04-.02.06-.01l4.79 2.77a4.5 4.5 0 0 1-.68 8.13v-5.65a.78.78 0 0 0-.38-.73Zm1.99-3-.14-.09-4.73-2.76a.77.77 0 0 0-.78 0l-5.79 3.34V6.6c0-.03.01-.05.03-.07l4.79-2.76a4.5 4.5 0 0 1 6.62 4.65ZM9.21 13.7l-2-1.15a.07.07 0 0 1-.04-.06V7a4.5 4.5 0 0 1 7.38-3.45l-.14.08-4.74 2.74a.78.78 0 0 0-.39.68l-.07 6.66Zm1.08-2.34L12.87 9.9l2.59 1.49v3l-2.58 1.5-2.59-1.49v-3.04Z"/></svg>
+              </span>
+              <span class="int-label">OpenAI</span>
+            </div>
+
+            <div class="int-pill" data-tip="n8n">
+              <span class="int-mark int-mark-n8n" aria-hidden="true">n8n</span>
+              <span class="int-label">n8n</span>
+            </div>
+
+            <div class="int-pill" data-tip="Zapier">
+              <span class="int-mark int-mark-zap" aria-hidden="true">
+                <i class="fas fa-bolt"></i>
+              </span>
+              <span class="int-label">Zapier</span>
+            </div>
+
+            <div class="int-pill" data-tip="Make">
+              <span class="int-mark int-mark-make" aria-hidden="true">M</span>
+              <span class="int-label">Make</span>
+            </div>
+
+            <div class="int-pill" data-tip="Notion">
+              <span class="int-mark int-mark-notion" aria-hidden="true">N</span>
+              <span class="int-label">Notion</span>
+            </div>
+
+            <div class="int-pill" data-tip="Google Workspace">
+              <span class="int-mark int-mark-google" aria-hidden="true">
+                <i class="fab fa-google"></i>
+              </span>
+              <span class="int-label">Google</span>
+            </div>
+
+            <div class="int-pill" data-tip="Slack">
+              <span class="int-mark int-mark-slack" aria-hidden="true">
+                <i class="fab fa-slack"></i>
+              </span>
+              <span class="int-label">Slack</span>
+            </div>
+
+            <div class="int-pill" data-tip="Airtable">
+              <span class="int-mark int-mark-airtable" aria-hidden="true">A</span>
+              <span class="int-label">Airtable</span>
+            </div>
+
+            <div class="int-pill" data-tip="HubSpot">
+              <span class="int-mark int-mark-hubspot" aria-hidden="true">
+                <i class="fab fa-hubspot"></i>
+              </span>
+              <span class="int-label">HubSpot</span>
+            </div>
+
+            <div class="int-pill" data-tip="WhatsApp">
+              <span class="int-mark int-mark-whatsapp" aria-hidden="true">
+                <i class="fab fa-whatsapp"></i>
+              </span>
+              <span class="int-label">WhatsApp</span>
+            </div>
+
+            <div class="int-pill" data-tip="Microsoft 365">
+              <span class="int-mark int-mark-microsoft" aria-hidden="true">
+                <i class="fab fa-microsoft"></i>
+              </span>
+              <span class="int-label">Microsoft 365</span>
+            </div>
+
+            <div class="int-pill" data-tip="Shopify">
+              <span class="int-mark int-mark-shopify" aria-hidden="true">
+                <i class="fab fa-shopify"></i>
+              </span>
+              <span class="int-label">Shopify</span>
+            </div>
+          </div>
+          <!-- Edge fades for the wave effect -->
+          <span class="marquee-fade marquee-fade-l" aria-hidden="true"></span>
+          <span class="marquee-fade marquee-fade-r" aria-hidden="true"></span>
+        </div>
+
+        <p class="integrations-foot" data-translate="integrations_foot">
+          …und vieles mehr. Ihre Lieblings-Tools fehlen? Wir bauen die Brücke.
+        </p>
+      </div>
+
+      <!-- Bottom wave divider (mirrored) -->
+      <svg class="wave-divider wave-bottom" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 L1440,80 L0,80 Z"></path>
+      </svg>
+    </section>
+
+    <!-- ▸▸ WEBSITE SHOWCASE ----------------------------------------------- -->
+    <section id="showcase" class="showcase reveal">
+      <div class="container">
+        <h2 data-translate="showcase_title">Wir Bauen Auch Websites</h2>
+        <p class="section-lead" data-translate="showcase_lead">
+          Klicken Sie sich durch fünf Stilrichtungen — Ihre individuelle Website kann genau so aussehen.
+        </p>
+
+        <div class="showcase-tabs" role="tablist" aria-label="Website-Stile">
+          <button class="showcase-tab is-active" role="tab" aria-selected="true" data-demo="demos/minimal.html" data-translate="showcase_tab1">Minimalistisch</button>
+          <button class="showcase-tab" role="tab" aria-selected="false" data-demo="demos/dark-tech.html" data-translate="showcase_tab2">Dark Tech</button>
+          <button class="showcase-tab" role="tab" aria-selected="false" data-demo="demos/creative.html" data-translate="showcase_tab3">Kreativ &amp; Bold</button>
+          <button class="showcase-tab" role="tab" aria-selected="false" data-demo="demos/shop.html" data-translate="showcase_tab4">E‑Commerce</button>
+          <button class="showcase-tab" role="tab" aria-selected="false" data-demo="demos/corporate.html" data-translate="showcase_tab5">Corporate</button>
+        </div>
+
+        <div class="showcase-frame-wrapper">
+          <button class="showcase-arrow showcase-arrow-prev" aria-label="Vorheriger Stil">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+          </button>
+
+          <div class="showcase-browser">
+            <div class="showcase-browser-bar" aria-hidden="true">
+              <span class="dot dot-r"></span>
+              <span class="dot dot-y"></span>
+              <span class="dot dot-g"></span>
+              <span class="showcase-url">kiflowstate.de/demo</span>
+            </div>
+            <iframe
+              id="showcase-iframe"
+              class="showcase-iframe"
+              src="demos/minimal.html"
+              title="Website-Demo"
+              loading="lazy"
+              sandbox="allow-same-origin allow-scripts"
+            ></iframe>
+          </div>
+
+          <button class="showcase-arrow showcase-arrow-next" aria-label="Nächster Stil">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <p class="showcase-cta-text" data-translate="showcase_cta_text">
+          Gefällt Ihnen ein Stil — oder möchten Sie etwas ganz Eigenes? Lassen Sie uns reden.
+        </p>
+        <a href="#appointment" class="cta-btn cta-btn-dark" data-translate="showcase_cta_btn">Website-Beratung buchen</a>
+      </div>
+    </section>
+
     <!-- ▸▸ APPOINTMENT ----------------------------------------------------- -->
-    <section id="appointment" class="appointment">
+    <section id="appointment" class="appointment reveal">
       <div class="container">
         <h2 data-translate="appointment_title">Termin Buchen</h2>
         <p data-translate="appointment_text">
@@ -233,14 +419,94 @@
           Strategiegespräch.
         </p>
 
-        <div class="calendar-wrapper">
-          <iframe
-            class="calendar-embed"
-            src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy?gv=true" style="border: 0" width="100%" height="600" frameborder="0"
-            loading="lazy"
-            title="KIFlowstate Online Booking Calendar"
-          ></iframe>
+        <div class="calendar-wrapper" id="calendar-wrapper">
+          <!-- Iframe is injected by JS only after cookie consent. -->
+          <div class="calendar-placeholder" id="calendar-placeholder">
+            <i class="fas fa-calendar-days" aria-hidden="true"></i>
+            <p data-translate="calendar_blocked">
+              Der Buchungskalender lädt von Google. Bitte stimmen Sie den Cookies zu, um ihn anzuzeigen.
+            </p>
+            <button type="button" class="cta-btn cta-btn-dark" id="calendar-allow" data-translate="calendar_allow_btn">
+              Cookies zulassen &amp; Kalender laden
+            </button>
+          </div>
+          <template id="calendar-template">
+            <iframe
+              class="calendar-embed"
+              src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy?gv=true"
+              style="border: 0"
+              width="100%"
+              height="600"
+              frameborder="0"
+              loading="lazy"
+              title="KIFlowstate Online Booking Calendar"
+            ></iframe>
+          </template>
         </div>
+      </div>
+    </section>
+
+    <!-- ▸▸ CONTACT FORM ---------------------------------------------------- -->
+    <!--
+      The recipient email is stored on Formspree (https://formspree.io) and is
+      NOT exposed in the HTML. Setup:
+        1. Sign up at formspree.io with kiflowstate@gmail.com
+        2. Create a new form, copy the endpoint (looks like https://formspree.io/f/abcd1234)
+        3. Replace YOUR_FORM_ID below with the real ID.
+      Until you do that, submissions will not be delivered.
+    -->
+    <section id="contact" class="contact reveal">
+      <div class="container">
+        <h2 data-translate="contact_title">Schreiben Sie Uns</h2>
+        <p class="section-lead" data-translate="contact_lead">
+          Lieber kurz tippen statt telefonieren? Wir antworten meist innerhalb von 24 Stunden.
+        </p>
+
+        <form
+          id="contact-form"
+          class="contact-form"
+          action="https://formspree.io/f/xaqalova"
+          method="POST"
+          novalidate
+        >
+          <div class="form-row">
+            <label class="form-field">
+              <span data-translate="contact_name">Name</span>
+              <input type="text" name="name" required autocomplete="name" />
+            </label>
+
+            <label class="form-field">
+              <span data-translate="contact_email">E‑Mail</span>
+              <input type="email" name="email" required autocomplete="email" />
+            </label>
+          </div>
+
+          <label class="form-field">
+            <span data-translate="contact_subject">Betreff</span>
+            <input type="text" name="subject" autocomplete="off" />
+          </label>
+
+          <label class="form-field">
+            <span data-translate="contact_message">Nachricht</span>
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+
+          <!-- Honeypot: hidden from humans, bots tend to fill it. Formspree drops these. -->
+          <div class="hp-field" aria-hidden="true">
+            <label>
+              Leave this field empty
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+
+          <input type="hidden" name="_subject" value="KIFlowstate Kontaktformular" />
+
+          <button type="submit" class="cta-btn cta-btn-dark form-submit" data-translate="contact_submit">
+            Nachricht senden
+          </button>
+
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
       </div>
     </section>
 
@@ -278,5 +544,32 @@
         </ul>
       </div>
     </footer>
+    <!-- ▸▸ COOKIE CONSENT BANNER ----------------------------------------- -->
+    <div
+      id="cookie-banner"
+      class="cookie-banner"
+      role="dialog"
+      aria-labelledby="cookie-title"
+      aria-describedby="cookie-text"
+      hidden
+    >
+      <div class="cookie-inner">
+        <div class="cookie-text">
+          <strong id="cookie-title" data-translate="cookie_title">Cookies &amp; Datenschutz</strong>
+          <p id="cookie-text" data-translate="cookie_text">
+            Wir nutzen nur essentielle Cookies. Optional laden wir Google Kalender, damit Sie direkt einen Termin buchen können.
+            <a href="datenschutz.html" data-translate="cookie_link">Mehr erfahren</a>.
+          </p>
+        </div>
+        <div class="cookie-actions">
+          <button type="button" class="cookie-btn cookie-btn-ghost" id="cookie-reject" data-translate="cookie_reject">
+            Nur essentielle
+          </button>
+          <button type="button" class="cookie-btn cookie-btn-primary" id="cookie-accept" data-translate="cookie_accept">
+            Alle akzeptieren
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Shop — Demo</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--ink:#1f2937;--muted:#6b7280;--bg:#fff;--soft:#f5f1eb;--accent:#2d6a4f;--accent-dark:#1b4332}
+  body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+  .topbar{background:var(--ink);color:#fff;text-align:center;font-size:0.8rem;padding:0.5rem 1rem;letter-spacing:0.04em}
+  header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid #eee;max-width:1200px;margin:0 auto}
+  .brand{font-weight:700;font-size:1.2rem;letter-spacing:-0.02em}
+  nav{display:flex;gap:1.5rem}
+  nav a{color:var(--ink);text-decoration:none;font-size:0.9rem;font-weight:500}
+  nav a:hover{color:var(--accent)}
+  .icons{display:flex;gap:1rem;color:var(--ink)}
+  .icons span{font-size:1.1rem;cursor:pointer;position:relative}
+  .icons .badge{position:absolute;top:-6px;right:-8px;background:var(--accent);color:#fff;font-size:0.65rem;border-radius:999px;padding:1px 5px;font-weight:700}
+  .hero{background:var(--soft);padding:3.5rem 1.5rem;text-align:center}
+  .hero .eyebrow{color:var(--accent);font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;font-weight:600}
+  .hero h1{font-family:Georgia,serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;margin-bottom:1rem;max-width:18ch;margin-inline:auto;line-height:1.15}
+  .hero p{color:var(--muted);max-width:50ch;margin:0 auto 1.5rem}
+  .btn{display:inline-block;padding:0.85rem 1.75rem;background:var(--accent);color:#fff;text-decoration:none;border-radius:4px;font-weight:600;font-size:0.95rem;transition:background 0.2s}
+  .btn:hover{background:var(--accent-dark)}
+  .products{max-width:1200px;margin:0 auto;padding:3rem 1.5rem}
+  .products h2{text-align:center;font-family:Georgia,serif;font-weight:400;font-size:1.8rem;margin-bottom:2rem}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+  .card{background:#fff;border-radius:6px;overflow:hidden;cursor:pointer;transition:transform 0.2s}
+  .card:hover{transform:translateY(-4px)}
+  .card .img{aspect-ratio:1;background:linear-gradient(135deg,#e7e0d4,#d6cab6);display:flex;align-items:center;justify-content:center;font-size:3rem;color:#a89c85}
+  .card:nth-child(2) .img{background:linear-gradient(135deg,#d4e7d6,#b6d6c0)}
+  .card:nth-child(3) .img{background:linear-gradient(135deg,#e7d4d4,#d6b6b6)}
+  .card:nth-child(4) .img{background:linear-gradient(135deg,#d4dde7,#b6c4d6)}
+  .card .info{padding:0.85rem 0.5rem 0.5rem}
+  .card h3{font-size:0.95rem;font-weight:500;margin-bottom:0.25rem}
+  .card .price{font-weight:700;color:var(--ink)}
+  .card .reviews{color:var(--muted);font-size:0.8rem;margin-top:0.25rem}
+  footer{background:var(--soft);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem;margin-top:2rem}
+  @media(max-width:768px){.grid{grid-template-columns:repeat(2,1fr)}nav{display:none}}
+</style>
+</head>
+<body>
+<div class="topbar">Kostenloser Versand ab 50 € &bull; 30 Tage Rückgabe</div>
+<header>
+  <div class="brand">MAISON&nbsp;LIN.</div>
+  <nav>
+    <a href="#">Damen</a>
+    <a href="#">Herren</a>
+    <a href="#">Home</a>
+    <a href="#">Sale</a>
+  </nav>
+  <div class="icons">
+    <span>&#9906;</span>
+    <span>&#9825;</span>
+    <span>&#128722;<span class="badge">2</span></span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Neue Kollektion · Frühling</div>
+  <h1>Zeitlos. Hochwertig. Aus Leinen.</h1>
+  <p>Stücke, die mit dir altern — nicht gegen dich. Hergestellt in kleinen Auflagen in Portugal.</p>
+  <a class="btn" href="#">Jetzt entdecken</a>
+</section>
+
+<section class="products">
+  <h2>Bestseller</h2>
+  <div class="grid">
+    <div class="card"><div class="img">&#128090;</div><div class="info"><h3>Leinenhemd Oversized</h3><div class="price">€ 89,00</div><div class="reviews">★★★★★ (124)</div></div></div>
+    <div class="card"><div class="img">&#128087;</div><div class="info"><h3>Weite Hose Sand</h3><div class="price">€ 119,00</div><div class="reviews">★★★★★ (87)</div></div></div>
+    <div class="card"><div class="img">&#128084;</div><div class="info"><h3>Tuch Bordeaux</h3><div class="price">€ 49,00</div><div class="reviews">★★★★☆ (41)</div></div></div>
+    <div class="card"><div class="img">&#128091;</div><div class="info"><h3>Tote Bag Natur</h3><div class="price">€ 65,00</div><div class="reviews">★★★★★ (203)</div></div></div>
+  </div>
+</section>
+
+<footer>&copy; Maison Lin. &mdash; ehrlich gemacht.</footer>
+</body>
+</html>

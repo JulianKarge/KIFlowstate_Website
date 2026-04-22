@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Corporate — Demo</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--ink:#0f1e3d;--brand:#0b3d91;--accent:#d4af37;--muted:#5a6a85;--bg:#fff;--soft:#f4f6fb}
+  body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.6}
+  .topstrip{background:var(--ink);color:#cdd6e6;font-size:0.78rem;padding:0.4rem 1.5rem;display:flex;justify-content:space-between;max-width:100%;}
+  .topstrip-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;width:100%}
+  .topstrip a{color:#fff;text-decoration:none;margin-left:1rem}
+  header{background:#fff;border-bottom:1px solid #e5e9f2;padding:1rem 1.5rem;position:sticky;top:0;z-index:5}
+  .header-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+  .brand{display:flex;align-items:center;gap:0.6rem;font-weight:700;font-size:1.15rem;color:var(--ink);letter-spacing:-0.01em}
+  .brand .mark{width:32px;height:32px;background:var(--brand);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:0.95rem}
+  nav a{color:var(--ink);text-decoration:none;margin-left:1.5rem;font-size:0.9rem;font-weight:500}
+  nav a:hover{color:var(--brand)}
+  .cta-nav{padding:0.5rem 1.1rem;background:var(--brand);color:#fff !important;border-radius:4px;font-weight:600 !important}
+  .hero{background:linear-gradient(135deg,var(--ink) 0%,var(--brand) 100%);color:#fff;padding:4.5rem 1.5rem 5rem;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(212,175,55,0.15),transparent 70%);border-radius:50%}
+  .hero-inner{max-width:1200px;margin:0 auto;position:relative}
+  .hero .eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:0.18em;font-size:0.78rem;margin-bottom:1.25rem;font-weight:600}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;line-height:1.15;margin-bottom:1.25rem;max-width:22ch}
+  .hero p{font-size:1.1rem;max-width:55ch;margin-bottom:2rem;opacity:0.92}
+  .btn{display:inline-block;padding:0.95rem 1.85rem;background:var(--accent);color:var(--ink);text-decoration:none;font-weight:700;border-radius:3px;transition:background 0.2s}
+  .btn:hover{background:#c19f30}
+  .btn-ghost{margin-left:0.75rem;background:transparent;border:1.5px solid #fff;color:#fff;padding:0.85rem 1.6rem}
+  .btn-ghost:hover{background:rgba(255,255,255,0.1)}
+  .stats{background:#fff;border-bottom:1px solid #e5e9f2;padding:2rem 1.5rem}
+  .stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;text-align:center}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--brand)}
+  .stat .lbl{font-size:0.85rem;color:var(--muted);margin-top:0.25rem}
+  .services{padding:3rem 1.5rem;max-width:1200px;margin:0 auto}
+  .services h2{font-size:1.7rem;margin-bottom:0.4rem;text-align:center}
+  .services .lead{color:var(--muted);text-align:center;margin-bottom:2.5rem}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+  .card{background:#fff;border:1px solid #e5e9f2;border-radius:6px;padding:1.75rem;border-top:3px solid var(--brand);transition:box-shadow 0.2s,transform 0.2s}
+  .card:hover{box-shadow:0 12px 28px rgba(15,30,61,0.08);transform:translateY(-2px)}
+  .card h3{font-size:1.05rem;margin-bottom:0.5rem;color:var(--ink)}
+  .card p{color:var(--muted);font-size:0.95rem}
+  footer{background:var(--ink);color:#9aabc7;padding:1.75rem 1.5rem;text-align:center;font-size:0.85rem}
+  @media(max-width:768px){.grid,.stats-inner{grid-template-columns:repeat(2,1fr)}nav a:not(.cta-nav){display:none}}
+</style>
+</head>
+<body>
+<div class="topstrip"><div class="topstrip-inner"><span>+49 (0) 30 1234 5678</span><span><a href="#">DE</a><a href="#">EN</a></span></div></div>
+
+<header>
+  <div class="header-inner">
+    <div class="brand"><div class="mark">M</div>Meridian Capital</div>
+    <nav>
+      <a href="#">Leistungen</a>
+      <a href="#">Branchen</a>
+      <a href="#">Über uns</a>
+      <a href="#">Insights</a>
+      <a class="cta-nav" href="#">Kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Strategie · Finanzen · Compliance</div>
+    <h1>Vertrauen, Substanz und messbare Ergebnisse — seit 1998.</h1>
+    <p>Wir beraten Mittelstand und Konzerne in den entscheidenden Momenten — von Wachstum bis Restrukturierung.</p>
+    <a class="btn" href="#">Beratungsgespräch anfragen</a>
+    <a class="btn btn-ghost" href="#">Mehr erfahren</a>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stat"><div class="num">26+</div><div class="lbl">Jahre Erfahrung</div></div>
+    <div class="stat"><div class="num">450</div><div class="lbl">Mandanten weltweit</div></div>
+    <div class="stat"><div class="num">€ 8 Mrd.</div><div class="lbl">betreutes Volumen</div></div>
+    <div class="stat"><div class="num">12</div><div class="lbl">Standorte EU</div></div>
+  </div>
+</section>
+
+<section class="services">
+  <h2>Unsere Kernbereiche</h2>
+  <p class="lead">Strategische Beratung mit Substanz, geliefert von Senior Partnern.</p>
+  <div class="grid">
+    <div class="card"><h3>Strategieberatung</h3><p>Wachstumsstrategien, M&amp;A und Marktanalysen für nachhaltigen Erfolg.</p></div>
+    <div class="card"><h3>Finanzberatung</h3><p>Kapitalstruktur, Bewertung und Investorenbeziehungen — auf Augenhöhe.</p></div>
+    <div class="card"><h3>Compliance &amp; Risk</h3><p>ESG, regulatorische Anforderungen und Risikomanagement aus einer Hand.</p></div>
+  </div>
+</section>
+
+<footer>&copy; 1998–2026 Meridian Capital GmbH &mdash; alle Rechte vorbehalten.</footer>
+</body>
+</html>

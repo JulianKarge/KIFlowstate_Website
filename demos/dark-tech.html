@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Dark Tech — Demo</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0a0a0f;--panel:#12121a;--ink:#e5e7eb;--muted:#8b8fa3;--neon:#22d3ee;--neon2:#a855f7}
+  body{background:var(--bg);color:var(--ink);font-family:"SF Mono","Consolas",ui-monospace,monospace;line-height:1.6;min-height:100vh;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;background:
+    radial-gradient(600px circle at 20% 20%,rgba(34,211,238,0.10),transparent 50%),
+    radial-gradient(600px circle at 80% 70%,rgba(168,85,247,0.10),transparent 50%);
+    z-index:-1;pointer-events:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:1.5rem}
+  header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .brand{font-weight:700;color:var(--neon);letter-spacing:0.05em}
+  .brand::before{content:"> ";color:var(--muted)}
+  nav a{color:var(--muted);text-decoration:none;margin-left:1.5rem;font-size:0.85rem;transition:color 0.2s}
+  nav a:hover{color:var(--neon)}
+  .hero{padding:5rem 0 3rem;text-align:center}
+  .badge{display:inline-block;padding:0.3rem 0.8rem;border:1px solid rgba(34,211,238,0.4);border-radius:999px;color:var(--neon);font-size:0.75rem;margin-bottom:1.5rem;background:rgba(34,211,238,0.05)}
+  .hero h1{font-family:Inter,system-ui,sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;line-height:1.1;margin-bottom:1rem;background:linear-gradient(135deg,#fff 0%,var(--neon) 50%,var(--neon2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--muted);max-width:55ch;margin:0 auto 2rem;font-family:Inter,system-ui,sans-serif;font-size:1.05rem}
+  .btn{display:inline-block;padding:0.85rem 1.75rem;background:var(--neon);color:#000;font-weight:700;text-decoration:none;border-radius:6px;font-family:Inter,system-ui,sans-serif;transition:transform 0.2s,box-shadow 0.2s}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(34,211,238,0.4)}
+  .btn-ghost{margin-left:0.5rem;background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,0.2)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;padding:2rem 0}
+  .card{background:var(--panel);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:1.5rem;font-family:Inter,system-ui,sans-serif;transition:border-color 0.2s,transform 0.2s}
+  .card:hover{border-color:rgba(34,211,238,0.4);transform:translateY(-3px)}
+  .card .num{color:var(--neon);font-family:"SF Mono",monospace;font-size:0.8rem;margin-bottom:0.5rem}
+  .card h3{font-size:1.05rem;margin-bottom:0.4rem}
+  .card p{color:var(--muted);font-size:0.9rem}
+  footer{padding:1.5rem 0;color:var(--muted);font-size:0.8rem;border-top:1px solid rgba(255,255,255,0.08);text-align:center}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}nav a{margin-left:0.75rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">nullbyte.dev</div>
+    <nav>
+      <a href="#">Docs</a>
+      <a href="#">Pricing</a>
+      <a href="#">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <span class="badge">v2.0 — jetzt verfügbar</span>
+    <h1>Build at the speed of thought.</h1>
+    <p>Eine Plattform für Engineering-Teams, die schneller versenden wollen — ohne ihre Standards zu opfern.</p>
+    <a class="btn" href="#">Kostenlos starten</a>
+    <a class="btn btn-ghost" href="#">Demo ansehen</a>
+  </section>
+
+  <section class="grid">
+    <div class="card"><div class="num">// 01</div><h3>Edge Runtime</h3><p>Sub-50ms Antworten weltweit, ohne Konfiguration.</p></div>
+    <div class="card"><div class="num">// 02</div><h3>Type-Safe APIs</h3><p>Vom Schema bis zum Client &mdash; eine Quelle der Wahrheit.</p></div>
+    <div class="card"><div class="num">// 03</div><h3>Observability</h3><p>Logs, Traces &amp; Metriken in einem Dashboard.</p></div>
+  </section>
+
+  <footer>&copy; nullbyte.dev &mdash; crafted in the dark.</footer>
+</div>
+</body>
+</html>
