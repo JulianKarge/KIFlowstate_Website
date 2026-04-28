@@ -3,31 +3,422 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Datenschutzerklärung | KIFlowstate</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Datenschutzerklärung | KIFlowstate</title>
+
+    <link rel="icon" href="images/kilogo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="images/kilogo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <style>
+      /* Scoped layout for legal pages — matches KIFlowstate brand but compact */
+      .legal-page { background: var(--gray-100); }
+
+      .legal-header {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: saturate(180%) blur(10px);
+        -webkit-backdrop-filter: saturate(180%) blur(10px);
+        border-top: 4px solid var(--primary);
+        box-shadow: 0 2px 4px rgb(0 0 0 / 0.04);
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+      .legal-header .legal-nav-wrapper {
+        width: 90%;
+        max-width: 1100px;
+        margin-inline: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-block: 0.85rem;
+      }
+      .legal-header .logo img { height: 38px; width: auto; }
+      .legal-header .legal-nav-link {
+        font-size: 0.92rem;
+        color: var(--gray-500);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+      .legal-header .legal-nav-link:hover { color: var(--primary); }
+
+      .legal-main {
+        width: 90%;
+        max-width: 760px;
+        margin-inline: auto;
+        padding: 3rem 0 4rem;
+      }
+
+      .legal-page h1 {
+        font-size: clamp(1.85rem, 1.5rem + 1.2vw, 2.25rem);
+        margin-bottom: 0.4em;
+        color: var(--gray-900);
+        border-bottom: 3px solid var(--primary);
+        padding-bottom: 0.55rem;
+        display: inline-block;
+      }
+      .legal-page h2 {
+        font-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.2rem);
+        margin-top: 2rem;
+        margin-bottom: 0.45em;
+        color: var(--primary-dark);
+      }
+      .legal-page p,
+      .legal-page ul {
+        font-size: 0.95rem;
+        line-height: 1.65;
+        max-width: 70ch;
+        margin-bottom: 0.85rem;
+      }
+      .legal-page ul { padding-left: 1.25rem; }
+      .legal-page ul li { margin-bottom: 0.25rem; }
+      .legal-page code {
+        background: rgba(15, 23, 42, 0.06);
+        padding: 0.05rem 0.35rem;
+        border-radius: 4px;
+        font-size: 0.88em;
+      }
+      .legal-page a {
+        color: var(--primary);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+      }
+      .legal-page a:hover { color: var(--primary-dark); }
+      .legal-page .legal-intro {
+        background: #fff;
+        border-left: 3px solid var(--primary);
+        padding: 1rem 1.1rem;
+        border-radius: 0 var(--radius) var(--radius) 0;
+        box-shadow: var(--shadow-sm);
+        margin-block: 1rem 1.5rem;
+      }
+      .legal-page .legal-stand {
+        margin-top: 2.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--gray-300);
+        font-size: 0.85rem;
+        color: var(--gray-500);
+      }
+
+      .legal-footer {
+        border-top: 1px solid var(--gray-300);
+        background: #fff;
+        margin-top: 2rem;
+      }
+      .legal-footer .legal-foot-inner {
+        width: 90%;
+        max-width: 760px;
+        margin-inline: auto;
+        padding: 1.25rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.85rem;
+        color: var(--gray-500);
+      }
+      .legal-footer ul {
+        display: flex;
+        gap: 1.25rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .legal-footer a {
+        color: var(--gray-500);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .legal-footer a:hover { color: var(--primary); }
+    </style>
   </head>
 
-  <body>
-    <main class="container" style="padding-top:4rem">
+  <body class="legal-page">
+    <header class="legal-header">
+      <div class="legal-nav-wrapper">
+        <a href="index.html" class="logo" aria-label="KIFlowstate Startseite">
+          <img src="images/kilogo.png" alt="KIFlowstate Logo" />
+        </a>
+        <a href="index.html" class="legal-nav-link">← Zurück zur Startseite</a>
+      </div>
+    </header>
+
+    <main class="legal-main">
       <h1>Datenschutzerklärung</h1>
 
-      <!-- ▸▸ Drop your real privacy policy text in here -->
+      <div class="legal-intro">
+        <p style="margin-bottom:0">
+          Wir freuen uns über Ihr Interesse an unserer Website. Der Schutz Ihrer
+          personenbezogenen Daten ist uns ein wichtiges Anliegen. Im Folgenden
+          informieren wir Sie gemäß Art. 13 und 14 DSGVO sowie BDSG darüber, wie wir
+          Ihre Daten verarbeiten, wenn Sie <strong>kiflowstate.de</strong> besuchen
+          oder mit uns in Kontakt treten.
+        </p>
+      </div>
+
+      <h2>1. Verantwortlicher</h2>
       <p>
-        Wir freuen uns sehr über Ihr Interesse an unserem Unternehmen. Der
-        Datenschutz hat einen besonders hohen Stellenwert für die
-        Geschäftsleitung der KIFlowstate GmbH. Eine Nutzung der Internetseiten
-        der KIFlowstate GmbH ist grundsätzlich ohne jede Angabe
-        personenbezogener Daten möglich. …
+        Verantwortlicher im Sinne der DSGVO ist:<br />
+        Julian Karge<br />
+        Lindenstraße 14<br />
+        50667 Köln<br />
+        Deutschland<br />
+        E-Mail: <a href="mailto:datenschutz@kiflowstate.de">datenschutz@kiflowstate.de</a>
       </p>
 
-      <h2>1. Begriffsbestimmungen</h2>
-      <p>Die Datenschutzerklärung der KIFlowstate GmbH beruht auf …</p>
-
-      <!-- Long policy continues -->
-
+      <h2>2. Datenschutzbeauftragter</h2>
       <p>
-        <a href="index.html">← Zurück zur Startseite</a>
+        Wir haben keinen Datenschutzbeauftragten bestellt, da die gesetzlichen
+        Voraussetzungen hierfür nicht vorliegen (Art. 37 DSGVO, § 38 BDSG). Bei Fragen
+        zum Datenschutz wenden Sie sich bitte direkt an den oben genannten
+        Verantwortlichen.
       </p>
+
+      <h2>3. Allgemeines zur Datenverarbeitung</h2>
+      <p>
+        Wir verarbeiten personenbezogene Daten unserer Nutzerinnen und Nutzer
+        grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen
+        Website sowie unserer Inhalte und Leistungen erforderlich ist. Die
+        Verarbeitung erfolgt regelmäßig nur nach Einwilligung des Nutzers (Art. 6
+        Abs. 1 lit. a DSGVO), zur Erfüllung eines Vertrags oder zur Durchführung
+        vorvertraglicher Maßnahmen (Art. 6 Abs. 1 lit. b DSGVO), zur Erfüllung einer
+        rechtlichen Verpflichtung (Art. 6 Abs. 1 lit. c DSGVO) oder auf Grundlage
+        berechtigter Interessen (Art. 6 Abs. 1 lit. f DSGVO).
+      </p>
+
+      <h2>4. Bereitstellung der Website und Server-Logfiles</h2>
+      <p>
+        Bei jedem Aufruf unserer Website erfasst unser Hosting-Anbieter automatisch
+        Daten und Informationen, die Ihr Browser übermittelt. Folgende Daten werden
+        hierbei in sogenannten Logfiles erhoben:
+      </p>
+      <ul>
+        <li>IP-Adresse des aufrufenden Geräts (gekürzt/anonymisiert gespeichert)</li>
+        <li>Datum und Uhrzeit des Zugriffs</li>
+        <li>aufgerufene URL bzw. Name der abgerufenen Datei</li>
+        <li>übertragene Datenmenge</li>
+        <li>Meldung über erfolgreichen Abruf</li>
+        <li>Browsertyp und -version</li>
+        <li>verwendetes Betriebssystem</li>
+        <li>Referrer-URL (zuvor besuchte Seite)</li>
+      </ul>
+      <p>
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse
+        besteht darin, die Stabilität und Sicherheit unserer Website zu gewährleisten.
+        Die Logfiles werden nach spätestens 30 Tagen gelöscht, sofern keine
+        sicherheitsrelevanten Vorfälle eine längere Speicherung erfordern.
+      </p>
+
+      <h2>5. Hosting</h2>
+      <p>
+        Unsere Website wird bei der <strong>IONOS SE</strong>, Elgendorfer Straße 57,
+        56410 Montabaur, Deutschland gehostet. Beim Aufruf unserer Website verarbeitet
+        der Hoster die unter Ziffer 4 genannten Daten in unserem Auftrag. Mit dem
+        Anbieter besteht ein Vertrag zur Auftragsverarbeitung gemäß Art. 28 DSGVO.
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an
+        einer sicheren und effizienten Bereitstellung unseres Online-Angebots).
+      </p>
+
+      <h2>6. Cookies und Einwilligungs-Banner</h2>
+      <p>
+        Unsere Website verwendet ausschließlich technisch notwendige Cookies sowie –
+        nach Ihrer ausdrücklichen Einwilligung – einen optionalen Terminbuchungsdienst
+        (siehe Ziffer 8). Beim ersten Besuch unserer Website wird Ihnen ein
+        Einwilligungs-Banner angezeigt, über das Sie Ihre Auswahl treffen können. Ihre
+        Einwilligung wird in Ihrem Browser (z. B. im <code>localStorage</code>)
+        gespeichert, damit das Banner bei Folgebesuchen nicht erneut erscheint.
+      </p>
+      <p>
+        Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen,
+        indem Sie die in Ihrem Browser gespeicherten Daten dieser Website löschen.
+        Rechtsgrundlage für technisch notwendige Cookies ist Art. 6 Abs. 1 lit. f
+        DSGVO bzw. § 25 Abs. 2 Nr. 2 TTDSG; für optionale Cookies Art. 6 Abs. 1
+        lit. a DSGVO bzw. § 25 Abs. 1 TTDSG.
+      </p>
+
+      <h2>7. Kontaktformular (Formspree)</h2>
+      <p>
+        Auf unserer Website können Sie über ein Kontaktformular Nachrichten an uns
+        senden. Die Übermittlung der Formulardaten erfolgt über den Dienst
+        <strong>Formspree</strong> der Formspree, Inc., 251 Little Falls Drive,
+        Wilmington, DE 19808, USA. Folgende Daten werden hierbei verarbeitet: Name,
+        E-Mail-Adresse, Betreff, Nachrichtentext sowie Ihre IP-Adresse und der
+        Zeitpunkt der Übermittlung.
+      </p>
+      <p>
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Durchführung
+        vorvertraglicher Maßnahmen) bzw. Art. 6 Abs. 1 lit. f DSGVO (Beantwortung
+        Ihrer Anfrage). Mit Formspree wurde ein Vertrag zur Auftragsverarbeitung
+        geschlossen. Da Formspree Daten in den USA verarbeitet, erfolgt die
+        Übermittlung auf Grundlage der EU-Standardvertragsklauseln gemäß Art. 46
+        Abs. 2 lit. c DSGVO bzw. – soweit anwendbar – auf Basis des EU-US Data
+        Privacy Framework (Angemessenheitsbeschluss der EU-Kommission vom
+        10. Juli 2023).
+      </p>
+      <p>
+        Ihre Anfragen werden gespeichert, bis der Zweck der Speicherung entfällt
+        (i. d. R. nach abschließender Bearbeitung Ihres Anliegens). Etwaige
+        gesetzliche Aufbewahrungspflichten – insbesondere aus dem Steuer- und
+        Handelsrecht – bleiben unberührt. Weitere Informationen finden Sie in der
+        Datenschutzerklärung von Formspree:
+        <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">https://formspree.io/legal/privacy-policy/</a>.
+      </p>
+
+      <h2>8. Terminbuchung über Google Calendar Appointments</h2>
+      <p>
+        Auf unserer Website bieten wir Ihnen die Möglichkeit, einen Termin direkt
+        online zu buchen. Hierfür binden wir den Dienst <strong>Google Calendar
+        Appointment Schedules</strong> der Google Ireland Limited, Gordon House,
+        Barrow Street, Dublin 4, Irland („Google") ein. Das Termin-Widget wird
+        ausschließlich nach Ihrer ausdrücklichen Einwilligung über das
+        Cookie-Banner geladen.
+      </p>
+      <p>
+        Beim Laden des Widgets wird eine Verbindung zu Google-Servern aufgebaut.
+        Hierbei werden u. a. Ihre IP-Adresse sowie technische Informationen Ihres
+        Browsers an Google übertragen. Soweit Sie über das Widget einen Termin
+        buchen, übermitteln Sie zusätzlich Ihren Namen, Ihre E-Mail-Adresse und
+        ggf. weitere von Ihnen freiwillig angegebene Informationen an Google sowie
+        an uns.
+      </p>
+      <p>
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO sowie § 25 Abs. 1 TTDSG
+        (Einwilligung). Ihre Einwilligung können Sie jederzeit mit Wirkung für die
+        Zukunft widerrufen. Eine Datenübermittlung in die USA kann nicht
+        ausgeschlossen werden; sie erfolgt auf Basis der EU-Standardvertragsklauseln
+        bzw. des EU-US Data Privacy Framework. Weitere Informationen entnehmen Sie
+        der Datenschutzerklärung von Google:
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy</a>.
+      </p>
+
+      <h2>9. Google Fonts (extern eingebunden)</h2>
+      <p>
+        Diese Website nutzt zur einheitlichen Darstellung von Schriftarten sogenannte
+        Web Fonts, die von Google bereitgestellt werden. Beim Aufruf einer Seite lädt
+        Ihr Browser die benötigten Web Fonts in seinen Browser-Cache. Zu diesem
+        Zweck stellt Ihr Browser eine Verbindung zu den Servern von Google
+        (<code>fonts.googleapis.com</code>, <code>fonts.gstatic.com</code>) her.
+        Hierdurch erhält Google Kenntnis darüber, dass über Ihre IP-Adresse unsere
+        Website aufgerufen wurde.
+      </p>
+      <p>
+        Die Nutzung von Google Fonts erfolgt im Interesse einer einheitlichen und
+        ansprechenden Darstellung unseres Online-Angebots. Dies stellt ein
+        berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar. Anbieter
+        ist die Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland.
+        Weitere Informationen:
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy</a>.
+      </p>
+
+      <h2>10. Font Awesome (Cloudflare CDN)</h2>
+      <p>
+        Zur einheitlichen Darstellung von Symbolen verwenden wir das Icon-Set
+        <strong>Font Awesome</strong>, das wir über das Content-Delivery-Netzwerk
+        <strong>cdnjs</strong> der Cloudflare, Inc., 101 Townsend St, San Francisco,
+        CA 94107, USA laden. Beim Aufruf der Website wird Ihre IP-Adresse an
+        Cloudflare übermittelt, damit die Icons in Ihrem Browser angezeigt werden
+        können. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
+        Interesse an einer einheitlichen Darstellung der Inhalte). Weitere
+        Informationen:
+        <a href="https://www.cloudflare.com/de-de/privacypolicy/" target="_blank" rel="noopener noreferrer">https://www.cloudflare.com/de-de/privacypolicy/</a>.
+      </p>
+
+      <h2>11. Verlinkung zu sozialen Netzwerken</h2>
+      <p>
+        Auf unserer Website finden Sie verlinkte Symbole zu unseren Profilen bei
+        Instagram, X (vormals Twitter), LinkedIn, YouTube, TikTok und Facebook. Es
+        handelt sich hierbei ausschließlich um einfache Hyperlinks, nicht um
+        eingebundene Plug-ins oder Tracking-Pixel. Erst durch Klick auf eines dieser
+        Symbole werden Sie auf die jeweilige Plattform weitergeleitet. Zu diesem
+        Zeitpunkt erhalten die Plattform-Betreiber Kenntnis von Ihrem Besuch und
+        können – sofern Sie dort eingeloggt sind – Ihren Aufruf Ihrem Nutzerkonto
+        zuordnen. Auf die weitere Datenverarbeitung haben wir keinen Einfluss. Bitte
+        beachten Sie hierzu die Datenschutzerklärungen der jeweiligen Anbieter.
+      </p>
+
+      <h2>12. SSL-/TLS-Verschlüsselung</h2>
+      <p>
+        Diese Website nutzt aus Sicherheitsgründen und zum Schutz der Übertragung
+        vertraulicher Inhalte eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte
+        Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://"
+        auf „https://" wechselt und am Schloss-Symbol in Ihrer Browserzeile.
+      </p>
+
+      <h2>13. Ihre Rechte als betroffene Person</h2>
+      <p>
+        Sie haben uns gegenüber folgende Rechte hinsichtlich der Sie betreffenden
+        personenbezogenen Daten:
+      </p>
+      <ul>
+        <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
+        <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
+        <li>Recht auf Löschung (Art. 17 DSGVO)</li>
+        <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+        <li>Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</li>
+        <li>Widerspruchsrecht gegen die Verarbeitung (Art. 21 DSGVO)</li>
+        <li>Recht auf Widerruf einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
+      </ul>
+      <p>
+        Zur Ausübung Ihrer Rechte genügt eine formlose Mitteilung an
+        <a href="mailto:datenschutz@kiflowstate.de">datenschutz@kiflowstate.de</a>.
+      </p>
+
+      <h2>14. Beschwerderecht bei einer Aufsichtsbehörde</h2>
+      <p>
+        Unbeschadet eines anderweitigen verwaltungsrechtlichen oder gerichtlichen
+        Rechtsbehelfs steht Ihnen das Recht auf Beschwerde bei einer
+        Datenschutz-Aufsichtsbehörde zu, insbesondere in dem Mitgliedstaat Ihres
+        gewöhnlichen Aufenthaltsorts, Ihres Arbeitsplatzes oder des Orts des
+        mutmaßlichen Verstoßes (Art. 77 DSGVO).
+      </p>
+
+      <h2>15. Keine automatisierte Entscheidungsfindung</h2>
+      <p>
+        Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne
+        von Art. 22 DSGVO findet nicht statt.
+      </p>
+
+      <h2>16. Änderungen dieser Datenschutzerklärung</h2>
+      <p>
+        Durch die Weiterentwicklung unserer Website und Angebote oder aufgrund
+        geänderter gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden,
+        diese Datenschutzerklärung anzupassen. Die jeweils aktuelle
+        Datenschutzerklärung kann jederzeit auf dieser Seite abgerufen werden.
+      </p>
+
+      <p class="legal-stand">Stand: April 2026</p>
     </main>
+
+    <footer class="legal-footer">
+      <div class="legal-foot-inner">
+        <p>© <span id="legal-year"></span> KIFlowstate. Alle Rechte vorbehalten.</p>
+        <ul>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("legal-year").textContent = new Date().getFullYear();
+    </script>
   </body>
 </html>
