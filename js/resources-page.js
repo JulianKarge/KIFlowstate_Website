@@ -50,7 +50,18 @@
   };
 
   const ytThumb = (id) =>
-    `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
+    `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`;
+
+  const ytThumbHQ = (id) =>
+    `https://i.ytimg.com/vi/${encodeURIComponent(id)}/maxresdefault.jpg`;
+
+  // Returns the URL for a video's thumbnail. Honors a per-video override
+  // (`thumbnailUrl`) if set in videos.js — falls back to YouTube otherwise.
+  // `size` is "hq" (player) or "small" (sidebar).
+  const thumbUrl = (video, size) => {
+    if (video && video.thumbnailUrl) return video.thumbnailUrl;
+    return size === "hq" ? ytThumbHQ(video.id) : ytThumb(video.id);
+  };
 
   const ytEmbed = (id) =>
     `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0`;
@@ -108,7 +119,7 @@
           >
             <span class="video-tab-thumb">
               <img
-                src="${ytThumb(v.id)}"
+                src="${escapeHtml(thumbUrl(v, "small"))}"
                 alt=""
                 loading="lazy"
                 onerror="this.style.opacity=0.3"
@@ -210,7 +221,7 @@
       <article class="resource-video" data-video-id="${escapeHtml(video.id)}">
         <div class="video-player" data-yt-id="${escapeHtml(video.id)}" tabindex="0" role="button" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
           <img
-            src="https://i.ytimg.com/vi/${escapeHtml(video.id)}/maxresdefault.jpg"
+            src="${escapeHtml(thumbUrl(video, "hq"))}"
             alt=""
             loading="lazy"
             onerror="this.src='${ytThumb(video.id)}'"

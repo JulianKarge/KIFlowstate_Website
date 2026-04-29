@@ -3,6 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- Theme bootstrap — runs before paint to avoid flash of wrong theme.
+         New visitors get light mode; only an explicit saved choice flips it. -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("kif_theme");
+          var theme = saved === "dark" ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
     <title>Impressum | KIFlowstate</title>
 
     <link rel="icon" href="images/kilogo.png" type="image/png" />
@@ -136,7 +149,19 @@
         <a href="index.html" class="logo" aria-label="KIFlowstate Startseite">
           <img src="images/kilogo.png" alt="KIFlowstate Logo" />
         </a>
-        <a href="index.html" class="legal-nav-link">← Zurück zur Startseite</a>
+        <div style="display: flex; align-items: center; gap: 0.25rem;">
+          <a href="index.html" class="legal-nav-link">← Zurück zur Startseite</a>
+          <button
+            type="button"
+            class="theme-toggle"
+            aria-label="Dunkles Design aktivieren"
+            aria-pressed="false"
+            title="Theme wechseln"
+          >
+            <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+            <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -238,6 +263,30 @@
 
     <script>
       document.getElementById("legal-year").textContent = new Date().getFullYear();
+
+      // Theme toggle wiring (legal pages don't load script.js) — delegated for robustness
+      (function () {
+        var THEME_KEY = "kif_theme";
+        var current = function () {
+          return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+        };
+        var apply = function (theme) {
+          document.documentElement.setAttribute("data-theme", theme);
+          document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+            var isDark = theme === "dark";
+            btn.setAttribute("aria-pressed", String(isDark));
+            btn.setAttribute("aria-label", isDark ? "Helles Design aktivieren" : "Dunkles Design aktivieren");
+          });
+        };
+        apply(current());
+        document.addEventListener("click", function (e) {
+          var btn = e.target.closest && e.target.closest(".theme-toggle");
+          if (!btn) return;
+          var next = current() === "dark" ? "light" : "dark";
+          try { localStorage.setItem(THEME_KEY, next); } catch (err) {}
+          apply(next);
+        });
+      })();
     </script>
   </body>
 </html>

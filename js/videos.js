@@ -30,6 +30,7 @@ const VIDEOS = [
   {
     id: "LDLa7NZ6eyc",
     title: "3D Websites erstellen war noch nie so einfach",
+    thumbnailUrl: "https://i.ytimg.com/vi/LDLa7NZ6eyc/maxresdefault.jpg",
     publishedAt: "2026-04-29",
     description: {
       de: "Mit einem einzigen, gut strukturierten Claude-Prompt baust du eine komplette scroll-gesteuerte 3D-Video-Landingpage. Hier findest du den vollständigen Prompt zum Kopieren sowie die Tools und Inspirationen aus dem Video.",
@@ -169,5 +170,32 @@ adjust timing?"`
         ]
       }
     ]
+  },
+  {
+    id: "LzD5fF1SJLg",
+    title: "Claude 4.7 vs ChatGPT 5.5: Das große KI-Duell",
+    description: {
+      de: "Direkter Vergleich der beiden Top-Modelle im Praxiseinsatz: Claude 4.7 gegen ChatGPT 5.5. Wer macht den besseren Job, und wann lohnt sich welches Tool? Prompts und Links zum Video folgen hier.",
+      en: "Head-to-head comparison of the two leading models in real use: Claude 4.7 versus ChatGPT 5.5. Which one delivers better, and when should you reach for which? Prompts and links from the video will be added here."
+    },
+    sections: []
+  },
+  {
+    id: "b6NKgJ6FEKE",
+    title: "Ich teste das neueste Bildgenerierungs-Tool von ChatGPT",
+    description: {
+      de: "Ich nehme das neue Bildgenerierungs-Tool von ChatGPT in die Praxis-Mangel und zeige dir, wo es überrascht und wo es noch hakt. Prompts und Links zum Video folgen hier.",
+      en: "Putting ChatGPT's new image generation tool through real-world tests and showing where it shines and where it still falls short. Prompts and links from the video will be added here."
+    },
+    sections: []
+  },
+  {
+    id: "dBtKy0hiDOY",
+    title: "Wie du Claudes Nutzungs-Limit ausdribbelst",
+    description: {
+      de: "Praktische Tipps und Workflows, mit denen du Claudes tägliches Nutzungs-Limit clever umgehst und ohne Unterbrechung weiterarbeitest. Prompts und Links zum Video folgen hier.",
+      en: "Practical tips and workflows for getting around Claude's daily usage limits and staying productive without interruptions. Prompts and links from the video will be added here."
+    },
+    sections: []
   }
 ];

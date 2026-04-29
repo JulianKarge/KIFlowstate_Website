@@ -1,6 +1,35 @@
 document.addEventListener("DOMContentLoaded", () => {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ▸ Theme toggle (light / dark) — pre-DOM script in <head> already
+     applied the saved theme to <html> to avoid FOUC. Here we wire the
+     toggle button via event delegation so it works regardless of when
+     the button mounts. */
+  const THEME_KEY = "kif_theme";
+  const currentTheme = () =>
+    document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.querySelectorAll(".theme-toggle").forEach((btn) => {
+      const isDark = theme === "dark";
+      btn.setAttribute("aria-pressed", String(isDark));
+      btn.setAttribute(
+        "aria-label",
+        isDark ? "Helles Design aktivieren" : "Dunkles Design aktivieren"
+      );
+    });
+  };
+
+  applyTheme(currentTheme());
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest && e.target.closest(".theme-toggle");
+    if (!btn) return;
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    try { localStorage.setItem(THEME_KEY, next); } catch (err) {}
+    applyTheme(next);
+  });
+
   /* ▸ Dynamic copyright year */
   const setYear = () => {
     const yearElement = document.getElementById("year");

@@ -2,7 +2,7 @@
 :root {
   --primary: #3b82f6;
   --primary-dark: #1e3a8a;
-  --accent: #f5b301;
+  --accent: #3369f2;
   --gray-100: #f8fafc;
   --gray-300: #cbd5e1;
   --gray-500: #64748b;
@@ -130,6 +130,16 @@ div[tabindex="0"]:focus-visible {
 }
 
 .nav-links a:hover {
+  color: var(--primary);
+}
+
+.nav-links a.nav-link-secondary {
+  font-weight: 500;
+  color: var(--gray-500);
+  font-size: 0.95rem;
+}
+
+.nav-links a.nav-link-secondary:hover {
   color: var(--primary);
 }
 
@@ -377,8 +387,8 @@ section:not(.hero) .container {
 
 /* ─── SERVICES ─────────────────────────────────────────────── */
 .services {
-  background-color: #dbf0f5;
-  border-radius: 40px; 
+  background: linear-gradient(180deg, #eef2ff 0%, #dde7ff 100%);
+  border-radius: 40px;
 }
 .service-grid {
   display: grid;
@@ -1366,11 +1376,13 @@ section:not(.hero) .container {
   background: #fff;
   border: 1.5px solid #e2e8f0;
   border-radius: var(--radius);
-  padding: 0.65rem;
+  padding: 0.7rem;
   text-align: left;
   font: inherit;
   color: inherit;
   cursor: pointer;
+  outline: none;
+  overflow: hidden;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
@@ -1380,29 +1392,41 @@ section:not(.hero) .container {
   box-shadow: var(--shadow-sm);
 }
 
+.video-tab:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(51, 105, 242, 0.28);
+}
+
 .video-tab.is-active {
   border-color: var(--primary-dark);
   background: linear-gradient(180deg, #ffffff 0%, #f1f5ff 100%);
   box-shadow: var(--shadow-sm);
 }
 
+.video-tab.is-active:focus-visible {
+  box-shadow: var(--shadow-sm), 0 0 0 3px rgba(51, 105, 242, 0.28);
+}
+
 .video-tab.is-active::before {
   content: "";
   display: block;
-  width: 4px;
-  border-radius: 4px;
-  background: var(--accent);
+  width: 14px;
   align-self: stretch;
-  margin: -0.65rem 0 -0.65rem -0.65rem;
+  margin: -0.7rem 0.35rem -0.7rem -0.7rem;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 100' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%233369F2'/><stop offset='1' stop-color='%23254EBF'/></linearGradient></defs><path d='M 11 8 C 11 50 3 50 3 92' stroke='url(%23g)' stroke-width='7' stroke-linecap='round' fill='none' vector-effect='non-scaling-stroke'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
 }
 
 .video-tab-thumb {
   position: relative;
-  flex: 0 0 96px;
+  flex: 0 0 128px;
   aspect-ratio: 16 / 9;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   background: #e2e8f0;
+  box-shadow: 0 6px 16px rgba(51, 105, 242, 0.18), 0 1px 2px rgba(15, 23, 42, 0.08);
 }
 
 .video-tab-thumb img {
@@ -1420,7 +1444,7 @@ section:not(.hero) .container {
 }
 
 .video-tab-title {
-  font-size: 0.92rem;
+  font-size: 0.98rem;
   font-weight: 600;
   line-height: 1.3;
   color: var(--gray-900);
@@ -1432,7 +1456,7 @@ section:not(.hero) .container {
 }
 
 .video-tab-date {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--gray-500);
 }
 
@@ -1477,6 +1501,15 @@ section:not(.hero) .container {
   background: #000;
   box-shadow: var(--shadow-md);
   cursor: pointer;
+}
+
+.video-player:focus {
+  outline: none;
+}
+
+.video-player:focus-visible {
+  outline: 3px solid var(--primary-dark);
+  outline-offset: 3px;
 }
 
 .video-player img {
@@ -1844,4 +1877,256 @@ section:not(.hero) .container {
   .video-header {
     flex-direction: column;
   }
+}
+
+/* ─── DARK MODE ─────────────────────────────────────────────────
+   Activated by `data-theme="dark"` on <html>. The light theme
+   stays the default. We flip the four gray tokens (page bg, muted
+   text, primary text, strong border) and patch hard-coded #fff /
+   slate-200 surfaces with surgical overrides below.
+   ─────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --gray-100: #0a1224;   /* page background */
+  --gray-300: #324270;   /* strong border */
+  --gray-500: #98a3bd;   /* muted text */
+  --gray-900: #e6ebf5;   /* primary text */
+
+  --shadow-sm: 0 4px 12px rgb(0 0 0 / 0.40);
+  --shadow-md: 0 10px 24px rgb(0 0 0 / 0.50);
+  --shadow-lg: 0 20px 40px rgb(0 0 0 / 0.60);
+}
+
+/* Navbar — translucent dark surface */
+[data-theme="dark"] .navbar {
+  background: rgba(15, 24, 48, 0.85);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.30);
+}
+[data-theme="dark"] .navbar.scrolled {
+  background: rgba(15, 24, 48, 0.95);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.40);
+}
+[data-theme="dark"] .hamburger span { background: var(--gray-900); }
+
+/* Mobile nav drawer */
+@media (max-width: 768px) {
+  [data-theme="dark"] .nav-links {
+    background: #131c33;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.4);
+  }
+  [data-theme="dark"] .nav-links li { border-bottom-color: #243352; }
+}
+
+/* Stats / services / outcomes */
+[data-theme="dark"] .stats {
+  background: #131c33;
+  border-bottom-color: #243352;
+}
+[data-theme="dark"] .service-card {
+  background: #131c33;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.35);
+}
+[data-theme="dark"] .service-card:hover {
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.45);
+}
+[data-theme="dark"] .service-outcome { border-top-color: #243352; }
+[data-theme="dark"] .services {
+  background: linear-gradient(180deg, #0d1730 0%, #131e42 100%);
+}
+
+/* Showcase */
+[data-theme="dark"] .showcase {
+  background: linear-gradient(180deg, #131c33 0%, #1b2542 100%);
+}
+[data-theme="dark"] .showcase-tab {
+  background: #131c33;
+  border-color: #243352;
+  color: var(--gray-900);
+}
+[data-theme="dark"] .showcase-tab:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+[data-theme="dark"] .showcase-browser {
+  background: #131c33;
+  border-color: #243352;
+}
+[data-theme="dark"] .showcase-browser-bar {
+  background: #1b2542;
+  border-bottom-color: #243352;
+}
+[data-theme="dark"] .showcase-url {
+  background: #131c33;
+  border-color: #243352;
+  color: var(--gray-500);
+}
+[data-theme="dark"] .showcase-iframe { background: #131c33; }
+
+/* Calendar — keep the wrapper white in dark mode so the Google iframe
+   (which is rendered by Google and expects a light surface) stays
+   readable. The card now sits on the dark page like a clean light panel. */
+[data-theme="dark"] .calendar-wrapper {
+  background: #fff;
+  box-shadow: 0 14px 40px rgb(0 0 0 / 0.45);
+}
+[data-theme="dark"] .calendar-placeholder {
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+}
+[data-theme="dark"] .calendar-placeholder p { color: #5a6478; }
+[data-theme="dark"] .calendar-placeholder i { color: var(--primary); }
+
+/* Contact form */
+[data-theme="dark"] .form-field input,
+[data-theme="dark"] .form-field textarea {
+  background: #131c33;
+  border-color: #243352;
+  color: var(--gray-900);
+}
+[data-theme="dark"] .form-field input::placeholder,
+[data-theme="dark"] .form-field textarea::placeholder {
+  color: #6b7799;
+}
+[data-theme="dark"] .form-field input:focus,
+[data-theme="dark"] .form-field textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgb(51 105 242 / 0.18);
+}
+
+/* Lang switcher */
+[data-theme="dark"] .lang-btn:hover {
+  background-color: rgba(51, 105, 242, 0.18);
+  color: var(--primary);
+}
+
+/* CTA pill on hero — keep white in both modes (sits on blue gradient) */
+[data-theme="dark"] .cta-btn:hover { background: #e6ebf5; }
+
+/* Cookie banner — must stay dark in BOTH modes (primary text flipped to light)
+   so override its background explicitly with a fixed dark navy. */
+[data-theme="dark"] .cookie-banner {
+  background: #0b1330;
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .cookie-text strong { color: #fff; }
+[data-theme="dark"] .cookie-text p { color: #cbd5e1; }
+
+/* Copy toast — same — keep dark always. */
+[data-theme="dark"] .copy-toast {
+  background: #0b1330;
+  color: #fff;
+}
+
+/* ── Resources page ───────────────────────────────────────── */
+[data-theme="dark"] .resources-main { background: var(--gray-100); }
+
+[data-theme="dark"] .video-tab {
+  background: #131c33;
+  border-color: #243352;
+}
+[data-theme="dark"] .video-tab.is-active {
+  background: linear-gradient(180deg, #131c33 0%, #1b2542 100%);
+  border-color: var(--primary);
+}
+[data-theme="dark"] .video-tab-thumb { background: #1b2542; }
+
+[data-theme="dark"] .resources-empty {
+  background: #131c33;
+  border-color: #324270;
+}
+
+[data-theme="dark"] .resource-empty-state {
+  background: #131c33;
+}
+
+[data-theme="dark"] .btn-yt,
+[data-theme="dark"] .btn-share,
+[data-theme="dark"] .copy-btn {
+  background: #131c33;
+  border-color: #243352;
+  color: var(--gray-900);
+}
+[data-theme="dark"] .copy-btn { color: var(--gray-500); }
+[data-theme="dark"] .copy-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+[data-theme="dark"] .prompt-card {
+  background: #131c33;
+  border-color: #243352;
+}
+[data-theme="dark"] .prompt-card pre {
+  background: #0f1830;
+  border-color: #243352;
+  color: var(--gray-900);
+}
+[data-theme="dark"] .copy-btn.is-copied {
+  border-color: #4ade80;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.08);
+}
+
+[data-theme="dark"] .link-card {
+  background: #131c33;
+  border-color: #243352;
+}
+[data-theme="dark"] .link-card-icon {
+  background: rgba(51, 105, 242, 0.18);
+}
+
+[data-theme="dark"] .resource-text {
+  background: #131c33;
+}
+
+/* Active-tab indicator: keep brand-blue gradient, no change needed —
+   the SVG colors are baked in and read fine on both themes. */
+
+/* ── Legal pages (impressum, datenschutz) ─────────────────── */
+[data-theme="dark"] .legal-header {
+  background: rgba(15, 24, 48, 0.92);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.30);
+}
+[data-theme="dark"] .legal-page .legal-intro {
+  background: #131c33;
+}
+[data-theme="dark"] .legal-page code {
+  background: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .legal-footer {
+  background: #131c33;
+  border-top-color: #243352;
+}
+
+/* ─── THEME TOGGLE BUTTON ────────────────────────────────── */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: 0.65rem;
+  padding: 0;
+  background: none;
+  border: 2px solid transparent;
+  color: var(--gray-900);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+.theme-toggle:hover {
+  background-color: rgba(51, 105, 242, 0.10);
+  color: var(--primary);
+}
+.theme-toggle:active { transform: scale(0.94); }
+[data-theme="dark"] .theme-toggle:hover {
+  background-color: rgba(51, 105, 242, 0.18);
+}
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: inline-block; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+[data-theme="dark"] .theme-toggle .icon-sun  { display: inline-block; }
+
+@media (max-width: 768px) {
+  .theme-toggle { margin-left: 0.4rem; }
 }

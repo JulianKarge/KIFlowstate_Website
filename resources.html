@@ -3,6 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- Theme bootstrap — runs before paint to avoid flash of wrong theme.
+         New visitors get light mode; only an explicit saved choice flips it. -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("kif_theme");
+          var theme = saved === "dark" ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
     <meta
       name="description"
       content="KIFlowstate – Ressourcen, Prompts und Links zu unseren YouTube-Videos."
@@ -55,6 +68,7 @@
             <li><a href="index.html#showcase" data-translate="nav_showcase">Webdesign</a></li>
             <li><a href="index.html#appointment" data-translate="nav_appointment">Termin</a></li>
             <li><a href="index.html#contact" data-translate="nav_contact">Kontakt</a></li>
+            <li><a href="resources.html" class="nav-link-secondary" data-translate="nav_resources" aria-current="page">Ressourcen</a></li>
           </ul>
         </nav>
 
@@ -63,6 +77,18 @@
           <button id="lang-de" class="lang-btn active">DE</button>
           <button id="lang-en" class="lang-btn">EN</button>
         </div>
+
+        <!-- Theme toggle -->
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Dunkles Design aktivieren"
+          aria-pressed="false"
+          title="Theme wechseln"
+        >
+          <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
 
         <button
           class="hamburger"
