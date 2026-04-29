@@ -65,7 +65,21 @@ const translations = {
     cookie_reject: "Nur essentielle",
     footer_copyright: "© <span id=\"year\"></span> KIFlowstate. Alle Rechte vorbehalten.",
     footer_imprint: "Impressum",
-    footer_privacy: "Datenschutz"
+    footer_privacy: "Datenschutz",
+    resources_meta_description: "KIFlowstate – Ressourcen, Prompts und Links zu unseren YouTube-Videos.",
+    resources_eyebrow: "Video-Ressourcen",
+    resources_title: "Prompts &amp; Links zu unseren Videos",
+    resources_subtitle: "Wähle links ein Video aus, um die zugehörigen Prompts, Tools und Links zu sehen.",
+    resources_sidebar_title: "Alle Videos",
+    resources_empty: "Bald hier — die ersten Videos sind in Arbeit.",
+    resources_no_video: "Wähle links ein Video, um die Ressourcen zu sehen.",
+    resources_play: "Video abspielen",
+    resources_open_yt: "Auf YouTube ansehen",
+    resources_share: "Link kopieren",
+    resources_copy: "Kopieren",
+    resources_copied: "Kopiert!",
+    resources_link_copied: "Link kopiert!",
+    resources_copy_failed: "Kopieren fehlgeschlagen"
   },
   en: {
     meta_description: "KIFlowstate – AI‑driven automation agency that streamlines your business processes.",
@@ -133,6 +147,20 @@ const translations = {
     cookie_reject: "Essential only",
     footer_copyright: "© <span id=\"year\"></span> KIFlowstate. All rights reserved.",
     footer_imprint: "Imprint",
-    footer_privacy: "Privacy"
+    footer_privacy: "Privacy",
+    resources_meta_description: "KIFlowstate – Resources, prompts and links from our YouTube videos.",
+    resources_eyebrow: "Video Resources",
+    resources_title: "Prompts &amp; Links From Our Videos",
+    resources_subtitle: "Pick a video on the left to see the matching prompts, tools and links.",
+    resources_sidebar_title: "All videos",
+    resources_empty: "Coming soon — the first videos are in the works.",
+    resources_no_video: "Pick a video on the left to see its resources.",
+    resources_play: "Play video",
+    resources_open_yt: "Watch on YouTube",
+    resources_share: "Copy link",
+    resources_copy: "Copy",
+    resources_copied: "Copied!",
+    resources_link_copied: "Link copied!",
+    resources_copy_failed: "Copy failed"
   }
 };
