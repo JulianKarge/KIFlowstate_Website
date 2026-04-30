@@ -1,0 +1,4 @@
+# Local AI context — not part of the published site.
+# The brand snapshot is private and lives only on disk (master copy in
+# ../Workspace/brand-agent-system/). Don't commit it to the public Pages repo.
+brand-agent-system/
