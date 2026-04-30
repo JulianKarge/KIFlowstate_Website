@@ -287,8 +287,7 @@
     if (!btn) return;
     const id = btn.dataset.videoId;
     if (!id) return;
-    const isMobile = window.matchMedia("(max-width: 900px)").matches;
-    setActive(id, { scroll: isMobile });
+    setActive(id);
   });
 
   // Click handlers inside the content area (delegated)

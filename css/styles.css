@@ -324,7 +324,7 @@ section:not(.hero) .container {
 /* ─── ABOUT (Desktop-First) ────────────────────────────────── */
 .about {
   position: relative;
-  padding-top: 15rem; 
+  padding-top: 7rem;
   padding-bottom: 4rem;
 }
 
@@ -1138,7 +1138,7 @@ section:not(.hero) .container {
     max-height: 300px;
   }
   .about {
-    padding-top: 10rem;
+    padding-top: 5rem;
   }
 }
 
@@ -1325,6 +1325,7 @@ section:not(.hero) .container {
 .resources-main {
   background: var(--gray-100);
   min-height: 60vh;
+  overflow-x: hidden;
 }
 
 .resources-container {
@@ -1829,28 +1830,46 @@ section:not(.hero) .container {
 
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .resources-container {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+  .resources-hero {
+    padding-block: clamp(2.25rem, 5vh, 3.5rem) clamp(3rem, 7vh, 5rem);
   }
 
+  .resources-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-block: 1.75rem 3rem;
+  }
+
+  /* Bleed the sidebar out to the viewport edges so the horizontal
+     card row scrolls naturally to/from the screen edge, while the
+     section title above it stays inset with the rest of the content. */
   .resources-sidebar {
     position: static;
     max-height: none;
     overflow: visible;
+    padding-right: 0;
+    margin-inline: calc(50% - 50vw);
+  }
+
+  .resources-sidebar-title {
+    padding-inline: max(5vw, 1rem);
+    margin-bottom: 0.7rem;
   }
 
   .video-list {
     flex-direction: row;
-    gap: 0.6rem;
+    gap: 0.7rem;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
+    padding-inline: max(5vw, 1rem);
+    padding-bottom: 0.6rem;
     scroll-snap-type: x mandatory;
+    scroll-padding-left: max(5vw, 1rem);
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
 
   .video-tab {
-    flex: 0 0 220px;
+    flex: 0 0 200px;
     scroll-snap-align: start;
     flex-direction: column;
     gap: 0.5rem;
@@ -1865,9 +1884,29 @@ section:not(.hero) .container {
     flex-basis: auto;
     width: 100%;
   }
+
+  .video-tab-title {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    font-size: 0.92rem;
+  }
+
+  .resources-empty {
+    margin-inline: max(5vw, 1rem);
+  }
 }
 
 @media (max-width: 600px) {
+  .resources-hero h1 {
+    font-size: clamp(1.55rem, 1.2rem + 2.5vw, 2rem);
+    max-width: 18ch;
+  }
+
+  .resources-hero p {
+    font-size: 0.95rem;
+    max-width: 36ch;
+  }
+
   .video-player-play {
     width: 64px;
     height: 64px;
@@ -1876,6 +1915,95 @@ section:not(.hero) .container {
 
   .video-header {
     flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.1rem;
+  }
+
+  .video-header h2 {
+    font-size: clamp(1.25rem, 1rem + 2.2vw, 1.55rem);
+  }
+
+  .video-header-actions {
+    width: 100%;
+  }
+
+  .btn-yt,
+  .btn-share {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .video-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-top: 0.85rem;
+  }
+
+  .resource-section {
+    margin-top: 1.75rem;
+  }
+
+  .resource-section-heading {
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .prompt-card {
+    padding: 0.9rem 0.95rem;
+  }
+
+  .prompt-card-head {
+    gap: 0.65rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .prompt-card-title {
+    font-size: 0.9rem;
+  }
+
+  .prompt-card pre {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    max-height: 280px;
+  }
+
+  .copy-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .link-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .link-card {
+    padding: 0.85rem 0.95rem;
+  }
+
+  .resource-text {
+    padding: 0.9rem 1rem;
+    font-size: 0.92rem;
+  }
+
+  .resource-empty-state {
+    padding: 2.25rem 1.25rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .video-tab {
+    flex: 0 0 175px;
+  }
+
+  .video-tab-title {
+    font-size: 0.88rem;
+  }
+
+  .video-tab-date {
+    font-size: 0.72rem;
   }
 }
 
