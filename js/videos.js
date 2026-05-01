@@ -28,6 +28,16 @@
 
 const VIDEOS = [
   {
+    id: "eKXC93LEs8c",
+    title: "Claude + Playwright = Automatisierter Webagent",
+    publishedAt: "2026-05-01",
+    description: {
+      de: "Wie du Claude und Playwright kombinierst, um einen Webagenten zu bauen, der eigenständig im Browser arbeitet. Prompts und Links zum Video folgen hier.",
+      en: "How to combine Claude and Playwright to build a web agent that works autonomously in the browser. Prompts and links from the video will be added here."
+    },
+    sections: []
+  },
+  {
     id: "LDLa7NZ6eyc",
     title: "3D Websites erstellen war noch nie so einfach",
     thumbnailUrl: "https://i.ytimg.com/vi/LDLa7NZ6eyc/maxresdefault.jpg",
@@ -174,6 +184,7 @@ adjust timing?"`
   {
     id: "LzD5fF1SJLg",
     title: "Claude 4.7 vs ChatGPT 5.5: Das große KI-Duell",
+    publishedAt: "2026-04-27",
     description: {
       de: "Direkter Vergleich der beiden Top-Modelle im Praxiseinsatz: Claude 4.7 gegen ChatGPT 5.5. Wer macht den besseren Job, und wann lohnt sich welches Tool? Prompts und Links zum Video folgen hier.",
       en: "Head-to-head comparison of the two leading models in real use: Claude 4.7 versus ChatGPT 5.5. Which one delivers better, and when should you reach for which? Prompts and links from the video will be added here."
@@ -183,6 +194,7 @@ adjust timing?"`
   {
     id: "b6NKgJ6FEKE",
     title: "Ich teste das neueste Bildgenerierungs-Tool von ChatGPT",
+    publishedAt: "2026-04-25",
     description: {
       de: "Ich nehme das neue Bildgenerierungs-Tool von ChatGPT in die Praxis-Mangel und zeige dir, wo es überrascht und wo es noch hakt. Prompts und Links zum Video folgen hier.",
       en: "Putting ChatGPT's new image generation tool through real-world tests and showing where it shines and where it still falls short. Prompts and links from the video will be added here."
@@ -192,6 +204,7 @@ adjust timing?"`
   {
     id: "dBtKy0hiDOY",
     title: "Wie du Claudes Nutzungs-Limit ausdribbelst",
+    publishedAt: "2026-04-23",
     description: {
       de: "Praktische Tipps und Workflows, mit denen du Claudes tägliches Nutzungs-Limit clever umgehst und ohne Unterbrechung weiterarbeitest. Prompts und Links zum Video folgen hier.",
       en: "Practical tips and workflows for getting around Claude's daily usage limits and staying productive without interruptions. Prompts and links from the video will be added here."

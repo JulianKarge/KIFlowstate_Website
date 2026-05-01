@@ -35,7 +35,13 @@ If an entry becomes wrong over time, append `**Updated:** {{YYYY-MM-DD}}` with a
 
 ## Conventions, patterns to keep using
 
-<!-- New entries go here. Empty for now. -->
+### Every video in `js/videos.js` must have `publishedAt`
+- **Date:** 2026-05-01
+- **Context:** When adding a new YouTube video to the resources page, only one of five entries had a `publishedAt` date, so the sidebar showed the date for one video and nothing for the rest — looked broken.
+- **Source / example:** [js/videos.js](js/videos.js), sidebar rendered by [js/resources-page.js:130](js/resources-page.js#L130) (`video-tab-date`).
+- **What:** Always set `publishedAt` (ISO `YYYY-MM-DD`) on every entry in the `VIDEOS` array. When adding a brand-new video, use today's date. If Julian gives a relative date ("4 days ago"), convert to the absolute ISO date before saving. Never leave `publishedAt` unset, even on placeholder entries with empty `sections`.
+- **Where it applies:** `js/videos.js` — every video object, every time one is added or edited.
+- **Tags:** content, video, resources-page
 
 ---
 
