@@ -1803,6 +1803,75 @@ section:not(.hero) .container {
 
 .resource-text strong { color: var(--primary-dark); }
 .resource-text a { color: var(--primary); }
+.resource-text p + p,
+.resource-text p + ul,
+.resource-text p + ol,
+.resource-text ul + p,
+.resource-text ol + p { margin-top: 0.6rem; }
+.resource-text ul,
+.resource-text ol {
+  padding-left: 1.6rem;
+  margin: 0.4rem 0 0.4rem;
+}
+.resource-text li + li { margin-top: 0.3rem; }
+.resource-text code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+  background: rgba(51, 105, 242, 0.10);
+  color: var(--primary-dark);
+  padding: 0.08rem 0.36rem;
+  border-radius: 4px;
+}
+.resource-text pre {
+  background: var(--gray-900);
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 0.95rem;
+  margin: 0.6rem 0;
+  overflow-x: auto;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.resource-text pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+}
+.resource-text table.routing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.6rem 0 0.4rem;
+  font-size: 0.9rem;
+}
+.resource-text table.routing-table th,
+.resource-text table.routing-table td {
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--gray-300);
+  vertical-align: top;
+}
+.resource-text table.routing-table th {
+  background: rgba(51, 105, 242, 0.08);
+  color: var(--primary-dark);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.resource-text table.routing-table tbody tr:last-child th,
+.resource-text table.routing-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.resource-text table.routing-table em {
+  font-style: normal;
+  background: rgba(51, 105, 242, 0.08);
+  color: var(--primary-dark);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
 
 /* Toast */
 .copy-toast {
@@ -2204,6 +2273,28 @@ section:not(.hero) .container {
 
 [data-theme="dark"] .resource-text {
   background: #131c33;
+}
+[data-theme="dark"] .resource-text strong { color: #cfe0ff; }
+[data-theme="dark"] .resource-text a { color: #7aa7ff; }
+[data-theme="dark"] .resource-text code {
+  background: rgba(122, 167, 255, 0.14);
+  color: #cfe0ff;
+}
+[data-theme="dark"] .resource-text pre {
+  background: #0a1224;
+  color: #e6ebf5;
+}
+[data-theme="dark"] .resource-text table.routing-table th,
+[data-theme="dark"] .resource-text table.routing-table td {
+  border-bottom-color: #243352;
+}
+[data-theme="dark"] .resource-text table.routing-table th {
+  background: rgba(122, 167, 255, 0.12);
+  color: #cfe0ff;
+}
+[data-theme="dark"] .resource-text table.routing-table em {
+  background: rgba(122, 167, 255, 0.14);
+  color: #cfe0ff;
 }
 
 /* Active-tab indicator: keep brand-blue gradient, no change needed —

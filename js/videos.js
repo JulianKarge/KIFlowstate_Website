@@ -28,6 +28,207 @@
 
 const VIDEOS = [
   {
+    id: "TBD",
+    title: "Baue dein KI-Supermodell mit Claude Code",
+    thumbnailUrl: "Vers1.png",
+    publishedAt: "2026-05-01",
+    description: {
+      de: "Codex und Gemini ziehen direkt neben Claude Code in dein Terminal ein — alle drei Modelle in einem Fenster, kein Tool-Wechsel mehr. Hier findest du jeden Befehl zum Kopieren, in der richtigen Reihenfolge. Optional am Ende: DeepSeek als günstiges 4. Modell.",
+      en: "Codex and Gemini move in right next to Claude Code in your terminal — all three models in one window, no more tool-switching. Below you'll find every command ready to copy, in the right order. Optional at the end: DeepSeek as a cheap 4th model."
+    },
+    sections: [
+      {
+        heading: { de: "Was du brauchst", en: "What you need" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Vier Sachen, die vorab da sein sollten — danach geht's los:</p>
+<ul>
+  <li><strong>Node.js 20+</strong> (<code>node --version</code> zum Prüfen)</li>
+  <li><strong>Claude Code</strong> installiert und lauffähig</li>
+  <li><strong>ChatGPT-Account</strong> (Free reicht) oder OpenAI-API-Key</li>
+  <li><strong>Google-Account</strong> für den kostenlosen Gemini-Tarif</li>
+</ul>`,
+              en: `<p>Four things to have in place before we start:</p>
+<ul>
+  <li><strong>Node.js 20+</strong> (<code>node --version</code> to check)</li>
+  <li><strong>Claude Code</strong> installed and running</li>
+  <li><strong>ChatGPT account</strong> (Free works) or OpenAI API key</li>
+  <li><strong>Google account</strong> for the free Gemini tier</li>
+</ul>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Schritt 1 — CLIs installieren & einloggen (im Terminal)", en: "Step 1 — Install & log in to the CLIs (in your terminal)" },
+        type: "prompts",
+        items: [
+          {
+            title: { de: "1. CLIs installieren (Terminal, nicht Claude Code)", en: "1. Install the CLIs (terminal, not Claude Code)" },
+            content: `npm install -g @openai/codex
+npm install -g @google/gemini-cli`
+          },
+          {
+            title: { de: "2. Versionen prüfen (optional)", en: "2. Check versions (optional)" },
+            content: `codex --version
+gemini --version`
+          },
+          {
+            title: { de: "3. Codex-Login (Browser öffnet sich)", en: "3. Codex login (browser opens)" },
+            content: `codex login`
+          },
+          {
+            title: { de: "4. Gemini einmal starten für Google-OAuth, danach /quit", en: "4. Launch Gemini once for Google OAuth, then /quit" },
+            content: `gemini`
+          }
+        ]
+      },
+      {
+        heading: { de: "⚠ Wichtig vor Schritt 2", en: "⚠ Important before Step 2" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Jetzt rüber in Claude Code — und Achtung: die nächsten fünf Befehle gehen <strong>einzeln</strong> rein. Einer einfügen, Enter, kurz warten, nächster. Alle auf einmal bricht die Installation, weil Claude Code sie zu einem ungültigen Befehl zusammenklebt.</p>`,
+              en: `<p>Now over to Claude Code — and a heads-up: the next five commands go in <strong>one at a time</strong>. Paste one, hit enter, wait briefly, then the next. Pasting all at once breaks the install — Claude Code glues them into a malformed command.</p>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Schritt 2 — Plugins in Claude Code laden", en: "Step 2 — Load the plugins into Claude Code" },
+        type: "prompts",
+        items: [
+          {
+            title: { de: "1. Codex-Marketplace hinzufügen", en: "1. Add Codex marketplace" },
+            content: `/plugin marketplace add openai/codex-plugin-cc`
+          },
+          {
+            title: { de: "2. Codex-Plugin installieren", en: "2. Install Codex plugin" },
+            content: `/plugin install codex@openai-codex`
+          },
+          {
+            title: { de: "3. Gemini-Marketplace hinzufügen", en: "3. Add Gemini marketplace" },
+            content: `/plugin marketplace add thepushkarp/cc-gemini-plugin`
+          },
+          {
+            title: { de: "4. Gemini-Plugin installieren", en: "4. Install Gemini plugin" },
+            content: `/plugin install cc-gemini-plugin@cc-gemini-plugin`
+          },
+          {
+            title: { de: "5. Neu laden", en: "5. Reload" },
+            content: `/reload-plugins`
+          }
+        ]
+      },
+      {
+        heading: { de: "Schritt 3 — Verbindung testen", en: "Step 3 — Test the connection" },
+        type: "prompts",
+        items: [
+          {
+            title: { de: "In Claude Code — gibt „ready: true“ aus", en: "Inside Claude Code — prints \"ready: true\"" },
+            content: `/codex:setup`
+          },
+          {
+            title: { de: "Im Terminal — gibt einen Gruß aus", en: "In the terminal — prints a greeting" },
+            content: `gemini -p "say hello"`
+          }
+        ]
+      },
+      {
+        heading: { de: "Bonus — DeepSeek als 4. Modell anbinden", en: "Bonus — Wire up DeepSeek as a 4th model" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Wenn du DeepSeek auch noch im Stack haben willst — geht in drei Handgriffen:</p>
+<ol>
+  <li>API-Key erstellen:
+    <a href="https://platform.deepseek.com/usage" target="_blank" rel="noopener">platform.deepseek.com/usage</a></li>
+  <li>Repo klonen:
+    <a href="https://github.com/Alishahryar1/free-claude-code" target="_blank" rel="noopener">github.com/Alishahryar1/free-claude-code</a></li>
+  <li>Ordner in Claude Code öffnen und Claude bitten:
+    <em>„Richte das Repo ein und packe meinen DeepSeek-API-Key in eine <code>.env</code>-Datei."</em><br>
+    Den Rest erledigt Claude.</li>
+</ol>`,
+              en: `<p>Want DeepSeek in the stack too? Three quick moves:</p>
+<ol>
+  <li>Create an API key:
+    <a href="https://platform.deepseek.com/usage" target="_blank" rel="noopener">platform.deepseek.com/usage</a></li>
+  <li>Clone the repo:
+    <a href="https://github.com/Alishahryar1/free-claude-code" target="_blank" rel="noopener">github.com/Alishahryar1/free-claude-code</a></li>
+  <li>Open the folder in Claude Code and ask Claude:
+    <em>"Set up this repo and put my DeepSeek API key in a <code>.env</code> file."</em><br>
+    Claude takes it from there.</li>
+</ol>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Aktualisieren & entfernen", en: "Update & remove" },
+        type: "prompts",
+        items: [
+          {
+            title: { de: "Plugins aktualisieren (Claude Code)", en: "Update plugins (Claude Code)" },
+            content: `/plugin marketplace update cc-gemini-plugin
+/plugin marketplace update openai-codex
+/reload-plugins`
+          },
+          {
+            title: { de: "Plugins entfernen (Claude Code)", en: "Remove plugins (Claude Code)" },
+            content: `/plugin uninstall codex@openai-codex
+/plugin uninstall cc-gemini-plugin@cc-gemini-plugin`
+          },
+          {
+            title: { de: "CLIs entfernen (Terminal)", en: "Remove CLIs (terminal)" },
+            content: `npm uninstall -g @openai/codex @google/gemini-cli`
+          }
+        ]
+      },
+      {
+        heading: { de: "Repositories & Links", en: "Repositories & Links" },
+        type: "links",
+        items: [
+          {
+            label: "DeepSeek Platform",
+            url: "https://platform.deepseek.com/usage",
+            description: {
+              de: "API-Key erstellen.",
+              en: "Create your API key."
+            }
+          },
+          {
+            label: "free-claude-code",
+            url: "https://github.com/Alishahryar1/free-claude-code",
+            description: {
+              de: "DeepSeek-Bonus-Repo.",
+              en: "DeepSeek bonus repo."
+            }
+          },
+          {
+            label: "codex-plugin-cc",
+            url: "https://github.com/openai/codex-plugin-cc",
+            description: {
+              de: "Quelle des Codex-Plugins.",
+              en: "Codex plugin source."
+            }
+          },
+          {
+            label: "cc-gemini-plugin",
+            url: "https://github.com/thepushkarp/cc-gemini-plugin",
+            description: {
+              de: "Quelle des Gemini-Plugins.",
+              en: "Gemini plugin source."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "eKXC93LEs8c",
     title: "Claude + Playwright = Automatisierter Webagent",
     publishedAt: "2026-05-01",

@@ -47,7 +47,13 @@ If an entry becomes wrong over time, append `**Updated:** {{YYYY-MM-DD}}` with a
 
 ## Pitfalls, things that broke or did not work
 
-<!-- New entries go here. Empty for now. -->
+### German typographic quotes inside double-quoted JS strings break the whole file
+- **Date:** 2026-05-01
+- **Context:** Adding a new video entry to [js/videos.js](js/videos.js). The resources page sidebar suddenly went blank — no videos rendered.
+- **Source / example:** `title: { de: "... „ready: true" ausgeben", ... }` — opening with `„` (U+201E) but closing with ASCII straight `"` (U+0022) terminated the JS string at `true`, which broke parsing of the entire `VIDEOS` array, which made the page silently empty.
+- **What:** When writing German prose inside a JS double-quoted string, always pair `„` (U+201E) with `"` (U+201C) — never with ASCII `"`. Same applies to `'` vs `'`/`'`. Verify after any sizable edit to videos.js with `node -c js/videos.js` — a clean exit means the file parses; any parse error breaks the whole resources page silently.
+- **Where it applies:** Any string-typed field in `js/videos.js` (`title`, `description.de`, prompt-card titles). Less of a risk in `text` items because the HTML lives in a backtick-delimited template literal.
+- **Tags:** content, video, resources-page, encoding
 
 ---
 
