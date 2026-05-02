@@ -11,6 +11,7 @@
       "**/node_modules/**",
       "brand-agent-system/**",
       ".qa/**",
+      "scripts/**",
       "local-feedback-viewer/**",
       "CLAUDE.md",
       "site-notes.md"

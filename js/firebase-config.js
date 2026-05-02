@@ -1,14 +1,24 @@
-// Public Firebase Web App config for the KIFlowstate feedback form.
-// Paste the config from Firebase Console > Project settings > Your apps > Web app.
-// This is safe to ship in a static website. Do not paste service account keys here.
+// Runtime Firebase Web App config for the KIFlowstate feedback form.
+// Real values are loaded from js/firebase-env.js, generated from .env.local.
+// Do not commit js/firebase-env.js or service account keys.
+const runtimeConfig =
+  typeof window !== "undefined" && window.__KIFLOWSTATE_FIREBASE_CONFIG__
+    ? window.__KIFLOWSTATE_FIREBASE_CONFIG__
+    : {};
+
+function configValue(key) {
+  return String(runtimeConfig[key] || "").trim();
+}
+
 export const firebaseConfig = {
-  apiKey: "AIzaSyCQpF08WKZuYEExUGeacq9NhQYgw9ODW74",
-  authDomain: "customer-feedback-34889.firebaseapp.com",
-  projectId: "customer-feedback-34889",
-  storageBucket: "customer-feedback-34889.firebasestorage.app",
-  messagingSenderId: "414271456495",
-  appId: "1:414271456495:web:18b115a4b590232114071a",
-  measurementId: "G-P35XWCTK0P",
+  apiKey: configValue("apiKey"),
+  authDomain: configValue("authDomain"),
+  projectId: configValue("projectId"),
+  storageBucket: configValue("storageBucket"),
+  messagingSenderId: configValue("messagingSenderId"),
+  appId: configValue("appId"),
+  measurementId: configValue("measurementId"),
 };
 
-export const feedbackCollection = "feedbackSubmissions";
+export const feedbackCollection =
+  configValue("feedbackCollection") || "feedbackSubmissions";
