@@ -43,6 +43,14 @@ If an entry becomes wrong over time, append `**Updated:** {{YYYY-MM-DD}}` with a
 - **Where it applies:** `js/videos.js` — every video object, every time one is added or edited.
 - **Tags:** content, video, resources-page
 
+### Feedback results stay local-only
+- **Date:** 2026-05-02
+- **Context:** Connected the hidden customer feedback page to Firebase Firestore and added a private localhost dashboard for Julian to review submissions.
+- **Source / example:** `feedback.html`, `js/feedback-page.js`, `firestore.rules`, `local-feedback-viewer/`, `.gitignore`.
+- **What:** The customer-facing link is `/feedback.html`: it can be sent directly to customers, but it is not linked from the landing page and has `noindex,nofollow`. Submissions write to Firebase collection `feedbackSubmissions`; Firestore rules allow public creates only and block public reads/updates/deletes. Results are reviewed through the local-only Node dashboard at `http://127.0.0.1:8787`, and `local-feedback-viewer/` must stay ignored/unpublished.
+- **Where it applies:** Feedback page, Firebase rules, deploy/publishing, local results dashboard.
+- **Tags:** feedback, firebase, privacy, deploy, local-dashboard
+
 ---
 
 ## Pitfalls, things that broke or did not work

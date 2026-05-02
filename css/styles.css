@@ -2518,7 +2518,9 @@ section:not(.hero) .container {
   letter-spacing: -0.01em;
   color: var(--gray-300);
   transition: color 0.2s ease;
-  min-width: 3.5ch;
+  /* Reserve enough room for "100 %" so the question text doesn't
+     re-wrap when the value crosses into 3 digits. */
+  min-width: 3.6em;
   text-align: right;
 }
 
@@ -2533,6 +2535,14 @@ section:not(.hero) .container {
   gap: 0.55rem;
   padding-top: 0.4rem;
   padding-bottom: 0.1rem;
+  /* The tick labels (25 % / 50 % / 75 %), edge labels (Kein Flow /
+     Volle Welle) and hint text are decorative — making them
+     unselectable stops a drag-attempt on a label from starting a
+     text selection instead of moving the slider. The native range
+     input inside is unaffected and still drags normally. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .wave-slider-track {
@@ -2551,51 +2561,35 @@ section:not(.hero) .container {
   height: 100%;
   display: block;
   pointer-events: none;
-}
-
-.wave-slider-bg path {
-  fill: #dbe2f1;
-  transition: fill 0.2s ease;
+  /* The path extends one quarter-period past the viewBox on each side
+     so the bezier control points land correctly at the edge crests.
+     Clip the overflow so it doesn't leak past the track boundary. */
+  overflow: hidden;
 }
 
 /* The fill SVG sits inside a clip wrapper revealing its left portion
-   based on --pct. clip-path gives smooth animation during drag. */
+   based on --pct. Short transition smooths keyboard/click jumps; the
+   .is-dragging override below removes it during pointer-drag so the
+   wave tracks the cursor without perceived lag. */
 .wave-slider-fill-clip {
   position: absolute;
   inset: 0;
   pointer-events: none;
   clip-path: inset(0 calc(100% - var(--pct)) 0 0);
   -webkit-clip-path: inset(0 calc(100% - var(--pct)) 0 0);
-  transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
+  transition: clip-path 80ms linear, -webkit-clip-path 80ms linear;
+  will-change: clip-path;
 }
 
-.wave-slider-fill path {
-  filter: drop-shadow(0 6px 14px rgba(51, 105, 242, 0.35));
+
+/* Drag-time: kill the fill transition so the wave glues to the cursor
+   instead of easing toward it. */
+.wave-slider.is-dragging .wave-slider-fill-clip {
+  transition: none;
 }
 
 /* Clean white circle thumb. clamp() keeps its center at least one
    thumb-radius from each edge so it stays fully visible at 0% / 100%. */
-.wave-slider-thumb {
-  position: absolute;
-  top: 50%;
-  left: clamp(13px, var(--pct), calc(100% - 13px));
-  width: 26px;
-  height: 26px;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  border: 3px solid var(--primary-dark);
-  border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
-  pointer-events: none;
-  transition: left 0.2s ease, transform 0.18s ease, box-shadow 0.18s ease;
-  z-index: 2;
-}
-
-.wave-slider.is-focused .wave-slider-thumb,
-.wave-slider:hover .wave-slider-thumb {
-  transform: translate(-50%, -50%) scale(1.08);
-  box-shadow: 0 6px 16px rgba(51, 105, 242, 0.35);
-}
 
 /* The native range input is stretched invisibly over the wave to
    capture click + drag + keyboard interaction. */
@@ -2646,11 +2640,6 @@ section:not(.hero) .container {
 .wave-slider-input:active::-webkit-slider-thumb { cursor: grabbing; }
 .wave-slider-input:active::-moz-range-thumb { cursor: grabbing; }
 
-.wave-slider.is-focused {
-  border-radius: 16px;
-  outline: 3px solid var(--primary-dark);
-  outline-offset: 4px;
-}
 
 /* Tick marks: only the inner three (25/50/75) — edge ticks would clip.
    The Kein-Flow / Volle-Welle labels below mark the 0% and 100% ends. */
@@ -2933,14 +2922,7 @@ section:not(.hero) .container {
   color: var(--primary);
 }
 
-[data-theme="dark"] .wave-slider-bg path {
-  fill: #1e2a4a;
-}
-
-[data-theme="dark"] .wave-slider-thumb {
-  background: #131c33;
-  border-color: var(--primary);
-}
+[data-theme="dark"] .wave-slider-bg path { fill: #233458; }
 
 [data-theme="dark"] .wave-percentage {
   color: #324270;

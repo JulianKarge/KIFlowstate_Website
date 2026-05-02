@@ -24,15 +24,68 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
   const REQUIRED_FIREBASE_FIELDS = ["apiKey", "authDomain", "projectId", "appId"];
   let feedbackDb = null;
 
-  // The shared wave path. Same path used in BG (light) and FILL (gradient);
-  // the fill layer is masked to a width of `value%` to create the rise effect.
-  const WAVE_PATH =
-    "M 0 32 " +
-    "C 50 12, 100 52, 150 32 " +
-    "S 250 12, 300 32 " +
-    "S 400 52, 450 32 " +
-    "S 550 12, 600 32 " +
-    "L 600 60 L 0 60 Z";
+  // Wave geometry. One calm body wave per side (BG + FILL), no animation,
+  // no crest highlight — read as a still water surface. The path is
+  // bounded to the SVG viewBox so the BG and the clipped FILL line up
+  // perfectly at the boundary (no out-of-bounds artefacts).
+  const WAVE_VIEW_W = 600;
+  const WAVE_VIEW_H = 60;
+  const WAVE_BASE_Y = 32;
+  const WAVE_LENGTH = 150; // → 4 humps across the track
+  const WAVE_AMP = 11;
+
+  // Wave formula. Using -cos puts a crest at x=0 and at every multiple
+  // of WAVE_LENGTH (= every 25% of the track), so the peaks line up
+  // with the tick marks at 0 / 25 / 50 / 75 / 100 %. SVG +Y is down,
+  // so subtracting amp pushes the curve UP into a crest.
+  function waveYAt(x) {
+    return WAVE_BASE_Y - WAVE_AMP * Math.cos((2 * Math.PI * x) / WAVE_LENGTH);
+  }
+
+  // Sample-and-bezier path generator. Each half-period bezier runs from
+  // one baseline crossing to the next, with control points pulled to the
+  // mid-period extremum — that gives smooth domes and bowls.
+  //
+  // Because crests now land on the viewBox edges (0, 150, 300, 450, 600),
+  // we start the walk one quarter-period BEFORE the viewBox so the first
+  // bezier still begins on a baseline. The SVG viewBox clips the
+  // overflow on either side. Without this offset, the bezier control
+  // points at the very first/last extremum sit at the baseline
+  // (mid-period) and pull the crest into a sharp point.
+  function buildWavePath() {
+    const startX = -WAVE_LENGTH / 4;
+    const endX = WAVE_VIEW_W + WAVE_LENGTH / 4;
+    const halfWL = WAVE_LENGTH / 2;
+
+    let d = "M " + startX + " " + waveYAt(startX).toFixed(2);
+    let x = startX;
+    while (x < endX) {
+      const nextX = x + halfWL;
+      const midY = waveYAt(x + halfWL / 2);
+      const nextY = waveYAt(nextX);
+      const cp1X = x + halfWL * 0.35;
+      const cp2X = nextX - halfWL * 0.35;
+      d +=
+        " C " + cp1X.toFixed(2) + " " + midY.toFixed(2) +
+        ", " + cp2X.toFixed(2) + " " + midY.toFixed(2) +
+        ", " + nextX.toFixed(2) + " " + nextY.toFixed(2);
+      x = nextX;
+    }
+    d += " L " + endX + " " + WAVE_VIEW_H + " L " + startX + " " + WAVE_VIEW_H + " Z";
+    return d;
+  }
+
+  function buildWaveSvg(className, bodyFill) {
+    const body = buildWavePath();
+    return (
+      '<svg class="' + className + '" ' +
+        'viewBox="0 0 ' + WAVE_VIEW_W + ' ' + WAVE_VIEW_H + '" ' +
+        'preserveAspectRatio="none" aria-hidden="true">' +
+        '<path d="' + body + '" fill="' + bodyFill + '" />' +
+      '</svg>'
+    );
+  }
+
 
   document.addEventListener("DOMContentLoaded", init);
 
@@ -71,15 +124,10 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
 
         '<div class="wave-slider" data-touched="false" style="--pct:0%">' +
           '<div class="wave-slider-track">' +
-            '<svg class="wave-slider-bg" viewBox="0 0 600 60" preserveAspectRatio="none" aria-hidden="true">' +
-              '<path d="' + WAVE_PATH + '" />' +
-            '</svg>' +
+            buildWaveSvg("wave-slider-bg", "#cdd8ee") +
             '<div class="wave-slider-fill-clip">' +
-              '<svg class="wave-slider-fill" viewBox="0 0 600 60" preserveAspectRatio="none" aria-hidden="true">' +
-                '<path d="' + WAVE_PATH + '" fill="url(#kif-wave-grad)" />' +
-              '</svg>' +
+              buildWaveSvg("wave-slider-fill", "url(#kif-wave-grad)") +
             '</div>' +
-            '<span class="wave-slider-thumb" aria-hidden="true"></span>' +
             '<input type="range" class="wave-slider-input" ' +
               'id="slider-' + escapeAttr(name) + '" ' +
               'name="' + escapeAttr(name) + '" ' +
@@ -129,12 +177,19 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
       // mark the slider as touched and clear error state. Defense in depth.
       input.addEventListener("input", () => update(true));
       input.addEventListener("change", () => update(true));
-      // Pointer-down on the input means the user is intentionally interacting,
-      // even if no value-change event fires (rare browser quirks).
-      input.addEventListener("pointerdown", () => {
+      // While the pointer is down we strip the fill/thumb transitions so the
+      // wave tracks the cursor with no perceived lag. Transitions resume on
+      // release for smooth keyboard / click jumps.
+      const startDrag = () => {
+        slider.classList.add("is-dragging");
         slider.dataset.touched = "true";
         clearError();
-      });
+      };
+      const endDrag = () => slider.classList.remove("is-dragging");
+      input.addEventListener("pointerdown", startDrag);
+      input.addEventListener("pointerup", endDrag);
+      input.addEventListener("pointercancel", endDrag);
+      input.addEventListener("pointerleave", endDrag);
       input.addEventListener("focus", () => slider.classList.add("is-focused"));
       input.addEventListener("blur", () => slider.classList.remove("is-focused"));
     });
