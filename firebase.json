@@ -1,0 +1,19 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "brand-agent-system/**",
+      ".qa/**",
+      "local-feedback-viewer/**",
+      "CLAUDE.md",
+      "site-notes.md"
+    ]
+  }
+}

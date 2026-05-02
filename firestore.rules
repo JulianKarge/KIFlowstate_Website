@@ -1,0 +1,79 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isValidFeedbackSubmission() {
+      let data = request.resource.data;
+
+      return data.keys().hasOnly([
+          "formVersion",
+          "createdAt",
+          "submittedAtClient",
+          "language",
+          "page",
+          "referrer",
+          "userAgent",
+          "name",
+          "company",
+          "source",
+          "sourceOther",
+          "ratings",
+          "workedWell",
+          "couldImprove",
+          "testimonialOk"
+        ])
+        && data.formVersion == 1
+        && data.createdAt == request.time
+        && validShortText(data.submittedAtClient, 40)
+        && validShortText(data.language, 8)
+        && validShortText(data.page, 240)
+        && validShortText(data.referrer, 500)
+        && validShortText(data.userAgent, 500)
+        && validShortText(data.name, 160)
+        && validShortText(data.company, 160)
+        && validShortText(data.source, 80)
+        && validShortText(data.sourceOther, 240)
+        && validLongText(data.workedWell, 4000)
+        && validLongText(data.couldImprove, 4000)
+        && data.testimonialOk is bool
+        && validRatings(data.ratings);
+    }
+
+    function validRatings(ratings) {
+      return ratings is map
+        && ratings.keys().hasOnly([
+          "flow",
+          "problemSolved",
+          "delivery",
+          "communication",
+          "recommendation"
+        ])
+        && validRating(ratings.flow)
+        && validRating(ratings.problemSolved)
+        && validRating(ratings.delivery)
+        && validRating(ratings.communication)
+        && validRating(ratings.recommendation);
+    }
+
+    function validRating(value) {
+      return value is number && value >= 0 && value <= 100;
+    }
+
+    function validShortText(value, maxLength) {
+      return value is string && value.size() <= maxLength;
+    }
+
+    function validLongText(value, maxLength) {
+      return value is string && value.size() <= maxLength;
+    }
+
+    match /feedbackSubmissions/{submissionId} {
+      allow create: if isValidFeedbackSubmission();
+      allow read, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

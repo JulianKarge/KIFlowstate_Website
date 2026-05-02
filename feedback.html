@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- Theme bootstrap — runs before paint to avoid flash of wrong theme. -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("kif_theme");
+          var theme = saved === "dark" ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <meta
+      name="description"
+      content="KIFlowstate – Kundenfeedback. Erzählen Sie uns, wie Ihr Flow war."
+      data-translate="feedback_meta_description"
+    />
+    <!-- Private page: keep search engines out. -->
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Kundenfeedback | KIFlowstate</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/kilogo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="images/kilogo.png" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Local assets -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="js/translations.js"></script>
+    <script defer src="js/script.js"></script>
+    <script type="module" src="js/feedback-page.js"></script>
+  </head>
+
+  <body>
+    <!-- Shared SVG defs — gradient reused by every wave-slider fill on the page. -->
+    <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+      <defs>
+        <linearGradient id="kif-wave-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#3369F2" />
+          <stop offset="1" stop-color="#254EBF" />
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <!-- ▸▸ NAVBAR ---------------------------------------------------------- -->
+    <header class="navbar">
+      <div class="container nav-wrapper">
+        <a href="index.html" class="logo">
+          <img src="images/kilogo.png" alt="KIFlowstate Logo" />
+        </a>
+
+        <nav>
+          <ul class="nav-links" id="main-nav">
+            <li><a href="index.html#about" data-translate="nav_about">Über Uns</a></li>
+            <li><a href="index.html#services" data-translate="nav_services">Leistungen</a></li>
+            <li><a href="index.html#showcase" data-translate="nav_showcase">Webdesign</a></li>
+            <li><a href="index.html#appointment" data-translate="nav_appointment">Termin</a></li>
+            <li><a href="index.html#contact" data-translate="nav_contact">Kontakt</a></li>
+          </ul>
+        </nav>
+
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+          <button id="lang-de" class="lang-btn active">DE</button>
+          <button id="lang-en" class="lang-btn">EN</button>
+        </div>
+
+        <!-- Theme toggle -->
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Dunkles Design aktivieren"
+          aria-pressed="false"
+          title="Theme wechseln"
+        >
+          <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+
+        <button
+          class="hamburger"
+          id="hamburger"
+          aria-label="Toggle navigation"
+          aria-controls="main-nav"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ▸▸ HERO ----------------------------------------------------------- -->
+    <section class="feedback-hero">
+      <div class="container">
+        <span class="resources-eyebrow" data-translate="feedback_eyebrow">Kundenfeedback</span>
+        <h1 data-translate="feedback_title">Wie war Ihr Flow mit uns?</h1>
+        <p data-translate="feedback_subtitle">
+          Ihre ehrliche Einschätzung hilft uns, KIFlowstate besser zu machen —
+          und uns auf das zu fokussieren, was wirklich für Sie zählt.
+        </p>
+      </div>
+
+      <!-- Wave divider -->
+      <svg
+        class="wave-divider wave-bottom feedback-hero-wave"
+        viewBox="0 0 1440 80"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 L1440,80 L0,80 Z"></path>
+      </svg>
+    </section>
+
+    <!-- ▸▸ FORM ----------------------------------------------------------- -->
+    <main class="feedback-main">
+      <div class="container feedback-card-wrap">
+        <form
+          id="feedback-form"
+          class="feedback-card"
+          data-feedback-collection="feedbackSubmissions"
+          novalidate
+        >
+          <p class="feedback-intro" data-translate="feedback_intro">
+            Es dauert etwa <strong>2 Minuten</strong>. Pflichtfelder sind
+            mit <span class="req-mark" aria-hidden="true">*</span> markiert.
+          </p>
+
+          <!-- ── Section 1 — wer schreibt uns? ────────────────── -->
+          <fieldset class="feedback-section">
+            <legend data-translate="feedback_section1_legend">Über Sie</legend>
+
+            <div class="form-row">
+              <label class="form-field">
+                <span>
+                  <span data-translate="feedback_label_name">Name</span>
+                  <span class="muted-hint" data-translate="feedback_label_optional">(optional)</span>
+                </span>
+                <input type="text" name="name" autocomplete="name" />
+              </label>
+
+              <label class="form-field">
+                <span>
+                  <span data-translate="feedback_label_firma">Firma</span>
+                  <span class="muted-hint" data-translate="feedback_label_optional">(optional)</span>
+                </span>
+                <input type="text" name="firma" autocomplete="organization" />
+              </label>
+            </div>
+
+            <div class="feedback-q">
+              <span class="feedback-q-label" data-translate="feedback_q_quelle">
+                Wie haben Sie uns gefunden?
+              </span>
+              <div
+                class="chip-group"
+                role="radiogroup"
+                aria-label="Wie haben Sie uns gefunden?"
+                data-name="quelle"
+              >
+                <button type="button" class="chip" data-value="Empfehlung" role="radio" aria-checked="false">
+                  <i class="fas fa-handshake" aria-hidden="true"></i>
+                  <span data-translate="feedback_quelle_empfehlung">Empfehlung</span>
+                </button>
+                <button type="button" class="chip" data-value="Google" role="radio" aria-checked="false">
+                  <i class="fab fa-google" aria-hidden="true"></i>
+                  <span data-translate="feedback_quelle_google">Google-Suche</span>
+                </button>
+                <button type="button" class="chip" data-value="LinkedIn" role="radio" aria-checked="false">
+                  <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                  <span data-translate="feedback_quelle_linkedin">LinkedIn</span>
+                </button>
+                <button type="button" class="chip" data-value="YouTube" role="radio" aria-checked="false">
+                  <i class="fab fa-youtube" aria-hidden="true"></i>
+                  <span data-translate="feedback_quelle_youtube">YouTube</span>
+                </button>
+                <button type="button" class="chip" data-value="Instagram / TikTok" role="radio" aria-checked="false">
+                  <i class="fab fa-instagram" aria-hidden="true"></i>
+                  <span data-translate="feedback_quelle_social">Instagram / TikTok</span>
+                </button>
+                <button type="button" class="chip" data-value="Direkter Kontakt" role="radio" aria-checked="false">
+                  <i class="fas fa-envelope" aria-hidden="true"></i>
+                  <span data-translate="feedback_quelle_direkt">Direkter Kontakt</span>
+                </button>
+                <button type="button" class="chip" data-value="Sonstiges" role="radio" aria-checked="false">
+                  <i class="fas fa-ellipsis-h" aria-hidden="true"></i>
+                  <span data-translate="feedback_quelle_other">Sonstiges</span>
+                </button>
+              </div>
+              <input type="hidden" name="quelle" value="" />
+
+              <label class="form-field chip-other-field" hidden>
+                <span data-translate="feedback_quelle_other_label">Bitte kurz beschreiben</span>
+                <input
+                  type="text"
+                  name="quelle_freitext"
+                  autocomplete="off"
+                  placeholder="z. B. Newsletter, Podcast, Konferenz …"
+                  data-translate-placeholder="feedback_quelle_other_placeholder"
+                />
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- ── Section 2 — die Wave-Slider-Ratings ─────────── -->
+          <fieldset class="feedback-section">
+            <legend data-translate="feedback_section2_legend">Ihr Flow mit KIFlowstate</legend>
+            <p class="legend-hint" data-translate="feedback_section2_hint">
+              Ziehen Sie die Welle nach rechts, um Ihre Bewertung zu setzen —
+              von 0&nbsp;% (kein Flow) bis 100&nbsp;% (volle Welle).
+            </p>
+
+            <!-- Each .wave-question is rendered into a wave-slider widget by feedback-page.js. -->
+            <div
+              class="feedback-q wave-question"
+              data-name="rating_flow"
+              data-required="true"
+              data-question-key="feedback_q_flow"
+              data-low-key="feedback_low_kein_flow"
+              data-high-key="feedback_high_volle_welle"
+            ></div>
+
+            <div
+              class="feedback-q wave-question"
+              data-name="rating_problem"
+              data-required="true"
+              data-question-key="feedback_q_problem"
+              data-low-key="feedback_low_nicht"
+              data-high-key="feedback_high_komplett"
+            ></div>
+
+            <div
+              class="feedback-q wave-question"
+              data-name="rating_lieferung"
+              data-required="true"
+              data-question-key="feedback_q_lieferung"
+              data-low-key="feedback_low_langsam"
+              data-high-key="feedback_high_richtig"
+            ></div>
+
+            <div
+              class="feedback-q wave-question"
+              data-name="rating_kommunikation"
+              data-required="true"
+              data-question-key="feedback_q_kommunikation"
+              data-low-key="feedback_low_spaerlich"
+              data-high-key="feedback_high_klar"
+            ></div>
+
+            <div
+              class="feedback-q wave-question"
+              data-name="rating_empfehlung"
+              data-required="true"
+              data-question-key="feedback_q_empfehlung"
+              data-low-key="feedback_low_eher_nicht"
+              data-high-key="feedback_high_jeden_fall"
+            ></div>
+          </fieldset>
+
+          <!-- ── Section 3 — die ehrlichen Worte ─────────────── -->
+          <fieldset class="feedback-section">
+            <legend data-translate="feedback_section3_legend">In Ihren Worten</legend>
+
+            <label class="form-field">
+              <span data-translate="feedback_q_was_gut">Was hat besonders gut funktioniert?</span>
+              <textarea
+                name="was_gut"
+                rows="4"
+                placeholder="Womit haben wir Sie überrascht? Was hat den Unterschied gemacht?"
+                data-translate-placeholder="feedback_was_gut_placeholder"
+              ></textarea>
+            </label>
+
+            <label class="form-field">
+              <span data-translate="feedback_q_was_besser">Wo können wir noch besser werden?</span>
+              <textarea
+                name="was_besser"
+                rows="4"
+                placeholder="Sagen Sie es uns offen — wir hören gerne zu."
+                data-translate-placeholder="feedback_was_besser_placeholder"
+              ></textarea>
+            </label>
+
+            <label class="checkbox-field">
+              <input type="checkbox" name="testimonial_ok" value="ja" />
+              <span data-translate="feedback_testimonial">
+                Mein Feedback darf <strong>anonym</strong> als Testimonial
+                verwendet werden — ohne Nennung meines Namens.
+              </span>
+            </label>
+          </fieldset>
+
+          <!-- Honeypot: hidden from humans, bots tend to fill it. -->
+          <div class="hp-field" aria-hidden="true">
+            <label>
+              Leave this field empty
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+
+          <input type="hidden" name="_subject" value="KIFlowstate Kundenfeedback" />
+
+          <div class="feedback-submit-row">
+            <button type="submit" class="cta-btn cta-btn-dark form-submit" data-translate="feedback_submit">
+              Feedback senden
+            </button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <!-- Success panel — shown after a successful submit. -->
+        <div class="feedback-success" id="feedback-success" hidden>
+          <div class="feedback-success-logo" aria-hidden="true">
+            <img src="images/kilogo.png" alt="" />
+          </div>
+          <h2 data-translate="feedback_success_title">Vielen Dank.</h2>
+          <p data-translate="feedback_success_text">
+            Ihr Feedback ist bei uns gelandet — Julian und Luca lesen es
+            persönlich. Falls eine Rückfrage sinnvoll ist, melden wir uns
+            innerhalb der nächsten Tage bei Ihnen.
+          </p>
+          <a href="index.html" class="cta-btn cta-btn-dark" data-translate="feedback_success_back">Zurück zur Startseite</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- ▸▸ FOOTER ---------------------------------------------------------- -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <p data-translate="footer_copyright">© <span id="year"></span> KIFlowstate. Alle Rechte vorbehalten.</p>
+
+        <ul class="footer-links">
+          <li><a href="impressum.html" data-translate="footer_imprint">Impressum</a></li>
+          <li><a href="datenschutz.html" data-translate="footer_privacy">Datenschutz</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

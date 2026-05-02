@@ -2,3 +2,17 @@
 # The brand snapshot is private and lives only on disk (master copy in
 # ../Workspace/brand-agent-system/). Don't commit it to the public Pages repo.
 brand-agent-system/
+
+# Local QA artifacts — Playwright screenshots, traces, logs.
+.qa/
+
+# Firebase local caches/logs and private admin keys.
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+serviceAccount*.json
+*-firebase-adminsdk-*.json
+
+# Local-only feedback dashboard. Do not publish this with the website.
+local-feedback-viewer/

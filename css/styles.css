@@ -2349,3 +2349,631 @@ section:not(.hero) .container {
 @media (max-width: 768px) {
   .theme-toggle { margin-left: 0.4rem; }
 }
+
+/* ─── FEEDBACK PAGE ────────────────────────────────────────────
+   Customer questionnaire at /feedback.html — URL-only, not linked
+   from any nav. Mirrors the resources-hero pattern, then a floating
+   card with the wave-slider widget rendered by js/feedback-page.js. */
+
+.feedback-hero {
+  position: relative;
+  padding-block: clamp(3rem, 6vh, 5rem) clamp(5rem, 11vh, 8rem);
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.feedback-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    120deg,
+    var(--primary) 0%,
+    #356cf8 25%,
+    #2651c7 50%,
+    var(--primary-dark) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradientFlow 12s ease-in-out infinite;
+}
+
+.feedback-hero .container {
+  padding-block: 0;
+}
+
+.feedback-hero h1 {
+  font-size: clamp(1.85rem, 1.4rem + 1.8vw, 2.75rem);
+  margin: 0 auto 0.75rem;
+  max-width: 24ch;
+}
+
+.feedback-hero p {
+  margin: 0 auto;
+  max-width: 56ch;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.02rem;
+}
+
+.feedback-hero-wave {
+  bottom: -1px;
+}
+
+/* Page background — sits below the hero. */
+.feedback-main {
+  background: var(--gray-100);
+  min-height: 60vh;
+}
+
+.feedback-card-wrap {
+  max-width: 760px;
+  padding-block: 0 4rem;
+}
+
+/* The card lifts into the wave divider for a "floating on water" feel.
+   `position: relative; z-index: 2` keeps it above the wave; the larger
+   padding-top makes sure the intro paragraph clears the curve. */
+.feedback-card {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-lg);
+  padding: clamp(2rem, 3.5vw, 3rem) clamp(1.5rem, 3vw, 2.5rem) clamp(1.75rem, 3vw, 2.5rem);
+  margin-top: -2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* The HTML [hidden] attribute is overridden by the display:flex above.
+   These rules restore the expected hide-on-success behaviour. */
+.feedback-card[hidden],
+.feedback-success[hidden],
+.chip-other-field[hidden] {
+  display: none !important;
+}
+
+.feedback-intro {
+  margin: 0;
+  color: var(--gray-500);
+  font-size: 0.95rem;
+}
+
+.feedback-intro strong { color: var(--gray-900); }
+
+.req-mark {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.muted-hint {
+  color: var(--gray-500);
+  font-weight: 400;
+  font-size: 0.85em;
+}
+
+.feedback-section {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.feedback-section + .feedback-section {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.75rem;
+}
+
+.feedback-section legend {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+  padding: 0;
+}
+
+.legend-hint {
+  color: var(--gray-500);
+  font-size: 0.92rem;
+  margin: -0.4rem 0 0.25rem;
+  max-width: 60ch;
+}
+
+.feedback-q {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feedback-q-label {
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--gray-900);
+}
+
+/* ── Wave-slider widget ─────────────────────────────────────── */
+
+/* Question header: label on the left, big percentage badge on the right.
+   Keeps the live value out of the slider area so it never clips at edges. */
+.wave-question-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.wave-percentage {
+  flex: 0 0 auto;
+  font-size: 1.55rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: var(--gray-300);
+  transition: color 0.2s ease;
+  min-width: 3.5ch;
+  text-align: right;
+}
+
+.wave-percentage.is-set {
+  color: var(--primary-dark);
+}
+
+.wave-slider {
+  --pct: 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.1rem;
+}
+
+.wave-slider-track {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  border-radius: 12px;
+  isolation: isolate;
+}
+
+.wave-slider-bg,
+.wave-slider-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.wave-slider-bg path {
+  fill: #dbe2f1;
+  transition: fill 0.2s ease;
+}
+
+/* The fill SVG sits inside a clip wrapper revealing its left portion
+   based on --pct. clip-path gives smooth animation during drag. */
+.wave-slider-fill-clip {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: inset(0 calc(100% - var(--pct)) 0 0);
+  -webkit-clip-path: inset(0 calc(100% - var(--pct)) 0 0);
+  transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
+}
+
+.wave-slider-fill path {
+  filter: drop-shadow(0 6px 14px rgba(51, 105, 242, 0.35));
+}
+
+/* Clean white circle thumb. clamp() keeps its center at least one
+   thumb-radius from each edge so it stays fully visible at 0% / 100%. */
+.wave-slider-thumb {
+  position: absolute;
+  top: 50%;
+  left: clamp(13px, var(--pct), calc(100% - 13px));
+  width: 26px;
+  height: 26px;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 3px solid var(--primary-dark);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
+  pointer-events: none;
+  transition: left 0.2s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  z-index: 2;
+}
+
+.wave-slider.is-focused .wave-slider-thumb,
+.wave-slider:hover .wave-slider-thumb {
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow: 0 6px 16px rgba(51, 105, 242, 0.35);
+}
+
+/* The native range input is stretched invisibly over the wave to
+   capture click + drag + keyboard interaction. */
+.wave-slider-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  z-index: 3;
+}
+
+.wave-slider-input:focus { outline: none; }
+
+.wave-slider-input::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 100%;
+}
+
+.wave-slider-input::-moz-range-track {
+  background: transparent;
+  height: 100%;
+}
+
+.wave-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 60px;
+  background: transparent;
+  border: none;
+  cursor: grab;
+}
+
+.wave-slider-input::-moz-range-thumb {
+  width: 28px;
+  height: 60px;
+  background: transparent;
+  border: none;
+  cursor: grab;
+}
+
+.wave-slider-input:active::-webkit-slider-thumb { cursor: grabbing; }
+.wave-slider-input:active::-moz-range-thumb { cursor: grabbing; }
+
+.wave-slider.is-focused {
+  border-radius: 16px;
+  outline: 3px solid var(--primary-dark);
+  outline-offset: 4px;
+}
+
+/* Tick marks: only the inner three (25/50/75) — edge ticks would clip.
+   The Kein-Flow / Volle-Welle labels below mark the 0% and 100% ends. */
+.wave-slider-scale {
+  position: relative;
+  height: 18px;
+  margin-top: 0.15rem;
+}
+
+.wave-slider-scale span {
+  position: absolute;
+  top: 0;
+  left: var(--at);
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  color: var(--gray-500);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.wave-slider-scale span::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 4px;
+  width: 1.5px;
+  height: 6px;
+  background: #cbd5e1;
+  border-radius: 1px;
+}
+
+.wave-slider-edges {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  margin-top: 0.1rem;
+}
+
+/* Hint paragraph fades out once the slider has been touched. */
+.wave-slider-hint {
+  margin: 0.1rem 0 0;
+  font-size: 0.78rem;
+  color: var(--gray-500);
+  font-style: italic;
+  text-align: center;
+  transition: opacity 0.25s ease, max-height 0.25s ease;
+}
+
+.wave-slider[data-touched="true"] .wave-slider-hint {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wave-slider.has-error {
+  outline: 2px dashed #b91c1c;
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.wave-question:has(.wave-slider.has-error) .wave-percentage {
+  color: #b91c1c;
+}
+
+.wave-error {
+  margin: 0.4rem 0 0;
+  color: #b91c1c;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* ── Chip-radio group ("Wie haben Sie uns gefunden?") ───────── */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  font: inherit;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 0.5rem 0.95rem;
+  color: var(--gray-900);
+  font-size: 0.92rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.chip i {
+  color: var(--primary);
+  font-size: 0.95em;
+  transition: color 0.18s ease;
+}
+
+.chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.chip:focus-visible {
+  outline: 3px solid var(--primary-dark);
+  outline-offset: 2px;
+}
+
+.chip.is-active {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--primary-dark) 100%);
+  border-color: var(--primary-dark);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(51, 105, 242, 0.28);
+}
+
+.chip.is-active i {
+  color: #fff;
+}
+
+.chip-other-field {
+  margin-top: 0.25rem;
+}
+
+/* ── Checkbox row (Testimonial-Einwilligung) ────────────────── */
+.checkbox-field {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  font-size: 0.93rem;
+  color: var(--gray-900);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.checkbox-field input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.18rem;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.checkbox-field span { color: var(--gray-500); }
+.checkbox-field span strong { color: var(--gray-900); }
+
+/* ── Submit row ─────────────────────────────────────────────── */
+.feedback-submit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+}
+
+.feedback-submit-row .form-submit {
+  margin-top: 0;
+}
+
+/* ── Success panel ──────────────────────────────────────────── */
+.feedback-success {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-lg);
+  padding: clamp(2rem, 4vw, 3rem);
+  margin-top: -2.25rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feedback-success-logo {
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 12px 24px rgba(51, 105, 242, 0.32));
+  animation: feedback-bob 4s ease-in-out infinite;
+}
+
+.feedback-success-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes feedback-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.feedback-success h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+  color: var(--gray-900);
+}
+
+.feedback-success p {
+  color: var(--gray-500);
+  max-width: 48ch;
+  margin: 0 auto;
+}
+
+/* ── Responsive tweaks ──────────────────────────────────────── */
+@media (max-width: 540px) {
+  .feedback-card,
+  .feedback-success {
+    border-radius: 1rem;
+  }
+
+  .wave-question-head {
+    align-items: flex-start;
+  }
+
+  .wave-percentage {
+    font-size: 1.2rem;
+  }
+
+  .wave-slider-track {
+    height: 54px;
+  }
+
+  .wave-slider-input::-webkit-slider-thumb,
+  .wave-slider-input::-moz-range-thumb {
+    height: 54px;
+  }
+
+  .wave-slider-scale span {
+    font-size: 0.66rem;
+  }
+
+  .wave-slider-edges {
+    font-size: 0.74rem;
+  }
+
+  .feedback-success-logo {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+/* ── Dark theme patches ─────────────────────────────────────── */
+[data-theme="dark"] .feedback-main {
+  background: var(--gray-100);
+}
+
+[data-theme="dark"] .feedback-card,
+[data-theme="dark"] .feedback-success {
+  background: #131c33;
+  border: 1px solid #243352;
+}
+
+[data-theme="dark"] .feedback-section + .feedback-section {
+  border-top-color: #243352;
+}
+
+[data-theme="dark"] .chip {
+  background: #131c33;
+  border-color: #243352;
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+[data-theme="dark"] .wave-slider-bg path {
+  fill: #1e2a4a;
+}
+
+[data-theme="dark"] .wave-slider-thumb {
+  background: #131c33;
+  border-color: var(--primary);
+}
+
+[data-theme="dark"] .wave-percentage {
+  color: #324270;
+}
+
+[data-theme="dark"] .wave-percentage.is-set {
+  color: #7aa7ff;
+}
+
+[data-theme="dark"] .wave-slider-scale span::before {
+  background: #324270;
+}
+
+[data-theme="dark"] .wave-slider-hint {
+  color: var(--gray-500);
+}
+
+[data-theme="dark"] .checkbox-field {
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .checkbox-field span {
+  color: var(--gray-500);
+}
+
+[data-theme="dark"] .checkbox-field span strong {
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .feedback-intro strong {
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .feedback-success h2 {
+  color: var(--gray-900);
+}
