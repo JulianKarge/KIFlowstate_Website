@@ -41,6 +41,7 @@
 
   const formatDate = (iso) => {
     if (!iso) return "";
+    if (iso === "coming-soon") return t("resources_coming_soon", "Kommt bald");
     const lang = document.documentElement.lang || "de";
     const d = new Date(iso);
     if (Number.isNaN(d.getTime())) return iso;

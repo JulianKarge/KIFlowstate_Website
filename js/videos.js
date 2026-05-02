@@ -31,7 +31,7 @@ const VIDEOS = [
     id: "TBD",
     title: "Baue dein KI-Supermodell mit Claude Code",
     thumbnailUrl: "Vers1.png",
-    publishedAt: "2026-05-01",
+    publishedAt: "coming-soon",
     description: {
       de: "Codex und Gemini ziehen direkt neben Claude Code in dein Terminal ein — alle drei Modelle in einem Fenster, kein Tool-Wechsel mehr. Hier findest du jeden Befehl zum Kopieren, in der richtigen Reihenfolge. Optional am Ende: DeepSeek als günstiges 4. Modell.",
       en: "Codex and Gemini move in right next to Claude Code in your terminal — all three models in one window, no more tool-switching. Below you'll find every command ready to copy, in the right order. Optional at the end: DeepSeek as a cheap 4th model."
