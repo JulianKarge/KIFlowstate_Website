@@ -28,10 +28,9 @@
 
 const VIDEOS = [
   {
-    id: "TBD",
+    id: "5jfWQ3Y9qRg",
     title: "Baue dein KI-Supermodell mit Claude Code",
-    thumbnailUrl: "Vers1.png",
-    publishedAt: "coming-soon",
+    publishedAt: "2026-05-03",
     description: {
       de: "Codex und Gemini ziehen direkt neben Claude Code in dein Terminal ein — alle drei Modelle in einem Fenster, kein Tool-Wechsel mehr. Hier findest du jeden Befehl zum Kopieren, in der richtigen Reihenfolge. Optional am Ende: DeepSeek als günstiges 4. Modell.",
       en: "Codex and Gemini move in right next to Claude Code in your terminal — all three models in one window, no more tool-switching. Below you'll find every command ready to copy, in the right order. Optional at the end: DeepSeek as a cheap 4th model."
@@ -66,21 +65,25 @@ const VIDEOS = [
         type: "prompts",
         items: [
           {
-            title: { de: "1. CLIs installieren (Terminal, nicht Claude Code)", en: "1. Install the CLIs (terminal, not Claude Code)" },
+            title: { de: "1. Optional — Claude Code installieren (falls noch nicht vorhanden)", en: "1. Optional — Install Claude Code (if you don't have it yet)" },
+            content: `npm install -g @anthropic-ai/claude-code`
+          },
+          {
+            title: { de: "2. CLIs installieren (Terminal, nicht Claude Code)", en: "2. Install the CLIs (terminal, not Claude Code)" },
             content: `npm install -g @openai/codex
 npm install -g @google/gemini-cli`
           },
           {
-            title: { de: "2. Versionen prüfen (optional)", en: "2. Check versions (optional)" },
+            title: { de: "3. Versionen prüfen (optional)", en: "3. Check versions (optional)" },
             content: `codex --version
 gemini --version`
           },
           {
-            title: { de: "3. Codex-Login (Browser öffnet sich)", en: "3. Codex login (browser opens)" },
+            title: { de: "4. Codex-Login (Browser öffnet sich)", en: "4. Codex login (browser opens)" },
             content: `codex login`
           },
           {
-            title: { de: "4. Gemini einmal starten für Google-OAuth, danach /quit", en: "4. Launch Gemini once for Google OAuth, then /quit" },
+            title: { de: "5. Gemini einmal starten für Google-OAuth, danach /quit", en: "5. Launch Gemini once for Google OAuth, then /quit" },
             content: `gemini`
           }
         ]
@@ -91,8 +94,8 @@ gemini --version`
         items: [
           {
             html: {
-              de: `<p>Jetzt rüber in Claude Code — und Achtung: die nächsten fünf Befehle gehen <strong>einzeln</strong> rein. Einer einfügen, Enter, kurz warten, nächster. Alle auf einmal bricht die Installation, weil Claude Code sie zu einem ungültigen Befehl zusammenklebt.</p>`,
-              en: `<p>Now over to Claude Code — and a heads-up: the next five commands go in <strong>one at a time</strong>. Paste one, hit enter, wait briefly, then the next. Pasting all at once breaks the install — Claude Code glues them into a malformed command.</p>`
+              de: `<p>Jetzt rüber in Claude Code. Achtung: die nächsten fünf Befehle gehen <strong>einzeln</strong> rein. Einen einfügen, Enter, kurz warten, nächster. Alle auf einmal bricht die Installation, weil Claude Code sie zu einem ungültigen Befehl zusammenklebt.</p>`,
+              en: `<p>Now over to Claude Code. Heads-up: the next five commands go in <strong>one at a time</strong>. Paste one, hit enter, wait briefly, then the next. Pasting all at once breaks the install, because Claude Code glues them into a malformed command.</p>`
             }
           }
         ]
@@ -138,32 +141,194 @@ gemini --version`
         ]
       },
       {
-        heading: { de: "Bonus — DeepSeek als 4. Modell anbinden", en: "Bonus — Wire up DeepSeek as a 4th model" },
+        heading: { de: "DeepSeek anbinden", en: "Wire up DeepSeek" },
         type: "text",
         items: [
           {
             html: {
-              de: `<p>Wenn du DeepSeek auch noch im Stack haben willst — geht in drei Handgriffen:</p>
+              de: `<p>DeepSeek läuft als lokaler Proxy parallel zu Claude Code, günstigere Inferenz, gleiche Oberfläche. Zwei Schritte vorab, dann erledigt der Setup-Prompt unten den Rest:</p>
 <ol>
-  <li>API-Key erstellen:
-    <a href="https://platform.deepseek.com/usage" target="_blank" rel="noopener">platform.deepseek.com/usage</a></li>
-  <li>Repo klonen:
-    <a href="https://github.com/Alishahryar1/free-claude-code" target="_blank" rel="noopener">github.com/Alishahryar1/free-claude-code</a></li>
-  <li>Ordner in Claude Code öffnen und Claude bitten:
-    <em>„Richte das Repo ein und packe meinen DeepSeek-API-Key in eine <code>.env</code>-Datei."</em><br>
-    Den Rest erledigt Claude.</li>
+  <li>API-Key erstellen: <a href="https://platform.deepseek.com/usage" target="_blank" rel="noopener">platform.deepseek.com/usage</a></li>
+  <li>Setup-Prompt unten in Claude Code einfügen und API-Key an der markierten Stelle eintragen. Fertig.</li>
 </ol>`,
-              en: `<p>Want DeepSeek in the stack too? Three quick moves:</p>
+              en: `<p>DeepSeek runs as a local proxy alongside Claude Code, cheaper inference, same UI. Two quick steps up front, then the setup prompt below handles the rest:</p>
 <ol>
-  <li>Create an API key:
-    <a href="https://platform.deepseek.com/usage" target="_blank" rel="noopener">platform.deepseek.com/usage</a></li>
-  <li>Clone the repo:
-    <a href="https://github.com/Alishahryar1/free-claude-code" target="_blank" rel="noopener">github.com/Alishahryar1/free-claude-code</a></li>
-  <li>Open the folder in Claude Code and ask Claude:
-    <em>"Set up this repo and put my DeepSeek API key in a <code>.env</code> file."</em><br>
-    Claude takes it from there.</li>
+  <li>Create an API key: <a href="https://platform.deepseek.com/usage" target="_blank" rel="noopener">platform.deepseek.com/usage</a></li>
+  <li>Paste the setup prompt below into Claude Code and drop your API key into the marked placeholder. Done.</li>
 </ol>`
             }
+          }
+        ]
+      },
+      {
+        heading: { de: "DeepSeek-Setup-Prompt", en: "DeepSeek setup prompt" },
+        type: "prompts",
+        items: [
+          {
+            title: { de: "DeepSeek anbinden — kompletter Setup-Prompt", en: "Wire up DeepSeek — full setup prompt" },
+            content: `You are going to set up "Free Claude Code" — a local Anthropic-compatible proxy that routes Claude Code traffic to DeepSeek instead of Anthropic. Execute every step in order. If a step fails, diagnose the root cause and fix it before continuing. Never print the API key back to me, never commit it, never write it anywhere except .env.
+
+MY_DEEPSEEK_API_KEY = "<<<PASTE_YOUR_DEEPSEEK_API_KEY_HERE>>>"
+
+Goal: after you finish, I can open any new terminal and type \`claude-deepseek\` (or the short alias \`cdp\`) and Claude Code starts, talking to DeepSeek through a local proxy on port 8082.
+
+=== Step 1: Prerequisites ===
+Verify these are on PATH and report versions: git, python (>=3.14), uv, claude.
+If any are missing, install them first:
+  - Windows:     powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+                 then  uv python install 3.14
+  - macOS/Linux: curl -LsSf https://astral.sh/uv/install.sh | sh
+                 then  uv python install 3.14
+  - Claude Code: https://github.com/anthropics/claude-code
+
+=== Step 2: Clone ===
+Clone https://github.com/Alishahryar1/free-claude-code.git into the current working directory.
+cd into it for the rest of the steps.
+
+=== Step 3: .env ===
+IMPORTANT — the project's README is out of date. DeepSeek deprecated \`deepseek-chat\` and now serves \`deepseek-v4-pro\` and \`deepseek-v4-flash\`. Verify the live model names yourself before writing .env:
+
+   curl -s -H "Authorization: Bearer $MY_DEEPSEEK_API_KEY" https://api.deepseek.com/v1/models
+
+Use whatever model IDs the API returns. If the names match what I list below, use:
+  MODEL=deepseek/deepseek-v4-pro
+  MODEL_OPUS=deepseek/deepseek-v4-pro
+  MODEL_SONNET=deepseek/deepseek-v4-pro
+  MODEL_HAIKU=deepseek/deepseek-v4-flash
+
+Otherwise substitute the current names. Then start from .env.example:
+  - copy .env.example to .env
+  - set DEEPSEEK_API_KEY to MY_DEEPSEEK_API_KEY
+  - set MODEL / MODEL_OPUS / MODEL_SONNET / MODEL_HAIKU as above
+  - set ANTHROPIC_AUTH_TOKEN="freecc"
+  - set MESSAGING_PLATFORM="none"
+  - set VOICE_NOTE_ENABLED=false
+  - leave all other keys empty / at their defaults
+
+Before writing the key, confirm .env is git-ignored:
+  git check-ignore -v .env
+The output must show .gitignore matching .env. If it does not, abort and tell me.
+
+=== Step 4: Install dependencies ===
+Run \`uv sync\` inside the project folder.
+
+=== Step 5: Smoke-test the proxy ===
+Start the proxy in the background:
+  uv run uvicorn server:app --host 127.0.0.1 --port 8082
+Wait until \`curl -H "x-api-key: freecc" http://127.0.0.1:8082/v1/models\` returns 200 and the JSON includes your configured DeepSeek models. Then send a real message:
+  curl -X POST http://127.0.0.1:8082/v1/messages \\
+       -H "x-api-key: freecc" \\
+       -H "anthropic-version: 2023-06-01" \\
+       -H "content-type: application/json" \\
+       -d '{"model":"claude-haiku-4-20250514","max_tokens":50,
+            "messages":[{"role":"user","content":"Reply with: PROXY_OK"}]}'
+You should see SSE events from upstream model \`deepseek-v4-flash\` (Haiku is mapped to flash).
+Then stop the proxy.
+
+=== Step 6: Launcher scripts ===
+Create these files inside the project folder:
+
+(a) claude-deepseek.ps1  — Windows PowerShell launcher. It must:
+    1. Check if a proxy is already listening on 127.0.0.1:8082. If yes, reuse it.
+    2. Otherwise start \`uv run uvicorn server:app --host 127.0.0.1 --port 8082\`
+       via Start-Process, redirecting stdout to server.log and stderr to
+       server.log.err, save the PID to .proxy.pid, and wait (poll /v1/models)
+       up to 30 s until it answers 200.
+    3. Set $env:ANTHROPIC_BASE_URL = "http://127.0.0.1:8082"
+       and $env:ANTHROPIC_AUTH_TOKEN = "freecc".
+    4. Null out $env:ANTHROPIC_API_KEY for this session so Claude Code uses the
+       proxy and not a real Anthropic key.
+    5. Run \`claude @args\`.
+    6. On exit (try/finally): if WE started the proxy, kill its entire process
+       tree with \`taskkill /PID <pid> /T /F\`. This is critical — \`uv run\` spawns
+       uvicorn as a CHILD process, and Stop-Process on the parent alone leaves
+       the child holding port 8082. As a safety net, also kill anything still
+       listening on 8082 via Get-NetTCPConnection.
+
+(b) claude-deepseek.cmd  — Windows CMD wrapper, one line:
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0claude-deepseek.ps1" %*
+
+(c) On macOS/Linux create claude-deepseek.sh equivalent: start uv with \`setsid\`,
+    write the PGID to .proxy.pid, and on exit \`kill -TERM -<pgid>\` to take down
+    the whole tree.
+
+=== Step 7: Global alias ===
+Wire up an alias so the launcher works from any directory:
+
+  - PowerShell: append to $PROFILE (create the parent directory if missing):
+        function claude-deepseek { & "<ABSOLUTE_PATH_TO>\\claude-deepseek.ps1" @args }
+        Set-Alias cdp claude-deepseek
+
+  - bash/zsh:    append to ~/.bashrc or ~/.zshrc:
+        alias claude-deepseek='<ABSOLUTE_PATH_TO>/claude-deepseek.sh'
+        alias cdp='claude-deepseek'
+
+Tell me explicitly that the alias only takes effect in NEW terminal windows (or after \`. $PROFILE\` / \`source ~/.zshrc\`).
+
+=== Step 8: Verify the launcher end-to-end ===
+Do a non-interactive test: temporarily put a fake \`claude\` shim earlier on PATH that just echoes the env vars and exits. Run \`claude-deepseek\`. Confirm:
+  - the proxy started,
+  - the shim saw ANTHROPIC_BASE_URL=http://127.0.0.1:8082 and AUTH_TOKEN=freecc,
+  - after the shim exits, no process is left listening on port 8082.
+Then remove the shim.
+
+=== Step 9: Final report ===
+Print a short summary:
+  - which command launches Claude Code on DeepSeek,
+  - where .env lives and that it's gitignored,
+  - which model is used for Opus/Sonnet/Haiku traffic,
+  - where to find server.log if something misbehaves,
+  - that the alias is active in NEW terminals only.
+
+=== Constraints ===
+- The API key only ever lives in .env. Never print it, log it, or write it elsewhere.
+- Do not add features beyond what is listed.
+- Use the host's native shell — don't force PowerShell onto Unix or bash onto Windows.
+- Common pitfalls to avoid:
+    * Port 8082 already in use → identify and stop the listener, do not pick a different port.
+    * DeepSeek model name drift → always trust /v1/models over the README.
+    * uv child-process leak → process-tree kill, not single-process kill.
+    * Existing $env:ANTHROPIC_API_KEY → must be unset for the launcher session.`
+          }
+        ]
+      },
+      {
+        heading: { de: "Bonus", en: "Bonus" },
+        type: "prompts",
+        items: [
+          {
+            title: { de: "Bonus-Repos klonen (shadcn-ui + awesome-design-md)", en: "Clone bonus repos (shadcn-ui + awesome-design-md)" },
+            content: `You're going to set up two GitHub repos as reference material for my current project — not as dependencies. After cloning, skim them so you know where to look, then wait for me to say what to build.
+
+=== Step 1: Clone (shallow) into a references/ folder ===
+Create references/ in the current working directory if it doesn't exist, then:
+
+    git clone --depth 1 https://github.com/shadcn-ui/ui.git references/shadcn-ui
+    git clone --depth 1 https://github.com/VoltAgent/awesome-design-md.git references/awesome-design-md
+
+If references/<repo> already exists, skip the clone for that repo.
+
+=== Step 2: Index both repos ===
+Map each repo so you know where to look later. Report 3-5 bullets per repo:
+
+- shadcn-ui: where the component sources live (e.g. registry/, apps/v4/...),
+  how the \`npx shadcn add\` flow works, and which file documents styling
+  conventions.
+- awesome-design-md: which categories of design resources it curates (colors,
+  typography, inspiration galleries, icon sets, etc.) and the entry README
+  that lists them.
+
+Don't read every file — just enough to navigate confidently on the next ask.
+
+=== Step 3: Ask, don't act ===
+After indexing, stop and ask me what I want to build. I'll tell you which shadcn component to lift or which design resource to pull from, and you adapt it to my project's actual stack — even if that stack is plain HTML, not React+Tailwind. Port shadcn components by inlining Tailwind utility classes and rewriting JSX as semantic HTML where required.
+
+=== Constraints ===
+- Don't run install scripts inside references/. They are read-only.
+- Don't add either repo as a dependency to my project.
+- Don't copy reference files into my project root — only the specific
+  components/snippets I ask for, adapted to my stack.
+- references/ should be added to .gitignore if my project uses git.`
           }
         ]
       },
