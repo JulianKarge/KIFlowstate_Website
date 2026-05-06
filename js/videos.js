@@ -28,6 +28,45 @@
 
 const VIDEOS = [
   {
+    id: "xVuMcYM_5aE",
+    title: "Ich habe Claude ein eigenes Wiki gebaut",
+    publishedAt: "2026-05-06",
+    description: {
+      de: "Inspiriert von Andrej Karpathys LLM-Wiki-Idee: Claude bekommt ein eigenes, persistentes Wiki, das über Sessions hinweg mitwächst. Hier findest du die zwei Plugin-Befehle aus dem Video sowie das Original-Gist von Karpathy zum Nachlesen.",
+      en: "Inspired by Andrej Karpathy's \"LLM Wiki\" idea: Claude gets its own persistent wiki that grows across sessions. Below you'll find the two plugin commands from the video plus Karpathy's original gist for reference."
+    },
+    sections: [
+      {
+        heading: { de: "Plugin installieren (Claude Code)", en: "Install the plugin (Claude Code)" },
+        type: "prompts",
+        items: [
+          {
+            title: { de: "1. Marketplace hinzufügen", en: "1. Add the marketplace" },
+            content: `/plugin marketplace add bradautomates/claude-video`
+          },
+          {
+            title: { de: "2. Watch-Plugin installieren", en: "2. Install the watch plugin" },
+            content: `/plugin install watch@claude-video`
+          }
+        ]
+      },
+      {
+        heading: { de: "Repository & Inspiration", en: "Repository & inspiration" },
+        type: "links",
+        items: [
+          {
+            label: "Karpathy — LLM Wiki Gist",
+            url: "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
+            description: {
+              de: "Andrej Karpathys Original-Gist mit der LLM-Wiki-Idee — die Grundlage für das, was im Video gebaut wird.",
+              en: "Andrej Karpathy's original gist with the LLM Wiki idea — the foundation for what's built in the video."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "5jfWQ3Y9qRg",
     title: "Baue dein KI-Supermodell mit Claude Code",
     publishedAt: "2026-05-03",
