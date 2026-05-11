@@ -469,6 +469,20 @@ Mention these but *don't enable them automatically* — ask me first:
 Begin with Step 0 — ask me the questions about my setup, then proceed.`
           }
         ]
+      },
+      {
+        heading: { de: "Links & Ressourcen", en: "Links & resources" },
+        type: "links",
+        items: [
+          {
+            label: "DeepSeek Platform",
+            url: "https://platform.deepseek.com/",
+            description: {
+              de: "API-Key für DeepSeek erstellen. Die günstige Fallback-Option, falls dein Abo-Limit erreicht ist.",
+              en: "Create a DeepSeek API key. The cheap fallback when your subscription rate limit is hit."
+            }
+          }
+        ]
       }
     ]
   },
