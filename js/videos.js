@@ -28,6 +28,451 @@
 
 const VIDEOS = [
   {
+    id: "yJpb60o_4KQ",
+    title: {
+      de: "So steuerst du deinen PC von überall mit OpenClaw",
+      en: "Control your PC from anywhere with OpenClaw"
+    },
+    publishedAt: "2026-05-11",
+    description: {
+      de: "Mit OpenClaw läuft ein autonomer KI-Agent direkt auf deinem Rechner, erreichbar per Telegram, immer ansprechbar, auch wenn du gerade nicht am Schreibtisch sitzt. Hier findest du fünf konkrete Anwendungsfälle und den vollständigen Setup-Prompt zum Kopieren.",
+      en: "OpenClaw runs an autonomous AI agent right on your machine, reachable via Telegram, always on, even when you're away from your desk. Below you'll find five concrete use cases and the complete setup prompt ready to copy."
+    },
+    sections: [
+      {
+        heading: { de: "Fünf Anwendungsfälle", en: "Five use cases" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Fünf typische Einsatzszenarien, sobald OpenClaw läuft:</p>
+<ol>
+  <li>
+    <strong>Always-on Inbox-Triage.</strong>
+    Prüft alle paar Minuten E-Mails und Nachrichten, erkennt, was dringend ist,
+    fasst das Wichtige zusammen und meldet sich nur, wenn du wirklich
+    handeln musst.
+  </li>
+  <li>
+    <strong>Persönlicher Reminder- &amp; Follow-Up-Agent.</strong>
+    Du sagst ihm „erinnere mich, falls X bis Freitag nicht antwortet" oder
+    „check das später nochmal", und er behält das im Kopf, ohne dass du
+    eine Task-App öffnen musst.
+  </li>
+  <li>
+    <strong>Remote-Steuerung deines Rechners vom Handy.</strong>
+    Über Telegram oder Signal lässt du Dateien finden, Apps starten, Logs
+    prüfen, Befehle ausführen oder etwas vorbereiten, während du unterwegs
+    bist.
+  </li>
+  <li>
+    <strong>Meeting- &amp; Tagesvorbereitung.</strong>
+    Vor einem Call checkt er deinen Kalender, holt die relevanten Dokumente,
+    fasst den Kontext zusammen und bereitet Gesprächspunkte vor.
+  </li>
+  <li>
+    <strong>Hintergrund-Recherche und Drafting.</strong>
+    Du beauftragst Recherchen, Vergleiche, Skripte, Angebote, E-Mails oder
+    Content-Ideen. Er sucht, sammelt, schreibt und legt das Ergebnis fertig
+    ab.
+  </li>
+</ol>`,
+              en: `<p>Five typical scenarios once OpenClaw is running:</p>
+<ol>
+  <li>
+    <strong>Always-on inbox triage.</strong>
+    Checks email and messages every few minutes, detects what's urgent,
+    summarizes what matters, and only pings you when you actually need to act.
+  </li>
+  <li>
+    <strong>Personal reminder &amp; follow-up agent.</strong>
+    You tell it "remind me if X doesn't reply by Friday" or "check this
+    later," and it keeps track without you opening a task app.
+  </li>
+  <li>
+    <strong>Remote PC control from your phone.</strong>
+    From Telegram or Signal you can ask it to find files, start apps,
+    inspect logs, run commands, or prepare something on your computer while
+    you're away.
+  </li>
+  <li>
+    <strong>Meeting &amp; workday prep.</strong>
+    Before a call it can check your calendar, pull relevant docs, summarize
+    context and prepare talking points automatically.
+  </li>
+  <li>
+    <strong>Background research &amp; drafting.</strong>
+    Ask for research, comparisons, scripts, offers, emails, or content ideas.
+    It searches, compiles, drafts, and leaves the result ready as a file.
+  </li>
+</ol>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Setup-Prompt", en: "Setup prompt" },
+        type: "prompts",
+        items: [
+          {
+            title: { de: "OpenClaw — vollständiger Setup-Prompt", en: "OpenClaw — full setup prompt" },
+            content: `You are helping me install *OpenClaw* — an open-source autonomous AI agent
+framework (github.com/openclaw/openclaw, formerly Clawdbot) that runs on my
+machine, connects to messaging platforms like Telegram, and can do tasks for
+me proactively (heartbeats, cron, background coding agents).
+
+### Your role
+
+Walk me through the install *step by step, **verifying each step* before
+moving on. Don't barrel through. If a step fails, diagnose and fix the root
+cause — don't paper over with workarounds. Keep me in the loop with short
+status updates. Ask before any destructive action (deleting state, killing
+processes, installing system services). When you store credentials I give
+you, *never echo them back in plaintext* — refer to them by label instead.
+
+### What we're building
+
+By the end of this session, I should have:
+
+1. OpenClaw installed globally via npm.
+2. A Telegram bot I can DM that responds as my agent (default name:
+   pick something memorable — examples: "Aang", "Pi", "Claw").
+3. The gateway installed as a system service that auto-starts on every
+   boot/login, survives sleep/wake, and survives brief AC drops.
+4. The agent's "primary brain" routed through whichever AI subscription
+   I already pay for (so I'm not spending API tokens for chat).
+5. Optional: the coding-agent skill enabled so I can dispatch coding work
+   to Claude Code / Codex / Gemini CLI from Telegram and walk away.
+
+### Step 0 — Tell me about myself first
+
+Before any install command, ask me these questions and *wait for my answers*.
+Don't assume defaults. The answers shape the rest of the session:
+
+1. *OS?* (Windows 10/11, macOS, Linux)
+2. *Which AI subscriptions do I have?* (any of: Claude Pro, ChatGPT
+   Plus/Pro/Codex, Gemini Pro/Advanced, GitHub Copilot, none)
+3. *Do I have a paid LLM API key on hand?* (Anthropic, OpenAI, DeepSeek,
+   Google AI Studio). DeepSeek V4 is the cheap-and-good default if I want
+   to spend a little money rather than rely on subscription rate limits.
+4. *Messaging channel?* (Telegram is fastest to set up — about 2 min via
+   @BotFather. The alternative channels — Discord, Slack, WhatsApp,
+   Signal, etc. — work but take longer.)
+5. *Always-on?* (Will OpenClaw run on this machine 24/7, or is this a
+   laptop that closes? If laptop, we'll harden the install for sleep/wake.)
+
+### Step 1 — Prerequisites
+
+Verify before installing:
+
+- *Node.js 24 LTS* (or *Node 22.14+*). Run node --version. If older or
+  missing, install from nodejs.org first. Node 25+ may work but isn't on
+  the project's supported list.
+- *npm* comes with Node.
+- *Windows only*: WSL2 is recommended by the project. If I'm on bare
+  Windows, proceed with native Windows but flag any platform-specific
+  oddities as we hit them.
+
+### Step 2 — Install OpenClaw
+
+    npm install -g openclaw@latest
+
+Verify with openclaw --version. The version string includes today's date
+(e.g., 2026.5.6) — OpenClaw ships daily.
+
+### Step 3 — Initial configuration
+
+Run openclaw configure for the interactive wizard, *or* set values
+non-interactively. The minimum required keys before the gateway will start:
+
+- gateway.mode = "local" — *mandatory*, otherwise the gateway refuses
+  to start with "missing gateway.mode".
+- gateway.bind = "loopback"
+- gateway.port = 18789 (default)
+- agents.defaults.workspace — must be an **absolute path with forward
+  slashes** even on Windows (e.g., "C:/Users/me/.openclaw/workspace").
+  *Backslashes get eaten by JSON escaping in shell quoting* and the path
+  ends up relative to the current working directory. Do not use \\\\.
+- Make sure the workspace directory actually exists: mkdir -p it.
+
+Use openclaw config set <path> <json-value> for each. Examples:
+
+    openclaw config set gateway.mode '"local"'
+    openclaw config set gateway.bind '"loopback"'
+    openclaw config set gateway.port 18789
+    openclaw config set agents.defaults.workspace '"C:/Users/me/.openclaw/workspace"'
+    mkdir -p "C:/Users/me/.openclaw/workspace"   # adjust path
+
+### Step 4 — Pick the primary model (cost-aware)
+
+OpenClaw's "primary brain" runs on every Telegram message I send. This is
+the layer where token spend accumulates. Choose based on what I told you in
+Step 0.
+
+*Recommended priority:*
+
+1. *If I have ChatGPT Plus/Pro and the Codex CLI installed:* route the
+   primary brain through openai-codex provider with model gpt-5.5 (or
+   gpt-5.1 if 5.5 isn't in my available list). This uses my subscription
+   via OAuth, ~free up to rate limits.
+2. *If I have GitHub Copilot:* github-copilot/claude-opus-4.6 works
+   similarly.
+3. *If only paid API:* DeepSeek V4 Pro (deepseek/deepseek-v4-pro) —
+   cheapest competent reasoning model. Anthropic and OpenAI direct API are
+   pricier alternatives.
+
+Whatever I pick for primary, *add a paid-API fallback* so the agent
+doesn't go silent when I hit subscription rate limits:
+
+    openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.5"'
+    openclaw config set 'agents.defaults.models["openai-codex/gpt-5.5"]' '{}'
+    openclaw config set agents.defaults.model.fallbacks '["deepseek/deepseek-v4-pro"]'
+    openclaw config set 'agents.defaults.models["deepseek/deepseek-v4-pro"]' '{}'
+
+For *subagents* (concurrent worker model), use a cheap-and-fast model so
+parallel work doesn't blow the budget:
+
+    openclaw config set agents.defaults.subagents.model.primary '"deepseek/deepseek-v4-flash"'
+    openclaw config set 'agents.defaults.models["deepseek/deepseek-v4-flash"]' '{}'
+
+### Step 5 — Authenticate the chosen providers
+
+For each provider in the primary + fallback + subagent set, I need to
+register an auth profile.
+
+*Important for the assistant*: openclaw infer model auth login requires
+an interactive TTY. *You cannot drive it from your tool harness.* Tell me
+the exact command to run *myself* and what to expect:
+
+    openclaw infer model auth login --provider <provider-id>
+
+For each provider:
+
+- openai-codex → opens a browser for OAuth tied to my ChatGPT account.
+  This is the path that uses my subscription. If it asks for an API key
+  instead of a browser flow, that's metered API spend — abort and look for
+  a sign-in option.
+- deepseek → prompts for an API key (sk-...) from
+  platform.deepseek.com.
+- anthropic → prompts for an API key (sk-ant-...).
+- google → prompts for an API key from Google AI Studio.
+
+*Verify after each login:*
+
+    openclaw infer model auth status
+
+Look for missingProvidersInUse: [] (empty list = good).
+
+*Critical pitfall*: clipboard managers can append characters (notably +,
+trailing whitespace, or "smart-quoted" variants) when pasting an API key. If
+the gateway later returns "401 invalid api key" but the key looks right,
+*read the auth file directly*:
+
+    cat ~/.openclaw/agents/main/agent/auth-profiles.json
+
+Compare the stored key character-for-character with the original. If
+there's a stray suffix, edit the file directly to remove it.
+
+### Step 6 — Telegram bot
+
+Tell me to do this — I have to do it myself in Telegram:
+
+1. In Telegram, message *@BotFather*.
+2. Send /newbot.
+3. Pick a display name (e.g., "My Aang").
+4. Pick a username ending in bot (must be globally unique; e.g.,
+   myname_aang_bot).
+5. BotFather replies with a token like
+   1234567890:ABCdef-ghIjkLmNoPqRstUvWxYz. **Tell me to paste that to
+   you.** Treat the token as a credential — store it, don't echo it.
+
+Then configure OpenClaw (DM-only is the safest default):
+
+    openclaw config set channels.telegram.botToken '"<token>"'
+    openclaw config set channels.telegram.enabled true
+    openclaw config set channels.telegram.dmPolicy '"pairing"'
+    openclaw config set channels.telegram.groupPolicy '"allowlist"'
+    openclaw config set plugins.entries.telegram.enabled true
+
+### Step 7 — Start the gateway
+
+    openclaw gateway --verbose
+
+Watch the log. Success markers:
+
+- [gateway] ready
+- [telegram] [default] starting provider (@yourbot_name) — confirms the
+  bot token is valid and Telegram accepted it.
+- [heartbeat] started — the proactive tick is running.
+
+Common failure modes:
+
+- "Gateway start blocked: existing config is missing gateway.mode" → Step 3.
+- "Skipping agent main: workspace does not exist" → workspace path is
+  wrong (probably backslash-escaping); revisit Step 3 with forward slashes.
+
+### Step 8 — Pair my Telegram identity
+
+In Telegram, find my bot and send any message. The bot replies with a
+pairing code (e.g., ABCD1234) and tells me to ask the bot owner to
+approve it. The owner is *me*, on this machine:
+
+    openclaw pairing approve telegram <CODE>
+
+This also auto-promotes me to *command owner* (commands.ownerAllowFrom)
+if it was empty — meaning I can run privileged commands via Telegram.
+
+Now I should be able to DM the bot and get a real agent reply. Ask me to
+test before continuing.
+
+### Step 9 — Make it persistent (laptop hardening)
+
+Right now the gateway only runs while my terminal is open. To survive
+reboots and lid-close, install it as a service.
+
+*Linux*: openclaw gateway install creates a systemd unit. Run as a
+normal user; OpenClaw uses systemd --user.
+
+*macOS*: openclaw gateway install creates a launchd plist.
+
+*Windows*: needs admin + (almost always) a PowerShell execution policy
+fix. Walk me through this carefully:
+
+1. Press Win + X → *Terminal (Administrator)*.
+2. In the admin terminal:
+
+       Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+       openclaw gateway install
+
+3. Verify:
+
+       schtasks /Query /TN "OpenClaw Gateway" /V /FO LIST
+
+**Critical Windows hardening (must do, otherwise the task dies on lid
+close):** the default scheduled task has battery-killer settings turned on.
+Run this in the *admin* terminal:
+
+    $t = Get-ScheduledTask -TaskName "OpenClaw Gateway"
+    $t.Settings.DisallowStartIfOnBatteries = $false
+    $t.Settings.StopIfGoingOnBatteries     = $false
+    $t.Settings.RestartCount               = 5
+    $t.Settings.RestartInterval            = "PT1M"
+    $t.Settings.ExecutionTimeLimit         = "PT0S"
+    $resume = New-CimInstance -ClassName MSFT_TaskEventTrigger \`
+      -Namespace "Root/Microsoft/Windows/TaskScheduler" -ClientOnly -Property @{
+        Enabled = $true
+        Subscription = '<QueryList><Query Id="0" Path="System"><Select Path="System">*[System[Provider[@Name=''Microsoft-Windows-Power-Troubleshooter''] and EventID=1]]</Select></Query></QueryList>'
+      }
+    Set-ScheduledTask -TaskName "OpenClaw Gateway" \`
+      -Settings $t.Settings -Trigger @($t.Triggers + $resume)
+
+What it does:
+- Removes the "stop if on battery" / "don't start on battery" flags
+  (Windows briefly thinks you're on battery during sleep/wake transitions
+  and kills the task otherwise).
+- Auto-restart 5× with 1-minute interval if the gateway crashes.
+- Removes the default 72-hour execution time limit (lets it run forever).
+- Adds a "system resume from sleep" event trigger so the gateway is
+  guaranteed to refire after a wake.
+
+*Power settings*: also set sleep-on-AC to "Never" and lid-close on AC to
+"Do nothing" via Settings → System → Power & battery (or
+powercfg /change standby-timeout-ac 0). These don't need admin if I
+change them via Settings.
+
+### Step 10 — Verify everything
+
+    openclaw health
+    openclaw infer model auth status | grep missingProvidersInUse
+    openclaw agents list
+
+Expectations:
+- Gateway event loop is "ok" (or "degraded" briefly during startup, then ok).
+- missingProvidersInUse: [].
+- Workspace path is correct (no Userskarge.openclaw mangling).
+- Bot is reachable from my phone.
+
+*Smoke test*: send the bot "what model are you running on?" and confirm
+it answers within ~10–40 seconds (reasoning models with high thinking are
+slow on first tokens).
+
+### Step 11 — Optional power-ups
+
+Mention these but *don't enable them automatically* — ask me first:
+
+- *coding-agent skill*: lets the agent dispatch coding tasks to a
+  locally-installed claude (Claude Code), codex, or gemini CLI as a
+  background process. Telegram message in → 2-15 minutes later → "done"
+  ping with file paths. Enable with:
+
+      openclaw config set skills.entries.coding-agent.enabled true
+      openclaw gateway restart
+
+  Requires the relevant CLI(s) on PATH and authenticated. Verify with
+  which claude && which codex && which gemini (use where on Windows
+  cmd, Get-Command in PowerShell).
+
+- *Cron*: openclaw cron add for recurring scheduled tasks (morning
+  email summary, evening retro, watch-and-alert patterns). The proactive
+  heartbeat (default 30 min) covers ad-hoc proactivity already.
+
+- *Dashboard*: openclaw dashboard opens a local control panel at
+  http://127.0.0.1:18789/ with session logs, skills toggles, cron
+  manager, memory inspector. Same brain as Telegram, just a different
+  surface.
+
+- *More channels*: Discord, Slack, WhatsApp, Signal, iMessage (via
+  BlueBubbles) etc. Same channels.<name>.botToken / enabled /
+  dmPolicy pattern.
+
+### Pitfalls cheat sheet (if something breaks)
+
+- *"401 invalid api key"* despite a freshly-pasted key → check
+  auth-profiles.json for trailing characters from clipboard.
+- *"Skipping agent main: workspace does not exist"* → workspace path has
+  backslash escaping issues; use forward slashes, ensure dir exists.
+- *"Gateway start blocked: missing gateway.mode"* → set
+  gateway.mode = "local".
+- *PowerShell "Datei kann nicht geladen werden / cannot be loaded"* →
+  execution policy; fix with Set-ExecutionPolicy -Scope CurrentUser
+  RemoteSigned -Force in admin PowerShell.
+- *schtasks create failed: Access denied* → admin terminal needed.
+- *Bot replies with "OpenClaw: access not configured"* → I need to send
+  openclaw pairing approve telegram <CODE> from this machine.
+- *Gateway dies after closing the laptop* → battery-killer scheduled-task
+  settings; apply the hardening in Step 9.
+- *Subagents silently fall back to primary model* → known issue across
+  multiple OpenClaw versions; check the GitHub issue tracker for the
+  current state and worst case dispatch coding work explicitly via the
+  coding-agent skill instead of relying on automatic subagent routing.
+- *Slow first response (10–40 s)* → expected. Reasoning models +
+  thinking=high + ~30k-character system prompt. If chat feels too slow,
+  ask me whether to lower thinking to medium for everyday chat (trades
+  reasoning quality for speed).
+
+### Communication style I prefer from you
+
+- Concise. One short status line per real action. No paragraphs of
+  narration about your own thought process.
+- German Language during the whole conversation
+- File / directory references as clickable paths when supported.
+- Don't echo my API keys, bot tokens, or pairing codes back to me. Refer
+  to them by label.
+- When something fails, find the root cause from logs before suggesting a
+  workaround.
+- Pause and ask if you'd take a destructive action (delete ~/.openclaw,
+  kill running processes, force-overwrite my config). The cost of asking
+  is tiny; the cost of destroying state is large.
+- Save backups before deleting anything: mv ~/.openclaw
+  ~/.openclaw.backup-YYYY-MM-DD rather than rm -rf.
+
+Begin with Step 0 — ask me the questions about my setup, then proceed.`
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "xVuMcYM_5aE",
     title: "Ich habe Claude ein eigenes Wiki gebaut",
     publishedAt: "2026-05-06",
