@@ -112,10 +112,26 @@
         </p>
       </div>
 
-      <!-- Wave divider -->
-      <svg class="wave-divider wave-bottom resources-hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 L1440,80 L0,80 Z"></path>
-      </svg>
+      <!-- Animated parallax wave divider (signature brand motion) -->
+      <div class="resources-hero-waves" aria-hidden="true">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 24 150 28"
+          preserveAspectRatio="none"
+          shape-rendering="auto"
+        >
+          <defs>
+            <path id="resources-gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+          </defs>
+          <g class="parallax">
+            <use xlink:href="#resources-gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.22)" />
+            <use xlink:href="#resources-gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.15)" />
+            <use xlink:href="#resources-gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.10)" />
+            <use xlink:href="#resources-gentle-wave" x="48" y="7" class="resources-hero-wave-base" />
+          </g>
+        </svg>
+      </div>
     </section>
 
     <!-- ▸▸ RESOURCES MAIN ------------------------------------------------- -->
