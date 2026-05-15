@@ -28,6 +28,279 @@
 
 const VIDEOS = [
   {
+    // TODO: replace "TODO" with the real YouTube video ID once the Hermes video is uploaded.
+    id: "TODO",
+    title: {
+      de: "Hermes Agent | Dein KI-Mitarbeiter, der nie vergisst",
+      en: "Hermes Agent | Your AI coworker who never forgets"
+    },
+    thumbnailUrl: "images/vid9-hermes.png",
+    publishedAt: "2026-05-15",
+    description: {
+      de: "Hermes ist ein KI-Agent, der eigenständig Aufgaben übernimmt — hier zeige ich dir, wie ich ihn in meinen Workflow integriert habe und wofür ich ihn täglich nutze. Unten finden Sie den Setup-Prompt, mit dem Sie fünf Erweiterungen auf einmal aktivieren.",
+      en: "Hermes is an AI agent that handles tasks autonomously — here I'll show you how I've integrated it and what I use it for every day. Below you'll find the setup prompt that activates five extensions in one go."
+    },
+    sections: [
+      {
+        heading: { de: "Skill-Pack auf einmal aktivieren", en: "Activate the skill pack in one shot" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Mit einem einzigen Prompt richtet Hermes Ihr vollständiges
+<strong>Basis-Setup</strong> ein:
+<strong>Identität, Zeitzone &amp; Sprache</strong>,
+<strong>Tagesbudget</strong> für LLM-Kosten,
+<strong>Holographic Memory</strong> (sessionübergreifendes Gedächtnis),
+<strong>Kanban</strong> (Aufgabenverwaltung),
+<strong>Walk-Away Mode</strong> (langes autonomes Arbeiten),
+<strong>Remote Approval Gate</strong> (Sicherheitsabfrage vor unwiderruflichen Aktionen),
+<strong>MCP-Integration</strong> (Filesystem, Git, Web Search) und
+<strong>automatisches Backup</strong> Ihrer Memory- und Kanban-Daten.</p>
+<p>Bevor Hermes etwas installiert, stellt er Ihnen eine
+<strong>kurze Q&amp;A</strong> mit allen Fragen auf einmal — so wird das
+Setup auf Sie persönlich zugeschnitten (z. B. Backup-Ziel, Tagesbudget in €,
+gewünschte zusätzliche MCPs). Halten Sie idealerweise Credentials für Ihr
+Backup-Ziel bereit (S3, Backblaze, Google Drive oder ein anderer Pfad).</p>
+<p>Der Agent prüft selbständig, was bereits eingerichtet ist, und überspringt
+vorhandene Komponenten — Sie können den Prompt also gefahrlos auch mehrfach
+schicken. Am Ende erhalten Sie im selben Chat einen kompakten Statusbericht
+(✅ neu / ⏭️ vorhanden / ❌ fehlgeschlagen).</p>
+<p><strong>So gehen Sie vor:</strong> Prompt unten kopieren und an Hermes
+schicken — egal über welchen Kanal Sie den Agenten ansprechen
+(Messenger, Web-UI, Terminal). Kurz die Q&amp;A beantworten, fertig.</p>`,
+              en: `<p>A single prompt sets up your complete Hermes
+<strong>base configuration</strong>:
+<strong>identity, timezone &amp; language</strong>,
+a <strong>daily cost cap</strong> for LLM usage,
+<strong>Holographic Memory</strong> (cross-session memory),
+<strong>Kanban</strong> (task management),
+<strong>Walk-Away Mode</strong> (long autonomous runs),
+<strong>Remote Approval Gate</strong> (safety check before irreversible actions),
+<strong>MCP integration</strong> (filesystem, git, web search), and
+<strong>automatic backup</strong> of your memory and kanban data.</p>
+<p>Before installing anything, Hermes runs a <strong>short Q&amp;A</strong>
+with all questions in one batch, so the setup is tailored to you (e.g.
+backup target, daily budget in €, optional extra MCPs). Have credentials
+ready for your backup target (S3, Backblaze, Google Drive, or another
+path).</p>
+<p>The agent checks what's already in place and skips anything present — so
+it's safe to send more than once. At the end you'll get a compact status
+report in the same chat (✅ new / ⏭️ already present / ❌ failed).</p>
+<p><strong>How to use it:</strong> copy the prompt below and send it to
+Hermes — whichever channel you talk to the agent through (messenger,
+web UI, terminal). Answer the short Q&amp;A, done.</p>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Setup-Prompt", en: "Setup prompt" },
+        type: "prompts",
+        items: [
+          {
+            title: {
+              de: "Hermes Basis-Setup — komplettes Setup mit kurzer Q&A",
+              en: "Hermes base setup — complete setup with a short Q&A"
+            },
+            content: {
+              de: `Sie sind Hermes Agent. Bitte richten Sie mein vollständiges Basis-Setup ein.
+
+ABLAUF (bitte in dieser Reihenfolge):
+1. ZUERST: alle acht Punkte unten lesen.
+2. DANN: alle [FRAGEN]-Punkte (0, 1, 6, 7) in EINER einzigen Nachricht im
+   aktuellen Chat stellen — als nummerierte Liste, mit Vorschlagswerten in
+   Klammern, damit ich nur das Nötigste eintippen muss.
+3. AUF MEINE ANTWORTEN WARTEN. Nichts installieren, bevor ich geantwortet habe.
+4. DANACH: alles installieren / konfigurieren. Vorhandenes überspringen.
+5. ABSCHLUSS: kompakten Statusbericht ausgeben (siehe unten).
+
+REGELN:
+- Vor jeder Installation prüfen, ob bereits vorhanden. Wenn ja: überspringen.
+- Verhaltensregeln, Modi, Gates, Budget und Backup-Plan in der
+  Systemkonfiguration verankern (z. B. CLAUDE.md, AGENTS.md oder dem
+  entsprechenden Hermes-Instruction-File), damit sie sessionübergreifend
+  gelten — nicht nur in dieser Konversation.
+- Bei fehlenden Infos oder Unklarheiten: im aktuellen Chat zurückfragen
+  statt raten.
+
+── GRUNDEINSTELLUNGEN ──
+
+0) Identität, Zeitzone & Sprache  [FRAGEN]
+   - Wie soll ich Sie ansprechen? (Vor- oder Vor-/Nachname; Sie- oder Du-Form)
+   - Default-Antwortsprache? (Deutsch / Englisch / passend zur Eingabe)
+   - Zeitzone? (Vorschlag: Europe/Berlin)
+   Als feste Werte in der Systemkonfiguration hinterlegen.
+
+1) Tagesbudget für LLM-Kosten  [FRAGEN]
+   - Maximales Tagesbudget in € oder Tokens? (Vorschlag: 5 € pro Tag)
+   - Verhalten bei Erreichen? (a) hart stoppen, (b) erst nachfragen
+   Cost-Tracker installieren, falls noch nicht vorhanden. Limit als hartes
+   Cap in der Systemkonfiguration verankern.
+
+── FÄHIGKEITEN ──
+
+2) Holographic Memory
+   Aktivieren Sie den Hermes-Memory-Provider „holographic" — ein lokales,
+   HRR-basiertes Langzeitgedächtnis (Holographic Reduced Representations)
+   mit SQLite-Speicher, Trust-Scoring (selbstkorrigierend, wiederholt
+   bestätigte Erinnerungen gewinnen Gewicht) und ohne externe Services.
+   - Zuerst ~/.hermes/config.yaml prüfen. Wenn dort bereits
+     "memory: { provider: holographic }" gesetzt ist: überspringen.
+   - Andernfalls: entweder den Wizard ausführen
+       hermes memory setup
+     und "holographic" auswählen — oder die Konfiguration direkt eintragen:
+       memory:
+         provider: holographic
+   - Standard-Speicherort akzeptieren (lokale SQLite-Datei am Hermes-Default).
+
+3) Kanban
+   Aktivieren Sie das Kanban-Modul von Hermes (Spalten: Backlog / In Arbeit /
+   Wartet / Erledigt). Konfigurieren Sie es so, dass neue Aufgaben aus
+   eingehenden Nachrichten automatisch im Backlog landen und ich den Status
+   per Nachricht ändern kann.
+
+4) Walk-Away Mode
+   Modus für autonomes Arbeiten über längere Zeit (Standard-Fenster: 30 Minuten).
+   Statt einzelner Zwischenfragen liefern Sie eine zusammengefasste Statusmeldung
+   am Ende des Fensters oder sobald ein Block erledigt ist. Unterbrechen Sie nur
+   bei echten Blockern oder wenn der Approval Gate (Punkt 5) auslöst.
+
+5) Remote Approval Gate
+   Vor jeder unwiderruflichen oder kostenverursachenden Aktion — Dateien löschen,
+   E-Mails versenden, Zahlungen, kostenpflichtige API-Calls, git push --force,
+   DNS- oder Domain-Änderungen — schreiben Sie mir im aktuellen Chat:
+     Aktion · Begründung · erwartete Auswirkung.
+   Warten Sie auf „ok" / „nein" / freie Antwort. Bei „nein" oder Timeout
+   (10 Minuten): abbrechen und melden.
+
+6) MCP-Integration  [FRAGEN]
+   Installieren Sie die Basis-MCP-Server (Filesystem, Git, Web Search) und
+   verbinden Sie sie mit Ihrer MCP-Konfiguration.
+   - Soll ich darüber hinaus weitere MCPs einrichten?
+     (z. B. Notion, Linear, Gmail, Kalender — bitte nennen, welche.)
+   - Falls ja: benötigte Credentials einzeln abfragen, bevor installiert wird.
+
+── SICHERUNG ──
+
+7) Automatisches Backup  [FRAGEN]
+   Tägliches Backup von Holographic-Memory-DB, Kanban-Stand und
+   Hermes-Konfiguration.
+   - Wohin? (z. B. S3, Backblaze B2, Google Drive, lokaler Pfad auf
+     separatem Volume)
+   - Wie oft? (Vorschlag: täglich 03:00 lokale Zeit)
+   - Aufbewahrung? (Vorschlag: 30 Tage rollierend)
+   - Credentials / Bucket / Ordner-Pfad? (einzeln abfragen)
+   Cron-Job (oder systemd-Timer) anlegen, einen Test-Backup-Lauf direkt
+   nach der Einrichtung ausführen und Erfolg melden.
+
+── ABSCHLUSS ──
+
+Geben Sie im selben Chat eine kompakte Statusliste aus:
+  ✅ neu installiert  ⏭️ bereits vorhanden  ❌ fehlgeschlagen (mit Begründung)
+Bei Fehlern nicht eigenständig debuggen, sondern Fehler melden und auf
+meine Anweisung warten.`,
+              en: `You are Hermes Agent. Please set up my complete base configuration.
+
+FLOW (please follow this order):
+1. FIRST: read all eight items below.
+2. THEN: ask every [QUESTIONS] item (0, 1, 6, 7) in a SINGLE message in the
+   current chat — as a numbered list, with suggested defaults in brackets,
+   so I only need to type the bits that differ.
+3. WAIT for my answers. Do not install anything before I have replied.
+4. THEN: install / configure everything. Skip anything already present.
+5. WRAP-UP: output a compact status report (see below).
+
+RULES:
+- Before any install, check whether it's already in place. If yes: skip.
+- Persist behavioral rules, modes, gates, budget and backup plan to your
+  system configuration (e.g. CLAUDE.md, AGENTS.md or the equivalent Hermes
+  instruction file) so they apply across sessions — not just here.
+- For missing information or anything unclear: ask back in the current chat
+  instead of guessing.
+
+── FOUNDATIONS ──
+
+0) Identity, timezone & language  [QUESTIONS]
+   - How should I address you? (first or first + last name; formal or casual)
+   - Default response language? (German / English / match the input)
+   - Timezone? (suggestion: Europe/Berlin)
+   Persist as fixed values in the system configuration.
+
+1) Daily LLM cost cap  [QUESTIONS]
+   - Max daily budget in € or tokens? (suggestion: 5 € per day)
+   - On reaching the cap? (a) hard stop, (b) ask before continuing
+   Install a cost tracker if not already present. Enforce the cap as a hard
+   limit in the system configuration.
+
+── CAPABILITIES ──
+
+2) Holographic Memory
+   Enable the Hermes memory provider "holographic" — a local, HRR-based
+   long-term memory (Holographic Reduced Representations) backed by SQLite,
+   with trust scoring (self-correcting: memories confirmed repeatedly gain
+   weight) and no external services.
+   - First check ~/.hermes/config.yaml. If "memory: { provider: holographic }"
+     is already set: skip.
+   - Otherwise: either run the wizard
+       hermes memory setup
+     and select "holographic" — or write the config directly:
+       memory:
+         provider: holographic
+   - Accept the default storage location (local SQLite at the Hermes default).
+
+3) Kanban
+   Enable the Hermes kanban module (columns: Backlog / In Progress / Waiting /
+   Done). Configure it so new tasks from incoming messages automatically land
+   in Backlog and I can update status by message.
+
+4) Walk-Away Mode
+   Autonomous-operation mode for extended windows (default: 30 minutes).
+   Instead of intermediate questions, deliver one consolidated status update
+   at the end of the window or once a block is complete. Interrupt only for
+   real blockers or when the Approval Gate (item 5) triggers.
+
+5) Remote Approval Gate
+   Before any irreversible or cost-incurring action — deleting files, sending
+   email, payments, paid API calls, git push --force, DNS / domain changes —
+   message me in the current chat:
+     Action · Reason · Expected impact.
+   Wait for "ok" / "no" / free-form response. On "no" or timeout (10 minutes):
+   abort and report.
+
+6) MCP integration  [QUESTIONS]
+   Install the base MCP servers (Filesystem, Git, Web Search) and wire them
+   into your MCP config.
+   - Should I install any additional MCPs?
+     (e.g. Notion, Linear, Gmail, Calendar — please name which.)
+   - If yes: ask for the needed credentials one by one before installing.
+
+── BACKUP ──
+
+7) Automatic backup  [QUESTIONS]
+   Daily backup of the Holographic Memory DB, Kanban state, and Hermes
+   configuration.
+   - Where to? (e.g. S3, Backblaze B2, Google Drive, local path on a
+     separate volume)
+   - How often? (suggestion: daily at 03:00 local time)
+   - Retention? (suggestion: 30 days rolling)
+   - Credentials / bucket / folder path? (ask for each separately)
+   Create a cron job (or systemd timer), run a test backup immediately
+   after setup, and report success.
+
+── WRAP-UP ──
+
+Output a compact status list in the same chat:
+  ✅ newly installed  ⏭️ already present  ❌ failed (with reason)
+On failure: do not debug autonomously — report the error and wait for
+instructions.`
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "yJpb60o_4KQ",
     title: {
       de: "So steuerst du deinen PC von überall mit OpenClaw",
