@@ -35,7 +35,7 @@ const VIDEOS = [
       en: "Hermes Agent | Your AI coworker who never forgets"
     },
     thumbnailUrl: "images/vid9-hermes.png",
-    publishedAt: "2026-05-15",
+    publishedAt: "coming-soon",
     description: {
       de: "Hermes ist ein KI-Agent, der eigenständig Aufgaben übernimmt — hier zeige ich dir, wie ich ihn in meinen Workflow integriert habe und wofür ich ihn täglich nutze. Unten finden Sie den Setup-Prompt, mit dem Sie fünf Erweiterungen auf einmal aktivieren.",
       en: "Hermes is an AI agent that handles tasks autonomously — here I'll show you how I've integrated it and what I use it for every day. Below you'll find the setup prompt that activates five extensions in one go."
