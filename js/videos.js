@@ -297,6 +297,122 @@ instructions.`
             }
           }
         ]
+      },
+      {
+        heading: { de: "Google Calendar anbinden (read-only)", en: "Connect Google Calendar (read-only)" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Hermes kann Ihren Google-Kalender <strong>nur lesen</strong> — ideal, wenn der Agent kommende Termine kennen, aber nichts ändern soll. Sechs Schritte, etwa zehn Minuten Aufwand.</p>
+<ol>
+  <li>
+    <strong>Google Cloud Projekt anlegen.</strong>
+    In der Google Cloud Console ein Projekt erstellen oder auswählen. Anschließend die Google Calendar API aktivieren unter <em>APIs &amp; Services → Library → Google Calendar API → Enable</em>.
+  </li>
+  <li>
+    <strong>OAuth Consent Screen konfigurieren.</strong>
+    Unter <em>APIs &amp; Services → OAuth consent screen</em>. Für private Nutzung reicht der Testing-Modus. Die eigene Google-Adresse als Test User eintragen. Scope möglichst eng halten: <code>https://www.googleapis.com/auth/calendar.readonly</code>.
+  </li>
+  <li>
+    <strong>OAuth Client erstellen.</strong>
+    <em>APIs &amp; Services → Credentials → Create Credentials → OAuth client ID</em>. Application type: <strong>Desktop app</strong>. JSON-Datei herunterladen.
+  </li>
+  <li>
+    <strong>JSON in Hermes hinterlegen.</strong>
+    Die heruntergeladene Client-JSON in Hermes speichern, z. B. als <code>google_client_secret.json</code>. Secrets nie öffentlich committen.
+  </li>
+  <li>
+    <strong>OAuth-Link generieren.</strong>
+    Hermes erzeugt eine Google-Login-URL mit Calendar-read-only-Scope. URL im Browser öffnen, mit dem Test-User anmelden, danach die komplette Redirect-URL (mit <code>code=…</code>) zurück an Hermes geben.
+  </li>
+  <li>
+    <strong>Token speichern und testen.</strong>
+    Hermes tauscht den Code gegen einen lokalen Token, z. B. <code>google_token.json</code>. Direkt einen Live-Test ausführen: Kalenderliste oder kommende Termine abrufen.
+  </li>
+</ol>
+<p><strong>Häufige Stolperfallen</strong></p>
+<ul>
+  <li><code>access_denied</code> von Google → der verwendete Google-Account ist wahrscheinlich nicht als Test User eingetragen.</li>
+  <li><code>Google Calendar API disabled</code> → Calendar API im Projekt aktivieren und ein paar Minuten warten.</li>
+  <li>Redirect-Fehler → für Desktop-App-OAuth den Standard-Redirect <code>http://localhost</code> nutzen.</li>
+  <li>Nur <code>calendar.readonly</code>-Scope verwenden, wenn Hermes Termine lediglich lesen soll — sonst bekommt der Agent mehr Rechte als nötig.</li>
+  <li><strong>Niemals</strong> <code>client_secret</code>, OAuth-Code oder Token öffentlich speichern oder ins Repo committen.</li>
+</ul>`,
+              en: `<p>Hermes can <strong>read-only</strong> access your Google Calendar — perfect when the agent should know your upcoming events but never change them. Six steps, about ten minutes of effort.</p>
+<ol>
+  <li>
+    <strong>Create a Google Cloud project.</strong>
+    In the Google Cloud Console, create or select a project. Then enable the Google Calendar API at <em>APIs &amp; Services → Library → Google Calendar API → Enable</em>.
+  </li>
+  <li>
+    <strong>Configure the OAuth Consent Screen.</strong>
+    Under <em>APIs &amp; Services → OAuth consent screen</em>. Testing mode is enough for private use. Add your own Google address as a Test User. Keep the scope as narrow as possible: <code>https://www.googleapis.com/auth/calendar.readonly</code>.
+  </li>
+  <li>
+    <strong>Create the OAuth client.</strong>
+    <em>APIs &amp; Services → Credentials → Create Credentials → OAuth client ID</em>. Application type: <strong>Desktop app</strong>. Download the JSON file.
+  </li>
+  <li>
+    <strong>Store the JSON in Hermes.</strong>
+    Save the downloaded client JSON in Hermes, e.g. as <code>google_client_secret.json</code>. Never commit secrets publicly.
+  </li>
+  <li>
+    <strong>Generate the OAuth link.</strong>
+    Hermes produces a Google login URL with the calendar-read-only scope. Open the URL in your browser, sign in with the test user, then paste the complete redirect URL (containing <code>code=…</code>) back to Hermes.
+  </li>
+  <li>
+    <strong>Save the token and test.</strong>
+    Hermes exchanges the code for a local token, e.g. <code>google_token.json</code>. Run a live test right away: fetch the calendar list or upcoming events.
+  </li>
+</ol>
+<p><strong>Common pitfalls</strong></p>
+<ul>
+  <li><code>access_denied</code> from Google → the account you signed in with is most likely not registered as a Test User.</li>
+  <li><code>Google Calendar API disabled</code> → enable the Calendar API in the project and wait a few minutes.</li>
+  <li>Redirect errors → for desktop-app OAuth, use the default <code>http://localhost</code> redirect.</li>
+  <li>Only use the <code>calendar.readonly</code> scope when Hermes should only read events — otherwise the agent gets more permissions than needed.</li>
+  <li><strong>Never</strong> store or commit <code>client_secret</code>, OAuth code, or tokens publicly.</li>
+</ul>`
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "f2ZTBqFPG3c",
+    title: {
+      de: "So macht du ChatGPT zu deinem Motion Graphics Editor",
+      en: "Turn ChatGPT into your Motion Graphics Editor"
+    },
+    publishedAt: "2026-05-16",
+    description: {
+      de: "Motion Graphics manuell editieren ist mühsam. Hyperframes erlaubt es Coding-Modellen wie Codex oder Claude Code, Animationen direkt als HTML zu schreiben und als Video zu rendern. Unten finden Sie die Links zu Codex und zum Hyperframes-Repository.",
+      en: "Editing motion graphics by hand is painful. Hyperframes lets coding models like Codex or Claude Code write animations directly as HTML and render them as video. Below you'll find the links to Codex and the Hyperframes repository."
+    },
+    sections: [
+      {
+        heading: { de: "Tools & Repository", en: "Tools & repository" },
+        type: "links",
+        items: [
+          {
+            label: "OpenAI Codex App",
+            url: "https://developers.openai.com/codex/app",
+            description: {
+              de: "Die Codex-App von OpenAI — das Coding-Modell, mit dem im Video die HTML-Motion-Graphics geschrieben werden.",
+              en: "OpenAI's Codex app — the coding model used in the video to write the HTML motion graphics."
+            }
+          },
+          {
+            label: "Hyperframes (GitHub)",
+            url: "https://github.com/heygen-com/hyperframes",
+            description: {
+              de: "Open-Source-Framework von HeyGen: HTML schreiben, Video rendern. Gebaut für KI-Agenten.",
+              en: "HeyGen's open-source framework: write HTML, render video. Built for AI agents."
+            }
+          }
+        ]
       }
     ]
   },
