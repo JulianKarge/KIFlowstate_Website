@@ -381,48 +381,13 @@ instructions.`
     ]
   },
   {
-    id: "f2ZTBqFPG3c",
-    title: {
-      de: "So macht du ChatGPT zu deinem Motion Graphics Editor",
-      en: "Turn ChatGPT into your Motion Graphics Editor"
-    },
-    publishedAt: "2026-05-16",
-    description: {
-      de: "Motion Graphics manuell editieren ist mühsam. Hyperframes erlaubt es Coding-Modellen wie Codex oder Claude Code, Animationen direkt als HTML zu schreiben und als Video zu rendern. Unten finden Sie die Links zu Codex und zum Hyperframes-Repository.",
-      en: "Editing motion graphics by hand is painful. Hyperframes lets coding models like Codex or Claude Code write animations directly as HTML and render them as video. Below you'll find the links to Codex and the Hyperframes repository."
-    },
-    sections: [
-      {
-        heading: { de: "Tools & Repository", en: "Tools & repository" },
-        type: "links",
-        items: [
-          {
-            label: "OpenAI Codex App",
-            url: "https://developers.openai.com/codex/app",
-            description: {
-              de: "Die Codex-App von OpenAI — das Coding-Modell, mit dem im Video die HTML-Motion-Graphics geschrieben werden.",
-              en: "OpenAI's Codex app — the coding model used in the video to write the HTML motion graphics."
-            }
-          },
-          {
-            label: "Hyperframes (GitHub)",
-            url: "https://github.com/heygen-com/hyperframes",
-            description: {
-              de: "Open-Source-Framework von HeyGen: HTML schreiben, Video rendern. Gebaut für KI-Agenten.",
-              en: "HeyGen's open-source framework: write HTML, render video. Built for AI agents."
-            }
-          }
-        ]
-      }
-    ]
-  },
-  {
     // TODO: replace "TODO-three-skills" with the real YouTube video ID once the video is uploaded.
     id: "TODO-three-skills",
     title: {
-      de: "3 Skills, die jeder KI-Agent haben sollte",
-      en: "3 skills every AI agent should have"
+      de: "Diese 3 Agenten Skills nutze ich täglich",
+      en: "The 3 agent skills I use every day"
     },
+    thumbnailUrl: "images/vid11-three-skills.png",
     publishedAt: "coming-soon",
     description: {
       de: "Drei wiederverwendbare Agent-Skills, die ich täglich nutze: ein persönlicher Admin- und Assistenz-Workflow, ein Research-Briefing-Skill und ein YouTube-Content-Workflow. Jeder Prompt führt zuerst ein kurzes Questionnaire durch und richtet den Skill dann auf Ihre Tools, Ihren Stil und Ihre Prioritäten ein.",
@@ -860,6 +825,42 @@ Der Skill soll folgendes Feedback verstehen:
 
 Wichtig:
 Das Ergebnis soll Creator unterstützen, nicht ersetzen. Der Skill soll Struktur, Recherche und Entwürfe liefern, aber Raum für persönliche Meinung, Erfahrung und Aufnahme-Stil lassen.`
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "f2ZTBqFPG3c",
+    title: {
+      de: "So macht du ChatGPT zu deinem Motion Graphics Editor",
+      en: "Turn ChatGPT into your Motion Graphics Editor"
+    },
+    publishedAt: "2026-05-16",
+    description: {
+      de: "Motion Graphics manuell editieren ist mühsam. Hyperframes erlaubt es Coding-Modellen wie Codex oder Claude Code, Animationen direkt als HTML zu schreiben und als Video zu rendern. Unten finden Sie die Links zu Codex und zum Hyperframes-Repository.",
+      en: "Editing motion graphics by hand is painful. Hyperframes lets coding models like Codex or Claude Code write animations directly as HTML and render them as video. Below you'll find the links to Codex and the Hyperframes repository."
+    },
+    sections: [
+      {
+        heading: { de: "Tools & Repository", en: "Tools & repository" },
+        type: "links",
+        items: [
+          {
+            label: "OpenAI Codex App",
+            url: "https://developers.openai.com/codex/app",
+            description: {
+              de: "Die Codex-App von OpenAI — das Coding-Modell, mit dem im Video die HTML-Motion-Graphics geschrieben werden.",
+              en: "OpenAI's Codex app — the coding model used in the video to write the HTML motion graphics."
+            }
+          },
+          {
+            label: "Hyperframes (GitHub)",
+            url: "https://github.com/heygen-com/hyperframes",
+            description: {
+              de: "Open-Source-Framework von HeyGen: HTML schreiben, Video rendern. Gebaut für KI-Agenten.",
+              en: "HeyGen's open-source framework: write HTML, render video. Built for AI agents."
+            }
           }
         ]
       }
