@@ -37,8 +37,8 @@ const VIDEOS = [
     thumbnailUrl: "images/vid9-hermes.png",
     publishedAt: "coming-soon",
     description: {
-      de: "Hermes ist ein KI-Agent, der eigenständig Aufgaben übernimmt — hier zeige ich dir, wie ich ihn in meinen Workflow integriert habe und wofür ich ihn täglich nutze. Unten finden Sie den Setup-Prompt, mit dem Sie fünf Erweiterungen auf einmal aktivieren.",
-      en: "Hermes is an AI agent that handles tasks autonomously — here I'll show you how I've integrated it and what I use it for every day. Below you'll find the setup prompt that activates five extensions in one go."
+      de: "Hermes ist ein KI-Agent, der eigenständig Aufgaben übernimmt. Hier zeige ich dir, wie ich ihn in meinen Workflow integriert habe und wofür ich ihn täglich nutze. Unten finden Sie den Setup-Prompt, mit dem Sie fünf Erweiterungen auf einmal aktivieren.",
+      en: "Hermes is an AI agent that handles tasks autonomously. Here I'll show you how I've integrated it and what I use it for every day. Below you'll find the setup prompt that activates five extensions in one go."
     },
     sections: [
       {
@@ -58,16 +58,16 @@ const VIDEOS = [
 <strong>MCP-Integration</strong> (Filesystem, Git, Web Search) und
 <strong>automatisches Backup</strong> Ihrer Memory- und Kanban-Daten.</p>
 <p>Bevor Hermes etwas installiert, stellt er Ihnen eine
-<strong>kurze Q&amp;A</strong> mit allen Fragen auf einmal — so wird das
+<strong>kurze Q&amp;A</strong> mit allen Fragen auf einmal. So wird das
 Setup auf Sie persönlich zugeschnitten (z. B. Backup-Ziel, Tagesbudget in €,
 gewünschte zusätzliche MCPs). Halten Sie idealerweise Credentials für Ihr
 Backup-Ziel bereit (S3, Backblaze, Google Drive oder ein anderer Pfad).</p>
 <p>Der Agent prüft selbständig, was bereits eingerichtet ist, und überspringt
-vorhandene Komponenten — Sie können den Prompt also gefahrlos auch mehrfach
+vorhandene Komponenten. Sie können den Prompt also gefahrlos auch mehrfach
 schicken. Am Ende erhalten Sie im selben Chat einen kompakten Statusbericht
 (✅ neu / ⏭️ vorhanden / ❌ fehlgeschlagen).</p>
 <p><strong>So gehen Sie vor:</strong> Prompt unten kopieren und an Hermes
-schicken — egal über welchen Kanal Sie den Agenten ansprechen
+schicken, egal über welchen Kanal Sie den Agenten ansprechen
 (Messenger, Web-UI, Terminal). Kurz die Q&amp;A beantworten, fertig.</p>`,
               en: `<p>A single prompt sets up your complete Hermes
 <strong>base configuration</strong>:
@@ -84,12 +84,12 @@ with all questions in one batch, so the setup is tailored to you (e.g.
 backup target, daily budget in €, optional extra MCPs). Have credentials
 ready for your backup target (S3, Backblaze, Google Drive, or another
 path).</p>
-<p>The agent checks what's already in place and skips anything present — so
+<p>The agent checks what's already in place and skips anything present, so
 it's safe to send more than once. At the end you'll get a compact status
 report in the same chat (✅ new / ⏭️ already present / ❌ failed).</p>
 <p><strong>How to use it:</strong> copy the prompt below and send it to
-Hermes — whichever channel you talk to the agent through (messenger,
-web UI, terminal). Answer the short Q&amp;A, done.</p>`
+Hermes through whichever channel you talk to the agent
+(messenger, web UI, terminal). Answer the short Q&amp;A, done.</p>`
             }
           }
         ]
@@ -295,6 +295,455 @@ Output a compact status list in the same chat:
 On failure: do not debug autonomously — report the error and wait for
 instructions.`
             }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    // TODO: replace "TODO-three-skills" with the real YouTube video ID once the video is uploaded.
+    id: "TODO-three-skills",
+    title: {
+      de: "3 Skills, die jeder KI-Agent haben sollte",
+      en: "3 skills every AI agent should have"
+    },
+    publishedAt: "coming-soon",
+    description: {
+      de: "Drei wiederverwendbare Agent-Skills, die ich täglich nutze: ein persönlicher Admin- und Assistenz-Workflow, ein Research-Briefing-Skill und ein YouTube-Content-Workflow. Jeder Prompt führt zuerst ein kurzes Questionnaire durch und richtet den Skill dann auf Ihre Tools, Ihren Stil und Ihre Prioritäten ein.",
+      en: "Three reusable agent skills I use every day: a personal admin and assistant workflow, a research briefing skill, and a YouTube content workflow. Each prompt runs a short questionnaire first and then tailors the skill to your tools, your style, and your priorities."
+    },
+    sections: [
+      {
+        heading: { de: "Worum es geht", en: "What this is" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Jeder der drei Prompts unten richtet einen eigenständigen Agent-Skill ein. Die Prompts sind unabhängig voneinander, brauchen keine zusätzlichen Plugins und funktionieren in jedem fähigen Assistenten (Claude, ChatGPT, Hermes, OpenClaw …).</p>
+<ol>
+  <li><strong>Personal Assistant / Admin Skill</strong> — E-Mails, Kalender, Termine und Follow-ups in eine klare Tagesübersicht bringen.</li>
+  <li><strong>Research Briefing / Daily Newsletter Skill</strong> — relevante Signale aus Quellen erkennen, priorisieren und in ein kompaktes Briefing verwandeln.</li>
+  <li><strong>YouTube Content Workflow Skill</strong> — aus einer Idee ein strukturiertes Content-Paket mit These, Hook, Outline, Skript und Shorts-Ideen machen.</li>
+</ol>
+<p>Wählen Sie unten den passenden Prompt, kopieren Sie ihn und schicken Sie ihn an Ihren Agenten. Der Agent stellt zuerst ein paar Fragen, fasst Ihre Antworten zusammen und baut daraus einen Skill, der zu Ihrer Situation passt.</p>`,
+              en: `<p>Each of the three prompts below sets up a standalone agent skill. They are independent of each other, need no extra plugins, and work in any capable assistant (Claude, ChatGPT, Hermes, OpenClaw, …).</p>
+<ol>
+  <li><strong>Personal Assistant / Admin Skill</strong> — turn email, calendar, meetings, and follow-ups into one clear daily overview.</li>
+  <li><strong>Research Briefing / Daily Newsletter Skill</strong> — surface relevant signals from your sources, score them, and turn them into a compact briefing.</li>
+  <li><strong>YouTube Content Workflow Skill</strong> — go from an idea to a structured content package: thesis, hook, outline, script, shorts.</li>
+</ol>
+<p>Pick the prompt that fits, copy it, and send it to your agent. The agent will ask a short set of questions, summarize your answers, and build a personalized skill from them.</p>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Setup-Prompts", en: "Setup prompts" },
+        type: "prompts",
+        items: [
+          {
+            title: {
+              de: "1. Personal Assistant / Admin Skill",
+              en: "1. Personal Assistant / Admin Skill"
+            },
+            content: `Richte einen wiederverwendbaren Agent-Skill ein:
+
+Name:
+Personal Assistant / Admin Skill
+
+Ziel:
+Der Skill soll als persönlicher Admin- und Assistenz-Workflow dienen. Er soll dabei helfen, E-Mails, Kalender, Dateien, Kontakte, Notizen und offene Aufgaben in eine klare, priorisierte Übersicht zu bringen.
+
+Dieser Prompt soll eigenständig funktionieren. Er ist nicht von anderen Skills abhängig.
+
+Wichtig:
+Bevor du den Skill erstellst, führe zuerst ein kurzes Questionnaire durch. Stelle mir die Fragen nacheinander oder in übersichtlichen Blöcken. Nutze meine Antworten, um den Skill auf meine Situation, meine Tools, meine Prioritäten und meinen Arbeitsstil anzupassen.
+
+Arbeitsweise:
+1. Prüfe zuerst, welche Tools, Dateien, Integrationen und Zugriffe verfügbar sind.
+2. Stelle danach das Questionnaire.
+3. Fasse meine Antworten kurz zusammen.
+4. Erstelle daraus einen personalisierten Skill-Workflow.
+5. Wenn Zugriffe fehlen, markiere sie klar und schlage einfache Alternativen vor.
+6. Wiederhole keine sensiblen Daten unnötig im Chat.
+7. Sende keine E-Mails, Nachrichten oder Termine automatisch, ohne vorher einen Entwurf oder eine Zusammenfassung zur Freigabe zu zeigen.
+
+Questionnaire:
+
+1. Rolle und Arbeitskontext
+- Wofür soll der Assistenz-Skill hauptsächlich genutzt werden?
+  Beispiele: Selbstständigkeit, Creator-Business, Team-Management, Kundenarbeit, interne Organisation, private Admin-Aufgaben.
+- Was ist aktuell das größte Admin-Problem?
+  Beispiele: zu viele E-Mails, vergessene Follow-ups, unklare Prioritäten, Kalender-Chaos, verstreute Informationen.
+- Arbeitest du allein oder mit einem Team?
+
+2. Quellen und Tools
+- Welche Quellen soll der Skill berücksichtigen?
+  Beispiele: E-Mail, Kalender, Kontakte, Google Drive, Notion, Obsidian, lokale Dateien, Projektmanagement-Tools, CRM, Slack, Discord, Telegram.
+- Welche dieser Quellen sind bereits für den Agenten zugänglich?
+- Gibt es bestimmte Ordner, Dateien, Kalender oder Postfächer, die besonders wichtig sind?
+- Gibt es Daten, die der Agent ausdrücklich nicht verwenden soll?
+
+3. Tagesplanung und Prioritäten
+- Was soll in einer täglichen Übersicht enthalten sein?
+  Beispiele: Termine, wichtigste Aufgaben, E-Mails, Follow-ups, Deadlines, offene Entscheidungen.
+- Wie viele Top-Prioritäten sollen pro Tag angezeigt werden?
+  Beispiele: Top 3, Top 5, vollständige Liste.
+- Soll der Skill eher streng priorisieren oder möglichst vollständig sammeln?
+
+4. Kommunikation
+- Soll der Skill E-Mail- oder Nachrichtenentwürfe schreiben?
+- In welchem Stil sollen Entwürfe formuliert sein?
+  Beispiele: kurz und direkt, freundlich-professionell, locker, sehr formell.
+- Soll der Skill Follow-ups aktiv vorschlagen?
+- Gibt es Personen, Kunden oder Projekte, die besonders wichtig sind?
+
+5. Output-Format
+- Wie soll die Ausgabe aussehen?
+  Beispiele: kurze Tagesübersicht, ausführlicher Markdown-Report, Telegram-Nachricht, E-Mail-Draft, Aufgabenliste, Wochenreview.
+- Wie lang soll die tägliche Übersicht ungefähr sein?
+  Beispiele: sehr kurz, mittel, ausführlich.
+- Soll der Skill am Ende immer eine konkrete "Was mache ich jetzt?"-Liste erstellen?
+
+6. Wiederholung und Automatisierung
+- Soll der Skill manuell gestartet werden oder regelmäßig laufen?
+  Beispiele: täglich morgens, wöchentlich montags, vor Meetings, nach Feierabend.
+- Falls regelmäßig: Zu welcher Uhrzeit?
+- Soll der Skill eine Feedback-Schleife nutzen, um künftige Ausgaben zu verbessern?
+
+7. Feedback-Präferenzen
+- Welche Art von Ergebnissen soll der Skill stärker berücksichtigen, wenn ich "LIKE" sage?
+- Was soll bei "AVOID" künftig reduziert werden?
+- Soll der Skill Stilwünsche merken, z. B. kürzer, direkter, ausführlicher, mehr Kontext?
+
+Nach dem Questionnaire:
+Erstelle einen personalisierten Skill mit folgender Struktur:
+
+1. Skill-Beschreibung
+2. Ziel des Skills
+3. Nutzerprofil und Arbeitskontext
+4. Verfügbare Quellen und Tools
+5. Standard-Workflow
+6. Täglicher Ablauf
+7. Output-Template
+8. Kommunikationsregeln
+9. Datenschutz- und Freigaberegeln
+10. Feedback-Schleife
+11. Optionale Cron-/Automations-Version
+12. Erste Beispielausgabe
+
+Der Skill soll folgende Aufgaben unterstützen:
+- Tagesübersicht erstellen
+- wichtige E-Mails oder Nachrichten priorisieren
+- Antwortentwürfe vorbereiten
+- Follow-ups erkennen
+- Termine und Deadlines sichtbar machen
+- offene Entscheidungen markieren
+- wiederkehrende Admin-Arbeit erkennen
+- Automationsideen vorschlagen
+
+Standard-Output:
+Nutze, sofern nicht anders gewünscht, diese Struktur:
+
+1. Kurzüberblick
+2. Top-Prioritäten
+3. Termine und Deadlines
+4. Wichtige Kommunikation
+5. Offene Entscheidungen
+6. Follow-ups
+7. Aufgaben, die warten können
+8. Mögliche Automationen
+9. Nächste konkrete Schritte
+
+Feedback-Schleife:
+Der Skill soll folgendes Feedback verstehen:
+- LIKE: Davon mehr berücksichtigen
+- AVOID: Das künftig niedriger priorisieren
+- FIX: Fehler korrigieren
+- STYLE: Ton oder Format anpassen
+- WATCH: Thema, Kontakt oder Aufgabe weiter beobachten
+
+Wichtig:
+Der Workflow soll auch dann nutzbar sein, wenn nicht alle Integrationen vorhanden sind. In diesem Fall soll der Agent mit manuell eingefügten Informationen, lokalen Dateien oder einfachen Listen arbeiten.`
+          },
+          {
+            title: {
+              de: "2. Research Briefing / Daily Newsletter Skill",
+              en: "2. Research Briefing / Daily Newsletter Skill"
+            },
+            content: `Richte einen wiederverwendbaren Agent-Skill ein:
+
+Name:
+Research Briefing / Daily Newsletter Skill
+
+Ziel:
+Der Skill soll regelmäßig relevante Informationen aus Quellen wie Webseiten, Blogs, Newslettern, Changelogs, Videos, Dokumentationen, Repositories oder internen Notizen sammeln, bewerten und in ein kompaktes Research Briefing verwandeln.
+
+Der Skill soll nicht möglichst viele Links sammeln, sondern relevante Signale erkennen, priorisieren und daraus konkrete Ideen, Entscheidungen oder nächste Schritte ableiten.
+
+Dieser Prompt soll eigenständig funktionieren. Er ist nicht von anderen Skills abhängig.
+
+Wichtig:
+Bevor du den Skill erstellst, führe zuerst ein kurzes Questionnaire durch. Nutze meine Antworten, um den Skill auf meine Branche, meine Zielgruppe, meine Quellen, meinen Stil und meine gewünschten Outputs anzupassen.
+
+Arbeitsweise:
+1. Prüfe zuerst, welche Tools, Quellen, Dateien und Integrationen verfügbar sind.
+2. Stelle danach das Questionnaire.
+3. Fasse meine Antworten kurz zusammen.
+4. Erstelle daraus einen personalisierten Research-Skill.
+5. Priorisiere Qualität vor Vollständigkeit.
+6. Kennzeichne unsichere Informationen klar.
+7. Trenne Fakten, Einschätzung und Empfehlung sichtbar voneinander.
+
+Questionnaire:
+
+1. Ziel und Nutzung
+- Wofür soll das Research Briefing genutzt werden?
+  Beispiele: Content-Ideen, Business-Entscheidungen, Produktentwicklung, Marktbeobachtung, Newsletter, Social Media, interne Strategie.
+- Wer ist die Zielgruppe des Briefings?
+  Beispiele: du selbst, ein Team, Kunden, Newsletter-Leser, YouTube-Zuschauer, Community.
+- Soll das Briefing eher informieren, priorisieren oder konkrete Handlungsempfehlungen liefern?
+
+2. Themenbereiche
+- Welche Themen soll der Skill beobachten?
+  Beispiele: AI, Automatisierung, Marketing, SaaS, E-Commerce, Finance, Creator Economy, Bildung, Coding, Produktivität.
+- Welche Unterthemen sind besonders wichtig?
+- Welche Themen sollen ausdrücklich vermieden oder niedrig priorisiert werden?
+- Gibt es bestimmte Begriffe, Unternehmen, Tools oder Personen, die regelmäßig beobachtet werden sollen?
+
+3. Quellen
+- Welche Quellen soll der Skill nutzen?
+  Beispiele: Blogs, Newsletter, YouTube-Kanäle, RSS-Feeds, GitHub-Repos, Produkt-Changelogs, Dokumentationen, X/Twitter, LinkedIn, interne Notizen.
+- Gibt es bereits eine Watchlist?
+- Sollen nur kostenlose und öffentliche Quellen verwendet werden?
+- Gibt es Quellen, die besonders vertrauenswürdig sind?
+- Gibt es Quellen, die ignoriert werden sollen?
+
+4. Bewertung und Priorisierung
+- Wie soll Relevanz bewertet werden?
+  Beispiele: praktischer Nutzen, Neuigkeitswert, Business-Relevanz, Demo-Potenzial, Risiko, Zeitersparnis, Zielgruppeninteresse.
+- Soll der Skill jedes Thema mit einem Score bewerten?
+- Wie viele Top-Themen sollen pro Briefing enthalten sein?
+  Beispiele: Top 3, Top 5, Top 10.
+- Soll der Skill auch Themen nennen, die bewusst ignoriert werden können?
+
+5. Output-Format
+- Wie soll das Briefing aussehen?
+  Beispiele: kurze Telegram-Nachricht, ausführlicher Markdown-Report, Newsletter-Entwurf, Themenliste, Content-Ideen-Liste.
+- Wie lang soll das Briefing sein?
+  Beispiele: sehr kurz, mittel, ausführlich.
+- Soll das Briefing Quellenlinks enthalten?
+- Soll es konkrete Content-, Produkt- oder Workflow-Ideen ableiten?
+
+6. Frequenz
+- Wie oft soll der Skill genutzt werden?
+  Beispiele: täglich, wöchentlich, vor Content-Planung, bei Bedarf.
+- Zu welcher Tageszeit wäre ein Briefing sinnvoll?
+- Soll der Skill automatisch als geplanter Agent-Job laufen können?
+
+7. Feedback-Präferenzen
+- Was bedeutet "LIKE" in diesem Research-Kontext?
+- Was soll bei "AVOID" künftig niedriger priorisiert werden?
+- Welche Quellen oder Themen sollen bei "WATCH" dauerhaft beobachtet werden?
+- Soll der Skill Stilwünsche wie "kürzer", "mehr Quellen", "mehr Einschätzung" oder "mehr konkrete Ideen" berücksichtigen?
+
+Nach dem Questionnaire:
+Erstelle einen personalisierten Skill mit folgender Struktur:
+
+1. Skill-Beschreibung
+2. Ziel des Research-Workflows
+3. Zielgruppe
+4. Themenbereiche
+5. Quellen- und Watchlist-Struktur
+6. Bewertungskriterien
+7. Scoring-System
+8. Standard-Workflow
+9. Output-Template
+10. Feedback-Schleife
+11. Optionale Cron-/Automations-Version
+12. Erste Beispielausgabe
+
+Der Skill soll können:
+- relevante neue Informationen finden
+- Quellen nach Wichtigkeit sortieren
+- schwache Signale aussortieren
+- Themen bewerten
+- Quellenlinks sammeln
+- konkrete Empfehlungen ableiten
+- Content-, Produkt- oder Prozessideen entwickeln
+- eine Watchlist aktualisieren
+
+Standard-Output:
+Nutze, sofern nicht anders gewünscht, diese Struktur:
+
+1. Executive Summary
+2. Wichtigste Signale
+3. Top-Themen mit Bewertung
+4. Quellen und Links
+5. Warum es relevant ist
+6. Mögliche Anwendung oder nächste Schritte
+7. Themen mit niedriger Priorität
+8. Offene Fragen
+9. Empfehlung: Was sollte als Nächstes geprüft werden?
+
+Bewertungssystem:
+Bewerte jedes Thema mit einem Score von 1 bis 10 und kurzer Begründung:
+- 1–3: kaum relevant
+- 4–6: interessant, aber nicht dringend
+- 7–8: relevant und prüfenswert
+- 9–10: hohe Priorität
+
+Feedback-Schleife:
+Der Skill soll folgendes Feedback verstehen:
+- LIKE: Mehr Themen dieser Art
+- WATCH: Quelle oder Thema weiter beobachten
+- AVOID: Quelle oder Thema niedriger priorisieren
+- FIX: Fehler korrigieren
+- STYLE: Ton, Länge oder Format anpassen
+
+Wichtig:
+Der Skill soll nicht nur zusammenfassen, sondern priorisieren. Lieber wenige gute Signale als eine lange Liste irrelevanter Links.`
+          },
+          {
+            title: {
+              de: "3. YouTube Content Workflow Skill",
+              en: "3. YouTube Content Workflow Skill"
+            },
+            content: `Richte einen wiederverwendbaren Agent-Skill ein:
+
+Name:
+YouTube Content Workflow Skill
+
+Ziel:
+Der Skill soll aus einem Thema, einer Recherche, einer Quelle oder einer groben Idee ein strukturiertes Content-Paket für ein YouTube-Video erstellen. Dazu gehören These, Zielgruppe, Hook, Outline, Skriptentwurf, Demo-Plan, Visual-Ideen, Shorts-Ideen und Beschreibungstexte.
+
+Der Skill soll nicht generischen Content erzeugen, sondern einem Creator helfen, schneller von einer Idee zu einem gut vorbereiteten Video zu kommen.
+
+Dieser Prompt soll eigenständig funktionieren. Er ist nicht von anderen Skills abhängig.
+
+Wichtig:
+Bevor du den Skill erstellst, führe zuerst ein kurzes Questionnaire durch. Nutze meine Antworten, um den Skill auf meinen Kanal, meine Zielgruppe, meinen Stil, meine Videoformate und meinen Produktionsprozess anzupassen.
+
+Arbeitsweise:
+1. Prüfe zuerst das Thema, die Zielgruppe und den vorhandenen Kontext.
+2. Stelle danach das Questionnaire.
+3. Fasse meine Antworten kurz zusammen.
+4. Erstelle daraus einen personalisierten YouTube-Content-Skill.
+5. Frage nur nach, wenn wichtige Informationen fehlen, die das Ergebnis stark verändern würden.
+6. Entwickle eine klare Video-These statt nur eine allgemeine Zusammenfassung.
+7. Vermeide übertriebene Versprechen, Hype und generische KI-Formulierungen.
+8. Schreibe so, dass ein Mensch daraus weiterarbeiten und aufnehmen kann.
+
+Questionnaire:
+
+1. Kanal und Zielgruppe
+- Worum geht es auf dem Kanal?
+- Wer ist die Zielgruppe?
+  Beispiele: Anfänger, Fortgeschrittene, Unternehmer, Creator, Entwickler, Eltern, Investoren, Teams.
+- Welches Problem soll der Content für diese Zielgruppe lösen?
+- Welche Art von Videos funktionieren bisher gut?
+- Gibt es Videos oder Creator, deren Stil als Orientierung dienen kann?
+
+2. Content-Stil
+- Wie soll der Ton sein?
+  Beispiele: ruhig, direkt, unterhaltsam, analytisch, praktisch, erklärend, kritisch, locker.
+- Was soll vermieden werden?
+  Beispiele: Hype, Clickbait, zu viel Fachsprache, zu lange Intros, generische KI-Phrasen.
+- Soll das Video eher Tutorial, Meinung, Analyse, Demo, Erfahrungsbericht oder Story sein?
+- Soll der Skill eher kurze Skripte oder ausführliche Produktionspakete erstellen?
+
+3. Videoformat
+- Wie lang sollen die Videos typischerweise sein?
+  Beispiele: 3 Minuten, 7 Minuten, 10–15 Minuten, Longform.
+- Gibt es eine bevorzugte Struktur?
+  Beispiele: Hook → Problem → Lösung → Demo → Fazit.
+- Soll der Skill Kapitelmarker erzeugen?
+- Soll er auch Shorts aus dem Longform-Thema ableiten?
+
+4. Themen und Inputs
+- Welche Arten von Inputs wird der Skill meistens bekommen?
+  Beispiele: grobe Idee, Link, Research Briefing, Produktupdate, Tool, Kundenfrage, Trend, persönlicher Erfahrungsbericht.
+- Soll der Skill eigene Themenvorschläge machen dürfen?
+- Soll er Quellen prüfen oder nur mit bereitgestelltem Material arbeiten?
+- Gibt es Themen, die besonders häufig vorkommen?
+
+5. Produktionsprozess
+- Was soll der Skill für die Produktion vorbereiten?
+  Beispiele: Hook, Outline, Skript, B-Roll-Plan, Demo-Schritte, Thumbnail-Texte, Beschreibung, Shorts.
+- Werden Bildschirmaufnahmen, Demos, Slides oder Excalidraws genutzt?
+- Soll der Skill visuelle Konzepte oder Diagramm-Ideen liefern?
+- Gibt es feste Branding-, Design- oder Strukturvorgaben?
+
+6. Veröffentlichung
+- Soll der Skill YouTube-Titelvarianten schreiben?
+- Soll er Beschreibung, Kapitelmarker und Pinned Comment vorbereiten?
+- Soll er Social-Posts oder Newsletter-Teaser ableiten?
+- Soll er mehrere Varianten für unterschiedliche Plattformen erstellen?
+
+7. Feedback-Präferenzen
+- Was bedeutet "LIKE" für diesen Content-Skill?
+- Was soll bei "AVOID" künftig vermieden werden?
+- Soll der Skill bei "STYLE" Ton, Länge oder Struktur anpassen?
+- Soll der Skill bei "SHORTS" automatisch Kurzvideo-Ideen ausarbeiten?
+- Soll der Skill erfolgreiche Videoformate künftig stärker berücksichtigen?
+
+Nach dem Questionnaire:
+Erstelle einen personalisierten Skill mit folgender Struktur:
+
+1. Skill-Beschreibung
+2. Kanal- und Zielgruppenprofil
+3. Content-Stil
+4. Standard-Videoformate
+5. Input-Arten
+6. Workflow von Idee zu Video
+7. Skript- und Outline-Regeln
+8. Demo-/B-Roll-Regeln
+9. Visual-/Diagramm-Regeln
+10. Shorts-Ableitung
+11. Veröffentlichungs-Assets
+12. Feedback-Schleife
+13. Erste Beispielausgabe
+
+Der Skill soll können:
+- Thema klären
+- Zielgruppe bestimmen
+- Video-These entwickeln
+- Hook-Varianten schreiben
+- Kapitelstruktur erstellen
+- Skriptentwurf schreiben
+- Demo- oder B-Roll-Plan erstellen
+- Visual- oder Diagramm-Konzept erstellen
+- Shorts ableiten
+- Titel, Beschreibung und Kapitelmarker vorbereiten
+
+Standard-Output:
+Nutze, sofern nicht anders gewünscht, diese Struktur:
+
+1. Video-Briefing
+2. Hauptthese
+3. Zielgruppe
+4. Nutzenversprechen
+5. Hook-Varianten
+6. Kapitelstruktur
+7. Skriptentwurf
+8. Demo-/B-Roll-Plan
+9. Visual- oder Diagramm-Konzept
+10. Shorts-Ideen
+11. Titel, Beschreibung und Kapitelmarker
+12. Offene Fragen
+13. Nächste Produktionsschritte
+
+Feedback-Schleife:
+Der Skill soll folgendes Feedback verstehen:
+- LIKE: Mehr von diesem Stil oder Format
+- AVOID: Diesen Angle oder Ton vermeiden
+- FIX: Fehler korrigieren
+- STYLE: Ton, Länge oder Struktur anpassen
+- SHORTS: Mehr Kurzform-Ideen daraus machen
+- WATCH: Thema für spätere Videos weiter beobachten
+
+Wichtig:
+Das Ergebnis soll Creator unterstützen, nicht ersetzen. Der Skill soll Struktur, Recherche und Entwürfe liefern, aber Raum für persönliche Meinung, Erfahrung und Aufnahme-Stil lassen.`
           }
         ]
       }

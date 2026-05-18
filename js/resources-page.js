@@ -160,7 +160,19 @@
               <span>${escapeHtml(t("resources_copy", "Kopieren"))}</span>
             </button>
           </header>
-          <pre id="prompt-${i}">${escapeHtml(pick(p.content))}</pre>
+          <div class="prompt-pre-wrap">
+            <pre id="prompt-${i}">${escapeHtml(pick(p.content))}</pre>
+            <div class="prompt-fade" aria-hidden="true"></div>
+          </div>
+          <button
+            type="button"
+            class="prompt-expand"
+            aria-expanded="false"
+            aria-controls="prompt-${i}"
+          >
+            <span data-expand-label>${escapeHtml(t("resources_show_more", "Mehr anzeigen"))}</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </button>
         </article>
       `).join("");
     } else if (section.type === "links") {
@@ -261,6 +273,30 @@
   /* ── interactions ────────────────────────────────────────── */
   const findVideo = (id) => VIDEOS.find((v) => v.id === id);
 
+  // Mark prompts that are tall enough to be worth collapsing on mobile.
+  // The CSS only collapses cards with `.is-collapsible` (and only at mobile
+  // widths), so short prompts never get a fade or "Mehr anzeigen" button.
+  const refreshPromptCollapsibility = () => {
+    const cards = content.querySelectorAll(".prompt-card");
+    if (!cards.length) return;
+    const COLLAPSED_MAX = 320; // keep in sync with CSS max-height on mobile
+    cards.forEach((card) => {
+      const pre = card.querySelector("pre");
+      if (!pre) return;
+      // Measure the natural (uncapped) height by toggling off any cap.
+      const wasCollapsible = card.classList.contains("is-collapsible");
+      const wasExpanded = card.classList.contains("is-expanded");
+      card.classList.remove("is-collapsible");
+      const naturalHeight = pre.scrollHeight;
+      if (naturalHeight > COLLAPSED_MAX + 8) {
+        card.classList.add("is-collapsible");
+        if (wasCollapsible && wasExpanded) card.classList.add("is-expanded");
+      } else {
+        card.classList.remove("is-expanded");
+      }
+    });
+  };
+
   const setActive = (id, { scroll = false, updateHash = true } = {}) => {
     const video = findVideo(id) || VIDEOS[0];
     if (!video) {
@@ -269,6 +305,8 @@
     }
     renderSidebar(video.id);
     renderVideo(video);
+    // Wait one frame so layout has settled before measuring.
+    requestAnimationFrame(refreshPromptCollapsibility);
 
     if (updateHash) {
       const newHash = "#" + video.id;
@@ -281,6 +319,13 @@
       content.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+
+  // Re-measure on resize (e.g. orientation change) — debounced.
+  let resizeTimer = 0;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(refreshPromptCollapsibility, 150);
+  });
 
   // Click on a sidebar tab
   sidebar.addEventListener("click", (e) => {
@@ -303,6 +348,28 @@
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen></iframe>`;
+      }
+      return;
+    }
+
+    // Expand / collapse a long prompt (mobile only — desktop hides the button)
+    const expandBtn = e.target.closest(".prompt-expand");
+    if (expandBtn) {
+      const card = expandBtn.closest(".prompt-card");
+      if (!card) return;
+      const nowExpanded = !card.classList.contains("is-expanded");
+      card.classList.toggle("is-expanded", nowExpanded);
+      expandBtn.setAttribute("aria-expanded", nowExpanded ? "true" : "false");
+      const label = expandBtn.querySelector("[data-expand-label]");
+      if (label) {
+        label.textContent = nowExpanded
+          ? t("resources_show_less", "Weniger anzeigen")
+          : t("resources_show_more", "Mehr anzeigen");
+      }
+      const icon = expandBtn.querySelector("i");
+      if (icon) {
+        icon.classList.toggle("fa-chevron-down", !nowExpanded);
+        icon.classList.toggle("fa-chevron-up", nowExpanded);
       }
       return;
     }
