@@ -37,7 +37,7 @@ const VIDEOS = [
     thumbnailUrl: "images/vid9-hermes.png",
     publishedAt: "coming-soon",
     description: {
-      de: "Hermes ist ein KI-Agent, der eigenständig Aufgaben übernimmt. Hier zeige ich dir, wie ich ihn in meinen Workflow integriert habe und wofür ich ihn täglich nutze. Unten finden Sie den Setup-Prompt, mit dem Sie fünf Erweiterungen auf einmal aktivieren.",
+      de: "Hermes ist ein KI-Agent, der eigenständig Aufgaben übernimmt. Hier zeige ich dir, wie ich ihn in meinen Workflow integriert habe und wofür ich ihn täglich nutze. Unten findest du den Setup-Prompt, mit dem du fünf Erweiterungen auf einmal aktivierst.",
       en: "Hermes is an AI agent that handles tasks autonomously. Here I'll show you how I've integrated it and what I use it for every day. Below you'll find the setup prompt that activates five extensions in one go."
     },
     sections: [
@@ -47,7 +47,7 @@ const VIDEOS = [
         items: [
           {
             html: {
-              de: `<p>Mit einem einzigen Prompt richtet Hermes Ihr vollständiges
+              de: `<p>Mit einem einzigen Prompt richtet Hermes dein vollständiges
 <strong>Basis-Setup</strong> ein:
 <strong>Identität, Zeitzone &amp; Sprache</strong>,
 <strong>Tagesbudget</strong> für LLM-Kosten,
@@ -56,18 +56,18 @@ const VIDEOS = [
 <strong>Walk-Away Mode</strong> (langes autonomes Arbeiten),
 <strong>Remote Approval Gate</strong> (Sicherheitsabfrage vor unwiderruflichen Aktionen),
 <strong>MCP-Integration</strong> (Filesystem, Git, Web Search) und
-<strong>automatisches Backup</strong> Ihrer Memory- und Kanban-Daten.</p>
-<p>Bevor Hermes etwas installiert, stellt er Ihnen eine
+<strong>automatisches Backup</strong> deiner Memory- und Kanban-Daten.</p>
+<p>Bevor Hermes etwas installiert, stellt er dir eine
 <strong>kurze Q&amp;A</strong> mit allen Fragen auf einmal. So wird das
-Setup auf Sie persönlich zugeschnitten (z. B. Backup-Ziel, Tagesbudget in €,
-gewünschte zusätzliche MCPs). Halten Sie idealerweise Credentials für Ihr
+Setup auf dich persönlich zugeschnitten (z. B. Backup-Ziel, Tagesbudget in €,
+gewünschte zusätzliche MCPs). Halte idealerweise Credentials für dein
 Backup-Ziel bereit (S3, Backblaze, Google Drive oder ein anderer Pfad).</p>
 <p>Der Agent prüft selbständig, was bereits eingerichtet ist, und überspringt
-vorhandene Komponenten. Sie können den Prompt also gefahrlos auch mehrfach
-schicken. Am Ende erhalten Sie im selben Chat einen kompakten Statusbericht
+vorhandene Komponenten. Du kannst den Prompt also gefahrlos auch mehrfach
+schicken. Am Ende erhältst du im selben Chat einen kompakten Statusbericht
 (✅ neu / ⏭️ vorhanden / ❌ fehlgeschlagen).</p>
-<p><strong>So gehen Sie vor:</strong> Prompt unten kopieren und an Hermes
-schicken, egal über welchen Kanal Sie den Agenten ansprechen
+<p><strong>So gehst du vor:</strong> Prompt unten kopieren und an Hermes
+schicken, egal über welchen Kanal du den Agenten ansprichst
 (Messenger, Web-UI, Terminal). Kurz die Q&amp;A beantworten, fertig.</p>`,
               en: `<p>A single prompt sets up your complete Hermes
 <strong>base configuration</strong>:
@@ -100,16 +100,16 @@ Hermes through whichever channel you talk to the agent
         items: [
           {
             title: {
-              de: "Hermes Basis-Setup — komplettes Setup mit kurzer Q&A",
+              de: "Hermes Basis-Setup: komplettes Setup mit kurzer Q&A",
               en: "Hermes base setup — complete setup with a short Q&A"
             },
             content: {
-              de: `Sie sind Hermes Agent. Bitte richten Sie mein vollständiges Basis-Setup ein.
+              de: `Du bist Hermes Agent. Bitte richte mein vollständiges Basis-Setup ein.
 
 ABLAUF (bitte in dieser Reihenfolge):
 1. ZUERST: alle acht Punkte unten lesen.
 2. DANN: alle [FRAGEN]-Punkte (0, 1, 6, 7) in EINER einzigen Nachricht im
-   aktuellen Chat stellen — als nummerierte Liste, mit Vorschlagswerten in
+   aktuellen Chat stellen, als nummerierte Liste, mit Vorschlagswerten in
    Klammern, damit ich nur das Nötigste eintippen muss.
 3. AUF MEINE ANTWORTEN WARTEN. Nichts installieren, bevor ich geantwortet habe.
 4. DANACH: alles installieren / konfigurieren. Vorhandenes überspringen.
@@ -120,14 +120,14 @@ REGELN:
 - Verhaltensregeln, Modi, Gates, Budget und Backup-Plan in der
   Systemkonfiguration verankern (z. B. CLAUDE.md, AGENTS.md oder dem
   entsprechenden Hermes-Instruction-File), damit sie sessionübergreifend
-  gelten — nicht nur in dieser Konversation.
+  gelten, nicht nur in dieser Konversation.
 - Bei fehlenden Infos oder Unklarheiten: im aktuellen Chat zurückfragen
   statt raten.
 
 ── GRUNDEINSTELLUNGEN ──
 
 0) Identität, Zeitzone & Sprache  [FRAGEN]
-   - Wie soll ich Sie ansprechen? (Vor- oder Vor-/Nachname; Sie- oder Du-Form)
+   - Wie soll ich dich ansprechen? (Vor- oder Vor-/Nachname; Du-Form)
    - Default-Antwortsprache? (Deutsch / Englisch / passend zur Eingabe)
    - Zeitzone? (Vorschlag: Europe/Berlin)
    Als feste Werte in der Systemkonfiguration hinterlegen.
@@ -141,7 +141,7 @@ REGELN:
 ── FÄHIGKEITEN ──
 
 2) Holographic Memory
-   Aktivieren Sie den Hermes-Memory-Provider „holographic" — ein lokales,
+   Aktiviere den Hermes-Memory-Provider „holographic", ein lokales,
    HRR-basiertes Langzeitgedächtnis (Holographic Reduced Representations)
    mit SQLite-Speicher, Trust-Scoring (selbstkorrigierend, wiederholt
    bestätigte Erinnerungen gewinnen Gewicht) und ohne externe Services.
@@ -149,36 +149,36 @@ REGELN:
      "memory: { provider: holographic }" gesetzt ist: überspringen.
    - Andernfalls: entweder den Wizard ausführen
        hermes memory setup
-     und "holographic" auswählen — oder die Konfiguration direkt eintragen:
+     und "holographic" auswählen, oder die Konfiguration direkt eintragen:
        memory:
          provider: holographic
    - Standard-Speicherort akzeptieren (lokale SQLite-Datei am Hermes-Default).
 
 3) Kanban
-   Aktivieren Sie das Kanban-Modul von Hermes (Spalten: Backlog / In Arbeit /
-   Wartet / Erledigt). Konfigurieren Sie es so, dass neue Aufgaben aus
+   Aktiviere das Kanban-Modul von Hermes (Spalten: Backlog / In Arbeit /
+   Wartet / Erledigt). Konfiguriere es so, dass neue Aufgaben aus
    eingehenden Nachrichten automatisch im Backlog landen und ich den Status
    per Nachricht ändern kann.
 
 4) Walk-Away Mode
    Modus für autonomes Arbeiten über längere Zeit (Standard-Fenster: 30 Minuten).
-   Statt einzelner Zwischenfragen liefern Sie eine zusammengefasste Statusmeldung
-   am Ende des Fensters oder sobald ein Block erledigt ist. Unterbrechen Sie nur
+   Statt einzelner Zwischenfragen lieferst du eine zusammengefasste Statusmeldung
+   am Ende des Fensters oder sobald ein Block erledigt ist. Unterbrich nur
    bei echten Blockern oder wenn der Approval Gate (Punkt 5) auslöst.
 
 5) Remote Approval Gate
-   Vor jeder unwiderruflichen oder kostenverursachenden Aktion — Dateien löschen,
+   Vor jeder unwiderruflichen oder kostenverursachenden Aktion (Dateien löschen,
    E-Mails versenden, Zahlungen, kostenpflichtige API-Calls, git push --force,
-   DNS- oder Domain-Änderungen — schreiben Sie mir im aktuellen Chat:
+   DNS- oder Domain-Änderungen) schreibst du mir im aktuellen Chat:
      Aktion · Begründung · erwartete Auswirkung.
-   Warten Sie auf „ok" / „nein" / freie Antwort. Bei „nein" oder Timeout
+   Warte auf „ok" / „nein" / freie Antwort. Bei „nein" oder Timeout
    (10 Minuten): abbrechen und melden.
 
 6) MCP-Integration  [FRAGEN]
-   Installieren Sie die Basis-MCP-Server (Filesystem, Git, Web Search) und
-   verbinden Sie sie mit Ihrer MCP-Konfiguration.
+   Installiere die Basis-MCP-Server (Filesystem, Git, Web Search) und
+   verbinde sie mit deiner MCP-Konfiguration.
    - Soll ich darüber hinaus weitere MCPs einrichten?
-     (z. B. Notion, Linear, Gmail, Kalender — bitte nennen, welche.)
+     (z. B. Notion, Linear, Gmail, Kalender, bitte nennen, welche.)
    - Falls ja: benötigte Credentials einzeln abfragen, bevor installiert wird.
 
 ── SICHERUNG ──
@@ -196,7 +196,7 @@ REGELN:
 
 ── ABSCHLUSS ──
 
-Geben Sie im selben Chat eine kompakte Statusliste aus:
+Gib im selben Chat eine kompakte Statusliste aus:
   ✅ neu installiert  ⏭️ bereits vorhanden  ❌ fehlgeschlagen (mit Begründung)
 Bei Fehlern nicht eigenständig debuggen, sondern Fehler melden und auf
 meine Anweisung warten.`,
@@ -304,7 +304,7 @@ instructions.`
         items: [
           {
             html: {
-              de: `<p>Hermes kann Ihren Google-Kalender <strong>nur lesen</strong> — ideal, wenn der Agent kommende Termine kennen, aber nichts ändern soll. Sechs Schritte, etwa zehn Minuten Aufwand.</p>
+              de: `<p>Hermes kann deinen Google-Kalender <strong>nur lesen</strong>, ideal, wenn der Agent kommende Termine kennen, aber nichts ändern soll. Sechs Schritte, etwa zehn Minuten Aufwand.</p>
 <ol>
   <li>
     <strong>Google Cloud Projekt anlegen.</strong>
@@ -336,7 +336,7 @@ instructions.`
   <li><code>access_denied</code> von Google → der verwendete Google-Account ist wahrscheinlich nicht als Test User eingetragen.</li>
   <li><code>Google Calendar API disabled</code> → Calendar API im Projekt aktivieren und ein paar Minuten warten.</li>
   <li>Redirect-Fehler → für Desktop-App-OAuth den Standard-Redirect <code>http://localhost</code> nutzen.</li>
-  <li>Nur <code>calendar.readonly</code>-Scope verwenden, wenn Hermes Termine lediglich lesen soll — sonst bekommt der Agent mehr Rechte als nötig.</li>
+  <li>Nur <code>calendar.readonly</code>-Scope verwenden, wenn Hermes Termine lediglich lesen soll, sonst bekommt der Agent mehr Rechte als nötig.</li>
   <li><strong>Niemals</strong> <code>client_secret</code>, OAuth-Code oder Token öffentlich speichern oder ins Repo committen.</li>
 </ul>`,
               en: `<p>Hermes can <strong>read-only</strong> access your Google Calendar — perfect when the agent should know your upcoming events but never change them. Six steps, about ten minutes of effort.</p>
@@ -381,16 +381,15 @@ instructions.`
     ]
   },
   {
-    // TODO: replace "TODO-three-skills" with the real YouTube video ID once the video is uploaded.
-    id: "TODO-three-skills",
+    id: "KvqmMzOJo9s",
     title: {
-      de: "Diese 3 Agenten Skills nutze ich täglich",
+      de: "Diese 3 Skills bringen deine Agenten aufs nächste Level",
       en: "The 3 agent skills I use every day"
     },
     thumbnailUrl: "images/vid11-three-skills.png",
-    publishedAt: "coming-soon",
+    publishedAt: "2026-05-20",
     description: {
-      de: "Drei wiederverwendbare Agent-Skills, die ich täglich nutze: ein persönlicher Admin- und Assistenz-Workflow, ein Research-Briefing-Skill und ein YouTube-Content-Workflow. Jeder Prompt führt zuerst ein kurzes Questionnaire durch und richtet den Skill dann auf Ihre Tools, Ihren Stil und Ihre Prioritäten ein.",
+      de: "Drei wiederverwendbare Agent-Skills, die ich täglich nutze: ein persönlicher Admin- und Assistenz-Workflow, ein Research-Briefing-Skill und ein YouTube-Content-Workflow. Jeder Prompt führt zuerst ein kurzes Questionnaire durch und richtet den Skill dann auf deine Tools, deinen Stil und deine Prioritäten ein.",
       en: "Three reusable agent skills I use every day: a personal admin and assistant workflow, a research briefing skill, and a YouTube content workflow. Each prompt runs a short questionnaire first and then tailors the skill to your tools, your style, and your priorities."
     },
     sections: [
@@ -402,11 +401,11 @@ instructions.`
             html: {
               de: `<p>Jeder der drei Prompts unten richtet einen eigenständigen Agent-Skill ein. Die Prompts sind unabhängig voneinander, brauchen keine zusätzlichen Plugins und funktionieren in jedem fähigen Assistenten (Claude, ChatGPT, Hermes, OpenClaw …).</p>
 <ol>
-  <li><strong>Personal Assistant / Admin Skill</strong> — E-Mails, Kalender, Termine und Follow-ups in eine klare Tagesübersicht bringen.</li>
-  <li><strong>Research Briefing / Daily Newsletter Skill</strong> — relevante Signale aus Quellen erkennen, priorisieren und in ein kompaktes Briefing verwandeln.</li>
-  <li><strong>YouTube Content Workflow Skill</strong> — aus einer Idee ein strukturiertes Content-Paket mit These, Hook, Outline, Skript und Shorts-Ideen machen.</li>
+  <li><strong>Personal Assistant / Admin Skill</strong>: E-Mails, Kalender, Termine und Follow-ups in eine klare Tagesübersicht bringen.</li>
+  <li><strong>Research Briefing / Daily Newsletter Skill</strong>: relevante Signale aus Quellen erkennen, priorisieren und in ein kompaktes Briefing verwandeln.</li>
+  <li><strong>YouTube Content Workflow Skill</strong>: aus einer Idee ein strukturiertes Content-Paket mit These, Hook, Outline, Skript und Shorts-Ideen machen.</li>
 </ol>
-<p>Wählen Sie unten den passenden Prompt, kopieren Sie ihn und schicken Sie ihn an Ihren Agenten. Der Agent stellt zuerst ein paar Fragen, fasst Ihre Antworten zusammen und baut daraus einen Skill, der zu Ihrer Situation passt.</p>`,
+<p>Wähle unten den passenden Prompt, kopiere ihn und schicke ihn an deinen Agenten. Der Agent stellt zuerst ein paar Fragen, fasst deine Antworten zusammen und baut daraus einen Skill, der zu deiner Situation passt.</p>`,
               en: `<p>Each of the three prompts below sets up a standalone agent skill. They are independent of each other, need no extra plugins, and work in any capable assistant (Claude, ChatGPT, Hermes, OpenClaw, …).</p>
 <ol>
   <li><strong>Personal Assistant / Admin Skill</strong> — turn email, calendar, meetings, and follow-ups into one clear daily overview.</li>
@@ -838,7 +837,7 @@ Das Ergebnis soll Creator unterstützen, nicht ersetzen. Der Skill soll Struktur
     },
     publishedAt: "2026-05-16",
     description: {
-      de: "Motion Graphics manuell editieren ist mühsam. Hyperframes erlaubt es Coding-Modellen wie Codex oder Claude Code, Animationen direkt als HTML zu schreiben und als Video zu rendern. Unten finden Sie die Links zu Codex und zum Hyperframes-Repository.",
+      de: "Motion Graphics manuell editieren ist mühsam. Hyperframes erlaubt es Coding-Modellen wie Codex oder Claude Code, Animationen direkt als HTML zu schreiben und als Video zu rendern. Unten findest du die Links zu Codex und zum Hyperframes-Repository.",
       en: "Editing motion graphics by hand is painful. Hyperframes lets coding models like Codex or Claude Code write animations directly as HTML and render them as video. Below you'll find the links to Codex and the Hyperframes repository."
     },
     sections: [

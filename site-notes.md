@@ -51,6 +51,22 @@ If an entry becomes wrong over time, append `**Updated:** {{YYYY-MM-DD}}` with a
 - **Where it applies:** Feedback page, Firebase rules, deploy/publishing, local results dashboard.
 - **Tags:** feedback, firebase, privacy, deploy, local-dashboard
 
+### resources.html uses du-form, not Sie
+- **Date:** 2026-05-19
+- **Context:** Julian decided the Sie register feels wrong for the resources page (tutorials, video walkthroughs, prompt cards). The rest of the site keeps Sie; resources switches to personal du-form.
+- **Source / example:** [resources.html](resources.html), [js/resources-page.js](js/resources-page.js), [js/videos.js](js/videos.js).
+- **What:** All copy that renders on the resources page addresses the reader in du. Sie → du, Ihr/Ihre → dein/deine, Ihnen → dir, "Lernen Sie" → "Lerne". Compound words with ASCII hyphen (KI-Flow, KI-Agent) stay fine. Important: this overrides `brand-agent-system/brand/voice-and-copy.md`, which still mandates Sie for index.html, impressum.html, datenschutz.html, and any future marketing pages. If a string in videos.js is shared with another page, ask before flipping it.
+- **Where it applies:** resources.html and its data files only. Not index, not legal pages.
+- **Tags:** copy, voice, resources-page
+
+### Never use em-dashes or en-dashes in site copy
+- **Date:** 2026-05-19
+- **Context:** Julian dislikes em-dash (U+2014) and en-dash (U+2013) in prose. They read as "AI-generated" and clash with the warm/human voice.
+- **Source / example:** Applies to all copy files: HTML, js/videos.js descriptions, prompt cards, image alt text, meta tags.
+- **What:** Use a comma, colon, semicolon, or two short sentences instead of em/en-dashes. ASCII hyphen `-` is fine in compound words ("KI-Flow", "Schritt-für-Schritt", "Q-und-A"). Watch out for accidental smart-quote conversion that turns `--` into `—`.
+- **Where it applies:** All site copy across every page, not just resources.
+- **Tags:** copy, typography, style
+
 ---
 
 ## Pitfalls, things that broke or did not work
