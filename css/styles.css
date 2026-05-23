@@ -128,22 +128,40 @@ div[tabindex="0"]:focus-visible {
   text-decoration: none;
   color: inherit;
   font-weight: 600;
-  transition: color 0.2s;
   font-size: 1rem;
+  position: relative;
+  padding-block: 0.35rem;
+  transition: color 0.25s ease;
 }
 
-.nav-links a:hover {
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
   color: var(--primary);
+}
+
+.nav-links a:hover::after,
+.nav-links a:focus-visible::after {
+  width: 100%;
 }
 
 .nav-links a.nav-link-secondary {
   font-weight: 500;
   color: var(--gray-500);
   font-size: 0.95rem;
-}
-
-.nav-links a.nav-link-secondary:hover {
-  color: var(--primary);
 }
 
 .hamburger {
@@ -363,6 +381,27 @@ section:not(.hero) .container {
 .founder-portrait img {
   max-height: 400px;
   width: auto;
+  transition: transform 0.45s cubic-bezier(0.2, 0, 0, 1),
+              filter 0.45s cubic-bezier(0.2, 0, 0, 1);
+  filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.12));
+  will-change: transform, filter;
+}
+
+.founder-portrait:hover img,
+.founder-portrait:focus-within img {
+  transform: translateY(-8px) scale(1.04);
+  filter:
+    drop-shadow(0 14px 34px rgba(51, 105, 242, 0.38))
+    drop-shadow(0 4px 12px rgba(51, 105, 242, 0.22));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .founder-portrait img,
+  .founder-portrait:hover img,
+  .founder-portrait:focus-within img {
+    transform: none;
+    transition: filter 0.3s ease;
+  }
 }
 
 /* Name label styles */
@@ -735,15 +774,47 @@ section:not(.hero) .container {
   bottom: -1px;
 }
 
+/* Slow horizontal drift on the integrations dividers — opposing currents
+   for layered, water-like motion. Scoped so other pages with .wave-divider
+   (feedback hero) stay static. */
+.integrations .wave-divider {
+  width: 200%;
+  max-width: none; /* override the global `img, iframe, svg { max-width: 100% }` cap */
+  animation: wave-drift 28s linear infinite;
+  will-change: transform;
+}
+.integrations .wave-bottom {
+  animation-direction: reverse;
+  animation-duration: 34s;
+}
+
+@keyframes wave-drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .integrations .wave-divider {
+    animation: none;
+  }
+}
+
 /* Marquee */
 .marquee {
   position: relative;
   margin-top: 2.5rem;
   width: 100%;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  /* `overflow-x: clip; overflow-y: visible` is a valid combo that does NOT
+     force overflow-y back to auto — so the pill hover shadow can spill down
+     without being clipped. */
+  overflow-x: clip;
+  overflow-y: visible;
+  padding-block: 1.75rem 3rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
 }
+
+.marquee-fade { display: none; }
 
 .marquee-track {
   display: flex;
@@ -762,8 +833,6 @@ section:not(.hero) .container {
   to   { transform: translateX(-50%); }
 }
 
-.marquee-fade { display: none; }
-
 /* Pills */
 .int-pill {
   flex: 0 0 auto;
@@ -780,13 +849,17 @@ section:not(.hero) .container {
   font-weight: 600;
   font-size: 0.95rem;
   white-space: nowrap;
-  transition: background 0.25s, transform 0.25s, border-color 0.25s;
+  transition: background 0.25s, transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+              border-color 0.25s, box-shadow 0.3s ease;
 }
 
 .int-pill:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.45);
-  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-4px) scale(1.04);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.28),
+    0 0 24px rgba(255, 255, 255, 0.14);
 }
 
 /* Subtle wave-flow on the marquee container itself — gentle, synchronized,
@@ -817,18 +890,28 @@ section:not(.hero) .container {
 
 .int-mark svg { display: block; }
 
-.int-mark-openai    { background: #fff; color: #000; }
-.int-mark-n8n       { background: #ea4b71; font-size: 0.7rem; letter-spacing: -0.02em; }
-.int-mark-zap       { background: #ff4f00; }
-.int-mark-make      { background: #6d00cc; }
-.int-mark-notion    { background: #fff; color: #000; }
-.int-mark-google    { background: #fff; color: #4285f4; }
-.int-mark-slack     { background: #fff; color: #4a154b; }
-.int-mark-airtable  { background: linear-gradient(135deg, #fcb400, #18bfff); }
-.int-mark-hubspot   { background: #fff; color: #ff7a59; }
-.int-mark-whatsapp  { background: #25d366; }
-.int-mark-microsoft { background: #fff; color: #00a4ef; }
-.int-mark-shopify   { background: #95bf47; }
+.int-mark-openai      { background: #fff; color: #000; }
+.int-mark-n8n         { background: #ea4b71; font-size: 0.7rem; letter-spacing: -0.02em; }
+.int-mark-zap         { background: #ff4f00; }
+.int-mark-notion      { background: #fff; color: #000; }
+.int-mark-google      { background: #fff; color: #4285f4; }
+.int-mark-slack       { background: #fff; color: #4a154b; }
+.int-mark-whatsapp    { background: #25d366; }
+.int-mark-microsoft   { background: #fff; color: #00a4ef; }
+.int-mark-shopify     { background: #95bf47; }
+
+/* Image-based marks: white tile with the brand artwork centered.
+   `object-fit: contain` keeps the icon's aspect ratio inside the 28px square. */
+.int-mark-img {
+  background: #fff;
+  padding: 2px;
+}
+.int-mark-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
 
 /* ─── COOKIE BANNER ────────────────────────────────────────── */
 .cookie-banner {
@@ -1164,8 +1247,10 @@ section:not(.hero) .container {
   box-shadow: 0 0 0 4px rgb(59 130 246 / 0.12);
 }
 
-.form-field input:invalid:not(:placeholder-shown),
-.form-field textarea:invalid:not(:placeholder-shown) {
+/* Validation feedback only after the user actually interacts with a field —
+   :user-invalid skips empty-on-load complaints. */
+.form-field input:user-invalid,
+.form-field textarea:user-invalid {
   border-color: #ef4444;
 }
 
@@ -2435,6 +2520,17 @@ section:not(.hero) .container {
 }
 [data-theme="dark"] .calendar-placeholder p { color: #5a6478; }
 [data-theme="dark"] .calendar-placeholder i { color: var(--primary); }
+
+/* Founder portraits — heavier shadow on dark, brighter primary glow on hover */
+[data-theme="dark"] .founder-portrait img {
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.55));
+}
+[data-theme="dark"] .founder-portrait:hover img,
+[data-theme="dark"] .founder-portrait:focus-within img {
+  filter:
+    drop-shadow(0 16px 38px rgba(51, 105, 242, 0.55))
+    drop-shadow(0 6px 16px rgba(51, 105, 242, 0.35));
+}
 
 /* Contact form */
 [data-theme="dark"] .form-field input,

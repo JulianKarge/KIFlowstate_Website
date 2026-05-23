@@ -312,9 +312,9 @@
 
     <!-- ▸▸ INTEGRATIONS (wave-flow marquee) ------------------------------ -->
     <section id="integrations" class="integrations reveal" aria-label="Integrationen">
-      <!-- Top wave divider -->
-      <svg class="wave-divider wave-top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 L1440,0 L0,0 Z"></path>
+      <!-- Top wave divider — viewBox doubled and path repeated for seamless drift -->
+      <svg class="wave-divider wave-top" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 C1680,90 1920,0 2160,40 C2400,80 2640,10 2880,40 L2880,0 L0,0 Z"></path>
       </svg>
 
       <div class="container integrations-inner">
@@ -345,9 +345,25 @@
               <span class="int-label">Zapier</span>
             </div>
 
-            <div class="int-pill" data-tip="Make">
-              <span class="int-mark int-mark-make" aria-hidden="true">M</span>
-              <span class="int-label">Make</span>
+            <div class="int-pill" data-tip="Claude">
+              <span class="int-mark int-mark-img" aria-hidden="true">
+                <img src="images/tools/claude.png" alt="" loading="lazy" decoding="async" />
+              </span>
+              <span class="int-label">Claude</span>
+            </div>
+
+            <div class="int-pill" data-tip="Claude Code">
+              <span class="int-mark int-mark-img" aria-hidden="true">
+                <img src="images/tools/claude-code.png" alt="" loading="lazy" decoding="async" />
+              </span>
+              <span class="int-label">Claude Code</span>
+            </div>
+
+            <div class="int-pill" data-tip="Codex">
+              <span class="int-mark int-mark-img" aria-hidden="true">
+                <img src="images/tools/codex.png" alt="" loading="lazy" decoding="async" />
+              </span>
+              <span class="int-label">Codex</span>
             </div>
 
             <div class="int-pill" data-tip="Notion">
@@ -369,16 +385,25 @@
               <span class="int-label">Slack</span>
             </div>
 
-            <div class="int-pill" data-tip="Airtable">
-              <span class="int-mark int-mark-airtable" aria-hidden="true">A</span>
-              <span class="int-label">Airtable</span>
+            <div class="int-pill" data-tip="Antigravity">
+              <span class="int-mark int-mark-img" aria-hidden="true">
+                <img src="images/tools/antigravity.png" alt="" loading="lazy" decoding="async" />
+              </span>
+              <span class="int-label">Antigravity</span>
             </div>
 
-            <div class="int-pill" data-tip="HubSpot">
-              <span class="int-mark int-mark-hubspot" aria-hidden="true">
-                <i class="fab fa-hubspot"></i>
+            <div class="int-pill" data-tip="Hermes Agent">
+              <span class="int-mark int-mark-img" aria-hidden="true">
+                <img src="images/tools/hermes.png" alt="" loading="lazy" decoding="async" />
               </span>
-              <span class="int-label">HubSpot</span>
+              <span class="int-label">Hermes</span>
+            </div>
+
+            <div class="int-pill" data-tip="OpenClaw">
+              <span class="int-mark int-mark-img" aria-hidden="true">
+                <img src="images/tools/openclaw.png" alt="" loading="lazy" decoding="async" />
+              </span>
+              <span class="int-label">OpenClaw</span>
             </div>
 
             <div class="int-pill" data-tip="WhatsApp">
@@ -412,9 +437,9 @@
         </p>
       </div>
 
-      <!-- Bottom wave divider (mirrored) -->
-      <svg class="wave-divider wave-bottom" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 L1440,80 L0,80 Z"></path>
+      <!-- Bottom wave divider (mirrored) — viewBox doubled and path repeated for seamless drift -->
+      <svg class="wave-divider wave-bottom" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 C1680,0 1920,80 2160,40 C2400,0 2640,80 2880,40 L2880,80 L0,80 Z"></path>
       </svg>
     </section>
 

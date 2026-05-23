@@ -5,6 +5,7 @@ brand-agent-system/
 
 # Local QA artifacts — Playwright screenshots, traces, logs.
 .qa/
+.playwright-test/
 
 # Firebase local caches/logs and private admin keys.
 .firebase/
