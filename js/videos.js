@@ -28,6 +28,19 @@
 
 const VIDEOS = [
   {
+    id: "jLgUZnuQuDM",
+    title: {
+      de: "Claude Code hat grade ein massives Upgrade bekommen",
+      en: "Claude Code just got a massive upgrade"
+    },
+    publishedAt: "2026-05-29",
+    description: {
+      de: "Ein neues Update rund um Claude Code und was es praktisch für deinen KI-Workflow bedeutet. Prompts und Links aus dem Video folgen hier.",
+      en: "A new update around Claude Code and what it means in practice for your AI workflow. Prompts and links from the video will be added here."
+    },
+    sections: []
+  },
+  {
     // TODO: replace "TODO" with the real YouTube video ID once the Hermes video is uploaded.
     id: "TODO",
     title: {
