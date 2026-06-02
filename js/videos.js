@@ -28,27 +28,13 @@
 
 const VIDEOS = [
   {
-    id: "jLgUZnuQuDM",
-    title: {
-      de: "Claude Code hat grade ein massives Upgrade bekommen",
-      en: "Claude Code just got a massive upgrade"
-    },
-    publishedAt: "2026-05-29",
-    description: {
-      de: "Ein neues Update rund um Claude Code und was es praktisch für deinen KI-Workflow bedeutet. Prompts und Links aus dem Video folgen hier.",
-      en: "A new update around Claude Code and what it means in practice for your AI workflow. Prompts and links from the video will be added here."
-    },
-    sections: []
-  },
-  {
-    // TODO: replace "TODO" with the real YouTube video ID once the Hermes video is uploaded.
-    id: "TODO",
+    id: "mbw_as_-Um8",
     title: {
       de: "Hermes Agent | Dein KI-Mitarbeiter, der nie vergisst",
       en: "Hermes Agent | Your AI coworker who never forgets"
     },
     thumbnailUrl: "images/vid9-hermes.png",
-    publishedAt: "coming-soon",
+    publishedAt: "2026-06-02",
     description: {
       de: "Hermes ist ein KI-Agent, der eigenständig Aufgaben übernimmt. Hier zeige ich dir, wie ich ihn in meinen Workflow integriert habe und wofür ich ihn täglich nutze. Unten findest du den Setup-Prompt, mit dem du fünf Erweiterungen auf einmal aktivierst.",
       en: "Hermes is an AI agent that handles tasks autonomously. Here I'll show you how I've integrated it and what I use it for every day. Below you'll find the setup prompt that activates five extensions in one go."
@@ -392,6 +378,19 @@ instructions.`
         ]
       }
     ]
+  },
+  {
+    id: "jLgUZnuQuDM",
+    title: {
+      de: "Claude Code hat grade ein massives Upgrade bekommen",
+      en: "Claude Code just got a massive upgrade"
+    },
+    publishedAt: "2026-05-29",
+    description: {
+      de: "Ein neues Update rund um Claude Code und was es praktisch für deinen KI-Workflow bedeutet. Prompts und Links aus dem Video folgen hier.",
+      en: "A new update around Claude Code and what it means in practice for your AI workflow. Prompts and links from the video will be added here."
+    },
+    sections: []
   },
   {
     id: "KvqmMzOJo9s",
