@@ -28,6 +28,42 @@
 
 const VIDEOS = [
   {
+    id: "e-M-K0jYX5w",
+    title: {
+      de: "Die Claude Mythos Familie ist nun verfügbar",
+      en: "The Claude Mythos family is now available"
+    },
+    publishedAt: "2026-06-09",
+    description: {
+      de: "Das neue Claude-Mythos-Modell erscheint jetzt als Fable 5. Im Video trenne ich den IPO-Hype von den tatsächlichen Use Cases, damit du dir ein objektives Bild vom Release machen kannst. Unten findest du die beiden Artikel von Anthropic zum Nachlesen.",
+      en: "The new Claude Mythos model is launching as Fable 5. In the video I separate the IPO hype from the actual use cases so you can form an objective view of the release. Below you'll find the two Anthropic articles to read up on."
+    },
+    sections: [
+      {
+        heading: { de: "Zum Nachlesen", en: "Further reading" },
+        type: "links",
+        items: [
+          {
+            label: "Claude Fable 5 & Mythos 5 (Anthropic)",
+            url: "https://www.anthropic.com/news/claude-fable-5-mythos-5",
+            description: {
+              de: "Die offizielle Ankündigung von Anthropic zur neuen Mythos-Familie und zum Release von Fable 5.",
+              en: "Anthropic's official announcement of the new Mythos family and the Fable 5 release."
+            }
+          },
+          {
+            label: "Recursive Self-Improvement (Anthropic Institute)",
+            url: "https://www.anthropic.com/institute/recursive-self-improvement",
+            description: {
+              de: "Hintergrund vom Anthropic Institute zu rekursiver Selbstverbesserung, dem Forschungsthema hinter dem neuen Modell.",
+              en: "Background from the Anthropic Institute on recursive self-improvement, the research behind the new model."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "mbw_as_-Um8",
     title: {
       de: "Hermes Agent | Dein KI-Mitarbeiter, der nie vergisst",
