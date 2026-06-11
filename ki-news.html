@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <!-- Theme bootstrap — runs before paint to avoid flash of wrong theme.
-         New visitors get light mode; only an explicit saved choice flips it. -->
+    <!-- Theme bootstrap — runs before paint to avoid flash of wrong theme. -->
     <script>
       (function () {
         try {
@@ -18,11 +17,10 @@
     </script>
     <meta
       name="description"
-      content="KIFlowstate: Ressourcen, Prompts und Links zu unseren YouTube-Videos."
-      data-translate="resources_meta_description"
+      content="KIFlowstate – Tägliche KI-News, kurz eingeordnet und mit Quellen, für den Mittelstand."
+      data-translate="kinews_meta_description"
     />
-    <meta name="robots" content="noindex,follow" />
-    <title>Ressourcen | KIFlowstate</title>
+    <title>KI-News | KIFlowstate</title>
 
     <!-- Favicon -->
     <link rel="icon" href="images/kilogo.png" type="image/png" />
@@ -48,9 +46,9 @@
     <!-- Local assets -->
     <link rel="stylesheet" href="css/styles.css" />
     <script defer src="js/translations.js"></script>
-    <script defer src="js/videos.js"></script>
     <script defer src="js/script.js"></script>
-    <script defer src="js/resources-page.js"></script>
+    <script defer src="js/ki-news.js"></script>
+    <script defer src="js/ki-news-page.js"></script>
   </head>
 
   <body>
@@ -66,10 +64,9 @@
             <li><a href="index.html#about" data-translate="nav_about">Über Uns</a></li>
             <li><a href="index.html#services" data-translate="nav_services">Leistungen</a></li>
             <li><a href="index.html#showcase" data-translate="nav_showcase">Webdesign</a></li>
-            <li><a href="index.html#appointment" data-translate="nav_appointment">Termin</a></li>
             <li><a href="index.html#contact" data-translate="nav_contact">Kontakt</a></li>
-            <li><a href="ki-news.html" class="nav-link-secondary" data-translate="nav_kinews">KI-News</a></li>
-            <li><a href="resources.html" class="nav-link-secondary" data-translate="nav_resources" aria-current="page">Ressourcen</a></li>
+            <li><a href="ki-news.html" class="nav-link-secondary" data-translate="nav_kinews" aria-current="page">KI-News</a></li>
+            <li><a href="resources.html" class="nav-link-secondary" data-translate="nav_resources">Ressourcen</a></li>
           </ul>
         </nav>
 
@@ -106,10 +103,10 @@
     <!-- ▸▸ COMPACT HERO --------------------------------------------------- -->
     <section class="resources-hero">
       <div class="container">
-        <span class="resources-eyebrow" data-translate="resources_eyebrow">Video-Ressourcen</span>
-        <h1 data-translate="resources_title">Prompts &amp; Links zu unseren Videos</h1>
-        <p data-translate="resources_subtitle">
-          Wähle links ein Video aus, um die zugehörigen Prompts, Tools und Links zu sehen.
+        <span class="resources-eyebrow" data-translate="kinews_eyebrow">Tägliche KI-News</span>
+        <h1 data-translate="kinews_page_title">KI-News, jeden Tag eingeordnet</h1>
+        <p data-translate="kinews_page_subtitle">
+          Wählen Sie links einen Tag, um den vollständigen Digest mit Quellen zu sehen.
         </p>
       </div>
 
@@ -123,35 +120,45 @@
           shape-rendering="auto"
         >
           <defs>
-            <path id="resources-gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            <path id="kinews-gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
           </defs>
           <g class="parallax">
-            <use xlink:href="#resources-gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.22)" />
-            <use xlink:href="#resources-gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.15)" />
-            <use xlink:href="#resources-gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.10)" />
-            <use xlink:href="#resources-gentle-wave" x="48" y="7" class="resources-hero-wave-base" />
+            <use xlink:href="#kinews-gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.22)" />
+            <use xlink:href="#kinews-gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.15)" />
+            <use xlink:href="#kinews-gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.10)" />
+            <use xlink:href="#kinews-gentle-wave" x="48" y="7" class="resources-hero-wave-base" />
           </g>
         </svg>
       </div>
     </section>
 
-    <!-- ▸▸ RESOURCES MAIN ------------------------------------------------- -->
-    <main class="resources-main">
-      <div class="container resources-container">
-        <!-- LEFT: VIDEO LIST -->
-        <aside class="resources-sidebar" aria-label="Videoauswahl">
-          <h2 class="resources-sidebar-title" data-translate="resources_sidebar_title">Alle Videos</h2>
-          <ul class="video-list" id="video-list" role="tablist" aria-orientation="vertical">
-            <!-- Populated by resources-page.js -->
-          </ul>
-          <p class="resources-empty" id="video-list-empty" hidden data-translate="resources_empty">
-            Bald hier, die ersten Videos sind in Arbeit.
-          </p>
-        </aside>
+    <!-- ▸▸ KI-NEWS MAIN --------------------------------------------------- -->
+    <main class="resources-main kinews-main">
+      <div class="container kinews-stage">
+        <!-- DAY RAIL — horizontal, drag-to-swipe -->
+        <div class="ki-rail-head">
+          <h2 class="resources-sidebar-title" data-translate="kinews_sidebar_title">Alle Tage</h2>
+          <span class="ki-rail-hint" data-translate="kinews_drag_hint">Zum Wischen ziehen</span>
+        </div>
 
-        <!-- RIGHT: ACTIVE VIDEO + RESOURCES -->
-        <section class="resources-content" id="resources-content" aria-live="polite">
-          <!-- Populated by resources-page.js -->
+        <div class="ki-rail-wrap" data-rail="days">
+          <button class="ki-rail-arrow ki-rail-prev" type="button" data-dir="-1" aria-label="Zurück">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <ul class="ki-day-rail" id="ki-day-list" role="tablist" aria-orientation="horizontal">
+            <!-- Populated by ki-news-page.js -->
+          </ul>
+          <button class="ki-rail-arrow ki-rail-next" type="button" data-dir="1" aria-label="Weiter">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="resources-empty" id="ki-day-list-empty" hidden data-translate="kinews_empty">
+          Noch keine News verfügbar.
+        </p>
+
+        <!-- SELECTED DAY -->
+        <section class="ki-news-content" id="ki-news-content" aria-live="polite">
+          <!-- Populated by ki-news-page.js -->
         </section>
       </div>
     </main>
@@ -188,8 +195,5 @@
         </ul>
       </div>
     </footer>
-
-    <!-- Toast for "copied" feedback on prompt cards -->
-    <div class="copy-toast" id="copy-toast" role="status" aria-live="polite" hidden></div>
   </body>
 </html>

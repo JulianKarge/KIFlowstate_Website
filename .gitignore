@@ -23,3 +23,6 @@ js/firebase-env.js
 
 # Local-only feedback dashboard. Do not publish this with the website.
 local-feedback-viewer/
+
+# Clipboard screenshot drop — Claude grabs pasted screenshots here.
+_inbox/

@@ -84,6 +84,8 @@
     <link rel="stylesheet" href="css/styles.css" />
     <script defer src="js/translations.js"></script>
     <script defer src="js/script.js"></script>
+    <script defer src="js/ki-news.js"></script>
+    <script defer src="js/ki-news-home.js"></script>
   </head>
 
   <body>
@@ -102,6 +104,7 @@
             <li><a href="#showcase" data-translate="nav_showcase">Webdesign</a></li>
             <li><a href="#appointment" data-translate="nav_appointment">Termin</a></li>
             <li><a href="#contact" data-translate="nav_contact">Kontakt</a></li>
+            <li><a href="ki-news.html" class="nav-link-secondary" data-translate="nav_kinews">KI-News</a></li>
             <li><a href="resources.html" class="nav-link-secondary" data-translate="nav_resources">Ressourcen</a></li>
           </ul>
         </nav>
@@ -527,6 +530,36 @@
           </template>
         </div>
       </div>
+    </section>
+
+    <!-- ▸▸ KI-NEWS BAND ---------------------------------------------------- -->
+    <!--
+      Live teaser of the latest Daily AI News digest. Data is fetched at
+      runtime from the separate DailyNews JSON feed (Hermes agent updates it);
+      #ki-news-latest is filled by js/ki-news-home.js. Full archive: ki-news.html.
+    -->
+    <section id="ki-news" class="ki-news-band reveal" aria-label="KI-News">
+      <svg class="wave-divider wave-top" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,40 C200,10 400,10 600,30 C800,50 1000,50 1200,20 L1200,0 L0,0 Z"></path>
+      </svg>
+
+      <div class="container ki-news-band-inner">
+        <div class="ki-news-band-head">
+          <span class="section-kicker ki-news-kicker" data-translate="kinews_home_kicker">Tägliche KI-News</span>
+          <h2 data-translate="kinews_home_title">Was heute in der KI-Welt passiert</h2>
+          <p class="ki-news-band-lead" data-translate="kinews_home_lead">
+            Jeden Tag fasst unser Agent die wichtigsten KI-Entwicklungen zusammen, mit Quellen und einer Einordnung, was sie für den Mittelstand bedeuten.
+          </p>
+        </div>
+
+        <div class="ki-news-home-card" id="ki-news-latest" aria-live="polite">
+          <!-- Filled by js/ki-news-home.js -->
+        </div>
+      </div>
+
+      <svg class="wave-divider wave-bottom" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,30 C200,55 400,55 600,35 C800,15 1000,15 1200,40 L1200,60 L0,60 Z"></path>
+      </svg>
     </section>
 
     <!-- ▸▸ CONTACT FORM ---------------------------------------------------- -->
