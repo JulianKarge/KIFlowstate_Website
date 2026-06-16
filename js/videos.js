@@ -28,34 +28,6 @@
 
 const VIDEOS = [
   {
-    id: "mdDZ-LEMM50",
-    title: {
-      de: "Die US-Regierung behält Claude Fable 5 für sich",
-      en: "The US government is keeping Claude Fable 5 to itself"
-    },
-    publishedAt: "2026-06-14",
-    description: {
-      de: "Stell dir vor, das stärkste KI-Modell erscheint, und plötzlich ist es für dich gesperrt. Genau dieses Szenario nehme ich rund um Fable 5 zum Anlass, um über ein größeres Thema zu reden: wie abhängig wir uns von US-Modellen machen und was passiert, wenn der Zugang zu den besten Modellen auf einmal eingeschränkt wird. Mein Rat: offene Modelle ausprobieren, lokal laufen lassen und deine Daten bei dir behalten. Unten verlinke ich das DeepSeek-R1-Paper, das ich im Video zeige.",
-      en: "Imagine the strongest AI model launches and it's suddenly locked for you. I use exactly that scenario around Fable 5 to talk about something bigger: how dependent we're becoming on US models, and what happens when access to the best models gets restricted overnight. My take: try open models, run them locally, and keep your data with you. Below I link the DeepSeek-R1 paper I show in the video."
-    },
-    sections: [
-      {
-        heading: { de: "Zum Nachlesen", en: "Further reading" },
-        type: "links",
-        items: [
-          {
-            label: "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs (arXiv)",
-            url: "https://arxiv.org/abs/2501.12948",
-            description: {
-              de: "Das offen veröffentlichte Paper hinter DeepSeek-R1, das ich im Video zeige. Es beschreibt, wie das Modell per Reinforcement Learning aufgebaut wurde: ein Beispiel dafür, wie viel chinesische Labore offenlegen, während US-Modelle eher geschlossen bleiben.",
-              en: "The openly published paper behind DeepSeek-R1 that I show in the video. It describes how the model was built with reinforcement learning: an example of how much Chinese labs disclose, while US models tend to stay closed."
-            }
-          }
-        ]
-      }
-    ]
-  },
-  {
     id: "e-M-K0jYX5w",
     title: {
       de: "Die Claude Mythos Familie ist nun verfügbar",
