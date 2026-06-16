@@ -136,7 +136,7 @@
     }).join("");
   };
 
-  const renderSection = (section) => {
+  const renderSection = (section, sectionIndex = 0) => {
     const heading = escapeHtml(pick(section.heading));
     const items = Array.isArray(section.items) ? section.items : [];
     if (!items.length) return "";
@@ -146,14 +146,16 @@
 
     if (section.type === "prompts") {
       icon = "fa-wand-magic-sparkles";
-      inner = items.map((p, i) => `
+      inner = items.map((p, i) => {
+        const promptId = `prompt-${sectionIndex}-${i}`;
+        return `
         <article class="prompt-card">
           <header class="prompt-card-head">
             <h4 class="prompt-card-title">${escapeHtml(pick(p.title))}</h4>
             <button
               type="button"
               class="copy-btn"
-              data-copy-target="prompt-${i}"
+              data-copy-target="${promptId}"
               aria-label="${escapeHtml(t("resources_copy", "Kopieren"))}"
             >
               <i class="fas fa-copy" aria-hidden="true"></i>
@@ -161,20 +163,21 @@
             </button>
           </header>
           <div class="prompt-pre-wrap">
-            <pre id="prompt-${i}">${escapeHtml(pick(p.content))}</pre>
+            <pre id="${promptId}">${escapeHtml(pick(p.content))}</pre>
             <div class="prompt-fade" aria-hidden="true"></div>
           </div>
           <button
             type="button"
             class="prompt-expand"
             aria-expanded="false"
-            aria-controls="prompt-${i}"
+            aria-controls="${promptId}"
           >
             <span data-expand-label>${escapeHtml(t("resources_show_more", "Mehr anzeigen"))}</span>
             <i class="fas fa-chevron-down" aria-hidden="true"></i>
           </button>
         </article>
-      `).join("");
+      `;
+      }).join("");
     } else if (section.type === "links") {
       icon = "fa-link";
       const cards = items.map((l) => {
@@ -198,6 +201,11 @@
       // Unknown type — render labels safely as a list
       icon = "fa-bookmark";
       inner = `<ul>${items.map((it) => `<li>${escapeHtml(JSON.stringify(it))}</li>`).join("")}</ul>`;
+    }
+
+    // Optional per-section icon override (e.g. command/download cards vs. AI-prompt cards)
+    if (typeof section.icon === "string" && section.icon) {
+      icon = section.icon;
     }
 
     return `

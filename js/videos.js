@@ -28,6 +28,487 @@
 
 const VIDEOS = [
   {
+    id: "WxxyjK4ib50",
+    title: {
+      de: "Claude Code Tutorial 2026: Vom Anfänger zum Profi in 5 Schritten",
+      en: "Claude Code Tutorial 2026: From beginner to pro in 5 steps"
+    },
+    publishedAt: "2026-06-16",
+    description: {
+      de: "Ein kompakter Lernpfad für Claude Code: vom richtigen Agenten-Mindset über CLAUDE.md, Memory und Skills bis zu MCPs, Automationen, Remote-Steuerung und Orchestrierung. Unten findest du die fünf Schritte als Spickzettel, drei Copy-Prompts und die wichtigsten offiziellen Docs.",
+      en: "A compact learning path for Claude Code: from the right agent mindset through CLAUDE.md, memory and skills to MCPs, automation, remote control and orchestration. Below you'll find the five steps as a cheat sheet, three copy prompts and the most important official docs."
+    },
+    sections: [
+      {
+        heading: { de: "Die fünf Schritte", en: "The five steps" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Der Fahrplan aus dem Video, kurz zum Nachschlagen:</p>
+<ol>
+  <li><strong>Grundlagen:</strong> Behandle Claude Code nicht wie einen Chatbot, sondern wie einen Agenten, der Dateien lesen, schreiben, Befehle ausführen und Aufgaben in Schleifen erledigen kann.</li>
+  <li><strong>Verstehen:</strong> Nutze <code>CLAUDE.md</code> und Memory bewusst. Alles, was immer geladen wird, kostet Kontext. Dauerhafte Regeln gehören dort hinein, lange Spezialanleitungen besser nicht.</li>
+  <li><strong>Üben:</strong> Lege wiederverwendbare Skills an. So bekommt Claude Code genau dann Spezialwissen, wenn es gebraucht wird, ohne jede Session mit riesigem Kontext zu starten.</li>
+  <li><strong>Aufbauen:</strong> Verbinde externe Tools über MCPs, Hooks und geplante Workflows. So wird aus einem lokalen Coding-Agenten ein System, das mit Kalendern, Figma, Notion, Gmail oder Dateien arbeiten kann.</li>
+  <li><strong>Meistern:</strong> Denk als Orchestrator. Wähle je Aufgabe das passende Modell, kombiniere Skills, Agents, MCPs und Automationen und halte Feedback-Schleifen fest, damit dein Setup mit jeder Session besser wird.</li>
+</ol>`,
+              en: `<p>The roadmap from the video, summarized for quick reference:</p>
+<ol>
+  <li><strong>Fundamentals:</strong> Treat Claude Code as an agent, not a chatbot. It can read files, write files, run commands and work through tasks in loops.</li>
+  <li><strong>Understanding:</strong> Use <code>CLAUDE.md</code> and memory deliberately. Anything that always loads spends context. Permanent rules belong there, long specialist instructions usually do not.</li>
+  <li><strong>Practice:</strong> Create reusable skills. Claude Code gets specialist knowledge only when needed, instead of starting every session with huge context.</li>
+  <li><strong>Build:</strong> Connect external tools through MCPs, hooks and scheduled workflows. This turns a local coding agent into a system that can work with calendars, Figma, Notion, Gmail or files.</li>
+  <li><strong>Mastery:</strong> Think like an orchestrator. Pick the right model for each job, combine skills, agents, MCPs and automation, and preserve feedback loops so your setup improves with every session.</li>
+</ol>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Setup nach Bedarf", en: "Setup as needed" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Installiere nur die Tools, die du wirklich nutzen willst. Für den Start reicht Claude Code. Codex und Gemini sind sinnvoll, wenn du zusätzliche Modelle direkt im Terminal verwenden möchtest.</p>
+<ul>
+  <li><strong>Claude Code:</strong> dein Haupt-Agent im Projektordner.</li>
+  <li><strong>Codex CLI:</strong> OpenAI-Coding-Agent im Terminal.</li>
+  <li><strong>Gemini CLI:</strong> Google-Coding-Agent im Terminal.</li>
+  <li><strong>Frontend Design:</strong> besseres UI-Gefühl und weniger generische Designs.</li>
+  <li><strong>Skill Creator:</strong> eigene Skills sauber erstellen oder verbessern.</li>
+  <li><strong>Memory / Remember:</strong> Sitzungen zusammenfassen und Wissen über längere Arbeit hinweg behalten.</li>
+</ul>`,
+              en: `<p>Install only the tools you actually want to use. Claude Code is enough to get started. Codex and Gemini are useful when you want extra models directly in your terminal.</p>
+<ul>
+  <li><strong>Claude Code:</strong> your main agent inside a project folder.</li>
+  <li><strong>Codex CLI:</strong> OpenAI coding agent in the terminal.</li>
+  <li><strong>Gemini CLI:</strong> Google coding agent in the terminal.</li>
+  <li><strong>Frontend Design:</strong> stronger UI taste and less generic designs.</li>
+  <li><strong>Skill Creator:</strong> create or improve your own skills cleanly.</li>
+  <li><strong>Memory / Remember:</strong> summarize sessions and keep knowledge across longer work.</li>
+</ul>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "CLI-Downloads", en: "CLI downloads" },
+        type: "prompts",
+        icon: "fa-download",
+        items: [
+          {
+            title: {
+              de: "Claude Code installieren",
+              en: "Install Claude Code"
+            },
+            content: {
+              de: `# Windows PowerShell
+irm https://claude.ai/install.ps1 | iex
+
+# macOS, Linux oder WSL
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Danach im Projektordner starten
+cd dein-projekt
+claude
+
+# Optional: Version prüfen
+claude --version`,
+              en: `# Windows PowerShell
+irm https://claude.ai/install.ps1 | iex
+
+# macOS, Linux or WSL
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Then start it inside your project folder
+cd your-project
+claude
+
+# Optional: check version
+claude --version`
+            }
+          },
+          {
+            title: {
+              de: "Codex CLI installieren",
+              en: "Install Codex CLI"
+            },
+            content: {
+              de: `# Windows PowerShell
+powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"
+
+# macOS oder Linux
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+
+# Alternative mit npm
+npm install -g @openai/codex
+
+# Danach anmelden und starten
+codex login
+codex`,
+              en: `# Windows PowerShell
+powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"
+
+# macOS or Linux
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+
+# Alternative with npm
+npm install -g @openai/codex
+
+# Then log in and start
+codex login
+codex`
+            }
+          },
+          {
+            title: {
+              de: "Gemini CLI installieren",
+              en: "Install Gemini CLI"
+            },
+            content: {
+              de: `# Mit npm global installieren
+npm install -g @google/gemini-cli
+
+# Oder ohne globale Installation testen
+npx @google/gemini-cli
+
+# Danach starten und mit Google anmelden
+gemini
+
+# Optional: Version prüfen
+gemini --version`,
+              en: `# Install globally with npm
+npm install -g @google/gemini-cli
+
+# Or test without a global install
+npx @google/gemini-cli
+
+# Then start it and sign in with Google
+gemini
+
+# Optional: check version
+gemini --version`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Claude-Code-Plugins installieren", en: "Install Claude Code plugins" },
+        type: "prompts",
+        icon: "fa-puzzle-piece",
+        items: [
+          {
+            title: {
+              de: "Frontend Design",
+              en: "Frontend Design"
+            },
+            content: `/plugin install frontend-design@claude-plugins-official
+/reload-plugins`
+          },
+          {
+            title: {
+              de: "Skill Creator",
+              en: "Skill Creator"
+            },
+            content: `/plugin install skill-creator@claude-plugins-official
+/reload-plugins`
+          },
+          {
+            title: {
+              de: "Memory / Remember",
+              en: "Memory / Remember"
+            },
+            content: `/plugin install remember@claude-plugins-official
+/reload-plugins
+/remember:init`
+          }
+        ]
+      },
+      {
+        heading: { de: "Kurze Nutzung", en: "Quick usage" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<ol>
+  <li>Erst ein neues Terminal öffnen und im Projektordner <code>claude</code> starten.</li>
+  <li>Die drei Plugin-Befehle in Claude Code einzeln einfügen, nicht als großen Block.</li>
+  <li>Danach kurz testen: <code>Nutze den frontend-design Skill und überarbeite diese Komponente</code>, <code>Nutze skill-creator und hilf mir, einen Skill für X zu bauen</code> oder <code>/remember:init</code>.</li>
+  <li>Wenn ein Plugin nicht auftaucht, Claude Code schließen, neu öffnen und <code>/plugin list</code> prüfen.</li>
+</ol>`,
+              en: `<ol>
+  <li>Open a new terminal first and start <code>claude</code> inside your project folder.</li>
+  <li>Paste the three plugin commands into Claude Code one by one, not as one large block.</li>
+  <li>Then test quickly: <code>Use the frontend-design skill and improve this component</code>, <code>Use skill-creator and help me build a skill for X</code>, or <code>/remember:init</code>.</li>
+  <li>If a plugin does not show up, close Claude Code, reopen it and check <code>/plugin list</code>.</li>
+</ol>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Copy-Prompts", en: "Copy prompts" },
+        type: "prompts",
+        items: [
+          {
+            title: {
+              de: "1. Claude-Code-Setup auditieren",
+              en: "1. Audit my Claude Code setup"
+            },
+            content: {
+              de: `Prüfe mein aktuelles Claude-Code-Setup und erstelle einen konkreten Verbesserungsplan.
+
+Ziel:
+Ich will Claude Code langfristig wie einen Agenten nutzen, nicht nur wie einen Chatbot. Prüfe, ob mein Setup dafür sauber strukturiert ist.
+
+Bitte arbeite so:
+1. Lies zuerst die Projektstruktur.
+2. Suche nach CLAUDE.md, AGENTS.md, .claude/, skills, agents, hooks, MCP-Konfigurationen und relevanten Settings.
+3. Ändere noch keine Dateien.
+4. Erstelle eine kurze Bestandsaufnahme:
+   - Was ist bereits gut eingerichtet?
+   - Was lädt wahrscheinlich zu viel Kontext?
+   - Was sollte in CLAUDE.md bleiben?
+   - Was sollte besser als Skill, Agent, Hook oder MCP gelöst werden?
+5. Schlage danach einen Umsetzungsplan in kleinen, sicheren Schritten vor.
+6. Warte auf mein OK, bevor du Dateien änderst.
+
+Bewerte besonders:
+- persistenter Kontext
+- wiederverwendbare Skills
+- Tool-Zugriffe über MCP
+- Sicherheitsregeln vor gefährlichen Aktionen
+- Feedback-Schleifen, damit Claude Code aus Projekten lernt`,
+              en: `Audit my current Claude Code setup and create a concrete improvement plan.
+
+Goal:
+I want to use Claude Code as a long-term agent, not just as a chatbot. Check whether my setup is structured for that.
+
+Please work like this:
+1. Read the project structure first.
+2. Look for CLAUDE.md, AGENTS.md, .claude/, skills, agents, hooks, MCP configs and relevant settings.
+3. Do not edit files yet.
+4. Create a short inventory:
+   - What is already set up well?
+   - What probably loads too much context?
+   - What should stay in CLAUDE.md?
+   - What should become a skill, agent, hook or MCP instead?
+5. Then propose an implementation plan in small, safe steps.
+6. Wait for my OK before changing files.
+
+Focus especially on:
+- persistent context
+- reusable skills
+- tool access through MCP
+- safety rules before risky actions
+- feedback loops so Claude Code learns from projects`
+            }
+          },
+          {
+            title: {
+              de: "2. Persönlichen Skill erstellen",
+              en: "2. Create a personal skill"
+            },
+            content: {
+              de: `Erstelle mit mir einen wiederverwendbaren Claude-Code-Skill.
+
+Wichtig:
+Stelle zuerst Fragen. Erstelle den Skill erst, wenn du genug Kontext hast.
+
+Fragen:
+1. Für welchen wiederkehrenden Workflow soll der Skill sein?
+2. Welche Eingaben bekommt der Skill normalerweise?
+3. Welche Dateien, Tools, Webseiten oder APIs muss er kennen?
+4. Welche Entscheidungen soll er selbst treffen dürfen?
+5. Welche Aktionen brauchen immer meine Freigabe?
+6. Wie soll das Ergebnis aussehen?
+7. Welche Beispiele für gute und schlechte Ergebnisse gibt es?
+8. Soll der Skill eher knapp, gründlich, kreativ oder streng arbeiten?
+
+Nach meinen Antworten:
+1. Fasse das Ziel des Skills kurz zusammen.
+2. Schlage eine Skill-Struktur vor.
+3. Erstelle ein SKILL.md mit:
+   - Name
+   - Beschreibung
+   - Wann der Skill genutzt werden soll
+   - Schritt-für-Schritt-Workflow
+   - Qualitätskriterien
+   - Sicherheitsregeln
+   - Beispiel-Prompts
+4. Wenn der Skill Dateien braucht, schlage sinnvolle Unterordner vor.
+5. Erkläre am Ende, wie ich den Skill testen kann.`,
+              en: `Create a reusable Claude Code skill with me.
+
+Important:
+Ask questions first. Do not create the skill until you have enough context.
+
+Questionnaire:
+1. Which recurring workflow should this skill handle?
+2. What inputs does the skill usually receive?
+3. Which files, tools, websites or APIs does it need to know?
+4. Which decisions may it make on its own?
+5. Which actions always require my approval?
+6. What should the output look like?
+7. What are examples of good and bad results?
+8. Should the skill be concise, thorough, creative or strict?
+
+After my answers:
+1. Summarize the goal of the skill.
+2. Propose a skill structure.
+3. Create a SKILL.md with:
+   - Name
+   - Description
+   - When to use the skill
+   - Step-by-step workflow
+   - Quality criteria
+   - Safety rules
+   - Example prompts
+4. If the skill needs files, suggest useful subfolders.
+5. Explain how I can test the skill.`
+            }
+          },
+          {
+            title: {
+              de: "3. MCP- und Automations-Plan bauen",
+              en: "3. Build an MCP and automation plan"
+            },
+            content: {
+              de: `Hilf mir, einen MCP- und Automations-Plan für meinen Agenten zu bauen.
+
+Ziel:
+Ich will wiederkehrende Aufgaben nicht mehr manuell starten müssen. Der Agent soll wissen, welche Tools er braucht, welche Trigger sinnvoll sind und wo Sicherheitsgrenzen liegen.
+
+Bitte frage zuerst:
+1. Welche wiederkehrende Aufgabe soll automatisiert werden?
+2. Welche Tools oder Datenquellen sind beteiligt?
+3. Soll der Workflow manuell, zeitgesteuert oder durch ein Ereignis starten?
+4. Welche Aktionen darf der Agent nur lesen?
+5. Welche Aktionen dürfen schreiben oder senden?
+6. Welche Schritte brauchen immer Freigabe?
+7. Wo sollen Logs, Zusammenfassungen oder Ergebnisse abgelegt werden?
+
+Danach liefere:
+1. Eine Architektur in einfachen Worten.
+2. Welche MCP-Server oder Integrationen gebraucht werden.
+3. Welche Hooks oder Scheduler sinnvoll sind.
+4. Ein Sicherheitsmodell mit Freigabepunkten.
+5. Einen Testplan mit Dummy-Daten.
+6. Erst danach konkrete Installations- oder Konfigurationsschritte.
+
+Regel:
+Keine Credentials ausgeben, keine Secrets speichern, keine externen Aktionen ausführen, bevor ich ausdrücklich zustimme.`,
+              en: `Help me build an MCP and automation plan for my agent.
+
+Goal:
+I do not want to start recurring tasks manually anymore. The agent should know which tools it needs, which triggers make sense and where the safety boundaries are.
+
+Ask first:
+1. Which recurring task should be automated?
+2. Which tools or data sources are involved?
+3. Should the workflow start manually, on a schedule or from an event?
+4. Which actions should be read-only?
+5. Which actions may write or send?
+6. Which steps always require approval?
+7. Where should logs, summaries or results be stored?
+
+Then deliver:
+1. An architecture in simple language.
+2. Which MCP servers or integrations are needed.
+3. Which hooks or schedulers make sense.
+4. A safety model with approval points.
+5. A test plan with dummy data.
+6. Only then concrete installation or configuration steps.
+
+Rule:
+Do not print credentials, do not store secrets and do not perform external actions before I explicitly approve.`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Offizielle Docs", en: "Official docs" },
+        type: "links",
+        items: [
+          {
+            label: "OpenAI Codex CLI",
+            url: "https://developers.openai.com/codex/cli",
+            description: {
+              de: "Offizielle Codex-CLI-Seite von OpenAI mit Installation, Login und Terminal-Workflow.",
+              en: "Official OpenAI Codex CLI page with installation, login and terminal workflow."
+            }
+          },
+          {
+            label: "Gemini CLI",
+            url: "https://github.com/google-gemini/gemini-cli",
+            description: {
+              de: "Offizielles Google-GitHub-Repository für Gemini CLI.",
+              en: "Official Google GitHub repository for Gemini CLI."
+            }
+          },
+          {
+            label: "Claude Plugins",
+            url: "https://claude.com/plugins",
+            description: {
+              de: "Offizielles Plugin-Verzeichnis für Claude Code, inklusive Frontend Design, Skill Creator und Remember.",
+              en: "Official plugin directory for Claude Code, including Frontend Design, Skill Creator and Remember."
+            }
+          },
+          {
+            label: "Claude Code Overview",
+            url: "https://docs.anthropic.com/en/docs/claude-code/overview",
+            description: {
+              de: "Offizieller Einstieg: Was Claude Code ist, wo es läuft und wie du es installierst.",
+              en: "Official starting point: what Claude Code is, where it runs and how to install it."
+            }
+          },
+          {
+            label: "Claude Code Memory",
+            url: "https://docs.anthropic.com/en/docs/claude-code/memory",
+            description: {
+              de: "Wie Claude Code Projektwissen speichert und wann Memory statt langer Startanweisungen sinnvoll ist.",
+              en: "How Claude Code stores project knowledge and when memory is better than long startup instructions."
+            }
+          },
+          {
+            label: "Claude Code Skills",
+            url: "https://docs.anthropic.com/en/docs/claude-code/skills",
+            description: {
+              de: "Skills erstellen, verwalten und als wiederverwendbare Workflows nutzen.",
+              en: "Create, manage and use skills as reusable workflows."
+            }
+          },
+          {
+            label: "Claude Code MCP",
+            url: "https://docs.anthropic.com/en/docs/claude-code/mcp",
+            description: {
+              de: "Claude Code mit externen Tools, Datenbanken und APIs über das Model Context Protocol verbinden.",
+              en: "Connect Claude Code to external tools, databases and APIs through the Model Context Protocol."
+            }
+          },
+          {
+            label: "Claude Code Hooks",
+            url: "https://docs.anthropic.com/en/docs/claude-code/hooks",
+            description: {
+              de: "Automationen an Ereignisse im Claude-Code-Lifecycle hängen, zum Beispiel Formatierung, Prüfungen oder Benachrichtigungen.",
+              en: "Attach automation to events in the Claude Code lifecycle, for example formatting, checks or notifications."
+            }
+          },
+          {
+            label: "Claude Code Subagents",
+            url: "https://docs.anthropic.com/en/docs/claude-code/sub-agents",
+            description: {
+              de: "Spezialisierte Agents für getrennte Aufgaben, eigenes Wissen und saubere Kontexttrennung.",
+              en: "Specialized agents for separate tasks, their own knowledge and cleaner context separation."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "e-M-K0jYX5w",
     title: {
       de: "Die Claude Mythos Familie ist nun verfügbar",
