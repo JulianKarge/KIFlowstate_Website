@@ -12,9 +12,7 @@ const translations = {
     nav_kinews: "KI-News",
     nav_imprint: "Impressum",
     nav_privacy: "Datenschutz",
-    stat1_label: "Automatisierungen ausgeliefert",
-    stat2_label: "Stunden monatlich gespart",
-    stat3_label: "Kundenzufriedenheit",
+
     hero_title_1: "Erreiche den",
     hero_title_2: "mit KI-gesteuerter Automation",
     hero_subtitle: "Wir entwerfen, bauen & warten End‑to‑End-Automatisierungen, die Ihnen Ihre Fokuszeit zurückgeben.",
@@ -179,9 +177,7 @@ const translations = {
     nav_kinews: "KI-News",
     nav_imprint: "Imprint",
     nav_privacy: "Privacy",
-    stat1_label: "Automations shipped",
-    stat2_label: "Hours saved per month",
-    stat3_label: "Client satisfaction",
+
     hero_title_1: "Unlock",
     hero_title_2: "with AI‑Driven Automation",
     hero_subtitle: "We design, build & maintain end‑to‑end automations that give you back your focus time.",
