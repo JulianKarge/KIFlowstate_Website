@@ -198,6 +198,9 @@
     let dragDelta = 0;
     let mobileSnapTimer = null;
     let mobileSnapping = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartIndex = 0;
 
     const isStageMode = () => window.matchMedia("(min-width: 901px)").matches;
     const isCoarsePointer = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
@@ -334,6 +337,30 @@
       scheduleUpdate();
       scheduleMobileSnap();
     }, { passive: true });
+
+    rail.addEventListener("touchstart", (event) => {
+      if (!isMobileRail() || !event.touches || !event.touches.length) return;
+      if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
+      mobileSnapping = true;
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+      touchStartIndex = nearestIndex();
+    }, { passive: true });
+
+    rail.addEventListener("touchend", (event) => {
+      if (!isMobileRail()) return;
+      const touch = event.changedTouches && event.changedTouches[0];
+      if (!touch) return;
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+      const isHorizontalSwipe = Math.abs(dx) > 28 && Math.abs(dx) > Math.abs(dy) * 1.15;
+      const dir = isHorizontalSwipe ? (dx < 0 ? 1 : -1) : 0;
+      window.setTimeout(() => {
+        scrollToIndex(touchStartIndex + dir);
+        window.setTimeout(() => { mobileSnapping = false; }, 460);
+      }, 40);
+    }, { passive: true });
+
     rail.addEventListener("keydown", (event) => {
       if (event.key === "ArrowLeft") {
         event.preventDefault();

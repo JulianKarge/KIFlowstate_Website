@@ -272,6 +272,9 @@ window.KINews = (function () {
     let dragDelta = 0;
     let mobileSnapTimer = null;
     let mobileSnapping = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartIndex = 0;
 
     const isCoarsePointer = function () {
       return window.matchMedia("(hover: none), (pointer: coarse)").matches;
@@ -314,6 +317,30 @@ window.KINews = (function () {
     scroller.addEventListener("scroll", function () {
       scheduleDepthUpdate();
       scheduleMobileSnap();
+    }, { passive: true });
+
+    scroller.addEventListener("touchstart", function (e) {
+      if (!isMobileRail() || !e.touches || !e.touches.length) return;
+      if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
+      mobileSnapping = true;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartIndex = railNearestIndex(scroller);
+    }, { passive: true });
+
+    scroller.addEventListener("touchend", function (e) {
+      if (!isMobileRail()) return;
+      const touch = e.changedTouches && e.changedTouches[0];
+      if (!touch) return;
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+      const isHorizontalSwipe = Math.abs(dx) > 28 && Math.abs(dx) > Math.abs(dy) * 1.15;
+      const dir = isHorizontalSwipe ? (dx < 0 ? 1 : -1) : 0;
+      const targetIndex = touchStartIndex + dir;
+      window.setTimeout(function () {
+        scrollRailToIndex(scroller, targetIndex);
+        window.setTimeout(function () { mobileSnapping = false; }, 460);
+      }, 40);
     }, { passive: true });
 
     scroller.addEventListener("pointerdown", function (e) {
