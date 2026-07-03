@@ -5,7 +5,8 @@
     company: "kif_invoice_demo_company_v1",
     customers: "kif_invoice_demo_customers_v1",
     invoices: "kif_invoice_demo_invoices_v1",
-    counter: "kif_invoice_demo_counter_v1"
+    counter: "kif_invoice_demo_counter_v1",
+    nudgeDismissed: "kif_invoice_demo_nudge_dismissed_until_v1"
   };
 
   const eur = new Intl.NumberFormat("de-DE", {
@@ -74,6 +75,7 @@
     bindFields();
     bindActions();
     bindCapabilityCarousel();
+    bindDemoNudge();
     renderCustomerSelect();
     syncForm();
     renderPositions();
@@ -640,6 +642,93 @@
         lastEmailTrigger.focus();
       }
     }
+  }
+
+  function bindDemoNudge() {
+    const nudge = document.getElementById("invoice-demo-nudge");
+    if (!nudge || nudge.dataset.nudgeBound) return;
+    nudge.dataset.nudgeBound = "1";
+
+    const closeButton = document.getElementById("invoice-demo-nudge-close");
+    const links = Array.from(nudge.querySelectorAll("a"));
+    const dismissForWeek = 7 * 24 * 60 * 60 * 1000;
+    const dismissAfterClick = 14 * 24 * 60 * 60 * 1000;
+    const timeDelay = 120000;
+    const scrollArmDelay = 9000;
+    const scrollRatio = 0.32;
+    const startedAt = Date.now();
+    let timer = null;
+    let visible = false;
+    let dismissed = false;
+
+    const getDismissedUntil = () => {
+      try {
+        return Number(localStorage.getItem(KEYS.nudgeDismissed)) || 0;
+      } catch (err) {
+        return 0;
+      }
+    };
+
+    const rememberDismissal = (duration) => {
+      try {
+        localStorage.setItem(KEYS.nudgeDismissed, String(Date.now() + duration));
+      } catch (err) {
+        // If storage is blocked, the nudge simply behaves like a session-only prompt.
+      }
+    };
+
+    const stopListening = () => {
+      if (timer) window.clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+
+    const show = () => {
+      if (visible || dismissed || getDismissedUntil() > Date.now()) return;
+      if (document.body.classList.contains("invoice-demo-modal-open")) {
+        timer = window.setTimeout(show, 6000);
+        return;
+      }
+
+      visible = true;
+      stopListening();
+      nudge.hidden = false;
+      window.requestAnimationFrame(() => {
+        nudge.classList.add("is-visible");
+      });
+    };
+
+    function handleScroll() {
+      if (visible || dismissed || Date.now() - startedAt < scrollArmDelay) return;
+      const root = document.documentElement;
+      const scrollable = root.scrollHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      const progress = window.scrollY / scrollable;
+      if (progress >= scrollRatio) show();
+    }
+
+    const dismiss = (duration) => {
+      dismissed = true;
+      visible = false;
+      stopListening();
+      rememberDismissal(duration);
+      nudge.classList.remove("is-visible");
+      window.setTimeout(() => {
+        if (!nudge.classList.contains("is-visible")) nudge.hidden = true;
+      }, 260);
+    };
+
+    if (getDismissedUntil() > Date.now()) return;
+
+    if (closeButton) {
+      closeButton.addEventListener("click", () => dismiss(dismissForWeek));
+    }
+
+    links.forEach((link) => {
+      link.addEventListener("click", () => rememberDismissal(dismissAfterClick));
+    });
+
+    timer = window.setTimeout(show, timeDelay);
+    window.addEventListener("scroll", handleScroll, { passive: true });
   }
 
   function handleLogoUpload(event) {
