@@ -73,6 +73,7 @@
   function init() {
     bindFields();
     bindActions();
+    bindCapabilityCarousel();
     renderCustomerSelect();
     syncForm();
     renderPositions();
@@ -176,6 +177,155 @@
       if (logoInput) logoInput.value = "";
       render();
     });
+  }
+
+  function bindCapabilityCarousel() {
+    const rail = document.getElementById("invoice-capability-rail");
+    const wrap = document.querySelector("[data-invoice-carousel]");
+    if (!rail || !wrap || rail.dataset.carouselBound) return;
+
+    rail.dataset.carouselBound = "1";
+
+    const cards = Array.from(rail.querySelectorAll(".invoice-capability-card"));
+    const dots = Array.from(document.querySelectorAll("[data-invoice-capability-dot]"));
+    const prev = document.querySelector("[data-invoice-capability-prev]");
+    const next = document.querySelector("[data-invoice-capability-next]");
+    const EDGE = 12;
+    let activeIndex = 0;
+    let ticking = false;
+
+    const update = () => {
+      const max = rail.scrollWidth - rail.clientWidth;
+      const x = rail.scrollLeft;
+      wrap.classList.toggle("can-scroll-left", x > EDGE);
+      wrap.classList.toggle("can-scroll-right", x < max - EDGE);
+      if (prev) prev.disabled = x <= EDGE;
+      if (next) next.disabled = x >= max - EDGE;
+
+      const center = x + rail.clientWidth / 2;
+      activeIndex = cards.reduce((closest, card, index) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const currentCenter = cards[closest].offsetLeft + cards[closest].offsetWidth / 2;
+        return Math.abs(cardCenter - center) < Math.abs(currentCenter - center)
+          ? index
+          : closest;
+      }, 0);
+
+      dots.forEach((dot, index) => {
+        const isActive = index === activeIndex;
+        dot.classList.toggle("is-active", isActive);
+        dot.setAttribute("aria-current", isActive ? "true" : "false");
+      });
+    };
+
+    const scheduleUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        update();
+      });
+    };
+
+    const scrollToIndex = (index) => {
+      const target = cards[Math.max(0, Math.min(cards.length - 1, index))];
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    };
+
+    if (prev) {
+      prev.addEventListener("click", () => scrollToIndex(activeIndex - 1));
+    }
+    if (next) {
+      next.addEventListener("click", () => scrollToIndex(activeIndex + 1));
+    }
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => scrollToIndex(Number(dot.dataset.invoiceCapabilityDot)));
+    });
+
+    rail.addEventListener("scroll", scheduleUpdate, { passive: true });
+    rail.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        scrollToIndex(activeIndex - 1);
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        scrollToIndex(activeIndex + 1);
+      }
+    });
+
+    rail.addEventListener(
+      "wheel",
+      (event) => {
+        if (Math.abs(event.deltaY) > Math.abs(event.deltaX) && event.deltaY !== 0) {
+          rail.scrollLeft += event.deltaY;
+          event.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+
+    let down = false;
+    let dragging = false;
+    let moved = false;
+    let pointerId = null;
+    let startX = 0;
+    let startLeft = 0;
+
+    rail.addEventListener("pointerdown", (event) => {
+      if (event.button != null && event.button !== 0) return;
+      down = true;
+      dragging = false;
+      moved = false;
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startLeft = rail.scrollLeft;
+    });
+
+    rail.addEventListener("pointermove", (event) => {
+      if (!down) return;
+      const dx = event.clientX - startX;
+      if (!dragging) {
+        if (Math.abs(dx) <= 6) return;
+        dragging = true;
+        moved = true;
+        rail.classList.add("is-dragging");
+        try {
+          rail.setPointerCapture(pointerId);
+        } catch (err) {}
+      }
+      rail.scrollLeft = startLeft - dx;
+    });
+
+    const release = () => {
+      down = false;
+      dragging = false;
+      if (pointerId != null) {
+        try {
+          rail.releasePointerCapture(pointerId);
+        } catch (err) {}
+      }
+      pointerId = null;
+      rail.classList.remove("is-dragging");
+    };
+
+    rail.addEventListener("pointerup", release);
+    rail.addEventListener("pointercancel", release);
+    rail.addEventListener(
+      "click",
+      (event) => {
+        if (!moved) return;
+        event.preventDefault();
+        event.stopPropagation();
+        moved = false;
+      },
+      true
+    );
+
+    window.addEventListener("resize", scheduleUpdate);
+    requestAnimationFrame(update);
+    setTimeout(update, 300);
   }
 
   function render() {
