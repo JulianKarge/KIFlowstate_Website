@@ -433,33 +433,128 @@ section:not(.hero) .container {
 
 /* ─── SERVICES ─────────────────────────────────────────────── */
 .services {
-  background: linear-gradient(180deg, #eef2ff 0%, #dde7ff 100%);
-  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(238, 242, 255, 0.82)),
+    linear-gradient(180deg, #eef2ff 0%, #dbe7ff 100%);
+  border-radius: 32px;
 }
-.service-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  margin-top: 2rem;
+
+.services-head {
+  max-width: 680px;
+  margin-inline: auto;
   text-align: center;
 }
 
-.service-card {
-  background: #fff;
-  border-radius: var(--radius);
-  padding: 2rem 1.5rem;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.05);
-  transition: transform 0.25s, box-shadow 0.25s;
+.services-head .section-lead {
+  margin-inline: auto;
 }
+
+.service-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-top: 2.25rem;
+  align-items: stretch;
+  text-align: left;
+}
+
+.service-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 1.45rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+
 .service-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgb(0 0 0 / 0.08);
+  transform: translateY(-4px);
+  border-color: rgba(51, 105, 242, 0.38);
+  box-shadow: var(--shadow-md);
+}
+
+.service-card-featured {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 255, 0.94)),
+    #fff;
+  border-color: rgba(51, 105, 242, 0.32);
+}
+
+.service-card-featured::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+}
+
+.service-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 3.25rem;
+  margin-bottom: 1rem;
+}
+
+.service-card h3 {
+  margin: 0;
+  font-size: 1.12rem;
+}
+
+.service-card p {
+  margin: 0;
+  color: var(--gray-500);
+}
+
+.service-icon-wrap {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius);
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--primary);
 }
 
 .service-icon {
-  font-size: 2.25rem;
+  font-size: 1.35rem;
+}
+
+.service-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
+  margin-top: 1rem;
+  color: var(--primary-dark);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.service-card-link::after {
+  content: "\f061";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.78rem;
+  transition: transform 0.2s;
+}
+
+.service-card-link:hover,
+.service-card-link:focus-visible {
   color: var(--primary);
-  margin-bottom: 1rem;
+}
+
+.service-card-link:hover::after,
+.service-card-link:focus-visible::after {
+  transform: translateX(3px);
 }
 
 /* ─── METHOD ──────────────────────────────────────────────── */
@@ -732,13 +827,12 @@ section:not(.hero) .container {
 
 /* ─── SERVICE OUTCOMES ─────────────────────────────────────── */
 .service-outcome {
-  margin-top: 1rem;
+  margin-top: auto;
   padding-top: 1rem;
   border-top: 1px solid #eef2f7;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--primary-dark);
-  margin-inline: auto;
 }
 
 /* ─── INTEGRATIONS (wave-flow marquee) ─────────────────────── */
@@ -1433,6 +1527,18 @@ section:not(.hero) .container {
     left: 1.25rem;
   }
 
+  .services {
+    border-radius: 24px;
+  }
+
+  .services-head {
+    text-align: left;
+  }
+
+  .services-head .section-lead {
+    margin-inline: 0;
+  }
+
   .showcase-arrow {
     width: 38px;
     height: 38px;
@@ -1465,6 +1571,19 @@ section:not(.hero) .container {
 
   .showcase-url {
     font-size: 0.7rem;
+  }
+
+  .service-card {
+    padding: 1.2rem;
+  }
+
+  .service-card-head {
+    gap: 0.75rem;
+  }
+
+  .service-icon-wrap {
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }
 
@@ -2469,15 +2588,41 @@ section:not(.hero) .container {
   border-bottom-color: #243352;
 }
 [data-theme="dark"] .service-card {
-  background: #131c33;
+  background: rgba(19, 28, 51, 0.94);
+  border-color: #243352;
   box-shadow: 0 4px 12px rgb(0 0 0 / 0.35);
 }
 [data-theme="dark"] .service-card:hover {
+  border-color: rgba(51, 105, 242, 0.55);
   box-shadow: 0 8px 20px rgb(0 0 0 / 0.45);
 }
-[data-theme="dark"] .service-outcome { border-top-color: #243352; }
+[data-theme="dark"] .service-card-featured {
+  background:
+    linear-gradient(145deg, rgba(27, 37, 66, 0.98), rgba(19, 28, 51, 0.96)),
+    #131c33;
+  border-color: rgba(51, 105, 242, 0.45);
+}
+[data-theme="dark"] .service-card p {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .service-icon-wrap {
+  background: rgba(59, 130, 246, 0.16);
+}
+[data-theme="dark"] .service-outcome {
+  border-top-color: #243352;
+  color: #e6ebf5;
+}
+[data-theme="dark"] .service-card-link {
+  color: #9fc1ff;
+}
+[data-theme="dark"] .service-card-link:hover,
+[data-theme="dark"] .service-card-link:focus-visible {
+  color: #fff;
+}
 [data-theme="dark"] .services {
-  background: linear-gradient(180deg, #0d1730 0%, #131e42 100%);
+  background:
+    linear-gradient(135deg, rgba(13, 23, 48, 0.8), rgba(19, 30, 66, 0.84)),
+    linear-gradient(180deg, #0d1730 0%, #131e42 100%);
 }
 [data-theme="dark"] .method {
   background: #0f1830;
@@ -4851,7 +4996,7 @@ section:not(.hero) .container {
   position: relative;
   z-index: 1;
   width: 94%;
-  max-width: 1560px;
+  max-width: 1180px;
   margin-inline: auto;
 }
 
@@ -4969,7 +5114,7 @@ section:not(.hero) .container {
   grid-template-rows: auto 1fr;
   gap: 1.25rem;
   overflow: hidden;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   padding: 1.45rem;
   border: 1px solid rgba(217, 225, 242, 0.95);
   border-radius: 18px;

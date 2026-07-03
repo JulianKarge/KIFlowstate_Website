@@ -1,0 +1,15 @@
+exclude:
+  - AGENTS.md
+  - CLAUDE.md
+  - site-notes.md
+  - firebase.json
+  - firestore.rules
+  - firestore.indexes.json
+  - scripts/
+  - Vers1.png
+  - .claude/
+  - .playwright-test/
+  - .qa/
+  - _inbox/
+  - brand-agent-system/
+  - local-feedback-viewer/

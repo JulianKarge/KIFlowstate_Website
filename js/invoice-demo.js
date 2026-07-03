@@ -202,14 +202,20 @@
       if (prev) prev.disabled = x <= EDGE;
       if (next) next.disabled = x >= max - EDGE;
 
-      const center = x + rail.clientWidth / 2;
-      activeIndex = cards.reduce((closest, card, index) => {
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const currentCenter = cards[closest].offsetLeft + cards[closest].offsetWidth / 2;
-        return Math.abs(cardCenter - center) < Math.abs(currentCenter - center)
-          ? index
-          : closest;
-      }, 0);
+      if (x <= EDGE) {
+        activeIndex = 0;
+      } else if (x >= max - EDGE) {
+        activeIndex = cards.length - 1;
+      } else {
+        const center = x + rail.clientWidth / 2;
+        activeIndex = cards.reduce((closest, card, index) => {
+          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+          const currentCenter = cards[closest].offsetLeft + cards[closest].offsetWidth / 2;
+          return Math.abs(cardCenter - center) < Math.abs(currentCenter - center)
+            ? index
+            : closest;
+        }, 0);
+      }
 
       dots.forEach((dot, index) => {
         const isActive = index === activeIndex;
@@ -230,7 +236,9 @@
     const scrollToIndex = (index) => {
       const target = cards[Math.max(0, Math.min(cards.length - 1, index))];
       if (!target) return;
-      target.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      const max = rail.scrollWidth - rail.clientWidth;
+      const left = target.offsetLeft - (rail.clientWidth - target.offsetWidth) / 2;
+      rail.scrollTo({ left: Math.max(0, Math.min(max, left)), behavior: "smooth" });
     };
 
     if (prev) {
