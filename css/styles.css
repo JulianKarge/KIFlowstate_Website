@@ -4975,21 +4975,8 @@ section:not(.hero) .container {
 .invoice-capabilities {
   position: relative;
   overflow: hidden;
-  padding-block: 0 5rem;
+  padding-block: 0 4.35rem;
   background: linear-gradient(180deg, var(--gray-100) 0%, #ffffff 100%);
-}
-
-.invoice-capabilities::before {
-  content: "";
-  position: absolute;
-  inset: auto -6% 1.5rem auto;
-  width: 420px;
-  height: 210px;
-  pointer-events: none;
-  opacity: 0.18;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 210'><path d='M-20 58 C 60 14 112 102 192 58 S 324 14 440 58' fill='none' stroke='%233369F2' stroke-width='5' stroke-linecap='round'/><path d='M-20 104 C 60 60 112 148 192 104 S 324 60 440 104' fill='none' stroke='%23254EBF' stroke-width='5' stroke-linecap='round' opacity='.62'/><path d='M-20 150 C 60 106 112 194 192 150 S 324 106 440 150' fill='none' stroke='%233369F2' stroke-width='5' stroke-linecap='round' opacity='.38'/></svg>");
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 
 .invoice-capabilities-inner {
@@ -5410,6 +5397,23 @@ section:not(.hero) .container {
 .invoice-capability-dots button.is-active {
   width: 2.8rem;
   background: var(--primary);
+}
+
+.invoice-capabilities-wave {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+  line-height: 0;
+}
+
+.invoice-capabilities-wave svg {
+  display: block;
+  width: 100%;
+  height: clamp(38px, 6vh, 68px);
+  opacity: 0.9;
 }
 
 .invoice-demo-preview {
@@ -5839,10 +5843,6 @@ body.invoice-demo-modal-open {
     padding-block: 0 3.5rem;
   }
 
-  .invoice-capabilities::before {
-    display: none;
-  }
-
   .invoice-capability-rail-wrap::before,
   .invoice-capability-rail-wrap::after {
     width: 1.8rem;
@@ -5901,6 +5901,10 @@ body.invoice-demo-modal-open {
 
 [data-theme="dark"] .invoice-capabilities {
   background: linear-gradient(180deg, var(--gray-100) 0%, #0f1830 100%);
+}
+
+[data-theme="dark"] .invoice-capabilities-wave svg {
+  opacity: 0.62;
 }
 
 [data-theme="dark"] .invoice-capability-rail-wrap::before {
