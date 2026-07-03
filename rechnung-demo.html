@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("kif_theme");
+          var theme = saved === "dark" ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <!-- Privacy-friendly, cookieless visitor analytics. -->
+    <script data-goatcounter="https://kiflowstate.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+    <meta
+      name="description"
+      content="KIFlowstate Rechnungsdemo: eine sichere Browser-Sandbox fuer Rechnungen, Kunden und Belegvorschau."
+      data-translate="invoice_demo_meta_description"
+    />
+    <title>Rechnungsdemo | KIFlowstate</title>
+
+    <link rel="icon" href="images/kilogo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="images/kilogo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="js/translations.js"></script>
+    <script defer src="js/script.js"></script>
+    <script defer src="js/invoice-demo.js"></script>
+  </head>
+
+  <body>
+    <header class="navbar">
+      <div class="container nav-wrapper">
+        <a href="index.html" class="logo">
+          <img src="images/kilogo.png" alt="KIFlowstate Logo" />
+        </a>
+
+        <nav>
+          <ul class="nav-links" id="main-nav">
+            <li><a href="index.html#about" data-translate="nav_about">&Uuml;ber Uns</a></li>
+            <li><a href="index.html#services" data-translate="nav_services">Leistungen</a></li>
+            <li><a href="index.html#method" data-translate="nav_method">Methode</a></li>
+            <li><a href="index.html#appointment" data-translate="nav_appointment">Termin</a></li>
+            <li><a href="index.html#contact" data-translate="nav_contact">Kontakt</a></li>
+            <li><a href="rechnung-demo.html" class="nav-link-secondary" data-translate="nav_invoice_demo" aria-current="page">Rechnungsdemo</a></li>
+            <li><a href="ki-news.html" class="nav-link-secondary" data-translate="nav_kinews">KI-News</a></li>
+            <li><a href="resources.html" class="nav-link-secondary" data-translate="nav_resources">Ressourcen</a></li>
+          </ul>
+        </nav>
+
+        <div class="lang-switcher">
+          <button id="lang-de" class="lang-btn active">DE</button>
+          <button id="lang-en" class="lang-btn">EN</button>
+        </div>
+
+        <button
+          type="button"
+          class="theme-toggle"
+          aria-label="Dunkles Design aktivieren"
+          aria-pressed="false"
+          title="Theme wechseln"
+        >
+          <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+          <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+        </button>
+
+        <button
+          class="hamburger"
+          id="hamburger"
+          aria-label="Toggle navigation"
+          aria-controls="main-nav"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <section class="invoice-hero">
+      <div class="container">
+        <span class="invoice-hero-eyebrow">Interaktive Demo</span>
+        <h1>Rechnung in Minuten erstellen</h1>
+        <p>
+          Demo-Daten bleiben nur in diesem Browser. Keine Anmeldung, kein Backend,
+          keine echten Kundendaten.
+        </p>
+        <div class="invoice-hero-cta">
+          <a href="index.html#contact" class="cta-btn">Eigenes Rechnungstool anfragen</a>
+          <a href="index.html#appointment" class="invoice-hero-ghost">Termin buchen</a>
+        </div>
+      </div>
+
+      <!-- Animated parallax wave divider (signature brand motion) -->
+      <div class="invoice-hero-waves" aria-hidden="true">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 24 150 28"
+          preserveAspectRatio="none"
+          shape-rendering="auto"
+        >
+          <defs>
+            <path id="invoice-gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+          </defs>
+          <g class="parallax">
+            <use xlink:href="#invoice-gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.22)" />
+            <use xlink:href="#invoice-gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.15)" />
+            <use xlink:href="#invoice-gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.10)" />
+            <use xlink:href="#invoice-gentle-wave" x="48" y="7" class="invoice-hero-wave-base" />
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <main class="invoice-demo-main">
+      <div class="invoice-demo-shell">
+        <section class="invoice-demo-workspace">
+          <form class="invoice-demo-editor" id="invoice-demo-form">
+            <section class="invoice-demo-panel invoice-demo-flow-card" aria-labelledby="invoice-flow-title">
+              <div class="invoice-demo-flow-head">
+                <span class="invoice-demo-step" aria-hidden="true">1</span>
+                <h2 id="invoice-flow-title">Beleg</h2>
+              </div>
+              <div class="invoice-demo-grid three">
+                <label>
+                  <span>Rechnungsnummer</span>
+                  <input type="text" data-invoice="number" />
+                </label>
+                <label>
+                  <span>Datum</span>
+                  <input type="date" data-invoice="date" />
+                </label>
+                <label>
+                  <span>Leistungsdatum</span>
+                  <input type="date" data-invoice="serviceDate" />
+                </label>
+              </div>
+              <div class="invoice-demo-counter-row">
+                <button type="button" class="invoice-demo-ghost-btn" id="invoice-next-number">
+                  N&auml;chste Nummer
+                </button>
+                <span id="invoice-next-hint"></span>
+              </div>
+            </section>
+
+            <section class="invoice-demo-panel invoice-demo-flow-card invoice-demo-positions" aria-labelledby="invoice-position-title">
+              <div class="invoice-demo-flow-head">
+                <span class="invoice-demo-step" aria-hidden="true">2</span>
+                <h2 id="invoice-position-title">Positionen</h2>
+                <button type="button" class="invoice-demo-ghost-btn invoice-demo-head-btn" id="invoice-add-position">
+                  <i class="fas fa-plus" aria-hidden="true"></i>
+                  Position
+                </button>
+              </div>
+              <div id="invoice-position-list"></div>
+            </section>
+
+            <section class="invoice-demo-panel invoice-demo-flow-card invoice-demo-actions" aria-labelledby="invoice-actions-title">
+              <div class="invoice-demo-flow-head">
+                <span class="invoice-demo-step" aria-hidden="true">3</span>
+                <h2 id="invoice-actions-title">Abschluss</h2>
+              </div>
+              <div class="invoice-demo-action-buttons">
+                <button type="button" class="invoice-demo-primary-btn" id="invoice-save-demo">
+                  <i class="fas fa-floppy-disk" aria-hidden="true"></i>
+                  Demo-Rechnung speichern
+                </button>
+                <button type="button" class="invoice-demo-ghost-btn" id="invoice-print">
+                  <i class="fas fa-print" aria-hidden="true"></i>
+                  Print/PDF
+                </button>
+                <button type="button" class="invoice-demo-ghost-btn" id="invoice-email">
+                  <i class="fas fa-envelope" aria-hidden="true"></i>
+                  E-Mail-Entwurf
+                </button>
+              </div>
+              <p class="invoice-demo-status" id="invoice-demo-status" role="status" aria-live="polite"></p>
+            </section>
+          </form>
+
+          <section class="invoice-demo-preview" aria-label="Live Vorschau">
+            <div class="invoice-demo-preview-head">
+              <span>Live-Vorschau</span>
+              <strong id="invoice-preview-total">0,00&nbsp;&euro;</strong>
+            </div>
+
+            <article class="invoice-demo-paper" id="invoice-preview-paper">
+              <header class="invoice-paper-header">
+                <div class="invoice-paper-brand">
+                  <img id="invoice-preview-logo" alt="" hidden />
+                  <span id="invoice-preview-company-name"></span>
+                </div>
+                <div class="invoice-paper-doc">Rechnung</div>
+              </header>
+
+              <svg class="invoice-paper-wave" viewBox="0 0 800 14" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M 0 7 Q 100 1, 200 7 T 400 7 T 600 7 T 800 7" />
+              </svg>
+
+              <div class="invoice-paper-sender" id="invoice-preview-sender"></div>
+
+              <section class="invoice-paper-address-row">
+                <address id="invoice-preview-customer"></address>
+                <dl id="invoice-preview-meta"></dl>
+              </section>
+
+              <h2 id="invoice-preview-title"></h2>
+              <p class="invoice-paper-intro">
+                <span id="invoice-preview-salutation"></span>,<br />
+                vielen Dank f&uuml;r Ihr Vertrauen. Wir berechnen Ihnen folgende Leistungen:
+              </p>
+
+              <table class="invoice-paper-items">
+                <thead>
+                  <tr>
+                    <th>Pos.</th>
+                    <th>Beschreibung</th>
+                    <th class="num">Menge</th>
+                    <th class="num">Einzelpreis netto</th>
+                    <th class="num">Gesamt netto</th>
+                  </tr>
+                </thead>
+                <tbody id="invoice-preview-items"></tbody>
+              </table>
+
+              <div class="invoice-paper-totals">
+                <table>
+                  <tr>
+                    <td>Zwischensumme netto</td>
+                    <td id="invoice-total-net"></td>
+                  </tr>
+                  <tr>
+                    <td>zzgl. 19 % USt.</td>
+                    <td id="invoice-total-vat"></td>
+                  </tr>
+                  <tr class="grand">
+                    <td>Gesamtbetrag</td>
+                    <td id="invoice-total-gross"></td>
+                  </tr>
+                </table>
+              </div>
+
+              <section class="invoice-paper-payment">
+                <h3>Zahlungshinweis</h3>
+                <p>Bitte &uuml;berweisen Sie den Gesamtbetrag innerhalb von 14 Tagen.</p>
+                <dl id="invoice-preview-payment"></dl>
+              </section>
+
+              <footer class="invoice-paper-footer" id="invoice-preview-footer"></footer>
+            </article>
+          </section>
+
+          <aside class="invoice-demo-side" aria-label="Demo-Daten und gespeicherte Belege">
+            <div class="invoice-demo-alert" role="note">
+              <i class="fas fa-shield-halved" aria-hidden="true"></i>
+              <span>Lokale Demo: Kunden, Z&auml;hler und Belege bleiben nur in diesem Browser.</span>
+            </div>
+
+            <section class="invoice-demo-panel invoice-demo-customer-card" aria-labelledby="invoice-customer-title">
+              <h2 id="invoice-customer-title">Kundenakte</h2>
+              <p class="invoice-demo-panel-copy">
+                W&auml;hle einen Demo-Kunden oder speichere eine neue Version lokal.
+              </p>
+              <label>
+                <span>Gespeicherten Demo-Kunden w&auml;hlen</span>
+                <select id="invoice-customer-select"></select>
+              </label>
+              <div class="invoice-demo-grid compact">
+                <label>
+                  <span>Firma</span>
+                  <input type="text" data-customer="company" autocomplete="organization" />
+                </label>
+                <label>
+                  <span>E-Mail</span>
+                  <input type="email" data-customer="email" autocomplete="email" />
+                </label>
+              </div>
+              <details class="invoice-demo-inline-details">
+                <summary>Adresse &amp; Anrede bearbeiten</summary>
+                <label>
+                  <span>Ansprechperson</span>
+                  <input type="text" data-customer="contact" autocomplete="name" />
+                </label>
+                <label>
+                  <span>Adresse</span>
+                  <textarea data-customer="address" rows="3"></textarea>
+                </label>
+                <label>
+                  <span>Anrede</span>
+                  <input type="text" data-customer="salutation" placeholder="Sehr geehrte Frau Beispiel" />
+                </label>
+              </details>
+              <button type="button" class="invoice-demo-primary-btn" id="invoice-save-customer">
+                Kunde lokal speichern
+              </button>
+            </section>
+
+            <details class="invoice-demo-panel">
+              <summary>Firmendaten</summary>
+              <div class="invoice-demo-grid compact">
+                <label>
+                  <span>Firma</span>
+                  <input type="text" data-company="name" autocomplete="organization" />
+                </label>
+                <label>
+                  <span>E-Mail</span>
+                  <input type="email" data-company="email" autocomplete="email" />
+                </label>
+              </div>
+              <label>
+                <span>Adresse</span>
+                <textarea data-company="address" rows="3"></textarea>
+              </label>
+              <div class="invoice-demo-grid compact">
+                <label>
+                  <span>Telefon</span>
+                  <input type="text" data-company="phone" autocomplete="tel" />
+                </label>
+                <label>
+                  <span>Web</span>
+                  <input type="text" data-company="web" autocomplete="url" />
+                </label>
+                <label>
+                  <span>Steuernummer</span>
+                  <input type="text" data-company="taxNumber" />
+                </label>
+                <label>
+                  <span>USt-IdNr.</span>
+                  <input type="text" data-company="vatId" />
+                </label>
+                <label>
+                  <span>Bank</span>
+                  <input type="text" data-company="bank" />
+                </label>
+                <label>
+                  <span>IBAN</span>
+                  <input type="text" data-company="iban" />
+                </label>
+                <label>
+                  <span>BIC</span>
+                  <input type="text" data-company="bic" />
+                </label>
+                <label class="invoice-demo-logo-field">
+                  <span>Logo</span>
+                  <input type="file" id="invoice-logo-input" accept="image/png,image/jpeg,image/webp" />
+                </label>
+              </div>
+              <button type="button" class="invoice-demo-ghost-btn" id="invoice-logo-remove">Logo entfernen</button>
+            </details>
+
+            <section class="invoice-demo-panel invoice-demo-saved" aria-labelledby="invoice-saved-title">
+              <h2 id="invoice-saved-title">Lokale Demo-Belege</h2>
+              <div id="invoice-saved-list"></div>
+            </section>
+
+            <section class="invoice-demo-panel invoice-demo-sales-card" aria-label="Anfrage">
+              <h2>Vom Demo-Flow zum echten Tool</h2>
+              <p class="invoice-demo-panel-copy">
+                So k&ouml;nnte ein eigener Belegprozess f&uuml;r Angebote, Rechnungen und Dokumente aussehen.
+              </p>
+              <a href="index.html#contact" class="cta-btn cta-btn-dark">Eigenes Rechnungstool anfragen</a>
+              <a href="index.html#appointment" class="invoice-demo-link-btn">Termin buchen</a>
+            </section>
+          </aside>
+        </section>
+      </div>
+    </main>
+
+    <div class="invoice-demo-modal" id="invoice-email-modal" role="dialog" aria-modal="true" aria-labelledby="invoice-email-title" hidden>
+      <div class="invoice-demo-modal-card">
+        <button type="button" class="invoice-demo-modal-close" id="invoice-email-close" aria-label="Schliessen">
+          <i class="fas fa-xmark" aria-hidden="true"></i>
+        </button>
+        <h2 id="invoice-email-title">E-Mail-Entwurf</h2>
+        <p>Dieser Demo-Button nutzt nur einen Mailto-Link. Es wird keine externe E-Mail-API verwendet.</p>
+        <label>
+          <span>Empf&auml;nger</span>
+          <input type="text" id="invoice-email-to" readonly />
+        </label>
+        <label>
+          <span>Betreff</span>
+          <input type="text" id="invoice-email-subject" readonly />
+        </label>
+        <label>
+          <span>Nachricht</span>
+          <textarea id="invoice-email-body" rows="8" readonly></textarea>
+        </label>
+        <a href="#" class="cta-btn cta-btn-dark" id="invoice-email-link">Im Mailprogramm &ouml;ffnen</a>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container footer-content">
+        <p data-translate="footer_copyright">&copy; <span id="year"></span> KIFlowstate. Alle Rechte vorbehalten.</p>
+
+        <div class="social-links">
+          <a href="https://www.instagram.com/kiflowstate/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://x.com/KiFlowState" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ki-flowstate-037825377/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.youtube.com/@kiflowstate" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://www.tiktok.com/@kiflowstate" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61578836200128" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+
+        <ul class="footer-links">
+          <li><a href="impressum.html" data-translate="footer_imprint">Impressum</a></li>
+          <li><a href="datenschutz.html" data-translate="footer_privacy">Datenschutz</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -10,6 +10,7 @@ const translations = {
     nav_contact: "Kontakt",
     nav_resources: "Ressourcen",
     nav_kinews: "KI-News",
+    nav_invoice_demo: "Rechnungsdemo",
     nav_imprint: "Impressum",
     nav_privacy: "Datenschutz",
 
@@ -95,6 +96,7 @@ const translations = {
     kinews_empty: "Noch keine News verfügbar.",
     kinews_select_day: "Wählen Sie links einen Tag, um den Digest zu sehen.",
     resources_meta_description: "KIFlowstate – Ressourcen, Prompts und Links zu unseren YouTube-Videos.",
+    invoice_demo_meta_description: "KIFlowstate Rechnungsdemo: eine sichere Browser-Sandbox f\u00fcr Rechnungen, Kunden und Belegvorschau.",
     resources_eyebrow: "Video-Ressourcen",
     resources_title: "Prompts &amp; Links zu unseren Videos",
     resources_subtitle: "Wähle links ein Video aus, um die zugehörigen Prompts, Tools und Links zu sehen.",
@@ -175,6 +177,7 @@ const translations = {
     nav_contact: "Contact",
     nav_resources: "Resources",
     nav_kinews: "KI-News",
+    nav_invoice_demo: "Invoice demo",
     nav_imprint: "Imprint",
     nav_privacy: "Privacy",
 
@@ -260,6 +263,7 @@ const translations = {
     kinews_empty: "No news available yet.",
     kinews_select_day: "Pick a day on the left to see the digest.",
     resources_meta_description: "KIFlowstate – Resources, prompts and links from our YouTube videos.",
+    invoice_demo_meta_description: "KIFlowstate invoice demo: a safe browser sandbox for invoices, customers, and document previews.",
     resources_eyebrow: "Video Resources",
     resources_title: "Prompts &amp; Links From Our Videos",
     resources_subtitle: "Pick a video on the left to see the matching prompts, tools and links.",
