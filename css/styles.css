@@ -5506,36 +5506,22 @@ section:not(.hero) .container {
   }
 }
 
-/* Mobile: avoid horizontal swipe rails for the actual news cards and
-   Rechnungstool capability cards. Julian prefers normal vertical reading on
-   phone; keep desktop carousel/stage behavior above 900px. */
+/* Mobile: keep the card rails horizontal, but let the browser handle native
+   touch momentum. Avoid heavy carousel transforms/snap-stop on phone. */
 @media (max-width: 900px) {
-  .ki-items-wrap,
-  .invoice-capability-rail-wrap {
-    overflow: visible;
-  }
-
-  .ki-items-wrap::before,
-  .ki-items-wrap::after,
-  .invoice-capability-rail-wrap::before,
-  .invoice-capability-rail-wrap::after,
-  .ki-items-wrap .ki-rail-arrow,
-  .invoice-capability-arrow,
-  .invoice-capability-dots {
-    display: none !important;
-  }
-
   .ki-items-rail,
   .invoice-capability-rail {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
-    overflow: visible;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: none;
-    overscroll-behavior-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
     cursor: default;
-    touch-action: auto;
-    padding-inline: 0;
+    gap: 0.95rem;
+    padding-inline: 0.2rem;
   }
 
   .ki-items-rail.is-dragging,
@@ -5546,16 +5532,22 @@ section:not(.hero) .container {
 
   .ki-items-rail .ki-item,
   .invoice-capability-card {
-    width: 100%;
-    max-width: none;
-    flex: 1 1 auto;
-    scroll-snap-align: none;
-    min-width: 0;
     transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    scroll-snap-align: center;
+    scroll-snap-stop: normal;
+    will-change: auto;
+  }
+
+  .ki-items-rail .ki-item {
+    flex: 0 0 min(86vw, 380px);
+    animation: none !important;
   }
 
   .invoice-capability-card {
-    min-height: auto;
+    flex: 0 0 min(84vw, 410px);
   }
 
   .invoice-capability-card::after {

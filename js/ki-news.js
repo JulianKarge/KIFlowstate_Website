@@ -271,8 +271,13 @@ window.KINews = (function () {
     let depthTicking = false;
     let dragDelta = 0;
 
+    const isCoarsePointer = function () {
+      return window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    };
+
     const scheduleDepthUpdate = function () {
       if (!scroller.classList.contains("ki-items-rail") || depthTicking) return;
+      if (!window.matchMedia("(min-width: 901px)").matches) return;
       depthTicking = true;
       requestAnimationFrame(function () {
         depthTicking = false;
@@ -283,6 +288,7 @@ window.KINews = (function () {
     scroller.addEventListener("scroll", scheduleDepthUpdate, { passive: true });
 
     scroller.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "touch" || isCoarsePointer()) return;
       if (e.button != null && e.button !== 0) return;
       down = true;
       dragging = false;
@@ -336,6 +342,7 @@ window.KINews = (function () {
     scroller.addEventListener("pointercancel", release);
     if ("onscrollend" in window) {
       scroller.addEventListener("scrollend", function () {
+        if (isCoarsePointer() || !window.matchMedia("(min-width: 901px)").matches) return;
         if (!down) snapRailToNearest(scroller);
       });
     }

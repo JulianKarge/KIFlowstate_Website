@@ -329,7 +329,10 @@
     let startLeft = 0;
     let startIndex = 0;
 
+    const isCoarsePointer = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
     rail.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch" || isCoarsePointer()) return;
       if (event.button != null && event.button !== 0) return;
       down = true;
       dragging = false;
@@ -378,6 +381,7 @@
     rail.addEventListener("pointercancel", release);
     if ("onscrollend" in window) {
       rail.addEventListener("scrollend", () => {
+        if (isCoarsePointer() || !isStageMode()) return;
         if (!down) snapToNearest();
       });
     }
