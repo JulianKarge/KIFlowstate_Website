@@ -196,8 +196,12 @@
     let activeIndex = 0;
     let ticking = false;
     let dragDelta = 0;
+    let mobileSnapTimer = null;
+    let mobileSnapping = false;
 
     const isStageMode = () => window.matchMedia("(min-width: 901px)").matches;
+    const isCoarsePointer = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    const isMobileRail = () => !isStageMode() && isCoarsePointer();
 
     const normalizeIndex = (index) => {
       if (!cards.length) return 0;
@@ -299,6 +303,23 @@
       scrollToIndex(nearestIndex());
     };
 
+    const snapMobileRail = () => {
+      if (!isMobileRail() || mobileSnapping) return;
+      const target = cards[nearestIndex()];
+      if (!target) return;
+      const left = targetLeftForCard(target);
+      if (Math.abs(rail.scrollLeft - left) < 3) return;
+      mobileSnapping = true;
+      rail.scrollTo({ left, behavior: "smooth" });
+      window.setTimeout(() => { mobileSnapping = false; }, 420);
+    };
+
+    const scheduleMobileSnap = () => {
+      if (!isMobileRail() || down) return;
+      if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
+      mobileSnapTimer = window.setTimeout(snapMobileRail, 120);
+    };
+
     if (prev) {
       prev.addEventListener("click", () => scrollToIndex(activeIndex - 1));
     }
@@ -309,7 +330,10 @@
       dot.addEventListener("click", () => scrollToIndex(Number(dot.dataset.invoiceCapabilityDot)));
     });
 
-    rail.addEventListener("scroll", scheduleUpdate, { passive: true });
+    rail.addEventListener("scroll", () => {
+      scheduleUpdate();
+      scheduleMobileSnap();
+    }, { passive: true });
     rail.addEventListener("keydown", (event) => {
       if (event.key === "ArrowLeft") {
         event.preventDefault();
@@ -328,8 +352,6 @@
     let startX = 0;
     let startLeft = 0;
     let startIndex = 0;
-
-    const isCoarsePointer = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
     rail.addEventListener("pointerdown", (event) => {
       if (event.pointerType === "touch" || isCoarsePointer()) return;

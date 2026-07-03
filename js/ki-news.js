@@ -270,9 +270,35 @@ window.KINews = (function () {
     let startIndex = 0;
     let depthTicking = false;
     let dragDelta = 0;
+    let mobileSnapTimer = null;
+    let mobileSnapping = false;
 
     const isCoarsePointer = function () {
       return window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    };
+
+    const isMobileRail = function () {
+      return scroller.classList.contains("ki-items-rail") &&
+        window.matchMedia("(max-width: 900px)").matches &&
+        isCoarsePointer();
+    };
+
+    const snapMobileRail = function () {
+      if (!isMobileRail() || mobileSnapping) return;
+      const items = railSnapItems(scroller);
+      if (!items.length) return;
+      const index = railNearestIndex(scroller);
+      const target = railSnapLeft(scroller, items[index]);
+      if (Math.abs(scroller.scrollLeft - target) < 3) return;
+      mobileSnapping = true;
+      scroller.scrollTo({ left: target, behavior: "smooth" });
+      window.setTimeout(function () { mobileSnapping = false; }, 420);
+    };
+
+    const scheduleMobileSnap = function () {
+      if (!isMobileRail() || down) return;
+      if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
+      mobileSnapTimer = window.setTimeout(snapMobileRail, 120);
     };
 
     const scheduleDepthUpdate = function () {
@@ -285,7 +311,10 @@ window.KINews = (function () {
       });
     };
 
-    scroller.addEventListener("scroll", scheduleDepthUpdate, { passive: true });
+    scroller.addEventListener("scroll", function () {
+      scheduleDepthUpdate();
+      scheduleMobileSnap();
+    }, { passive: true });
 
     scroller.addEventListener("pointerdown", function (e) {
       if (e.pointerType === "touch" || isCoarsePointer()) return;
