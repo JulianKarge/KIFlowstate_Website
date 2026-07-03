@@ -193,20 +193,39 @@
     const EDGE = 12;
     let activeIndex = 0;
     let ticking = false;
+    let dragDelta = 0;
+
+    const isStageMode = () => window.matchMedia("(min-width: 901px)").matches;
+
+    const normalizeIndex = (index) => {
+      if (!cards.length) return 0;
+      return ((index % cards.length) + cards.length) % cards.length;
+    };
+
+    const cardDistanceFromActive = (index) => {
+      if (!isStageMode()) return index - activeIndex;
+      const forward = (index - activeIndex + cards.length) % cards.length;
+      const backward = (activeIndex - index + cards.length) % cards.length;
+      if (forward === 0) return 0;
+      return forward <= backward ? forward : -backward;
+    };
 
     const update = () => {
       const max = rail.scrollWidth - rail.clientWidth;
       const x = rail.scrollLeft;
-      wrap.classList.toggle("can-scroll-left", x > EDGE);
-      wrap.classList.toggle("can-scroll-right", x < max - EDGE);
-      if (prev) prev.disabled = x <= EDGE;
-      if (next) next.disabled = x >= max - EDGE;
+      const looping = cards.length > 1;
+      wrap.classList.toggle("is-looping", looping);
+      wrap.classList.toggle("can-scroll-left", isStageMode() ? looping : x > EDGE);
+      wrap.classList.toggle("can-scroll-right", isStageMode() ? looping : x < max - EDGE);
+      if (prev) prev.disabled = !looping && x <= EDGE;
+      if (next) next.disabled = !looping && x >= max - EDGE;
 
-      if (x <= EDGE) {
-        activeIndex = 0;
-      } else if (x >= max - EDGE) {
-        activeIndex = cards.length - 1;
-      } else {
+      if (!isStageMode()) {
+        if (x <= EDGE) {
+          activeIndex = 0;
+        } else if (x >= max - EDGE) {
+          activeIndex = cards.length - 1;
+        } else {
         const center = x + rail.clientWidth / 2;
         activeIndex = cards.reduce((closest, card, index) => {
           const cardCenter = card.offsetLeft + card.offsetWidth / 2;
@@ -215,12 +234,21 @@
             ? index
             : closest;
         }, 0);
+        }
       }
 
       dots.forEach((dot, index) => {
         const isActive = index === activeIndex;
         dot.classList.toggle("is-active", isActive);
         dot.setAttribute("aria-current", isActive ? "true" : "false");
+      });
+
+      cards.forEach((card, index) => {
+        const distance = cardDistanceFromActive(index);
+        card.classList.toggle("is-carousel-active", distance === 0);
+        card.classList.toggle("is-carousel-prev", distance === -1);
+        card.classList.toggle("is-carousel-next", distance === 1);
+        card.classList.toggle("is-carousel-far", Math.abs(distance) > 1);
       });
     };
 
@@ -233,12 +261,40 @@
       });
     };
 
-    const scrollToIndex = (index) => {
-      const target = cards[Math.max(0, Math.min(cards.length - 1, index))];
-      if (!target) return;
+    const targetLeftForCard = (card) => {
       const max = rail.scrollWidth - rail.clientWidth;
-      const left = target.offsetLeft - (rail.clientWidth - target.offsetWidth) / 2;
-      rail.scrollTo({ left: Math.max(0, Math.min(max, left)), behavior: "smooth" });
+      const left = card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2;
+      return Math.max(0, Math.min(max, left));
+    };
+
+    const nearestIndex = () => {
+      if (isStageMode()) return activeIndex;
+      const x = rail.scrollLeft;
+      return cards.reduce((closest, card, index) => {
+        const cardDistance = Math.abs(targetLeftForCard(card) - x);
+        const closestDistance = Math.abs(targetLeftForCard(cards[closest]) - x);
+        return cardDistance < closestDistance ? index : closest;
+      }, 0);
+    };
+
+    const scrollToIndex = (index) => {
+      const safeIndex = normalizeIndex(index);
+      const target = cards[isStageMode() ? safeIndex : Math.max(0, Math.min(cards.length - 1, index))];
+      if (!target) return;
+      if (isStageMode()) {
+        activeIndex = safeIndex;
+        update();
+        return;
+      }
+      rail.scrollTo({ left: targetLeftForCard(target), behavior: "smooth" });
+    };
+
+    const snapToNearest = () => {
+      if (isStageMode()) {
+        update();
+        return;
+      }
+      scrollToIndex(nearestIndex());
     };
 
     if (prev) {
@@ -263,37 +319,30 @@
       }
     });
 
-    rail.addEventListener(
-      "wheel",
-      (event) => {
-        if (Math.abs(event.deltaY) > Math.abs(event.deltaX) && event.deltaY !== 0) {
-          rail.scrollLeft += event.deltaY;
-          event.preventDefault();
-        }
-      },
-      { passive: false }
-    );
-
     let down = false;
     let dragging = false;
     let moved = false;
     let pointerId = null;
     let startX = 0;
     let startLeft = 0;
+    let startIndex = 0;
 
     rail.addEventListener("pointerdown", (event) => {
       if (event.button != null && event.button !== 0) return;
       down = true;
       dragging = false;
       moved = false;
+      dragDelta = 0;
       pointerId = event.pointerId;
       startX = event.clientX;
       startLeft = rail.scrollLeft;
+      startIndex = nearestIndex();
     });
 
     rail.addEventListener("pointermove", (event) => {
       if (!down) return;
       const dx = event.clientX - startX;
+      dragDelta = dx;
       if (!dragging) {
         if (Math.abs(dx) <= 6) return;
         dragging = true;
@@ -303,6 +352,7 @@
           rail.setPointerCapture(pointerId);
         } catch (err) {}
       }
+      if (isStageMode()) return;
       rail.scrollLeft = startLeft - dx;
     });
 
@@ -316,10 +366,19 @@
       }
       pointerId = null;
       rail.classList.remove("is-dragging");
+      if (moved) {
+        const dir = isStageMode() ? (dragDelta < 0 ? 1 : -1) : (rail.scrollLeft >= startLeft ? 1 : -1);
+        setTimeout(() => scrollToIndex(startIndex + dir), 60);
+      }
     };
 
     rail.addEventListener("pointerup", release);
     rail.addEventListener("pointercancel", release);
+    if ("onscrollend" in window) {
+      rail.addEventListener("scrollend", () => {
+        if (!down) snapToNearest();
+      });
+    }
     rail.addEventListener(
       "click",
       (event) => {

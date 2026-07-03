@@ -173,9 +173,89 @@ window.KINews = (function () {
   }
 
   /* ── drag-to-scroll for horizontal rails ─────────────────── *
-   * Click-and-drag (pointer) to swipe a horizontal scroller, plus
-   * vertical-wheel -> horizontal translation. Suppresses the click
-   * that would otherwise fire on a link after a drag.              */
+   * Click-and-drag (pointer) to move one card at a time. Suppresses
+   * the click that would otherwise fire on a link after a drag.      */
+  const railStageActive = new WeakMap();
+
+  function railSnapItems(scroller) {
+    return Array.from(scroller ? scroller.children : []).filter(function (item) {
+      return item.offsetWidth > 0;
+    });
+  }
+
+  function railIsStage(scroller) {
+    return Boolean(
+      scroller &&
+      scroller.classList.contains("ki-items-rail") &&
+      window.matchMedia("(min-width: 901px)").matches
+    );
+  }
+
+  function railShouldLoop(scroller) {
+    return Boolean(scroller && scroller.classList.contains("ki-items-rail"));
+  }
+
+  function normalizeRailIndex(scroller, index) {
+    const items = railSnapItems(scroller);
+    if (!items.length) return 0;
+    if (railShouldLoop(scroller) && items.length > 1) {
+      return ((index % items.length) + items.length) % items.length;
+    }
+    return Math.max(0, Math.min(items.length - 1, index));
+  }
+
+  function railSnapLeft(scroller, item) {
+    const max = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+    const center = scroller.classList.contains("ki-items-rail");
+    const left = center
+      ? item.offsetLeft - (scroller.clientWidth - item.offsetWidth) / 2
+      : item.offsetLeft;
+    return Math.max(0, Math.min(max, left));
+  }
+
+  function railNearestIndex(scroller) {
+    const items = railSnapItems(scroller);
+    if (!items.length) return 0;
+    if (railIsStage(scroller)) return normalizeRailIndex(scroller, railStageActive.get(scroller) || 0);
+    const x = scroller.scrollLeft;
+    return items.reduce(function (closest, item, index) {
+      const itemDistance = Math.abs(railSnapLeft(scroller, item) - x);
+      const closestDistance = Math.abs(railSnapLeft(scroller, items[closest]) - x);
+      return itemDistance < closestDistance ? index : closest;
+    }, 0);
+  }
+
+  function snapRailToNearest(scroller) {
+    scrollRailToIndex(scroller, railNearestIndex(scroller));
+  }
+
+  function scrollRailToIndex(scroller, index) {
+    const items = railSnapItems(scroller);
+    if (!items.length) return;
+    const safeIndex = normalizeRailIndex(scroller, index);
+    if (railIsStage(scroller)) {
+      railStageActive.set(scroller, safeIndex);
+      updateRailDepth(scroller);
+      return;
+    }
+    scroller.scrollTo({ left: railSnapLeft(scroller, items[safeIndex]), behavior: "smooth" });
+  }
+
+  function updateRailDepth(scroller) {
+    if (!scroller || !scroller.classList.contains("ki-items-rail")) return;
+    const active = railNearestIndex(scroller);
+    const items = railSnapItems(scroller);
+    items.forEach(function (item, index) {
+      const forward = (index - active + items.length) % items.length;
+      const backward = (active - index + items.length) % items.length;
+      const distance = forward === 0 ? 0 : forward <= backward ? forward : -backward;
+      item.classList.toggle("is-carousel-active", distance === 0);
+      item.classList.toggle("is-carousel-prev", distance === -1);
+      item.classList.toggle("is-carousel-next", distance === 1);
+      item.classList.toggle("is-carousel-far", Math.abs(distance) > 1);
+    });
+  }
+
   function enableDragScroll(scroller) {
     if (!scroller || scroller.dataset.dragBound) return;
     scroller.dataset.dragBound = "1";
@@ -187,14 +267,30 @@ window.KINews = (function () {
     let startLeft = 0;
     let moved = false;
     let pointerId = null;
+    let startIndex = 0;
+    let depthTicking = false;
+    let dragDelta = 0;
+
+    const scheduleDepthUpdate = function () {
+      if (!scroller.classList.contains("ki-items-rail") || depthTicking) return;
+      depthTicking = true;
+      requestAnimationFrame(function () {
+        depthTicking = false;
+        updateRailDepth(scroller);
+      });
+    };
+
+    scroller.addEventListener("scroll", scheduleDepthUpdate, { passive: true });
 
     scroller.addEventListener("pointerdown", function (e) {
       if (e.button != null && e.button !== 0) return;
       down = true;
       dragging = false;
       moved = false;
+      dragDelta = 0;
       startX = e.clientX;
       startLeft = scroller.scrollLeft;
+      startIndex = railNearestIndex(scroller);
       pointerId = e.pointerId;
       // NOTE: pointer capture is deliberately NOT taken here. Capturing on
       // pointerdown retargets the subsequent `click` to this scroller, which
@@ -205,6 +301,7 @@ window.KINews = (function () {
     scroller.addEventListener("pointermove", function (e) {
       if (!down) return;
       const dx = e.clientX - startX;
+      dragDelta = dx;
       if (!dragging) {
         if (Math.abs(dx) <= DRAG_THRESHOLD) return; // still a potential click
         dragging = true;
@@ -214,6 +311,7 @@ window.KINews = (function () {
           scroller.setPointerCapture(pointerId);
         } catch (err) {}
       }
+      if (railIsStage(scroller)) return;
       scroller.scrollLeft = startLeft - dx;
     });
 
@@ -227,9 +325,20 @@ window.KINews = (function () {
       }
       pointerId = null;
       scroller.classList.remove("is-dragging");
+      if (moved) {
+        const dir = railIsStage(scroller)
+          ? (dragDelta < 0 ? 1 : -1)
+          : (scroller.scrollLeft >= startLeft ? 1 : -1);
+        setTimeout(function () { scrollRailToIndex(scroller, startIndex + dir); }, 60);
+      }
     };
     scroller.addEventListener("pointerup", release);
     scroller.addEventListener("pointercancel", release);
+    if ("onscrollend" in window) {
+      scroller.addEventListener("scrollend", function () {
+        if (!down) snapRailToNearest(scroller);
+      });
+    }
 
     // Cancel link/button clicks that happen at the end of a drag.
     scroller.addEventListener(
@@ -244,24 +353,16 @@ window.KINews = (function () {
       true
     );
 
-    // Let a vertical mouse wheel scroll the rail horizontally.
-    scroller.addEventListener(
-      "wheel",
-      function (e) {
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && e.deltaY !== 0) {
-          scroller.scrollLeft += e.deltaY;
-          e.preventDefault();
-        }
-      },
-      { passive: false }
-    );
+    requestAnimationFrame(scheduleDepthUpdate);
+    setTimeout(scheduleDepthUpdate, 300);
   }
 
-  // Smoothly scroll a rail by ~one viewport of cards in a direction.
+  // Smoothly scroll a rail one card at a time.
   function scrollRailBy(scroller, dir) {
     if (!scroller) return;
-    const amount = Math.max(240, scroller.clientWidth * 0.8) * (dir < 0 ? -1 : 1);
-    scroller.scrollBy({ left: amount, behavior: "smooth" });
+    const items = railSnapItems(scroller);
+    if (!items.length) return;
+    scrollRailToIndex(scroller, railNearestIndex(scroller) + (dir < 0 ? -1 : 1));
   }
 
   /* ── scroll-aware rail edges ──────────────────────────────── *
@@ -271,6 +372,10 @@ window.KINews = (function () {
    * side is fully clear, so the active first card is never covered.   */
   function bindRailEdges(wrap, scroller) {
     if (!wrap || !scroller) return;
+    wrap.classList.toggle(
+      "is-looping",
+      scroller.classList.contains("ki-items-rail") && railSnapItems(scroller).length > 1
+    );
 
     // Tolerance must exceed the rail's leading inline padding + scroll-snap
     // rest offset (~5px), otherwise the start position reads as "scrolled".

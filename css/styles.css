@@ -4177,15 +4177,16 @@ section:not(.hero) .container {
   gap: 1rem;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x proximity;
+  scroll-snap-type: x mandatory;
   list-style: none;
   margin: 0;
   padding: 0.6rem 0.3rem 1rem;
   cursor: grab;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gray-300) transparent;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
+  touch-action: pan-y;
 }
 .ki-day-rail.is-dragging,
 .ki-items-rail.is-dragging {
@@ -4194,14 +4195,9 @@ section:not(.hero) .container {
   user-select: none;
 }
 .ki-day-rail::-webkit-scrollbar,
-.ki-items-rail::-webkit-scrollbar { height: 8px; }
-.ki-day-rail::-webkit-scrollbar-thumb,
-.ki-items-rail::-webkit-scrollbar-thumb {
-  background: var(--gray-300);
-  border-radius: 999px;
+.ki-items-rail::-webkit-scrollbar {
+  display: none;
 }
-.ki-day-rail::-webkit-scrollbar-track,
-.ki-items-rail::-webkit-scrollbar-track { background: transparent; }
 
 /* ── arrows ───────────────────────────────────────────────── */
 .ki-rail-arrow {
@@ -4254,11 +4250,16 @@ section:not(.hero) .container {
    rail's overflow:hidden (which made it look like a hard-edged box). */
 .ki-day-rail { padding-block: 0.7rem 1.9rem; }
 
+.ki-day-rail > li {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
 .ki-day-card {
   position: relative;
   flex: 0 0 auto;
   width: 172px;
-  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   gap: 0.12rem;
@@ -4364,7 +4365,8 @@ section:not(.hero) .container {
 .ki-items-rail .ki-item {
   position: relative;
   flex: 0 0 clamp(290px, 86vw, 380px);
-  scroll-snap-align: start;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
@@ -4470,10 +4472,10 @@ section:not(.hero) .container {
 }
 
 .invoice-demo-shell {
-  width: 94%;
-  max-width: 1560px;
+  width: 98%;
+  max-width: 1760px;
   margin-inline: auto;
-  padding-block: 2.5rem 5rem;
+  padding-block: 2.75rem 5rem;
 }
 
 /* ── Invoice demo hero — mirrors the resources/feedback page hero:
@@ -4613,9 +4615,9 @@ section:not(.hero) .container {
 
 .invoice-demo-workspace {
   display: grid;
-  grid-template-columns: minmax(300px, 340px) minmax(620px, 780px) minmax(280px, 320px);
+  grid-template-columns: minmax(350px, 430px) minmax(580px, 760px) minmax(350px, 430px);
   justify-content: center;
-  gap: 1.5rem;
+  gap: clamp(0.95rem, 1.2vw, 1.35rem);
   align-items: start;
 }
 
@@ -4629,7 +4631,7 @@ section:not(.hero) .container {
 .invoice-demo-side {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
   scroll-padding-bottom: 8rem;
 }
 
@@ -4641,8 +4643,8 @@ section:not(.hero) .container {
   .invoice-demo-editor,
   .invoice-demo-side {
     position: sticky;
-    top: 86px;
-    max-height: calc(100dvh - 104px);
+    top: 78px;
+    max-height: calc(100dvh - 92px);
     overflow-y: auto;
     overscroll-behavior: contain;
     padding-right: 0.15rem;
@@ -4667,7 +4669,7 @@ section:not(.hero) .container {
   border: 1px solid rgba(217, 225, 242, 0.95);
   border-radius: 14px;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.055);
-  padding: 1.25rem;
+  padding: 1.35rem;
   text-align: left;
 }
 
@@ -5065,12 +5067,12 @@ section:not(.hero) .container {
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gray-300) transparent;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
   cursor: grab;
   touch-action: pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   padding: 0.7rem 0.25rem 1.3rem;
 }
 
@@ -5081,16 +5083,7 @@ section:not(.hero) .container {
 }
 
 .invoice-capability-rail::-webkit-scrollbar {
-  height: 8px;
-}
-
-.invoice-capability-rail::-webkit-scrollbar-thumb {
-  background: var(--gray-300);
-  border-radius: 999px;
-}
-
-.invoice-capability-rail::-webkit-scrollbar-track {
-  background: transparent;
+  display: none;
 }
 
 .invoice-capability-card {
@@ -5102,6 +5095,7 @@ section:not(.hero) .container {
   gap: 1.25rem;
   overflow: hidden;
   scroll-snap-align: center;
+  scroll-snap-stop: always;
   padding: 1.45rem;
   border: 1px solid rgba(217, 225, 242, 0.95);
   border-radius: 18px;
@@ -5306,6 +5300,8 @@ section:not(.hero) .container {
   color: var(--gray-500);
   font-size: 0.72rem;
   font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
   text-transform: uppercase;
 }
 
@@ -5376,6 +5372,14 @@ section:not(.hero) .container {
   pointer-events: auto;
 }
 
+.invoice-capability-rail-wrap.is-looping .invoice-capability-prev,
+.invoice-capability-rail-wrap.is-looping .invoice-capability-next,
+.ki-rail-wrap.is-looping .ki-rail-prev,
+.ki-rail-wrap.is-looping .ki-rail-next {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .invoice-capability-dots {
   display: flex;
   justify-content: center;
@@ -5414,6 +5418,92 @@ section:not(.hero) .container {
   width: 100%;
   height: clamp(38px, 6vh, 68px);
   opacity: 0.9;
+}
+
+@media (min-width: 901px) {
+  .invoice-capability-rail,
+  .ki-items-rail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    align-items: stretch;
+    perspective: 1400px;
+    perspective-origin: 50% 44%;
+    transform-style: preserve-3d;
+    scroll-snap-type: none;
+    overflow: hidden;
+    padding-inline: clamp(1.25rem, 8vw, 6rem);
+    padding-block: 1.45rem 2.35rem;
+  }
+
+  .invoice-capability-rail {
+    --carousel-card-width: 430px;
+  }
+
+  .ki-items-rail {
+    --carousel-card-width: 380px;
+  }
+
+  .invoice-capability-card,
+  .ki-items-rail .ki-item {
+    grid-area: 1 / 1;
+    width: min(var(--carousel-card-width), calc(100% - 1rem));
+    flex-basis: auto;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform, opacity, filter;
+    transition:
+      transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.42s ease,
+      filter 0.42s ease,
+      border-color 0.42s ease,
+      box-shadow 0.42s ease;
+  }
+
+  .ki-items-rail .ki-item {
+    animation: none !important;
+  }
+
+  .invoice-capability-card.is-carousel-active,
+  .ki-items-rail .ki-item.is-carousel-active {
+    z-index: 5;
+    opacity: 1;
+    filter: none;
+    transform: translateY(-5px) translateZ(0) scale(1);
+    border-color: rgba(51, 105, 242, 0.42);
+    box-shadow:
+      0 30px 60px rgba(15, 23, 42, 0.16),
+      0 0 0 1px rgba(51, 105, 242, 0.08);
+  }
+
+  .invoice-capability-card.is-carousel-prev,
+  .ki-items-rail .ki-item.is-carousel-prev {
+    z-index: 3;
+    opacity: 0.72;
+    transform: translateX(-78%) translateZ(-76px) rotateY(15deg) scale(0.88);
+  }
+
+  .invoice-capability-card.is-carousel-next,
+  .ki-items-rail .ki-item.is-carousel-next {
+    z-index: 3;
+    opacity: 0.72;
+    transform: translateX(78%) translateZ(-76px) rotateY(-15deg) scale(0.88);
+  }
+
+  .invoice-capability-card.is-carousel-far,
+  .ki-items-rail .ki-item.is-carousel-far {
+    z-index: 1;
+    opacity: 0;
+    filter: saturate(0.72);
+    transform: translateZ(-140px) scale(0.74);
+    pointer-events: none;
+  }
+
+  .invoice-capability-rail.is-dragging .invoice-capability-card,
+  .ki-items-rail.is-dragging .ki-item {
+    transition-duration: 0.12s;
+  }
 }
 
 .invoice-demo-preview {
@@ -5784,7 +5874,7 @@ body.invoice-demo-modal-open {
   }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1360px) {
   .invoice-demo-workspace {
     grid-template-columns: 1fr;
   }
