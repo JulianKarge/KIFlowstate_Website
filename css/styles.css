@@ -5568,6 +5568,7 @@ section:not(.hero) .container {
     -webkit-overflow-scrolling: auto;
     cursor: grab;
     touch-action: pan-y;
+    gap: 0;
   }
 
   .kif-mobile-swiper .ki-items-rail .ki-item,

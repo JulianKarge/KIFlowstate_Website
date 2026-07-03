@@ -51,6 +51,8 @@
       followFinger: true,
       touchReleaseOnEdges: false,
       watchSlidesProgress: true,
+      spaceBetween: 15,
+      slidesOffsetAfter: 12,
       slideToClickedSlide: true,
       nested: true,
       preventClicks: true,
