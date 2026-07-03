@@ -258,6 +258,16 @@ window.KINews = (function () {
 
   function enableDragScroll(scroller) {
     if (!scroller || scroller.dataset.dragBound) return;
+    if (
+      scroller.classList.contains("ki-items-rail") &&
+      window.KIMobileCardSwipers &&
+      window.KIMobileCardSwipers.shouldUse()
+    ) {
+      const root = scroller.closest('.ki-items-wrap[data-rail="items"]');
+      window.KIMobileCardSwipers.mountKiNewsItems(root, scroller);
+      scroller.dataset.dragBound = "swiper";
+      return;
+    }
     scroller.dataset.dragBound = "1";
 
     const DRAG_THRESHOLD = 6; // px before a press becomes a drag

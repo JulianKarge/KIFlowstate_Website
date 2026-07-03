@@ -5555,6 +5555,31 @@ section:not(.hero) .container {
     right: 0;
     width: min(220px, 64%);
   }
+
+  .kif-mobile-swiper {
+    overflow: hidden;
+  }
+
+  .kif-mobile-swiper .ki-items-rail,
+  .kif-mobile-swiper .invoice-capability-rail {
+    overflow: visible;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: auto;
+    cursor: grab;
+    touch-action: pan-y;
+  }
+
+  .kif-mobile-swiper .ki-items-rail .ki-item,
+  .kif-mobile-swiper .invoice-capability-card {
+    scroll-snap-align: none;
+    flex-shrink: 0;
+  }
+
+  .kif-mobile-swiper .swiper-wrapper {
+    align-items: stretch;
+    transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
 }
 
 .invoice-demo-preview {

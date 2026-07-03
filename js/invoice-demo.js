@@ -184,6 +184,15 @@
   function bindCapabilityCarousel() {
     const rail = document.getElementById("invoice-capability-rail");
     const wrap = document.querySelector("[data-invoice-carousel]");
+    if (
+      rail &&
+      wrap &&
+      window.KIMobileCardSwipers &&
+      window.KIMobileCardSwipers.shouldUse()
+    ) {
+      window.KIMobileCardSwipers.mountInvoice();
+      return;
+    }
     if (!rail || !wrap || rail.dataset.carouselBound) return;
 
     rail.dataset.carouselBound = "1";
