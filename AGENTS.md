@@ -1,16 +1,14 @@
 <claude-mem-context>
 # Memory Context
 
-# [Website] recent context, 2026-07-04 5:59pm GMT+2
+# [Website] recent context, 2026-07-04 8:05pm GMT+2
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 50 obs (20.186t read) | 626.337t work | 97% savings
+Stats: 50 obs (19.929t read) | 623.700t work | 97% savings
 
-### Jun 14, 2026
-680 10:41p 🔵 Video transcript successfully parsed; creator discusses Claude Fable 5 US government restrictions
 ### Jun 16, 2026
 708 10:24a 🔵 Located "Wir Bauen Auch Websites" section in codebase
 709 " 🔵 Mapped full showcase section architecture and dependencies
@@ -42,8 +40,6 @@ Stats: 50 obs (20.186t read) | 626.337t work | 97% savings
 1131 9:38a 🔄 Invoice Demo Hero Refactored to Match KIFlowState Design System
 1132 9:41a ✅ Invoice Demo Hero Styles Implemented in CSS
 1134 9:50a 🟣 Privacy-friendly visitor analytics implemented via Plausible Analytics
-S369 Clarification about adding GoatCounter analytics tracking to kiflowstate.de website (Jul 3, 9:59 AM)
-S376 Onboarded as website editor; mapped project structure and readied to add new video tutorials for Hermes+Ollama and DeepSeek integration to the resources tab (Jul 3, 10:04 AM)
 1143 10:05a 🔵 Website Already Uses Plausible Analytics
 1144 " ✅ Analytics Migration: Plausible to GoatCounter
 1145 " ✅ Privacy Policy Updated for Analytics Migration
@@ -73,14 +69,17 @@ S382 Update resources page rendering to display thumbnails for draft videos with
 S383 Complete OSGuide thumbnail integration with draft video support and static preview rendering (Jul 4, 5:57 PM)
 1222 5:57p 🟣 Implemented draft video support with three-tier player rendering and validation
 S384 Complete OSGuide thumbnail integration with draft video support and static preview rendering (Jul 4, 5:58 PM)
-**Investigated**: Video player rendering logic; draft state styling requirements; YouTube ID validation and fallback handling; thumbnail display in both sidebar and main player
+S385 Streamline OpenSourceGuide tutorial by removing redundant model download section (Jul 4, 5:58 PM)
+1223 5:59p 🔄 Consolidated platform-specific Hermes Agent installation steps into unified section
+S386 Website editor task: explore website structure and CLAUDE.md, then make requested changes to content sections. Currently working on consolidating installation instruction cards. (Jul 4, 6:35 PM)
+**Investigated**: Hermes installation instructions section; website content card structure and layout; JavaScript validation of videos module
 
-**Learned**: Draft videos (without YouTube IDs) can display static thumbnail previews with disabled interactivity; three-tier rendering strategy supports progressive enhancement from interactive to static to placeholder; YouTube ID validation prevents errors on missing/invalid IDs; proper UX distinguishes playable vs preview content through cursor and hover behavior
+**Learned**: Hermes install documentation previously had separate cards for different installation methods; consolidation improves UX by grouping related instructions
 
-**Completed**: Implemented three-state video player: interactive (with ytId and play button), draft static (thumbnail only, no interactivity), coming-soon placeholder; added YouTube ID validation via isLikelyYouTubeId(); created videoYouTubeId() extraction function; refactored thumbUrl() for graceful fallbacks; styled video-player-draft with cursor:default and disabled hover effects; updated sidebar to show placeholder icons when thumbnails unavailable; syntax validation passed for both js/resources-page.js and js/videos.js
+**Completed**: Merged Hermes install cards into unified "Schritt 3: Hermes installieren" with two clear paths (Ollama recommended + Terminal installation); consolidated macOS/Linux/WSL and Windows PowerShell commands into single terminal card; verified js/videos.js syntax passes Node validation
 
-**Next Steps**: Editing OpenSourceGuide tutorial content sections in videos.js; removing redundant tutorial steps to streamline the Ollama setup instructions
+**Next Steps**: Await user requests for additional website section changes; continue editing and refining content as specified
 
 
-Access 626k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 624k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>

@@ -29,11 +29,12 @@
 const VIDEOS = [
   {
     id: "hermes-local-ollama-free-claude-code-deepseek",
+    youtubeId: "O45ecYSe5HE",
     title: {
       de: "ChatGPT gesperrt? Diese KI läuft auf deinem PC.",
       en: "ChatGPT blocked? This AI runs on your PC."
     },
-    publishedAt: "coming-soon",
+    publishedAt: "2026-07-04",
     description: {
       de: "Zwei Setups aus dem neuen Tutorial: erst Hermes Agent lokal mit Ollama und einem Open-Source-Modell, danach Free Claude Code mit DeepSeek. Der DeepSeek-Teil nutzt denselben Setup-Prompt aus dem KI-Supermodell-Video.",
       en: "Two setups from the new tutorial: first Hermes Agent locally with Ollama and an open-source model, then Free Claude Code with DeepSeek. The DeepSeek part reuses the same setup prompt from the AI supermodel video."
