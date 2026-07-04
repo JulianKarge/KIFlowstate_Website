@@ -6289,6 +6289,10 @@ body.invoice-demo-modal-open {
     text-align: right;
   }
 
+  .invoice-paper-footer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .invoice-demo-nudge {
     right: 0.75rem;
     bottom: 0.75rem;
