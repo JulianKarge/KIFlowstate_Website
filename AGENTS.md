@@ -1,18 +1,15 @@
 <claude-mem-context>
 # Memory Context
 
-# [Website] recent context, 2026-07-04 8:05pm GMT+2
+# [Website] recent context, 2026-07-04 8:12pm GMT+2
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 50 obs (19.929t read) | 623.700t work | 97% savings
+Stats: 50 obs (19.647t read) | 613.403t work | 97% savings
 
 ### Jun 16, 2026
-708 10:24a 🔵 Located "Wir Bauen Auch Websites" section in codebase
-709 " 🔵 Mapped full showcase section architecture and dependencies
-710 " ✅ Deleted showcase section from index.html
 711 10:25a ✅ Removed showcase translation keys from translations.js
 712 " 🔵 Verified showcase section removal from index.html and translations.js
 713 10:27a ✅ Removed video entry "Die US-Regierung behält Claude Fable 5 für sich" from videos.js
@@ -72,14 +69,9 @@ S384 Complete OSGuide thumbnail integration with draft video support and static 
 S385 Streamline OpenSourceGuide tutorial by removing redundant model download section (Jul 4, 5:58 PM)
 1223 5:59p 🔄 Consolidated platform-specific Hermes Agent installation steps into unified section
 S386 Website editor task: explore website structure and CLAUDE.md, then make requested changes to content sections. Currently working on consolidating installation instruction cards. (Jul 4, 6:35 PM)
-**Investigated**: Hermes installation instructions section; website content card structure and layout; JavaScript validation of videos module
+1243 8:05p 🔵 Video data structure in videos.js
+1244 " ✅ Published "Hermes + Claude Code DeepSeek" video to KIFlowstate site
+1245 " 🔵 Video publication changes verified successfully
 
-**Learned**: Hermes install documentation previously had separate cards for different installation methods; consolidation improves UX by grouping related instructions
-
-**Completed**: Merged Hermes install cards into unified "Schritt 3: Hermes installieren" with two clear paths (Ollama recommended + Terminal installation); consolidated macOS/Linux/WSL and Windows PowerShell commands into single terminal card; verified js/videos.js syntax passes Node validation
-
-**Next Steps**: Await user requests for additional website section changes; continue editing and refining content as specified
-
-
-Access 624k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 613k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>

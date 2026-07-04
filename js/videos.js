@@ -28,8 +28,7 @@
 
 const VIDEOS = [
   {
-    id: "hermes-local-ollama-free-claude-code-deepseek",
-    youtubeId: "O45ecYSe5HE",
+    id: "O45ecYSe5HE",
     title: {
       de: "ChatGPT gesperrt? Diese KI läuft auf deinem PC.",
       en: "ChatGPT blocked? This AI runs on your PC."
@@ -2612,7 +2611,7 @@ adjust timing?"`
 (function syncSharedPromptContent() {
   const sourceVideo = VIDEOS.find((video) => video.id === "5jfWQ3Y9qRg");
   const targetVideo = VIDEOS.find(
-    (video) => video.id === "hermes-local-ollama-free-claude-code-deepseek"
+    (video) => video.id === "O45ecYSe5HE"
   );
   if (!sourceVideo || !targetVideo) return;
 
