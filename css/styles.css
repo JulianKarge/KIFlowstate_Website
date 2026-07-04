@@ -6245,30 +6245,48 @@ body.invoice-demo-modal-open {
     min-height: 106px;
   }
 
+  .invoice-demo-preview {
+    overflow-x: hidden;
+    overflow-y: visible;
+    padding: 1rem 0.75rem 1.25rem;
+  }
+
+  .invoice-demo-preview-head,
   .invoice-demo-paper {
-    min-height: 0;
-    padding: 1rem;
-    font-size: 0.66rem;
+    width: 720px;
+    max-width: none;
+    transform-origin: top center;
+  }
+
+  .invoice-demo-paper {
+    min-width: 720px;
+    min-height: 930px;
+    padding: 1.7rem;
+    font-size: 0.82rem;
   }
 
   .invoice-paper-items {
-    table-layout: fixed;
-    font-size: 0.85em;
+    table-layout: auto;
+    font-size: 1em;
   }
 
   .invoice-paper-items th,
   .invoice-paper-items td {
-    padding: 0.42rem 0.35rem;
+    padding: 0.55rem 0.6rem;
+    overflow-wrap: normal;
+  }
+
+  .invoice-paper-items td span {
     overflow-wrap: anywhere;
   }
 
   .invoice-paper-header {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
   }
 
   .invoice-paper-doc {
-    text-align: left;
+    text-align: right;
   }
 
   .invoice-demo-nudge {
@@ -6302,6 +6320,27 @@ body.invoice-demo-modal-open {
     padding: 0.42rem 0.5rem;
     font-size: 0.74rem;
     line-height: 1.25;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .invoice-demo-preview-head,
+  .invoice-demo-paper {
+    zoom: 0.48;
+  }
+}
+
+@media screen and (min-width: 421px) and (max-width: 560px) {
+  .invoice-demo-preview-head,
+  .invoice-demo-paper {
+    zoom: 0.62;
+  }
+}
+
+@media screen and (min-width: 561px) and (max-width: 760px) {
+  .invoice-demo-preview-head,
+  .invoice-demo-paper {
+    zoom: 0.82;
   }
 }
 
