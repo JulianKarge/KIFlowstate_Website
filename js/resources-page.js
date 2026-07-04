@@ -56,12 +56,23 @@
   const ytThumbHQ = (id) =>
     `https://i.ytimg.com/vi/${encodeURIComponent(id)}/maxresdefault.jpg`;
 
+  const isLikelyYouTubeId = (id) =>
+    typeof id === "string" && /^[A-Za-z0-9_-]{11}$/.test(id);
+
+  const videoYouTubeId = (video) => {
+    if (!video) return "";
+    if (isLikelyYouTubeId(video.youtubeId)) return video.youtubeId;
+    return isLikelyYouTubeId(video.id) ? video.id : "";
+  };
+
   // Returns the URL for a video's thumbnail. Honors a per-video override
   // (`thumbnailUrl`) if set in videos.js — falls back to YouTube otherwise.
   // `size` is "hq" (player) or "small" (sidebar).
   const thumbUrl = (video, size) => {
     if (video && video.thumbnailUrl) return video.thumbnailUrl;
-    return size === "hq" ? ytThumbHQ(video.id) : ytThumb(video.id);
+    const id = videoYouTubeId(video);
+    if (!id) return "";
+    return size === "hq" ? ytThumbHQ(id) : ytThumb(id);
   };
 
   const ytEmbed = (id) =>
@@ -109,6 +120,7 @@
 
     sidebar.innerHTML = VIDEOS.map((v) => {
       const isActive = v.id === activeId;
+      const thumb = thumbUrl(v, "small");
       return `
         <li role="presentation">
           <button
@@ -119,12 +131,14 @@
             data-video-id="${escapeHtml(v.id)}"
           >
             <span class="video-tab-thumb">
-              <img
-                src="${escapeHtml(thumbUrl(v, "small"))}"
-                alt=""
-                loading="lazy"
-                onerror="this.style.opacity=0.3"
-              />
+              ${thumb
+                ? `<img
+                    src="${escapeHtml(thumb)}"
+                    alt=""
+                    loading="lazy"
+                    onerror="this.style.opacity=0.3"
+                  />`
+                : `<span class="video-tab-thumb-placeholder" aria-hidden="true"><i class="fas fa-video"></i></span>`}
             </span>
             <span class="video-tab-meta">
               <span class="video-tab-title">${escapeHtml(pick(v.title))}</span>
@@ -237,20 +251,37 @@
     const title = pick(video.title);
     const desc  = pick(video.description);
     const sections = (video.sections || []).map(renderSection).join("");
+    const ytId = videoYouTubeId(video);
+    const heroThumb = thumbUrl(video, "hq");
 
     content.innerHTML = `
       <article class="resource-video" data-video-id="${escapeHtml(video.id)}">
-        <div class="video-player" data-yt-id="${escapeHtml(video.id)}" tabindex="0" role="button" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
-          <img
-            src="${escapeHtml(thumbUrl(video, "hq"))}"
-            alt=""
-            loading="lazy"
-            onerror="this.src='${ytThumb(video.id)}'"
-          />
-          <button type="button" class="video-player-play" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
-            <i class="fas fa-play" aria-hidden="true"></i>
-          </button>
-        </div>
+        ${ytId
+          ? `<div class="video-player" data-yt-id="${escapeHtml(ytId)}" tabindex="0" role="button" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
+              <img
+                src="${escapeHtml(heroThumb)}"
+                alt=""
+                loading="lazy"
+                onerror="this.src='${ytThumb(ytId)}'"
+              />
+              <button type="button" class="video-player-play" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
+                <i class="fas fa-play" aria-hidden="true"></i>
+              </button>
+            </div>`
+          : heroThumb
+            ? `<div class="video-player video-player-draft">
+                <img
+                  src="${escapeHtml(heroThumb)}"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>`
+          : `<div class="video-player video-player-placeholder" aria-label="${escapeHtml(t("resources_coming_soon", "Kommt bald"))}">
+              <span class="video-player-placeholder-icon" aria-hidden="true">
+                <i class="fas fa-video"></i>
+              </span>
+              <span>${escapeHtml(t("resources_coming_soon", "Kommt bald"))}</span>
+            </div>`}
 
         <header class="video-header">
           <div>
@@ -260,10 +291,12 @@
             </div>
           </div>
           <div class="video-header-actions">
-            <a class="btn-yt" href="${ytWatch(video.id)}" target="_blank" rel="noopener noreferrer">
-              <i class="fab fa-youtube" aria-hidden="true"></i>
-              <span>${escapeHtml(t("resources_open_yt", "Auf YouTube ansehen"))}</span>
-            </a>
+            ${ytId
+              ? `<a class="btn-yt" href="${ytWatch(ytId)}" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-youtube" aria-hidden="true"></i>
+                  <span>${escapeHtml(t("resources_open_yt", "Auf YouTube ansehen"))}</span>
+                </a>`
+              : ""}
             <button type="button" class="btn-share" data-share-id="${escapeHtml(video.id)}">
               <i class="fas fa-link" aria-hidden="true"></i>
               <span>${escapeHtml(t("resources_share", "Link kopieren"))}</span>

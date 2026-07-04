@@ -28,6 +28,170 @@
 
 const VIDEOS = [
   {
+    id: "hermes-local-ollama-free-claude-code-deepseek",
+    title: {
+      de: "ChatGPT gesperrt? Diese KI läuft auf deinem PC.",
+      en: "ChatGPT blocked? This AI runs on your PC."
+    },
+    publishedAt: "coming-soon",
+    description: {
+      de: "Zwei Setups aus dem neuen Tutorial: erst Hermes Agent lokal mit Ollama und einem Open-Source-Modell, danach Free Claude Code mit DeepSeek. Der DeepSeek-Teil nutzt denselben Setup-Prompt aus dem KI-Supermodell-Video.",
+      en: "Two setups from the new tutorial: first Hermes Agent locally with Ollama and an open-source model, then Free Claude Code with DeepSeek. The DeepSeek part reuses the same setup prompt from the AI supermodel video."
+    },
+    thumbnailUrl: "images/osguide-thumbnail.png",
+    sections: [
+      {
+        heading: { de: "Teil 1: Hermes lokal mit Ollama", en: "Part 1: Hermes locally with Ollama" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Der lokale Weg l&auml;uft am besten als kurze manuelle Einrichtung. Erst Ollama installieren, dann ein Modell herunterladen, danach Hermes mit diesem lokalen Modell verbinden. Ollama stellt daf&uuml;r einen OpenAI-kompatiblen Endpoint unter <code>http://127.0.0.1:11434/v1</code> bereit.</p>
+<ol>
+  <li><strong>Ollama herunterladen.</strong> Entweder &uuml;ber den Browser auf <a href="https://ollama.com/download" target="_blank" rel="noopener">ollama.com/download</a> oder direkt im Terminal mit dem passenden Installationsbefehl unten.</li>
+  <li><strong>Ollama einmal &ouml;ffnen.</strong> Danach pr&uuml;fen, ob der Befehl <code>ollama</code> im Terminal funktioniert.</li>
+  <li><strong>Modell Ihrer Wahl herunterladen.</strong> Suchen Sie sich ein Modell aus der Ollama-Bibliothek aus und laden Sie es mit <code>ollama run &lt;modell&gt;</code>.</li>
+  <li><strong>Hermes installieren oder starten.</strong> Am einfachsten mit <code>ollama launch hermes</code>. Alternativ Hermes direkt mit dem passenden Terminal-Befehl f&uuml;r macOS, Linux, WSL oder Windows installieren.</li>
+  <li><strong>Hermes verbinden.</strong> Im Setup den lokalen Ollama-Endpoint ausw&auml;hlen und das heruntergeladene Modell best&auml;tigen.</li>
+</ol>`,
+              en: `<p>The local path works best as a short manual setup. First install Ollama, then download a model, then connect Hermes to that local model. Ollama exposes an OpenAI-compatible endpoint at <code>http://127.0.0.1:11434/v1</code>.</p>
+<ol>
+  <li><strong>Download Ollama.</strong> Either use the browser at <a href="https://ollama.com/download" target="_blank" rel="noopener">ollama.com/download</a>, or install it directly in the terminal with the matching command below.</li>
+  <li><strong>Open Ollama once.</strong> Then check whether the <code>ollama</code> command works in your terminal.</li>
+  <li><strong>Download a model of your choice.</strong> Pick a model from the Ollama library and pull it with <code>ollama run &lt;model&gt;</code>.</li>
+  <li><strong>Install or launch Hermes.</strong> The easiest route is <code>ollama launch hermes</code>. Alternatively, install Hermes directly with the matching terminal command for macOS, Linux, WSL, or Windows.</li>
+  <li><strong>Connect Hermes.</strong> In setup, select the local Ollama endpoint and confirm the model you downloaded.</li>
+</ol>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Schritt 1 und 2: Ollama installieren, Modell laden", en: "Step 1 and 2: install Ollama, pull a model" },
+        type: "prompts",
+        icon: "fa-terminal",
+        items: [
+          {
+            title: {
+              de: "Option A: Download im Browser",
+              en: "Option A: browser download"
+            },
+            content: `https://ollama.com/download`
+          },
+          {
+            title: {
+              de: "Option B: Terminal-Installation",
+              en: "Option B: terminal install"
+            },
+            content: `# macOS / Linux / WSL
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Windows PowerShell
+irm https://ollama.com/install.ps1 | iex`
+          }
+        ]
+      },
+      {
+        heading: { de: "Schritt 3: Hermes installieren", en: "Step 3: install Hermes" },
+        type: "prompts",
+        icon: "fa-robot",
+        items: [
+          {
+            title: {
+              de: "Empfohlen: Hermes &uuml;ber Ollama starten",
+              en: "Recommended: launch Hermes through Ollama"
+            },
+            content: `# Ollama handles the Hermes setup flow and connects it to your local model.
+ollama launch hermes`
+          },
+          {
+            title: {
+              de: "Terminal-Installation",
+              en: "Terminal install"
+            },
+            content: `# macOS / Linux / WSL
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+
+# Windows PowerShell
+iex (irm https://hermes-agent.nousresearch.com/install.ps1)`
+          }
+        ]
+      },
+      {
+        heading: { de: "Teil 2: Free Claude Code mit DeepSeek", en: "Part 2: Free Claude Code with DeepSeek" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `<p>Der zweite Teil nutzt das bekannte Free-Claude-Code-Setup: ein lokaler Anthropic-kompatibler Proxy startet auf Port <code>8082</code> und leitet Claude-Code-Traffic an DeepSeek weiter. Den Setup-Prompt unten habe ich aus dem KI-Supermodell-Video &uuml;bernommen, damit beide Videos dieselbe robuste Anleitung verwenden.</p>`,
+              en: `<p>The second part uses the known Free Claude Code setup: a local Anthropic-compatible proxy starts on port <code>8082</code> and routes Claude Code traffic to DeepSeek. The setup prompt below is reused from the AI supermodel video so both videos use the same robust walkthrough.</p>`
+            }
+          }
+        ]
+      },
+      {
+        id: "deepseek-setup-prompt",
+        heading: { de: "DeepSeek-Setup-Prompt", en: "DeepSeek setup prompt" },
+        type: "prompts",
+        items: [
+          {
+            title: {
+              de: "Free Claude Code mit DeepSeek einrichten",
+              en: "Set up Free Claude Code with DeepSeek"
+            },
+            content: "Dieser Prompt wird automatisch aus dem bestehenden KI-Supermodell-Ressourcen-Eintrag übernommen."
+          }
+        ]
+      },
+      {
+        heading: { de: "Links & Ressourcen", en: "Links & resources" },
+        type: "links",
+        items: [
+          {
+            label: "Ollama Hermes Integration",
+            url: "https://docs.ollama.com/integrations/hermes",
+            description: {
+              de: "Offizielle Ollama-Anleitung für Hermes Agent, inklusive ollama launch hermes und manuellem Setup.",
+              en: "Official Ollama guide for Hermes Agent, including ollama launch hermes and manual setup."
+            }
+          },
+          {
+            label: "Ollama Download",
+            url: "https://ollama.com/download",
+            description: {
+              de: "Installer für Windows, macOS und Linux.",
+              en: "Installer for Windows, macOS, and Linux."
+            }
+          },
+          {
+            label: "free-claude-code",
+            url: "https://github.com/Alishahryar1/free-claude-code",
+            description: {
+              de: "GitHub-Repository für den lokalen Claude-Code-Proxy.",
+              en: "GitHub repository for the local Claude Code proxy."
+            }
+          },
+          {
+            label: "DeepSeek Platform",
+            url: "https://platform.deepseek.com/usage",
+            description: {
+              de: "API-Key erstellen und Verbrauch prüfen.",
+              en: "Create an API key and check usage."
+            }
+          },
+          {
+            label: "DeepSeek Claude Code Docs",
+            url: "https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code",
+            description: {
+              de: "Offizielle DeepSeek-Dokumentation zur Claude-Code-Integration.",
+              en: "Official DeepSeek documentation for Claude Code integration."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "WxxyjK4ib50",
     title: {
       de: "Claude Code Tutorial 2026: Vom Anfänger zum Profi in 5 Schritten",
@@ -2443,3 +2607,25 @@ adjust timing?"`
     sections: []
   }
 ];
+
+(function syncSharedPromptContent() {
+  const sourceVideo = VIDEOS.find((video) => video.id === "5jfWQ3Y9qRg");
+  const targetVideo = VIDEOS.find(
+    (video) => video.id === "hermes-local-ollama-free-claude-code-deepseek"
+  );
+  if (!sourceVideo || !targetVideo) return;
+
+  const sourceSection = (sourceVideo.sections || []).find((section) => {
+    const heading = section.heading || {};
+    return heading.de === "DeepSeek-Setup-Prompt" || heading.en === "DeepSeek setup prompt";
+  });
+  const sourcePrompt = sourceSection && sourceSection.items && sourceSection.items[0];
+  const targetSection = (targetVideo.sections || []).find(
+    (section) => section.id === "deepseek-setup-prompt"
+  );
+  const targetPrompt = targetSection && targetSection.items && targetSection.items[0];
+
+  if (sourcePrompt && sourcePrompt.content && targetPrompt) {
+    targetPrompt.content = sourcePrompt.content;
+  }
+})();

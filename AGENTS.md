@@ -1,34 +1,16 @@
 <claude-mem-context>
 # Memory Context
 
-# [Website] recent context, 2026-07-03 11:56am GMT+2
+# [Website] recent context, 2026-07-04 5:59pm GMT+2
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 50 obs (18.144t read) | 640.318t work | 97% savings
+Stats: 50 obs (20.186t read) | 626.337t work | 97% savings
 
-### Jun 11, 2026
-604 1:22p ✅ Navigation arrows become scroll-aware with opacity and pointer-events toggle
-605 " 🔵 Playwright verification script confirms scroll-aware fade and arrow behavior
-606 1:23p 🔵 bindRailEdges() not being invoked — edges remain visible even at scroll start
-607 " 🔵 CSS opacity rules not applying despite class toggle working — specificity or selector issue
-608 1:25p 🔴 Edge detection threshold increased from 2px to 16px to account for natural scroll offset
-609 " 🔵 Scroll-aware edge detection now working correctly after threshold fix
-612 2:51p ✅ Refined shadow system for day cards in KI-News rail
-617 3:35p 🟣 KI-News (Daily AI News) Feature Implemented
-618 3:38p 🔐 Pre-Commit Security Verification Passed
-619 " 🔐 Firebase Secrets Properly Isolated; KI-News Uses Public Feed Only
-620 3:39p 🟣 KI-News Feature Committed to Main Branch
-621 3:40p ✅ KI-News Feature Deployed to GitHub
 ### Jun 14, 2026
-675 10:39p 🔵 Watch skill setup incomplete: yt-dlp binary missing from PATH despite Python module installed
-676 10:40p 🔵 yt-dlp executable exists but not in PATH; located in user Python scripts directory
-677 " 🔵 Watch skill successfully processed YouTube video after PATH fix; 80 frames extracted
-678 " 🔵 Video mdDZ-LEMM50 has auto-generated captions in 40+ languages; newly published German content
-679 10:41p 🔵 German auto-captions successfully downloaded from video; 31.8 KB SRT subtitle file
-680 " 🔵 Video transcript successfully parsed; creator discusses Claude Fable 5 US government restrictions
+680 10:41p 🔵 Video transcript successfully parsed; creator discusses Claude Fable 5 US government restrictions
 ### Jun 16, 2026
 708 10:24a 🔵 Located "Wir Bauen Auch Websites" section in codebase
 709 " 🔵 Mapped full showcase section architecture and dependencies
@@ -50,29 +32,55 @@ Stats: 50 obs (18.144t read) | 640.318t work | 97% savings
 729 " 🔵 Claude Code documentation URLs and feature architecture (skills, hooks, MCP)
 730 " 🔵 Claude Code tutorial verification: installation, plugin commands, and documentation accuracy audit
 731 2:17p 🔵 HTTP status verification of installation and documentation URLs
-S263 Review and improve the "Cloud Code Tutorial 2026" video resource entry in KIFlowstate website project, including structure verification, prompt quality checks, and visual/semantic polish. (Jun 16, 2:18 PM)
 732 2:19p 🟣 Per-section icon override capability added to resources page renderer
-S264 Review and improve the "Cloud Code Tutorial 2026" video resource entry for the KIFlowstate website; verify structure, improve prompts, and apply visual/semantic polish. (Jun 16, 2:21 PM)
-S265 Deploy Claude Code Tutorial 2026 video resource and review fixes to kiflowstate.de via GitHub Pages (Jun 16, 2:22 PM)
-S361 Assess difficulty and feasibility of adding analytics, event tracking, and funnel monitoring to the website (Jun 16, 2:24 PM)
 ### Jul 3, 2026
 1118 9:27a 🔵 Playwright automation captures invoice demo hover state for UI review
-S362 Fix frontend layout issues in KIFlowstate invoice demo: reposition blue step numbers (1, 2, 3) and fix save button styling (Jul 3, 9:27 AM)
 1119 9:30a 🔵 Invoice demo visual inspection and CSS color scheme identified
 1120 9:31a ✅ HTML structure refactored to improve step number and heading layout
 1121 " ✅ Step 2 section restructured with improved heading and button layout
 1122 " ✅ Step 3 section fully restructured with semantic heading and button grouping
-S363 Redesign rechnung-demo.html frontend to match KIFlowState brand and fix UI positioning issues (numbered elements 1, 2, 3 and save button hover states) (Jul 3, 9:33 AM)
 1131 9:38a 🔄 Invoice Demo Hero Refactored to Match KIFlowState Design System
 1132 9:41a ✅ Invoice Demo Hero Styles Implemented in CSS
-S365 Implement basic visitor analytics for KIFlowstate website to track visitor volume and gather basic visitor information using a privacy-first approach (Jul 3, 9:44 AM)
 1134 9:50a 🟣 Privacy-friendly visitor analytics implemented via Plausible Analytics
-S367 Clarify the final setup steps required to complete Plausible Analytics implementation and confirm what user needs to do versus what has already been coded (Jul 3, 9:54 AM)
-S368 Evaluate free alternatives to Plausible Analytics after discovering Plausible Cloud requires paid subscription beyond trial period (Jul 3, 9:57 AM)
-S369 Clarification about adding GoatCounter analytics tracking to kiflowstate.de website (Jul 3, 10:04 AM)
+S369 Clarification about adding GoatCounter analytics tracking to kiflowstate.de website (Jul 3, 9:59 AM)
+S376 Onboarded as website editor; mapped project structure and readied to add new video tutorials for Hermes+Ollama and DeepSeek integration to the resources tab (Jul 3, 10:04 AM)
 1143 10:05a 🔵 Website Already Uses Plausible Analytics
 1144 " ✅ Analytics Migration: Plausible to GoatCounter
 1145 " ✅ Privacy Policy Updated for Analytics Migration
+### Jul 4, 2026
+1206 3:55p 🔵 KIFlowstate Website Project Structure and Established Conventions
+1207 3:56p 🔵 KIFlowstate Website Project Structure and Architecture
+S377 Add new draft video tutorial to resources tab: two-part setup for Hermes+Ollama (local) and Free Claude Code+DeepSeek (cloud), reusing the proven setup prompt from existing supermodel tutorial (Jul 4, 4:47 PM)
+1208 4:48p 🟣 Support draft video entries without YouTube IDs in resources tab
+1209 " 🔵 Partial implementation of draft video support; full UI patch verification failing
+1210 " 🔵 Sidebar conditional thumbnail rendering applied; hero section placeholder rendering still pending
+1211 4:49p ✅ Hero section video-player and YouTube button conditionals fully applied
+1212 " ✅ CSS styling added for draft video placeholders in sidebar and hero sections
+1213 4:50p 🟣 New draft video entry added: Hermes + Ollama + Free Claude Code with DeepSeek tutorial
+1214 " 🟣 Automatic content sync IIFE added to sync DeepSeek prompt between video resources
+1215 " 🔵 Feature implementation verified: all syntax checks pass, content sync confirmed working
+1216 " 🔵 HTTP smoke test passed: website pages load successfully after feature changes
+S378 Restructure Hermes Agent with Ollama tutorial to use step-by-step format with browser and terminal download options, removing verbose prompts (Jul 4, 4:53 PM)
+1217 4:58p ✅ Hermes + Ollama tutorial restructured for clarity and step-by-step guidance
+1218 4:59p 🟣 Tutorial video entry enhanced with curated resource links and content sync mechanism
+S379 Add dedicated Hermes installation step with multiple options; refine overall tutorial structure for Hermes + Ollama setup (Jul 4, 5:00 PM)
+1219 5:00p ✅ Tutorial expanded with dedicated Hermes installation section and platform-specific commands
+S380 Add OSGuide thumbnail to website and integrate with resource metadata for OpenSourceGuide video (Jul 4, 5:01 PM)
+1220 5:46p ✅ Updated video title in js/videos.js for Hermes/Ollama tutorial
+S381 Add OSGuide thumbnail to website project and integrate into video resource metadata (Jul 4, 5:56 PM)
+1221 5:56p 🟣 Integrated OSGuide thumbnail into video resource metadata
+S382 Update resources page rendering to display thumbnails for draft videos without YouTube links (Jul 4, 5:57 PM)
+S383 Complete OSGuide thumbnail integration with draft video support and static preview rendering (Jul 4, 5:57 PM)
+1222 5:57p 🟣 Implemented draft video support with three-tier player rendering and validation
+S384 Complete OSGuide thumbnail integration with draft video support and static preview rendering (Jul 4, 5:58 PM)
+**Investigated**: Video player rendering logic; draft state styling requirements; YouTube ID validation and fallback handling; thumbnail display in both sidebar and main player
 
-Access 640k tokens of past work via get_observations([IDs]) or mem-search skill.
+**Learned**: Draft videos (without YouTube IDs) can display static thumbnail previews with disabled interactivity; three-tier rendering strategy supports progressive enhancement from interactive to static to placeholder; YouTube ID validation prevents errors on missing/invalid IDs; proper UX distinguishes playable vs preview content through cursor and hover behavior
+
+**Completed**: Implemented three-state video player: interactive (with ytId and play button), draft static (thumbnail only, no interactivity), coming-soon placeholder; added YouTube ID validation via isLikelyYouTubeId(); created videoYouTubeId() extraction function; refactored thumbUrl() for graceful fallbacks; styled video-player-draft with cursor:default and disabled hover effects; updated sidebar to show placeholder icons when thumbnails unavailable; syntax validation passed for both js/resources-page.js and js/videos.js
+
+**Next Steps**: Editing OpenSourceGuide tutorial content sections in videos.js; removing redundant tutorial steps to streamline the Ollama setup instructions
+
+
+Access 626k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>
