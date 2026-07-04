@@ -184,6 +184,15 @@
   function bindCapabilityCarousel() {
     const rail = document.getElementById("invoice-capability-rail");
     const wrap = document.querySelector("[data-invoice-carousel]");
+    if (
+      rail &&
+      wrap &&
+      window.KIMobileCardSwipers &&
+      window.KIMobileCardSwipers.shouldUse()
+    ) {
+      window.KIMobileCardSwipers.mountInvoice();
+      return;
+    }
     if (!rail || !wrap || rail.dataset.carouselBound) return;
 
     rail.dataset.carouselBound = "1";
@@ -196,8 +205,15 @@
     let activeIndex = 0;
     let ticking = false;
     let dragDelta = 0;
+    let mobileSnapTimer = null;
+    let mobileSnapping = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartIndex = 0;
 
     const isStageMode = () => window.matchMedia("(min-width: 901px)").matches;
+    const isCoarsePointer = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    const isMobileRail = () => !isStageMode() && isCoarsePointer();
 
     const normalizeIndex = (index) => {
       if (!cards.length) return 0;
@@ -299,6 +315,23 @@
       scrollToIndex(nearestIndex());
     };
 
+    const snapMobileRail = () => {
+      if (!isMobileRail() || mobileSnapping) return;
+      const target = cards[nearestIndex()];
+      if (!target) return;
+      const left = targetLeftForCard(target);
+      if (Math.abs(rail.scrollLeft - left) < 3) return;
+      mobileSnapping = true;
+      rail.scrollTo({ left, behavior: "smooth" });
+      window.setTimeout(() => { mobileSnapping = false; }, 420);
+    };
+
+    const scheduleMobileSnap = () => {
+      if (!isMobileRail() || down) return;
+      if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
+      mobileSnapTimer = window.setTimeout(snapMobileRail, 120);
+    };
+
     if (prev) {
       prev.addEventListener("click", () => scrollToIndex(activeIndex - 1));
     }
@@ -309,7 +342,34 @@
       dot.addEventListener("click", () => scrollToIndex(Number(dot.dataset.invoiceCapabilityDot)));
     });
 
-    rail.addEventListener("scroll", scheduleUpdate, { passive: true });
+    rail.addEventListener("scroll", () => {
+      scheduleUpdate();
+      scheduleMobileSnap();
+    }, { passive: true });
+
+    rail.addEventListener("touchstart", (event) => {
+      if (!isMobileRail() || !event.touches || !event.touches.length) return;
+      if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
+      mobileSnapping = true;
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+      touchStartIndex = nearestIndex();
+    }, { passive: true });
+
+    rail.addEventListener("touchend", (event) => {
+      if (!isMobileRail()) return;
+      const touch = event.changedTouches && event.changedTouches[0];
+      if (!touch) return;
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+      const isHorizontalSwipe = Math.abs(dx) > 28 && Math.abs(dx) > Math.abs(dy) * 1.15;
+      const dir = isHorizontalSwipe ? (dx < 0 ? 1 : -1) : 0;
+      window.setTimeout(() => {
+        scrollToIndex(touchStartIndex + dir);
+        window.setTimeout(() => { mobileSnapping = false; }, 460);
+      }, 40);
+    }, { passive: true });
+
     rail.addEventListener("keydown", (event) => {
       if (event.key === "ArrowLeft") {
         event.preventDefault();
@@ -330,6 +390,7 @@
     let startIndex = 0;
 
     rail.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch" || isCoarsePointer()) return;
       if (event.button != null && event.button !== 0) return;
       down = true;
       dragging = false;
@@ -378,6 +439,7 @@
     rail.addEventListener("pointercancel", release);
     if ("onscrollend" in window) {
       rail.addEventListener("scrollend", () => {
+        if (isCoarsePointer() || !isStageMode()) return;
         if (!down) snapToNearest();
       });
     }

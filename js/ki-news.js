@@ -258,6 +258,16 @@ window.KINews = (function () {
 
   function enableDragScroll(scroller) {
     if (!scroller || scroller.dataset.dragBound) return;
+    if (
+      scroller.classList.contains("ki-items-rail") &&
+      window.KIMobileCardSwipers &&
+      window.KIMobileCardSwipers.shouldUse()
+    ) {
+      const root = scroller.closest('.ki-items-wrap[data-rail="items"]');
+      window.KIMobileCardSwipers.mountKiNewsItems(root, scroller);
+      scroller.dataset.dragBound = "swiper";
+      return;
+    }
     scroller.dataset.dragBound = "1";
 
     const DRAG_THRESHOLD = 6; // px before a press becomes a drag
@@ -270,9 +280,43 @@ window.KINews = (function () {
     let startIndex = 0;
     let depthTicking = false;
     let dragDelta = 0;
+    let mobileSnapTimer = null;
+    let mobileSnapping = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartIndex = 0;
+
+    const isCoarsePointer = function () {
+      return window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    };
+
+    const isMobileRail = function () {
+      return scroller.classList.contains("ki-items-rail") &&
+        window.matchMedia("(max-width: 900px)").matches &&
+        isCoarsePointer();
+    };
+
+    const snapMobileRail = function () {
+      if (!isMobileRail() || mobileSnapping) return;
+      const items = railSnapItems(scroller);
+      if (!items.length) return;
+      const index = railNearestIndex(scroller);
+      const target = railSnapLeft(scroller, items[index]);
+      if (Math.abs(scroller.scrollLeft - target) < 3) return;
+      mobileSnapping = true;
+      scroller.scrollTo({ left: target, behavior: "smooth" });
+      window.setTimeout(function () { mobileSnapping = false; }, 420);
+    };
+
+    const scheduleMobileSnap = function () {
+      if (!isMobileRail() || down) return;
+      if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
+      mobileSnapTimer = window.setTimeout(snapMobileRail, 120);
+    };
 
     const scheduleDepthUpdate = function () {
       if (!scroller.classList.contains("ki-items-rail") || depthTicking) return;
+      if (!window.matchMedia("(min-width: 901px)").matches) return;
       depthTicking = true;
       requestAnimationFrame(function () {
         depthTicking = false;
@@ -280,9 +324,37 @@ window.KINews = (function () {
       });
     };
 
-    scroller.addEventListener("scroll", scheduleDepthUpdate, { passive: true });
+    scroller.addEventListener("scroll", function () {
+      scheduleDepthUpdate();
+      scheduleMobileSnap();
+    }, { passive: true });
+
+    scroller.addEventListener("touchstart", function (e) {
+      if (!isMobileRail() || !e.touches || !e.touches.length) return;
+      if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
+      mobileSnapping = true;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartIndex = railNearestIndex(scroller);
+    }, { passive: true });
+
+    scroller.addEventListener("touchend", function (e) {
+      if (!isMobileRail()) return;
+      const touch = e.changedTouches && e.changedTouches[0];
+      if (!touch) return;
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+      const isHorizontalSwipe = Math.abs(dx) > 28 && Math.abs(dx) > Math.abs(dy) * 1.15;
+      const dir = isHorizontalSwipe ? (dx < 0 ? 1 : -1) : 0;
+      const targetIndex = touchStartIndex + dir;
+      window.setTimeout(function () {
+        scrollRailToIndex(scroller, targetIndex);
+        window.setTimeout(function () { mobileSnapping = false; }, 460);
+      }, 40);
+    }, { passive: true });
 
     scroller.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "touch" || isCoarsePointer()) return;
       if (e.button != null && e.button !== 0) return;
       down = true;
       dragging = false;
@@ -336,6 +408,7 @@ window.KINews = (function () {
     scroller.addEventListener("pointercancel", release);
     if ("onscrollend" in window) {
       scroller.addEventListener("scrollend", function () {
+        if (isCoarsePointer() || !window.matchMedia("(min-width: 901px)").matches) return;
         if (!down) snapRailToNearest(scroller);
       });
     }
