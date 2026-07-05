@@ -9414,6 +9414,482 @@ body.invoice-demo-modal-open {
   color: #dbeafe !important;
 }
 
+/* Mobile homepage polish: phone-only overrides for the recently added sections. */
+@media (max-width: 720px) {
+  .flow-story {
+    padding: 2.75rem 1.25rem 3.25rem;
+  }
+
+  .story-copy {
+    max-width: none;
+  }
+
+  .story-eyebrow {
+    margin-bottom: 0.75rem;
+    font-size: 0.74rem;
+    line-height: 1.25;
+  }
+
+  .story-copy-flow {
+    margin-top: 1.65rem;
+  }
+
+  .story-copy-block h2 {
+    font-size: 2rem;
+    line-height: 1.08;
+  }
+
+  .story-copy-block p {
+    margin-top: 0.8rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .story-demo-cta-wrap {
+    margin-top: 1.5rem;
+    gap: 0.55rem;
+  }
+
+  .story-demo-cta {
+    min-height: 48px;
+    padding: 0.82rem 1rem;
+    border-radius: 8px;
+  }
+
+  .story-demo-note {
+    font-size: 0.9rem;
+  }
+
+  .story-scene {
+    display: block;
+    min-height: auto;
+    margin-top: 1.6rem;
+  }
+
+  .story-orbit,
+  .story-flowline,
+  .story-piece {
+    display: none;
+  }
+
+  .story-hub {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    opacity: 1 !important;
+    transform: none !important;
+    border-radius: 8px;
+  }
+
+  .hub-top {
+    padding: 0.85rem 1rem;
+  }
+
+  .hub-panel {
+    padding: 1rem;
+  }
+
+  .hub-panel strong {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: min(100% - 2rem, 1100px);
+    padding-block: 2.35rem;
+  }
+
+  .nav-wrapper {
+    min-height: 64px;
+    padding-block: 0.4rem;
+  }
+
+  .logo img {
+    height: 34px;
+  }
+
+  .lang-switcher {
+    margin-right: 0.45rem;
+  }
+
+  .lang-btn {
+    min-width: 2.25rem;
+    min-height: 2rem;
+    padding: 0.32rem 0.58rem;
+    font-size: 0.82rem;
+  }
+
+  .theme-toggle {
+    width: 2.15rem;
+    height: 2.15rem;
+    margin-left: 0.2rem;
+  }
+
+  .hamburger {
+    width: 2.15rem;
+    height: 2.15rem;
+  }
+
+  .hero {
+    min-height: auto;
+    display: block;
+    padding-block: 4.35rem 5.4rem;
+  }
+
+  .hero .container {
+    width: min(100% - 2rem, 1100px);
+    padding-block: 0;
+  }
+
+  .hero h1 {
+    font-size: 2.12rem;
+    line-height: 1.08;
+  }
+
+  .hero p {
+    max-width: 31ch;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .hero .cta-btn {
+    width: 100%;
+    max-width: 22rem;
+    min-height: 48px;
+    margin-top: 1.2rem;
+    padding: 0.78rem 1rem;
+    border-radius: 8px;
+    line-height: 1.2;
+  }
+
+  .hero-social-links {
+    gap: 0.55rem;
+    margin-top: 1.45rem;
+  }
+
+  .hero-social-links a {
+    width: 42px;
+    height: 42px;
+    font-size: 1.12rem;
+    border-width: 1.5px;
+  }
+
+  .waves {
+    min-height: 72px;
+    height: 10vh;
+  }
+
+  section:not(.hero) .container {
+    text-align: left;
+  }
+
+  section:not(.hero) h2 {
+    font-size: 2rem;
+    line-height: 1.12;
+  }
+
+  .section-kicker {
+    font-size: 0.74rem;
+    line-height: 1.25;
+  }
+
+  .section-lead {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .method-scrolly {
+    min-height: auto;
+  }
+
+  .method-scrolly .method-scroll-inner {
+    width: min(100% - 2rem, 1100px);
+    padding-block: 2.7rem 2.95rem;
+    text-align: left;
+  }
+
+  .method-copy {
+    text-align: left;
+  }
+
+  .method-scrolly .method-copy .section-lead {
+    max-width: none;
+    margin-inline: 0;
+  }
+
+  .method-state-line {
+    grid-template-columns: minmax(0, auto) minmax(2rem, 1fr) minmax(0, auto);
+    gap: 0.55rem;
+    margin-top: 1.25rem;
+    font-size: 0.82rem;
+  }
+
+  .method-step-list {
+    gap: 0.75rem;
+    margin-top: 1.4rem;
+  }
+
+  .method-scrolly .method-step,
+  .method-scrolly .method-step.is-active {
+    grid-template-columns: 2.35rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: start;
+    padding: 0.95rem;
+    border: 1px solid rgba(217, 225, 242, 0.9);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .method-scrolly .method-number {
+    width: 2.35rem;
+    height: 2.35rem;
+    font-size: 0.94rem;
+  }
+
+  .method-scrolly .method-step h3 {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .method-scrolly .method-step p,
+  .method-scrolly .method-step.is-active p {
+    margin-top: 0.32rem;
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+
+  .method-scrolly .method-map {
+    min-height: 295px;
+    margin-top: 0.35rem;
+    box-shadow: var(--shadow-sm);
+    transform: none;
+  }
+
+  .method-phase-labels {
+    left: 0.9rem;
+    top: 0.9rem;
+    min-width: 0;
+  }
+
+  .method-phase-label {
+    min-height: 1.95rem;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.78rem;
+  }
+
+  .method-scrolly .method-chaos-chip {
+    display: none;
+  }
+
+  .method-scrolly .method-flow-wave {
+    inset: 4.7rem 0.9rem 6.2rem;
+    opacity: 0.85;
+  }
+
+  .method-scrolly .method-flow-core {
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    width: auto;
+    padding: 0.9rem;
+    text-align: center;
+    transform: none;
+  }
+
+  .method-flow-core strong {
+    font-size: 1.25rem;
+  }
+
+  .integrations {
+    margin-block-start: 0;
+  }
+
+  .integrations-inner {
+    padding-block: 3.35rem 3.65rem;
+    text-align: center;
+  }
+
+  .integrations h2 {
+    font-size: 2rem;
+  }
+
+  .integrations .section-lead,
+  .integrations-foot {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .marquee {
+    margin-top: 1.4rem;
+    padding-block: 1.1rem 1.75rem;
+  }
+
+  .int-pill {
+    padding: 0.6rem 0.95rem;
+    font-size: 0.86rem;
+  }
+
+  .appointment-inner {
+    padding-block: 2.7rem 3rem;
+  }
+
+  .appointment-head {
+    text-align: left;
+  }
+
+  .appointment-head .section-lead {
+    margin-inline: 0;
+  }
+
+  .appointment-booking {
+    margin-top: 1.35rem;
+    padding: 0.55rem;
+  }
+
+  .appointment-meta {
+    gap: 0.55rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .appointment-meta-item,
+  .appointment-open {
+    min-height: 48px;
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+
+  .calendar-wrapper:has(.calendar-placeholder) {
+    height: auto;
+  }
+
+  .calendar-wrapper:has(.calendar-placeholder) .calendar-placeholder {
+    min-height: 300px;
+    padding: 2rem 1rem;
+  }
+
+  .calendar-placeholder .cta-btn {
+    width: 100%;
+    margin-top: 0.3rem;
+    text-align: center;
+  }
+
+  .ki-news-band {
+    padding-block: 3.25rem;
+  }
+
+  .ki-news-band .wave-divider {
+    height: 42px;
+  }
+
+  .ki-news-band-inner {
+    gap: 1.45rem;
+    text-align: left;
+  }
+
+  .ki-news-band-head h2 {
+    max-width: none;
+    font-size: 2rem;
+  }
+
+  .ki-news-band-lead {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .ki-news-home-card {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .ki-home-card-head {
+    align-items: flex-start;
+  }
+
+  .ki-home-date {
+    font-size: 0.98rem;
+  }
+
+  .ki-home-dek,
+  .ki-home-item-title {
+    text-align: left;
+  }
+
+  .contact .container {
+    padding-block: 2.7rem 3.2rem;
+  }
+
+  .contact h2,
+  .contact .section-lead {
+    text-align: left;
+  }
+
+  .contact .section-lead {
+    margin-inline: 0;
+  }
+
+  .contact-form {
+    margin-top: 1.45rem;
+    gap: 0.95rem;
+  }
+
+  .form-field input {
+    min-height: 48px;
+  }
+
+  .form-field textarea {
+    min-height: 170px;
+  }
+
+  .form-submit {
+    width: 100%;
+    min-height: 50px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero h1,
+  section:not(.hero) h2,
+  .story-copy-block h2,
+  .ki-news-band-head h2,
+  .integrations h2 {
+    font-size: 1.82rem;
+  }
+
+  .hero-social-links {
+    gap: 0.42rem;
+  }
+
+  .hero-social-links a {
+    width: 38px;
+    height: 38px;
+  }
+
+  .method-state-line {
+    font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 600px) {
+  [data-theme="dark"] .method-scrolly .method-step,
+  [data-theme="dark"] .method-scrolly .method-step.is-active {
+    background: linear-gradient(135deg, rgba(19, 28, 51, 0.96), rgba(27, 37, 66, 0.94));
+    border-color: #243352;
+    box-shadow: 0 10px 24px rgb(0 0 0 / 0.28);
+  }
+
+  [data-theme="dark"] .method-scrolly .method-step h3 {
+    color: #e6ebf5;
+  }
+
+  [data-theme="dark"] .method-scrolly .method-step p {
+    color: #cbd5e1;
+  }
+}
+
 [data-theme="dark"] .navbar .nav-links a.nav-link-secondary:hover,
 [data-theme="dark"] .navbar .nav-links a.nav-link-secondary:focus-visible,
 [data-theme="dark"] .navbar .nav-links a.nav-link-secondary[aria-current="page"] {
