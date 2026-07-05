@@ -194,6 +194,241 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /* ▸ Beleg-flow story: scroll-linked wave draw + 3D card choreography */
+  const flowStory = document.querySelector(".flow-story");
+  if (flowStory) {
+    const scene = flowStory.querySelector(".story-scene");
+    const cards = Array.from(flowStory.querySelectorAll(".story-piece"));
+    const hub = flowStory.querySelector(".story-hub");
+    const waveFillPaths = Array.from(flowStory.querySelectorAll(".story-wave-fill-path"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let storyRaf = 0;
+    let storyCtaVisible = false;
+    let storyCtaHasShown = false;
+
+    const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+    const ease = (value) => {
+      const t = clamp(value);
+      return t * t * (3 - 2 * t);
+    };
+    const mix = (from, to, amount) => from + (to - from) * amount;
+    const dataNumber = (el, name) => Number(el.dataset[name] || 0);
+    const ctaShowProgress = 0.82;
+    const ctaHideProgress = 0.46;
+
+    const updateWaveDraw = (progress) => {
+      waveFillPaths.forEach((path) => {
+        const length = path.getTotalLength();
+        path.style.setProperty("--wave-length", length.toFixed(2));
+        path.style.setProperty("--wave-offset", (length * (1 - clamp(progress))).toFixed(2));
+      });
+    };
+
+    const updateStory = () => {
+      storyRaf = 0;
+      if (!scene || !hub) return;
+
+      const staticScene = reduceMotion.matches || window.innerWidth <= 720;
+      const total = Math.max(1, flowStory.offsetHeight - window.innerHeight);
+      const rawProgress = staticScene ? 1 : clamp(-flowStory.getBoundingClientRect().top / total);
+      const waveProgress = staticScene ? 1 : clamp(rawProgress / 0.9);
+      const flowReveal = ease((rawProgress - 0.36) / 0.26);
+      const ctaReveal = ease((rawProgress - ctaShowProgress) / 0.05);
+      const flyIn = ease(rawProgress / 0.34);
+      const organize = ease((rawProgress - 0.38) / 0.30);
+      const ctaShouldShow = staticScene || rawProgress >= ctaShowProgress || (storyCtaVisible && rawProgress > ctaHideProgress);
+
+      if (ctaShouldShow !== storyCtaVisible) {
+        storyCtaVisible = ctaShouldShow;
+        if (storyCtaVisible) storyCtaHasShown = true;
+      }
+
+      flowStory.style.setProperty("--story-progress", rawProgress.toFixed(4));
+      flowStory.style.setProperty("--story-pct", `${(rawProgress * 100).toFixed(2)}%`);
+      flowStory.style.setProperty("--flow-reveal", flowReveal.toFixed(4));
+      flowStory.style.setProperty("--story-cta-reveal", ctaReveal.toFixed(4));
+      flowStory.classList.toggle("is-story-cta-ready", storyCtaVisible);
+      flowStory.classList.toggle("is-story-cta-exiting", !storyCtaVisible && storyCtaHasShown);
+      updateWaveDraw(waveProgress);
+
+      const sceneWidth = Math.max(320, scene.clientWidth);
+      const sceneHeight = Math.max(420, scene.clientHeight);
+
+      cards.forEach((card, index) => {
+        const fromX = sceneWidth * dataNumber(card, "fromX") / 100;
+        const fromY = sceneHeight * dataNumber(card, "fromY") / 100;
+        const midX = sceneWidth * dataNumber(card, "midX") / 100;
+        const midY = sceneHeight * dataNumber(card, "midY") / 100;
+        const toX = sceneWidth * dataNumber(card, "toX") / 100;
+        const toY = sceneHeight * dataNumber(card, "toY") / 100;
+        const fromRot = dataNumber(card, "fromRot");
+        const midRot = dataNumber(card, "midRot");
+        const toRot = dataNumber(card, "toRot");
+        const depth = dataNumber(card, "depth");
+        const ripple = Math.sin(rawProgress * 18 + index * 1.7) * (1 - organize);
+
+        const stagedX = mix(fromX, midX, flyIn);
+        const stagedY = mix(fromY, midY, flyIn);
+        const stagedRot = mix(fromRot, midRot, flyIn);
+        const x = mix(stagedX, toX, organize) + ripple * 9;
+        const y = mix(stagedY, toY, organize) + ripple * 5;
+        const rotation = mix(stagedRot, toRot, organize) + ripple * 1.4;
+        const z = mix(depth, 10, flyIn);
+        const finalZ = mix(z, -80 + index * 8, organize);
+        const scale = mix(mix(0.78, 1, flyIn), 0.76, organize);
+        const opacity = clamp(mix(0, 1, flyIn) * mix(1, 0.28, organize), 0, 1);
+        const tiltX = mix(18 - index * 1.8, -4, flyIn);
+        const tiltY = mix(index % 2 ? -18 : 18, 0, flyIn);
+
+        card.style.opacity = opacity.toFixed(3);
+        card.style.transform = [
+          "translate3d(-50%, -50%, 0)",
+          `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${finalZ.toFixed(1)}px)`,
+          `rotateX(${tiltX.toFixed(2)}deg)`,
+          `rotateY(${tiltY.toFixed(2)}deg)`,
+          `rotateZ(${rotation.toFixed(2)}deg)`,
+          `scale(${scale.toFixed(3)})`
+        ].join(" ");
+      });
+
+      const hubIn = ease((rawProgress - 0.48) / 0.18);
+      const hubY = mix(54, 0, hubIn);
+      const hubZ = mix(80, 190, hubIn);
+      const hubScale = mix(0.84, 1, hubIn);
+      const hubTilt = mix(9, 0, hubIn);
+
+      hub.style.opacity = hubIn.toFixed(3);
+      hub.style.transform = [
+        `translate3d(-50%, -50%, ${hubZ.toFixed(1)}px)`,
+        `translateY(${hubY.toFixed(1)}px)`,
+        `rotateX(${hubTilt.toFixed(2)}deg)`,
+        `scale(${hubScale.toFixed(3)})`
+      ].join(" ");
+    };
+
+    const requestStoryUpdate = () => {
+      if (!storyRaf) storyRaf = window.requestAnimationFrame(updateStory);
+    };
+
+    window.addEventListener("scroll", requestStoryUpdate, { passive: true });
+    window.addEventListener("resize", requestStoryUpdate);
+    if (reduceMotion.addEventListener) {
+      reduceMotion.addEventListener("change", requestStoryUpdate);
+    } else if (reduceMotion.addListener) {
+      reduceMotion.addListener(requestStoryUpdate);
+    }
+    updateStory();
+  }
+
+  /* ▸ Method story: scroll-linked AI jungle to flow transformation */
+  const methodStory = document.querySelector(".method-scrolly");
+  if (methodStory) {
+    const methodSteps = Array.from(methodStory.querySelectorAll("[data-method-step]"));
+    const methodPaths = Array.from(methodStory.querySelectorAll(".method-flow-wave path"));
+    const methodReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let methodRaf = 0;
+
+    const clampMethod = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+    const easeMethod = (value) => {
+      const t = clampMethod(value);
+      return t * t * (3 - 2 * t);
+    };
+
+    const updateMethodPaths = (progress) => {
+      methodPaths.forEach((path) => {
+        const length = path.getTotalLength();
+        const draw = easeMethod((progress - 0.12) / 0.74);
+        path.style.setProperty("--method-path-length", length.toFixed(2));
+        path.style.setProperty("--method-path-offset", (length * (1 - draw)).toFixed(2));
+      });
+    };
+
+    const updateMethodStory = () => {
+      methodRaf = 0;
+      const staticScene = methodReduceMotion.matches || window.innerWidth <= 720;
+      const total = Math.max(1, methodStory.offsetHeight - window.innerHeight);
+      const progress = staticScene ? 1 : clampMethod(-methodStory.getBoundingClientRect().top / total);
+      const phase = progress < 0.36 ? 0 : progress < 0.72 ? 1 : 2;
+
+      methodStory.style.setProperty("--method-progress", progress.toFixed(4));
+      methodStory.dataset.methodPhase = String(phase);
+      methodSteps.forEach((step, index) => {
+        const isActive = staticScene ? index === 2 : index === phase;
+        step.classList.toggle("is-active", isActive);
+      });
+      updateMethodPaths(progress);
+    };
+
+    const requestMethodUpdate = () => {
+      if (!methodRaf) methodRaf = window.requestAnimationFrame(updateMethodStory);
+    };
+
+    window.addEventListener("scroll", requestMethodUpdate, { passive: true });
+    window.addEventListener("resize", requestMethodUpdate);
+    if (methodReduceMotion.addEventListener) {
+      methodReduceMotion.addEventListener("change", requestMethodUpdate);
+    } else if (methodReduceMotion.addListener) {
+      methodReduceMotion.addListener(requestMethodUpdate);
+    }
+    updateMethodStory();
+  }
+
+  /* ▸ Services liquid wave: short scroll-linked flow reveal */
+  const servicesFlow = document.querySelector(".services-liquid");
+  if (servicesFlow) {
+    const servicesClip = servicesFlow.querySelector(".services-liquid-progress-clip");
+    const servicesReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let servicesRaf = 0;
+
+    const clampServices = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+    const easeServices = (value) => {
+      const t = clampServices(value);
+      return t * t * (3 - 2 * t);
+    };
+
+    const setServicesProgress = (progress, rawProgress = progress) => {
+      const eased = easeServices(progress);
+      const phase = progress < 0.34 ? "need" : progress < 0.68 ? "build" : "live";
+
+      servicesFlow.dataset.servicesPhase = phase;
+      servicesFlow.style.setProperty("--services-raw-progress", rawProgress.toFixed(4));
+      servicesFlow.style.setProperty("--services-progress", eased.toFixed(4));
+      servicesFlow.style.setProperty("--services-progress-pct", `${(eased * 100).toFixed(2)}%`);
+      servicesFlow.style.setProperty("--services-wave-x", `${(-8 - eased * 92).toFixed(1)}px`);
+
+      if (servicesClip) {
+        servicesClip.setAttribute("width", (1180 * Math.max(0.025, eased)).toFixed(1));
+      }
+    };
+
+    const updateServicesFlow = () => {
+      servicesRaf = 0;
+      const staticScene = servicesReduceMotion.matches;
+      const rect = servicesFlow.getBoundingClientRect();
+      const sectionTop = window.scrollY + rect.top;
+      const travel = Math.max(1, servicesFlow.offsetHeight * 0.68);
+      const rawProgress = staticScene
+        ? 1
+        : clampServices((window.scrollY - sectionTop) / travel);
+      const progress = staticScene ? 1 : clampServices(rawProgress / 0.84);
+
+      setServicesProgress(progress, rawProgress);
+    };
+
+    const requestServicesUpdate = () => {
+      if (!servicesRaf) servicesRaf = window.requestAnimationFrame(updateServicesFlow);
+    };
+
+    window.addEventListener("scroll", requestServicesUpdate, { passive: true });
+    window.addEventListener("resize", requestServicesUpdate);
+    if (servicesReduceMotion.addEventListener) {
+      servicesReduceMotion.addEventListener("change", requestServicesUpdate);
+    } else if (servicesReduceMotion.addListener) {
+      servicesReduceMotion.addListener(requestServicesUpdate);
+    }
+    updateServicesFlow();
+  }
+
   /* ▸ Cookie consent + Google Calendar gating */
   const CONSENT_KEY = "kif_cookie_consent";
   const cookieBanner = document.getElementById("cookie-banner");
@@ -338,6 +573,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const langEnBtn = document.getElementById("lang-en");
 
   if (langDeBtn && langEnBtn && typeof translations !== "undefined") {
+    const decodeTranslatedAttr = (value) => {
+      const textarea = document.createElement("textarea");
+      textarea.innerHTML = value;
+      return textarea.value;
+    };
+
     const setLanguage = (lang) => {
       langDeBtn.classList.toggle("active", lang === "de");
       langEnBtn.classList.toggle("active", lang === "en");
@@ -346,12 +587,31 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll("[data-translate]").forEach((element) => {
         const key = element.getAttribute("data-translate");
         if (translations[lang] && translations[lang][key]) {
-          element.innerHTML = translations[lang][key];
+          if (element.tagName === "META") {
+            element.setAttribute("content", decodeTranslatedAttr(translations[lang][key]));
+          } else {
+            element.innerHTML = translations[lang][key];
+          }
+        }
+      });
+
+      document.querySelectorAll("[data-translate-placeholder]").forEach((element) => {
+        const key = element.getAttribute("data-translate-placeholder");
+        if (translations[lang] && translations[lang][key]) {
+          element.setAttribute("placeholder", decodeTranslatedAttr(translations[lang][key]));
+        }
+      });
+
+      document.querySelectorAll("[data-translate-aria-label]").forEach((element) => {
+        const key = element.getAttribute("data-translate-aria-label");
+        if (translations[lang] && translations[lang][key]) {
+          element.setAttribute("aria-label", decodeTranslatedAttr(translations[lang][key]));
         }
       });
 
       // Re-insert dynamic year after translation (footer uses innerHTML)
       setYear();
+      document.dispatchEvent(new CustomEvent("kif:languagechange", { detail: { lang } }));
 
       // Counters lose their textContent if their label parent is re-rendered;
       // they aren't, but reset only if not yet animated.

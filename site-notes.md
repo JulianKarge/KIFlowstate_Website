@@ -35,6 +35,70 @@ If an entry becomes wrong over time, append `**Updated:** {{YYYY-MM-DD}}` with a
 
 ## Conventions, patterns to keep using
 
+### Method section works best as scroll-driven flow storytelling
+- **Date:** 2026-07-05
+- **Context:** Redesigning the homepage `#method` section after Julian liked the wave animation but disliked the three static fields below it. The goal was a professional but more futuristic interaction that reveals more information while scrolling.
+- **Source / example:** `#method` in [index.html](index.html), `Method scrollytelling upgrade` in [css/styles.css](css/styles.css), `methodStory` in [js/script.js](js/script.js), method translation keys in [js/translations.js](js/translations.js).
+- **What:** For the KI-Dschungel section, prefer a sticky scrollytelling pattern over static cards. The strongest metaphor is messy real-world inputs becoming one operational flow: chips reorganize, the wave draws forward, the active step changes, and output nodes appear progressively. Keep it calm and precise, with real workflow objects such as E-Mail, Excel, Belege, Versand, and Team instead of generic KI/neon/circuit visuals.
+- **Where it applies:** Homepage `#method` and any future "how we work" or process storytelling section.
+- **Tags:** layout, animation, scrollytelling, homepage, method
+
+### Scroll interactions need static fallbacks and browser QA
+- **Date:** 2026-07-05
+- **Context:** Implementing the upgraded `#method` scrollytelling section with desktop sticky behavior, mobile static layout, dark mode, translation support, and reduced-motion handling.
+- **Source / example:** `method-scrolly` CSS in [css/styles.css](css/styles.css), `methodStory` scroll controller in [js/script.js](js/script.js).
+- **What:** When adding scroll-driven sections, verify desktop phases, mobile layout, dark mode, English/German strings, `prefers-reduced-motion`, anchor navigation, and horizontal overflow. On smaller screens, collapse to a non-sticky layout where all steps remain readable; dense visual nodes can be hidden if they would compete with the copy. Keep scroll animation progressive, not decorative: every motion should explain the workflow.
+- **Where it applies:** Homepage scroll storytelling sections and future animated process sections.
+- **Tags:** animation, responsive, accessibility, qa, dark-mode
+
+### Useful references for professional scrollytelling
+- **Date:** 2026-07-05
+- **Context:** Looking for references that could make the KI-Dschungel section feel more interactive and future-facing without becoming sloppy or generic.
+- **Source / example:** Codrops sticky section animation ideas, Codrops `OnScrollPathAnimations`, Codrops `ScrollBasedLayoutAnimations`, Chrome scroll-driven animation docs, and Shorthand scrollytelling examples.
+- **What:** Good references for this site are sticky sections where one visual stage stays in view while scroll progress reveals state changes, path drawing, and information layers. Borrow the interaction principle, not the visual style: KIFlowstate should stay restrained, bright, operational, and brand-blue, not dark cyberpunk or over-animated.
+- **Where it applies:** Future homepage sections, case-study pages, product demos, and any process reveal.
+- **Tags:** references, animation, scrollytelling, design-direction
+
+### Services section should guide one active idea at a time
+- **Date:** 2026-07-05
+- **Context:** Redesigning the homepage `#services` / "Was wir in Bewegung bringen" section after the four-card grid felt too dense next to the stronger KI-Dschungel section.
+- **Source / example:** `#services` in [index.html](index.html), `Services liquid wave reset` in [css/styles.css](css/styles.css), service keys in [js/translations.js](js/translations.js).
+- **What:** For service/capability sections, avoid equal-weight grids when the user needs quick comprehension. Use a sticky selector plus one active detail pane, supported by a simple operational visual such as Bedarf -> Umsetzung -> Betrieb. Keep copy short: one service promise and one outcome per step. On mobile or reduced motion, fall back to readable stacked cards.
+- **Updated:** 2026-07-05 - The service scroll should hold the first and final states longer, avoid duplicate labels in the visual deck, and keep the copy self-selection oriented: when this service fits, and what outcome the visitor gets.
+- **Updated:** 2026-07-05 - For the homepage services section specifically, simplify further: remove the service-category menu, detailed cards, scroll ball, and any orb metaphor. Keep only the headline, one concise sentence, and a liquid-glass wave carrying Bedarf -> Umsetzung -> Betrieb. Motion should feel like the homepage wave system and Apple-style frosted glass: high quality, restrained, and brand-blue.
+- **Updated:** 2026-07-05 - The services wave should include a short scroll-linked reveal, not just idle motion. The wave itself should advance from left to right and the active label can lift subtly with scroll progress. Do not use green/teal in this section; stay within the KIFlowstate blue identity.
+- **Updated:** 2026-07-05 - Avoid boxed dashboard panels and three glass-button cards in the services wave. They looked cheap and disconnected from the site. The better direction is an unframed typographic wave ribbon: soft full-width blue motion, labels as text, active state via a small underline, and no visible component container.
+- **Updated:** 2026-07-05 - The services scroll should not jump away as soon as the wave reaches the final state. Let the wave complete around two-thirds through the pinned scroll, then hold `Betrieb` visibly before the next section. Keep the labels in a stage rail below the wave, not floating inside it.
+- **Updated:** 2026-07-05 - Services should not sit as white-on-white against the following method section. Use a subtle light-blue band with narrow, slow-moving full-width wave dividers at the top and bottom only. Keep the main wave central, but do not let decorative waves fill the whole section. Reduce vertical padding so the section feels like part of the page flow rather than a huge isolated scroll scene.
+- **Updated:** 2026-07-05 - The services section works better as a compact scroll-reactive band than as a tall pinned scene. Keep the top and bottom waves small, full-width, and slowly moving; keep the central wave thin; avoid large empty hold space. If scroll progress is needed, calculate it against the section's own scroll position and hold the final `Betrieb` state briefly without forcing a full extra viewport.
+- **Updated:** 2026-07-05 - The services-to-method handoff should not reveal a blank white gap. The method section can start with a very subtle blue tint and should not rely on the generic reveal observer for visibility, because its tall scrollytelling height delays the reveal and makes the transition feel unfinished.
+- **Where it applies:** Homepage services section, future capability sections, and product/service overview pages.
+- **Tags:** services, layout, animation, responsive, copy
+
+### Appointment section: wrap Google Calendar in a branded booking panel
+- **Date:** 2026-07-05
+- **Context:** Redesigning the homepage `#appointment` section because the raw Google Appointment Schedule embed felt like a generic template, required awkward inner scrolling on desktop, and looked disconnected in dark mode.
+- **Source / example:** [index.html](index.html), [css/styles.css](css/styles.css), [js/translations.js](js/translations.js), screenshots in `.codex-screenshots/appointment-*`.
+- **What:** Keep the Google Calendar surface itself white, because Google controls the iframe and it is built for a light UI. Make the surrounding section carry the KIFlowstate feel: subtle blue grid background, centered section header, compact context pills, dark-mode shell, and a direct "open calendar in new tab" fallback. Do not put explanatory marketing text beside the iframe, because the calendar needs width.
+- **Where it applies:** Homepage appointment section and any future embedded booking flow.
+- **Tags:** layout, appointment, google-calendar, dark-mode, conversion
+
+### Google Calendar embed needs width, height, and real browser QA
+- **Date:** 2026-07-05
+- **Context:** The original Google Appointment Schedule iframe used a 600px height and showed an annoying internal scrollbar on desktop. The fix was not copy-only, it required giving the iframe a larger internal viewport and checking what Google actually rendered.
+- **Source / example:** `.calendar-wrapper` and `.calendar-embed` in [css/styles.css](css/styles.css), `calendar-template` in [index.html](index.html).
+- **What:** For the desktop booking embed, use a wide frame and a taller internal iframe canvas, currently `height: 860px` with `transform: scale(0.88)` inside a `757px` wrapper. This removed the visible inner scrollbar in desktop captures while keeping the section reasonably compact. On mobile, expect Google to stay tall or scroll internally, so keep the new-tab fallback prominent and avoid extra horizontal compression.
+- **Where it applies:** Google Calendar Appointment Schedule embeds.
+- **Tags:** layout, iframe, appointment, qa, responsive
+
+### Appointment copy must match the actual booking product
+- **Date:** 2026-07-05
+- **Context:** The website copy said 30-minute strategy call, but the actual Google schedule is a 15-minute discovery call.
+- **Source / example:** `appointment_text`, `appointment_meta_duration` in [js/translations.js](js/translations.js), appointment markup in [index.html](index.html).
+- **What:** Keep the public copy aligned with the Google schedule. If the calendar product changes duration or purpose, update German and English strings in the same pass. The current promise is a free 15-minute discovery or strategy call about AI automation.
+- **Where it applies:** Appointment CTA copy, hero CTA expectation, privacy/legal references if duration or provider changes.
+- **Tags:** copy, appointment, translation, conversion
+
 ### Every video in `js/videos.js` must have `publishedAt`
 - **Date:** 2026-05-01
 - **Context:** When adding a new YouTube video to the resources page, only one of five entries had a `publishedAt` date, so the sidebar showed the date for one video and nothing for the rest — looked broken.

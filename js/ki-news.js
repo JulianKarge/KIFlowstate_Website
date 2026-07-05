@@ -353,6 +353,59 @@ window.KINews = (function () {
       }, 40);
     }, { passive: true });
 
+    // Stage-mode drag: cards follow the pointer continuously, mirroring the
+    // Belegdemo capability carousel. The formula interpolates the same values
+    // the is-carousel-* classes use (78% / -76px / 15deg / 0.88 / opacity),
+    // so the release settle transitions from wherever the drag left off.
+    let startT = 0;
+
+    const stageDistance = function (items, index, active) {
+      const forward = (index - active + items.length) % items.length;
+      const backward = (active - index + items.length) % items.length;
+      return forward === 0 ? 0 : forward <= backward ? forward : -backward;
+    };
+
+    const stageSpan = function () {
+      const items = railSnapItems(scroller);
+      const active = items[normalizeRailIndex(scroller, railStageActive.get(scroller) || 0)];
+      return active ? Math.max(active.offsetWidth * 0.9, 1) : 1;
+    };
+
+    const stageProgress = function () {
+      return Math.max(-1.15, Math.min(1.15, dragDelta / stageSpan()));
+    };
+
+    const applyStageDrag = function (p) {
+      const items = railSnapItems(scroller);
+      if (!items.length) return;
+      const active = normalizeRailIndex(scroller, railStageActive.get(scroller) || 0);
+      items.forEach(function (item, index) {
+        const d = stageDistance(items, index, active) + p;
+        const sign = d < 0 ? -1 : 1;
+        const within = Math.min(Math.abs(d), 1);
+        const beyond = Math.max(Math.abs(d) - 1, 0);
+        const tx = sign * (within * 78 + beyond * 26);
+        const ty = -5 * (1 - within);
+        const tz = -(within * 76 + Math.min(beyond, 1) * 64);
+        const rotY = -15 * sign * within;
+        const scale = 1 - 0.12 * within - 0.14 * Math.min(beyond, 1);
+        const opacity = Math.max(0, 1 - 0.28 * within - 1.2 * beyond);
+        item.style.transform =
+          "translateX(" + tx + "%) translateY(" + ty + "px) translateZ(" + tz + "px) " +
+          "rotateY(" + rotY + "deg) scale(" + scale + ")";
+        item.style.opacity = String(opacity);
+        item.style.zIndex = String(Math.max(1, Math.round(5 - 2 * Math.min(Math.abs(d), 2))));
+      });
+    };
+
+    const clearStageDrag = function () {
+      railSnapItems(scroller).forEach(function (item) {
+        item.style.transform = "";
+        item.style.opacity = "";
+        item.style.zIndex = "";
+      });
+    };
+
     scroller.addEventListener("pointerdown", function (e) {
       if (e.pointerType === "touch" || isCoarsePointer()) return;
       if (e.button != null && e.button !== 0) return;
@@ -363,6 +416,7 @@ window.KINews = (function () {
       startX = e.clientX;
       startLeft = scroller.scrollLeft;
       startIndex = railNearestIndex(scroller);
+      startT = performance.now();
       pointerId = e.pointerId;
       // NOTE: pointer capture is deliberately NOT taken here. Capturing on
       // pointerdown retargets the subsequent `click` to this scroller, which
@@ -383,11 +437,15 @@ window.KINews = (function () {
           scroller.setPointerCapture(pointerId);
         } catch (err) {}
       }
-      if (railIsStage(scroller)) return;
+      if (railIsStage(scroller)) {
+        applyStageDrag(stageProgress());
+        return;
+      }
       scroller.scrollLeft = startLeft - dx;
     });
 
     const release = function () {
+      const wasDragging = dragging;
       down = false;
       dragging = false;
       if (pointerId != null) {
@@ -397,12 +455,31 @@ window.KINews = (function () {
       }
       pointerId = null;
       scroller.classList.remove("is-dragging");
-      if (moved) {
-        const dir = railIsStage(scroller)
-          ? (dragDelta < 0 ? 1 : -1)
-          : (scroller.scrollLeft >= startLeft ? 1 : -1);
-        setTimeout(function () { scrollRailToIndex(scroller, startIndex + dir); }, 60);
+      if (!moved) return;
+      if (railIsStage(scroller)) {
+        if (!wasDragging) return;
+        // Flip when the drag passed a quarter card or was a quick flick;
+        // otherwise settle back onto the card we started from.
+        const p = stageProgress();
+        const dt = Math.max(1, performance.now() - startT);
+        const velocity = dragDelta / dt;
+        let dir = 0;
+        if (Math.abs(p) > 0.22 || (Math.abs(velocity) > 0.45 && Math.abs(dragDelta) > 24)) {
+          dir = dragDelta < 0 ? 1 : -1;
+        }
+        railStageActive.set(scroller, normalizeRailIndex(scroller, startIndex + dir));
+        updateRailDepth(scroller);
+        // Classes now describe the target; drop the inline drag styles on
+        // the next frame so the 0.62s spring transition carries the cards
+        // from the dragged position into place.
+        requestAnimationFrame(function () {
+          void scroller.offsetWidth;
+          clearStageDrag();
+        });
+        return;
       }
+      const dir = scroller.scrollLeft >= startLeft ? 1 : -1;
+      setTimeout(function () { scrollRailToIndex(scroller, startIndex + dir); }, 60);
     };
     scroller.addEventListener("pointerup", release);
     scroller.addEventListener("pointercancel", release);

@@ -9,18 +9,13 @@
     nudgeDismissed: "kif_invoice_demo_nudge_dismissed_until_v1"
   };
 
-  const eur = new Intl.NumberFormat("de-DE", {
-    style: "currency",
-    currency: "EUR"
-  });
-
   const today = new Date().toISOString().slice(0, 10);
 
   const defaults = {
     company: {
       name: "Musterfirma Digital GmbH",
       address: "Demoallee 12\n50667 K\u00f6ln",
-      email: "rechnung@musterfirma.example",
+      email: "belege@musterfirma.example",
       phone: "+49 221 000000",
       web: "musterfirma.example",
       taxNumber: "123/4567/8901",
@@ -38,6 +33,7 @@
       salutation: "Sehr geehrte Frau Beispiel"
     },
     invoice: {
+      type: "invoice",
       number: "1001",
       date: today,
       serviceDate: today
@@ -45,7 +41,7 @@
     positions: [
       {
         title: "Automatisierungs-Workshop",
-        description: "Analyse der Rechnungs- und Dokumentenprozesse, inklusive Umsetzungsplan.",
+        description: "Analyse der Beleg- und Dokumentenprozesse, inklusive Umsetzungsplan.",
         qty: 1,
         price: 950
       },
@@ -81,6 +77,12 @@
     renderPositions();
     renderSavedInvoices();
     render();
+    document.addEventListener("kif:languagechange", () => {
+      renderCustomerSelect();
+      renderPositions();
+      renderSavedInvoices();
+      render();
+    });
   }
 
   function bindFields() {
@@ -120,7 +122,7 @@
     on("invoice-save-customer", "click", () => {
       const company = state.customer.company.trim();
       if (!company) {
-        setStatus("Bitte zuerst einen Firmennamen beim Kunden eintragen.", true);
+        setStatus(t("invoice_js_customer_required", "Bitte zuerst einen Firmennamen beim Kunden eintragen."), true);
         return;
       }
       const next = { ...state.customer };
@@ -131,7 +133,7 @@
       else customers.push(next);
       save(KEYS.customers, customers);
       renderCustomerSelect(company);
-      setStatus("Kunde wurde lokal in dieser Browser-Demo gespeichert.");
+      setStatus(t("invoice_js_customer_saved", "Kunde wurde lokal in dieser Browser-Demo gespeichert."));
     });
 
     on("invoice-next-number", "click", () => {
@@ -140,7 +142,7 @@
       setCounter(next + 1);
       syncInvoiceForm();
       render();
-      setStatus("Lokale Rechnungsnummer vergeben. Der Demo-Z\u00e4hler wurde erh\u00f6ht.");
+      setStatus(t("invoice_js_number_assigned", "Lokale Belegnummer vergeben. Der Demo-Z\u00e4hler wurde erh\u00f6ht."));
     });
 
     on("invoice-add-position", "click", () => {
@@ -388,6 +390,47 @@
     let startX = 0;
     let startLeft = 0;
     let startIndex = 0;
+    let startT = 0;
+
+    // Stage-mode drag: cards follow the pointer continuously. The transform
+    // formula below interpolates the same values the is-carousel-* classes
+    // use (78% / -76px / 15deg / 0.88 / opacity 0.72), so drag and rest
+    // states agree and the release settle has nothing to jump to.
+    const stageSpan = () => {
+      const active = cards[activeIndex] || cards[0];
+      return active ? Math.max(active.offsetWidth * 0.9, 1) : 1;
+    };
+
+    const stageProgress = () =>
+      Math.max(-1.15, Math.min(1.15, dragDelta / stageSpan()));
+
+    const applyStageDrag = (p) => {
+      cards.forEach((card, index) => {
+        const d = cardDistanceFromActive(index) + p;
+        const sign = d < 0 ? -1 : 1;
+        const within = Math.min(Math.abs(d), 1);
+        const beyond = Math.max(Math.abs(d) - 1, 0);
+        const tx = sign * (within * 78 + beyond * 26);
+        const ty = -5 * (1 - within);
+        const tz = -(within * 76 + Math.min(beyond, 1) * 64);
+        const rotY = -15 * sign * within;
+        const scale = 1 - 0.12 * within - 0.14 * Math.min(beyond, 1);
+        const opacity = Math.max(0, 1 - 0.28 * within - 1.2 * beyond);
+        card.style.transform =
+          `translateX(${tx}%) translateY(${ty}px) translateZ(${tz}px) ` +
+          `rotateY(${rotY}deg) scale(${scale})`;
+        card.style.opacity = String(opacity);
+        card.style.zIndex = String(Math.max(1, Math.round(5 - 2 * Math.min(Math.abs(d), 2))));
+      });
+    };
+
+    const clearStageDrag = () => {
+      cards.forEach((card) => {
+        card.style.transform = "";
+        card.style.opacity = "";
+        card.style.zIndex = "";
+      });
+    };
 
     rail.addEventListener("pointerdown", (event) => {
       if (event.pointerType === "touch" || isCoarsePointer()) return;
@@ -400,6 +443,7 @@
       startX = event.clientX;
       startLeft = rail.scrollLeft;
       startIndex = nearestIndex();
+      startT = performance.now();
     });
 
     rail.addEventListener("pointermove", (event) => {
@@ -415,11 +459,15 @@
           rail.setPointerCapture(pointerId);
         } catch (err) {}
       }
-      if (isStageMode()) return;
+      if (isStageMode()) {
+        applyStageDrag(stageProgress());
+        return;
+      }
       rail.scrollLeft = startLeft - dx;
     });
 
     const release = () => {
+      const wasDragging = dragging;
       down = false;
       dragging = false;
       if (pointerId != null) {
@@ -429,10 +477,31 @@
       }
       pointerId = null;
       rail.classList.remove("is-dragging");
-      if (moved) {
-        const dir = isStageMode() ? (dragDelta < 0 ? 1 : -1) : (rail.scrollLeft >= startLeft ? 1 : -1);
-        setTimeout(() => scrollToIndex(startIndex + dir), 60);
+      if (!moved) return;
+      if (isStageMode()) {
+        if (!wasDragging) return;
+        // Flip when the drag passed a quarter card or was a quick flick;
+        // otherwise settle back onto the card we started from.
+        const p = stageProgress();
+        const dt = Math.max(1, performance.now() - startT);
+        const velocity = dragDelta / dt;
+        let dir = 0;
+        if (Math.abs(p) > 0.22 || (Math.abs(velocity) > 0.45 && Math.abs(dragDelta) > 24)) {
+          dir = dragDelta < 0 ? 1 : -1;
+        }
+        activeIndex = normalizeIndex(startIndex + dir);
+        update();
+        // Classes now describe the target; drop the inline drag styles on
+        // the next frame so the 0.62s spring transition carries the cards
+        // from the dragged position into place.
+        requestAnimationFrame(() => {
+          void rail.offsetWidth;
+          clearStageDrag();
+        });
+        return;
       }
+      const dir = rail.scrollLeft >= startLeft ? 1 : -1;
+      setTimeout(() => scrollToIndex(startIndex + dir), 60);
     };
 
     rail.addEventListener("pointerup", release);
@@ -464,16 +533,25 @@
     const companyLines = splitLines(state.company.address);
     const customerLines = splitLines(state.customer.address);
     const number = state.invoice.number || String(getCounter());
+    const type = documentType();
+    const docName = documentTypeName(type);
 
-    text("invoice-preview-company-name", state.company.name || "Ihre Firma");
+    text("invoice-preview-company-name", state.company.name || t("invoice_js_company_fallback", "Ihre Firma"));
     text("invoice-preview-sender", [state.company.name, companyLines[0]].filter(Boolean).join(" | "));
-    text("invoice-preview-title", `Rechnung ${number}`);
-    text("invoice-preview-salutation", state.customer.salutation || "Guten Tag");
-    text("invoice-preview-total", eur.format(totals.gross));
-    text("invoice-total-net", eur.format(totals.net));
-    text("invoice-total-vat", eur.format(totals.vat));
-    text("invoice-total-gross", eur.format(totals.gross));
-    text("invoice-next-hint", `N\u00e4chste freie Demo-Nummer: ${getSuggestedNextNumber()}`);
+    text("invoice-preview-doc-type", docName);
+    text("invoice-preview-title", `${docName} ${number}`);
+    text("invoice-preview-salutation", state.customer.salutation || t("invoice_js_salutation_fallback", "Guten Tag"));
+    text("invoice-preview-intro", documentTypeText(type, "intro"));
+    text("invoice-payment-title", documentTypeText(type, "payment_title"));
+    text("invoice-payment-text", documentTypeText(type, "payment_text"));
+    text("invoice-preview-total", money(totals.gross));
+    text("invoice-total-net", money(totals.net));
+    text("invoice-total-vat", money(totals.vat));
+    text("invoice-total-gross", money(totals.gross));
+    text(
+      "invoice-next-hint",
+      t("invoice_js_next_hint", "N\u00e4chste freie Demo-Nummer: {number}").replace("{number}", getSuggestedNextNumber())
+    );
 
     const logo = document.getElementById("invoice-preview-logo");
     if (logo) {
@@ -494,17 +572,17 @@
     ]);
 
     renderDefinitionList("invoice-preview-meta", [
-      ["Rechnungsnr.", number],
-      ["Datum", formatDate(state.invoice.date)],
-      ["Leistung", formatDate(state.invoice.serviceDate)]
+      [t("invoice_js_invoice_no", "Belegnr."), number],
+      [t("invoice_label_date", "Datum"), formatDate(state.invoice.date)],
+      [t("invoice_js_service", "Leistung"), formatDate(state.invoice.serviceDate)]
     ]);
 
     renderDefinitionList("invoice-preview-payment", [
-      ["Kontoinhaber", state.company.name],
+      [t("invoice_js_account_holder", "Kontoinhaber"), state.company.name],
       ["IBAN", state.company.iban],
       ["BIC", state.company.bic],
       ["Bank", state.company.bank],
-      ["Verwendungszweck", `Rechnung ${number}`]
+      [t("invoice_js_payment_reference", "Verwendungszweck"), `${docName} ${number}`]
     ]);
 
     renderFooter(companyLines);
@@ -521,26 +599,26 @@
       row.className = "invoice-demo-position";
       row.innerHTML = `
         <div class="invoice-demo-position-head">
-          <strong>Position ${index + 1}</strong>
-          <button type="button" class="invoice-demo-icon-btn" aria-label="Position entfernen" data-remove-position="${index}">
+          <strong>${t("invoice_add_position", "Position")} ${index + 1}</strong>
+          <button type="button" class="invoice-demo-icon-btn" aria-label="${t("invoice_js_position_remove", "Position entfernen")}" data-remove-position="${index}">
             <i class="fas fa-trash" aria-hidden="true"></i>
           </button>
         </div>
         <label>
-          <span>Titel</span>
+          <span>${t("invoice_js_position_title", "Titel")}</span>
           <input type="text" data-position="${index}" data-field="title">
         </label>
         <label>
-          <span>Beschreibung</span>
+          <span>${t("invoice_table_description", "Beschreibung")}</span>
           <textarea rows="2" data-position="${index}" data-field="description"></textarea>
         </label>
         <div class="invoice-demo-grid two">
           <label>
-            <span>Menge</span>
+            <span>${t("invoice_table_qty", "Menge")}</span>
             <input type="number" min="0" step="0.25" data-position="${index}" data-field="qty">
           </label>
           <label>
-            <span>Einzelpreis netto</span>
+            <span>${t("invoice_table_unit", "Einzelpreis netto")}</span>
             <input type="number" min="0" step="0.01" data-position="${index}" data-field="price">
           </label>
         </div>
@@ -585,14 +663,14 @@
       appendCell(row, String(index + 1));
       const desc = document.createElement("td");
       const title = document.createElement("strong");
-      title.textContent = item.title || "Leistung";
+      title.textContent = item.title || t("invoice_js_line_default", "Leistung");
       const sub = document.createElement("span");
       sub.textContent = item.description || "";
       desc.append(title, sub);
       row.appendChild(desc);
       appendCell(row, formatQty(qty), "num");
-      appendCell(row, eur.format(price), "num");
-      appendCell(row, eur.format(qty * price), "num");
+      appendCell(row, money(price), "num");
+      appendCell(row, money(qty * price), "num");
       body.appendChild(row);
     });
   }
@@ -609,12 +687,15 @@
 
     const totals = computeTotals();
     const snapshot = JSON.parse(JSON.stringify(state));
-    const existing = invoices.findIndex((item) => item.number === state.invoice.number);
+    const existing = invoices.findIndex(
+      (item) => item.number === state.invoice.number && invoiceType(item) === documentType()
+    );
     const record = {
       id: existing >= 0 ? invoices[existing].id : `demo-${Date.now()}`,
+      type: documentType(),
       number: state.invoice.number,
       date: state.invoice.date,
-      customer: state.customer.company || "Ohne Kunde",
+      customer: state.customer.company || t("invoice_js_no_customer", "Ohne Kunde"),
       gross: totals.gross,
       state: snapshot
     };
@@ -624,7 +705,7 @@
     invoices = invoices.slice(0, 8);
     save(KEYS.invoices, invoices);
     renderSavedInvoices();
-    setStatus("Demo-Rechnung wurde lokal gespeichert.");
+    setStatus(t("invoice_js_invoice_saved", "Demo-Beleg wurde lokal gespeichert."));
   }
 
   function renderSavedInvoices() {
@@ -635,7 +716,7 @@
     if (!invoices.length) {
       const empty = document.createElement("p");
       empty.className = "invoice-demo-empty";
-      empty.textContent = "Noch keine lokal gespeicherten Demo-Belege.";
+      empty.textContent = t("invoice_js_saved_empty", "Noch keine lokal gespeicherten Demo-Belege.");
       list.appendChild(empty);
       return;
     }
@@ -645,20 +726,20 @@
       item.className = "invoice-demo-saved-item";
       const copy = document.createElement("div");
       const title = document.createElement("strong");
-      title.textContent = `Rechnung ${invoice.number}`;
+      title.textContent = `${documentTypeName(invoiceType(invoice))} ${invoice.number}`;
       const meta = document.createElement("span");
-      meta.textContent = `${invoice.customer} | ${formatDate(invoice.date)} | ${eur.format(invoice.gross)}`;
+      meta.textContent = `${invoice.customer} | ${formatDate(invoice.date)} | ${money(invoice.gross)}`;
       copy.append(title, meta);
       const button = document.createElement("button");
       button.type = "button";
       button.className = "invoice-demo-ghost-btn";
-      button.textContent = "Laden";
+      button.textContent = t("invoice_js_load", "Laden");
       button.addEventListener("click", () => {
         state = JSON.parse(JSON.stringify(invoice.state));
         syncForm();
         renderPositions();
         render();
-        setStatus("Lokaler Demo-Beleg geladen.");
+        setStatus(t("invoice_js_invoice_loaded", "Lokaler Demo-Beleg geladen."));
       });
       item.append(copy, button);
       list.appendChild(item);
@@ -668,15 +749,20 @@
   function openEmailModal() {
     const modal = document.getElementById("invoice-email-modal");
     const to = state.customer.email || "";
-    const subject = `Rechnung ${state.invoice.number || getCounter()}`;
+    const number = state.invoice.number || getCounter();
+    const type = documentType();
+    const docName = documentTypeName(type);
+    const subject = `${docName} ${number}`;
     const body = [
-      `${state.customer.salutation || "Guten Tag"},`,
+      `${state.customer.salutation || t("invoice_js_salutation_fallback", "Guten Tag")},`,
       "",
-      `hier ist der Entwurf f\u00fcr Rechnung ${state.invoice.number || getCounter()}.`,
-      `Gesamtbetrag: ${eur.format(computeTotals().gross)}`,
-      "Bitte h\u00e4ngen Sie die gedruckte PDF-Datei manuell an.",
+      t("invoice_js_email_body_line", "hier ist der Entwurf f\u00fcr {type} {number}.")
+        .replace("{type}", docName)
+        .replace("{number}", number),
+      t("invoice_js_email_total", "Gesamtbetrag: {total}").replace("{total}", money(computeTotals().gross)),
+      t("invoice_js_email_attach", "Bitte h\u00e4ngen Sie die gedruckte PDF-Datei manuell an."),
       "",
-      "Mit freundlichen Gr\u00fc\u00dfen",
+      t("invoice_js_email_signoff", "Mit freundlichen Gr\u00fc\u00dfen"),
       state.company.name || ""
     ].join("\n");
 
@@ -797,7 +883,7 @@
     const file = event.target.files && event.target.files[0];
     if (!file) return;
     if (file.size > 350000) {
-      setStatus("Logo bitte unter 350 KB halten, damit localStorage klein bleibt.", true);
+      setStatus(t("invoice_js_logo_too_large", "Logo bitte unter 350 KB halten, damit localStorage klein bleibt."), true);
       event.target.value = "";
       return;
     }
@@ -816,12 +902,12 @@
     select.innerHTML = "";
     const fresh = document.createElement("option");
     fresh.value = "";
-    fresh.textContent = "Neuer Demo-Kunde";
+    fresh.textContent = t("invoice_js_new_customer", "Neuer Demo-Kunde");
     select.appendChild(fresh);
     customers.forEach((customer, index) => {
       const option = document.createElement("option");
       option.value = String(index);
-      option.textContent = customer.company || `Kunde ${index + 1}`;
+      option.textContent = customer.company || t("invoice_js_customer_fallback", "Kunde {number}").replace("{number}", index + 1);
       if ((selectedCompany || state.customer.company) === customer.company) {
         option.selected = true;
       }
@@ -855,6 +941,7 @@
   }
 
   function syncInvoiceForm() {
+    documentType();
     document.querySelectorAll("[data-invoice]").forEach((input) => {
       input.value = state.invoice[input.dataset.invoice] || "";
     });
@@ -865,9 +952,15 @@
     if (!footer) return;
     footer.innerHTML = "";
     [
-      ["Firma", [state.company.name, ...addressLines, state.company.email, state.company.web]],
+      [t("invoice_js_footer_company", "Firma"), [state.company.name, ...addressLines, state.company.email, state.company.web]],
       ["Bank", [state.company.bank, `IBAN ${state.company.iban}`, `BIC ${state.company.bic}`]],
-      ["Steuer", [`Steuernummer ${state.company.taxNumber}`, `USt-IdNr. ${state.company.vatId}`]]
+      [
+        t("invoice_js_footer_tax", "Steuer"),
+        [
+          `${t("invoice_js_tax_number", "Steuernummer")} ${state.company.taxNumber}`,
+          `${t("invoice_js_vat_id", "USt-IdNr.")} ${state.company.vatId}`
+        ]
+      ]
     ].forEach(([heading, lines]) => {
       const block = document.createElement("div");
       const h = document.createElement("h3");
@@ -927,7 +1020,7 @@
     try {
       localStorage.setItem(key, JSON.stringify(data));
     } catch (err) {
-      setStatus("Browser-Speicher ist voll oder blockiert.", true);
+      setStatus(t("invoice_js_storage_full", "Browser-Speicher ist voll oder blockiert."), true);
     }
   }
 
@@ -967,6 +1060,59 @@
     status.classList.toggle("is-error", Boolean(isError));
   }
 
+  function documentType() {
+    const type = state.invoice.type;
+    if (type === "offer" || type === "reminder") return type;
+    state.invoice.type = "invoice";
+    return "invoice";
+  }
+
+  function invoiceType(invoice) {
+    const type = invoice && (invoice.type || invoice.state?.invoice?.type);
+    return type === "offer" || type === "reminder" ? type : "invoice";
+  }
+
+  function documentTypeName(type) {
+    return t(`invoice_doc_type_${type}`, t("invoice_doc_type_invoice", "Rechnung"));
+  }
+
+  function documentTypeText(type, suffix) {
+    const fallbackType = type === "offer" || type === "reminder" ? type : "invoice";
+    const fallback = {
+      intro: "vielen Dank f\u00fcr Ihr Vertrauen. Wir berechnen Ihnen folgende Leistungen:",
+      payment_title: "Zahlungshinweis",
+      payment_text: "Bitte \u00fcberweisen Sie den Gesamtbetrag innerhalb von 14 Tagen."
+    };
+    return t(`invoice_doc_${fallbackType}_${suffix}`, fallback[suffix] || "");
+  }
+
+  function currentLang() {
+    return document.documentElement.lang === "en" ? "en" : "de";
+  }
+
+  function locale() {
+    return currentLang() === "en" ? "en-US" : "de-DE";
+  }
+
+  function t(key, fallback) {
+    const lang = currentLang();
+    const value = typeof translations !== "undefined" &&
+      translations[lang] &&
+      translations[lang][key]
+      ? translations[lang][key]
+      : fallback;
+    const decoder = document.createElement("textarea");
+    decoder.innerHTML = value;
+    return decoder.value;
+  }
+
+  function money(value) {
+    return new Intl.NumberFormat(locale(), {
+      style: "currency",
+      currency: "EUR"
+    }).format(value || 0);
+  }
+
   function splitLines(value) {
     return String(value || "")
       .split(/\r?\n/)
@@ -979,11 +1125,11 @@
     const date = new Date(`${value}T00:00:00`);
     return Number.isNaN(date.getTime())
       ? value
-      : date.toLocaleDateString("de-DE");
+      : date.toLocaleDateString(locale());
   }
 
   function formatQty(value) {
-    return new Intl.NumberFormat("de-DE", { maximumFractionDigits: 2 }).format(value || 0);
+    return new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 }).format(value || 0);
   }
 
   function parseAmount(value) {

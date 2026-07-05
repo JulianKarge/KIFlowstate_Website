@@ -100,11 +100,12 @@
 
         <nav>
           <ul class="nav-links" id="main-nav">
-            <li><a href="#services" data-translate="nav_services">Leistungen</a></li>
+            <!-- Services section is temporarily disabled. -->
+            <!-- <li><a href="#services" data-translate="nav_services">Leistungen</a></li> -->
             <li><a href="#method" data-translate="nav_method">Methode</a></li>
             <li><a href="#appointment" data-translate="nav_appointment">Termin</a></li>
             <li><a href="#contact" data-translate="nav_contact">Kontakt</a></li>
-            <li><a href="rechnung-demo.html" class="nav-link-secondary" data-translate="nav_invoice_demo">Rechnungsdemo</a></li>
+            <li><a href="rechnung-demo.html" class="nav-link-secondary" data-translate="nav_invoice_demo">Belegdemo</a></li>
             <li><a href="ki-news.html" class="nav-link-secondary" data-translate="nav_kinews">KI-News</a></li>
             <li><a href="resources.html" class="nav-link-secondary" data-translate="nav_resources">Ressourcen</a></li>
           </ul>
@@ -197,97 +198,299 @@
 
     <!-- ABOUT section paused until founder/side-hustle approval is cleared. -->
 
-    <!-- ▸▸ SERVICES -------------------------------------------------------- -->
-    <section id="services" class="services reveal">
-      <div class="container">
-        <div class="services-head">
-          <p class="section-kicker" data-translate="services_kicker">Leistungen</p>
-          <h2 data-translate="services_title">Was Wir Tun</h2>
-          <p class="section-lead" data-translate="services_lead">
-            Wir bauen pragmatische Automationen, Auswertungen und eigene Tools, die direkt in Ihren Alltag passen.
-          </p>
+    <!-- ▸▸ BELEG FLOW STORY -------------------------------------------------- -->
+    <section class="flow-story" id="beleg-flow" aria-label="Vom Word-Chaos zum Beleg-Flow">
+      <div class="story-sticky">
+        <div class="story-copy">
+          <p class="story-eyebrow" data-translate="flow_story_kicker">Beleg-Flow f&uuml;r kleine Betriebe</p>
+          <div class="story-copy-stack">
+            <div class="story-copy-block story-copy-chaos">
+              <h2 data-translate="flow_story_chaos_title">Belege ohne Word-Chaos.</h2>
+              <p data-translate="flow_story_chaos_text">
+                Vorlage suchen, alte Rechnung kopieren, Nummer anpassen, PDF speichern, Mailtext bauen. Kleine Schritte, aber jeden Tag ein bisschen Reibung.
+              </p>
+            </div>
+            <div class="story-copy-block story-copy-flow">
+              <h2 data-translate="flow_story_flow_title">Aus losen Handgriffen wird ein klarer Ablauf.</h2>
+              <p data-translate="flow_story_flow_text">
+                Kundendaten, Positionen, Steuer, PDF und Gmail werden nicht gr&ouml;&szlig;er als n&ouml;tig. Sie liegen einfach in der richtigen Reihenfolge.
+              </p>
+            </div>
+          </div>
+          <div class="story-meter" aria-hidden="true">
+            <svg class="story-wave-track" viewBox="0 0 260 160" preserveAspectRatio="none" focusable="false">
+              <path d="M-10 50 C 42 18 72 82 124 50 S 204 18 270 50" />
+              <path d="M-10 84 C 42 52 72 116 124 84 S 204 52 270 84" />
+              <path d="M-10 118 C 42 86 72 150 124 118 S 204 86 270 118" />
+            </svg>
+            <div class="story-wave-fill-clip">
+              <svg class="story-wave-fill" viewBox="0 0 260 160" preserveAspectRatio="none" focusable="false">
+                <defs>
+                  <filter id="story-wave-glow" x="-24%" y="-80%" width="148%" height="260%" color-interpolation-filters="sRGB">
+                    <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#3369F2" flood-opacity="0.18" />
+                    <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#254EBF" flood-opacity="0.10" />
+                  </filter>
+                  <linearGradient id="story-wave-primary" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#3369F2" />
+                    <stop offset="56%" stop-color="#254EBF" />
+                    <stop offset="100%" stop-color="#3369F2" />
+                  </linearGradient>
+                  <linearGradient id="story-wave-deep" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#254EBF" />
+                    <stop offset="100%" stop-color="#3369F2" />
+                  </linearGradient>
+                  <linearGradient id="story-wave-light" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#8FB0FF" />
+                    <stop offset="100%" stop-color="#3369F2" />
+                  </linearGradient>
+                </defs>
+                <path class="story-wave-fill-path" filter="url(#story-wave-glow)" d="M-10 50 C 42 18 72 82 124 50 S 204 18 270 50" />
+                <path class="story-wave-fill-path" filter="url(#story-wave-glow)" d="M-10 84 C 42 52 72 116 124 84 S 204 52 270 84" />
+                <path class="story-wave-fill-path" filter="url(#story-wave-glow)" d="M-10 118 C 42 86 72 150 124 118 S 204 86 270 118" />
+              </svg>
+            </div>
+          </div>
+          <div class="story-demo-cta-wrap">
+            <a
+              class="story-demo-cta"
+              href="rechnung-demo.html"
+              data-translate-aria-label="flow_story_demo_cta_aria"
+              aria-label="Belegdemo im Browser ausprobieren"
+            >
+              <span data-translate="flow_story_demo_cta">Belegdemo ausprobieren</span>
+              <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+            <span class="story-demo-note" data-translate="flow_story_demo_note">2 Minuten im Browser, ohne Anmeldung.</span>
+          </div>
         </div>
 
-        <div class="service-grid">
-          <article class="service-card">
-            <div class="service-card-head">
-              <span class="service-icon-wrap">
-                <i class="fas fa-robot service-icon" aria-hidden="true"></i>
-              </span>
-              <h3 data-translate="service1_title">Prozessautomatisierung</h3>
-            </div>
-            <p data-translate="service1_text">
-              Von repetitiver Dateneingabe bis zu komplexen Workflows — wir
-              automatisieren die Routinearbeit, damit Ihr Team glänzen kann.
-            </p>
-            <p class="service-outcome" data-translate="service1_outcome">
-              Ergebnis: bis zu 70 % weniger manuelle Arbeit.
-            </p>
+        <div class="story-scene" aria-hidden="true">
+          <div class="story-orbit"></div>
+          <div class="story-flowline">
+            <i></i><i></i>
+          </div>
+
+          <article class="story-piece word-card card-word" data-from-x="-86" data-from-y="-38" data-from-rot="-18" data-mid-x="-18" data-mid-y="-12" data-mid-rot="-8" data-to-x="-35" data-to-y="-18" data-to-rot="-3" data-depth="90">
+            <small data-translate="flow_card_word_label">Word Vorlage</small>
+            <strong data-translate="flow_card_word_title">Rechnung_final.docx</strong>
+            <span></span><span></span><span></span>
+          </article>
+          <article class="story-piece word-card card-customer" data-from-x="92" data-from-y="-28" data-from-rot="16" data-mid-x="12" data-mid-y="-18" data-mid-rot="6" data-to-x="-35" data-to-y="15" data-to-rot="2" data-depth="120">
+            <small data-translate="flow_card_customer_label">Kunde</small>
+            <strong data-translate="flow_card_customer_title">Musterbetrieb GmbH</strong>
+            <span></span><span></span><span></span>
+          </article>
+          <article class="story-piece word-card card-number" data-from-x="-78" data-from-y="34" data-from-rot="12" data-mid-x="-6" data-mid-y="14" data-mid-rot="10" data-to-x="0" data-to-y="-20" data-to-rot="-1" data-depth="40">
+            <small data-translate="flow_card_number_label">Nummer</small>
+            <strong data-translate="flow_card_number_title">Welche RE kommt jetzt?</strong>
+            <span></span><span></span><span></span>
+          </article>
+          <article class="story-piece word-card card-pdf" data-from-x="80" data-from-y="38" data-from-rot="-14" data-mid-x="18" data-mid-y="12" data-mid-rot="-9" data-to-x="34" data-to-y="-18" data-to-rot="2" data-depth="70">
+            <small data-translate="flow_card_pdf_label">Export</small>
+            <strong data-translate="flow_card_pdf_title">PDF speichern</strong>
+            <span></span><span></span><span></span>
+          </article>
+          <article class="story-piece word-card card-mail" data-from-x="54" data-from-y="-74" data-from-rot="-20" data-mid-x="2" data-mid-y="-2" data-mid-rot="-2" data-to-x="34" data-to-y="15" data-to-rot="-3" data-depth="150">
+            <small data-translate="flow_card_mail_label">Gmail</small>
+            <strong data-translate="flow_card_mail_title">Text wieder tippen</strong>
+            <span></span><span></span><span></span>
+          </article>
+          <article class="story-piece word-card card-tax" data-from-x="-48" data-from-y="76" data-from-rot="18" data-mid-x="-24" data-mid-y="8" data-mid-rot="14" data-to-x="0" data-to-y="16" data-to-rot="1" data-depth="20">
+            <small data-translate="flow_card_tax_label">USt.</small>
+            <strong data-translate="flow_card_tax_title">19 Prozent?</strong>
+            <span></span><span></span><span></span>
           </article>
 
-          <article class="service-card service-card-featured">
-            <div class="service-card-head">
-              <span class="service-icon-wrap">
-                <i class="fas fa-screwdriver-wrench service-icon" aria-hidden="true"></i>
-              </span>
-              <h3 data-translate="service2_title">Custom Tools</h3>
+          <div class="story-hub">
+            <div class="hub-top">
+              <span data-translate="flow_hub_title">KIFlowstate Beleg-Flow</span>
+              <i></i><i></i><i></i>
             </div>
-            <p data-translate="service2_text">
-              Kleine, passgenaue Web-Tools für Aufgaben, die in Tabellen, E-Mails
-              oder Standardsoftware unnötig zäh sind.
-            </p>
-            <p class="service-outcome" data-translate="service2_outcome">
-              Beispiel: Rechnungstool mit Kundenakte, Vorschau und Mailversand.
-            </p>
-            <a class="service-card-link" href="rechnung-demo.html" data-translate="service2_cta">Demo ansehen</a>
-          </article>
-
-          <article class="service-card">
-            <div class="service-card-head">
-              <span class="service-icon-wrap">
-                <i class="fas fa-chart-line service-icon" aria-hidden="true"></i>
-              </span>
-              <h3 data-translate="service3_title">Einblicke & Analysen</h3>
+            <div class="hub-grid">
+              <div class="hub-panel">
+                <small data-translate="flow_hub_customer_label">01 Kunde</small>
+                <strong data-translate="flow_hub_customer_title">Musterbetrieb GmbH</strong>
+                <span data-translate="flow_hub_customer_text">Ansprechpartner, Adresse, Mail</span>
+              </div>
+              <div class="hub-panel active">
+                <small data-translate="flow_hub_doc_label">02 Beleg</small>
+                <strong data-translate="flow_hub_doc_title">Angebot AN-1001</strong>
+                <span data-translate="flow_hub_doc_text">Positionen, Steuer, Summe</span>
+              </div>
+              <div class="hub-panel">
+                <small data-translate="flow_hub_send_label">03 Versand</small>
+                <strong data-translate="flow_hub_send_title">PDF + Gmail</strong>
+                <span data-translate="flow_hub_send_text">Entwurf mit passenden Daten</span>
+              </div>
             </div>
-            <p data-translate="service3_text">
-              Verwandeln Sie Rohdaten mit benutzerdefinierten Dashboards und
-              prädiktiven Modellen in handlungsrelevante Erkenntnisse.
-            </p>
-            <p class="service-outcome" data-translate="service3_outcome">
-              Ergebnis: Entscheidungen, die auf Daten basieren – nicht auf Bauchgefühl.
-            </p>
-          </article>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- ▸▸ SERVICES -------------------------------------------------------- -->
+    <!-- Services section is temporarily disabled.
+    <section id="services" class="services services-liquid reveal" aria-labelledby="services-title">
+      <div class="services-edge-wave services-edge-wave-top" aria-hidden="true">
+        <svg viewBox="0 0 2400 86" preserveAspectRatio="none" focusable="false">
+          <path d="M0 34 C 160 82 300 -12 470 34 S 770 82 940 34 S 1240 -12 1410 34 S 1710 82 1880 34 S 2180 -12 2400 34 L 2400 0 L 0 0 Z" />
+          <path d="M0 54 C 160 98 300 6 470 54 S 770 98 940 54 S 1240 6 1410 54 S 1710 98 1880 54 S 2180 6 2400 54" />
+        </svg>
+      </div>
+      <div class="container services-liquid-inner">
+        <div class="services-head services-liquid-head">
+          <p class="section-kicker" data-translate="services_kicker">Leistungen</p>
+          <h2 id="services-title" data-translate="services_title">Was wir in Bewegung bringen</h2>
+          <p class="section-lead" data-translate="services_lead">
+            Wir klären den Bedarf, bauen die passende Umsetzung und bringen sie sauber in den Betrieb.
+          </p>
+        </div>
+
+        <div class="services-liquid-panel" data-translate-aria-label="services_grid_aria" aria-label="KIFlowstate Ablauf">
+          <svg class="services-liquid-wave" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="services-liquid-stroke" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#8db5ff" stop-opacity="0.26" />
+                <stop offset="35%" stop-color="#3369f2" stop-opacity="0.95" />
+                <stop offset="72%" stop-color="#254ebf" stop-opacity="0.88" />
+                <stop offset="100%" stop-color="#b7d9ff" stop-opacity="0.3" />
+              </linearGradient>
+              <linearGradient id="services-liquid-fill" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05" />
+                <stop offset="50%" stop-color="#dbeafe" stop-opacity="0.28" />
+                <stop offset="100%" stop-color="#eef4ff" stop-opacity="0.22" />
+              </linearGradient>
+              <clipPath id="services-liquid-progress-clip" clipPathUnits="userSpaceOnUse">
+                <rect class="services-liquid-progress-clip" x="-60" y="0" width="24" height="220" />
+              </clipPath>
+            </defs>
+            <g class="services-liquid-wave-fill">
+              <path d="M -60 130 C 40 70 110 188 210 128 S 380 70 500 128 S 700 190 820 128 S 1010 70 1120 130 L 1120 230 L -60 230 Z" />
+              <path d="M -60 138 C 40 78 110 196 210 136 S 380 78 500 136 S 700 198 820 136 S 1010 78 1120 138 L 1120 230 L -60 230 Z" />
+            </g>
+            <g class="services-liquid-wave-lines services-liquid-wave-base">
+              <path d="M -60 112 C 40 52 110 170 210 110 S 380 52 500 110 S 700 172 820 110 S 1010 52 1120 112" />
+              <path d="M -60 126 C 40 66 110 184 210 124 S 380 66 500 124 S 700 186 820 124 S 1010 66 1120 126" />
+              <path d="M -60 142 C 40 82 110 200 210 140 S 380 82 500 140 S 700 202 820 140 S 1010 82 1120 142" />
+            </g>
+            <g class="services-liquid-wave-lines services-liquid-wave-progress" clip-path="url(#services-liquid-progress-clip)">
+              <path d="M -60 112 C 40 52 110 170 210 110 S 380 52 500 110 S 700 172 820 110 S 1010 52 1120 112" />
+              <path d="M -60 126 C 40 66 110 184 210 124 S 380 66 500 124 S 700 186 820 124 S 1010 66 1120 126" />
+              <path d="M -60 142 C 40 82 110 200 210 140 S 380 82 500 140 S 700 202 820 140 S 1010 82 1120 142" />
+            </g>
+          </svg>
+
+          <div class="services-liquid-labels services-flow-stages">
+            <span>
+              <small>01</small>
+              <strong data-translate="service_flow_input">Bedarf</strong>
+            </span>
+            <span>
+              <small>02</small>
+              <strong data-translate="service_flow_middle">Umsetzung</strong>
+            </span>
+            <span>
+              <small>03</small>
+              <strong data-translate="service_flow_output">Betrieb</strong>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="services-edge-wave services-edge-wave-bottom" aria-hidden="true">
+        <svg viewBox="0 0 2400 86" preserveAspectRatio="none" focusable="false">
+          <path d="M0 52 C 160 4 300 98 470 52 S 770 4 940 52 S 1240 98 1410 52 S 1710 4 1880 52 S 2180 98 2400 52 L 2400 86 L 0 86 Z" />
+          <path d="M0 34 C 160 -10 300 82 470 34 S 770 -10 940 34 S 1240 82 1410 34 S 1710 -10 1880 34 S 2180 82 2400 34" />
+        </svg>
+      </div>
+    </section>
+    -->
+
     <!-- ▸▸ METHOD ---------------------------------------------------------- -->
-    <section id="method" class="method reveal" aria-labelledby="method-title">
-      <div class="container method-inner">
+    <section id="method" class="method method-scrolly reveal" aria-labelledby="method-title">
+      <div class="container method-inner method-scroll-inner">
         <div class="method-copy">
           <p class="section-kicker" data-translate="method_kicker">Unsere Methode</p>
           <h2 id="method-title" data-translate="method_title">Vom KI-Dschungel in den Flow</h2>
           <p class="section-lead" data-translate="method_lead">
-            Wir starten nicht mit Tool-Listen, sondern mit Ihren echten Abläufen. Daraus entsteht ein klarer Automationsplan, den wir Schritt für Schritt umsetzen und im Betrieb verankern.
+            Wir starten bei Ihren echten Abläufen. Dann sortieren wir Tools, Aufgaben und Daten so lange, bis ein umsetzbarer Flow entsteht.
           </p>
+          <div class="method-state-line" aria-hidden="true">
+            <span data-translate="method_state_from">Tool-Dschungel</span>
+            <i></i>
+            <strong data-translate="method_state_to">KI-Flow im Betrieb</strong>
+          </div>
+
+          <div class="method-step-list" data-translate-aria-label="method_steps_aria" aria-label="KIFlowstate Methode">
+            <article class="method-step" data-method-step="0">
+              <span class="method-number">01</span>
+              <div>
+                <h3 data-translate="method_step1_title">Abläufe sichtbar machen</h3>
+                <p data-translate="method_step1_text">Wir schauen gemeinsam auf Aufgaben, Medienbrüche und Stellen, an denen Ihr Team Zeit verliert.</p>
+              </div>
+            </article>
+            <article class="method-step" data-method-step="1">
+              <span class="method-number">02</span>
+              <div>
+                <h3 data-translate="method_step2_title">Hebel auswählen</h3>
+                <p data-translate="method_step2_text">Aus der Liste wird eine klare Priorität: die Automationen, die schnell entlasten und langfristig tragen.</p>
+              </div>
+            </article>
+            <article class="method-step" data-method-step="2">
+              <span class="method-number">03</span>
+              <div>
+                <h3 data-translate="method_step3_title">Flow bauen und verankern</h3>
+                <p data-translate="method_step3_text">Wir bauen, testen und dokumentieren den Workflow so, dass Ihr Team ihn souverän im Alltag nutzt.</p>
+              </div>
+            </article>
+          </div>
         </div>
 
-        <div class="method-steps" aria-label="KIFlowstate Methode">
-          <article class="method-step">
-            <span class="method-number">01</span>
-            <h3 data-translate="method_step1_title">Abläufe verstehen</h3>
-            <p data-translate="method_step1_text">Wir identifizieren die Aufgaben, die Zeit kosten, bremsen oder immer wieder manuell erledigt werden.</p>
-          </article>
-          <article class="method-step">
-            <span class="method-number">02</span>
-            <h3 data-translate="method_step2_title">Hebel priorisieren</h3>
-            <p data-translate="method_step2_text">Gemeinsam wählen wir die Automationen, die schnell spürbare Entlastung und Klarheit bringen.</p>
-          </article>
-          <article class="method-step">
-            <span class="method-number">03</span>
-            <h3 data-translate="method_step3_title">Flow aufbauen</h3>
-            <p data-translate="method_step3_text">Wir bauen, testen und dokumentieren die Workflows so, dass Ihr Team sie sicher im Alltag nutzen kann.</p>
-          </article>
+        <div class="method-flow-panel">
+          <div class="method-map" aria-hidden="true">
+            <div class="method-phase-labels">
+              <span class="method-phase-label method-phase-label-0" data-translate="method_phase_1">Abläufe erfassen</span>
+              <span class="method-phase-label method-phase-label-1" data-translate="method_phase_2">Hebel bündeln</span>
+              <span class="method-phase-label method-phase-label-2" data-translate="method_phase_3">Flow aktiv</span>
+            </div>
+
+            <div class="method-chaos-chip method-chip-mail" data-translate="method_chip_mail">E-Mail</div>
+            <div class="method-chaos-chip method-chip-excel" data-translate="method_chip_excel">Excel</div>
+            <div class="method-chaos-chip method-chip-word" data-translate="method_chip_word">Word</div>
+            <div class="method-chaos-chip method-chip-tool" data-translate="method_chip_tool">Tool-Liste</div>
+            <div class="method-chaos-chip method-chip-manual" data-translate="method_chip_manual">manuelle Aufgabe</div>
+
+            <svg class="method-flow-wave" viewBox="0 0 620 210" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M24 144 C122 48 214 190 310 104 C402 22 482 118 596 64"></path>
+              <path d="M24 156 C126 70 210 196 314 122 C406 56 486 144 596 92"></path>
+            </svg>
+
+            <div class="method-flow-core">
+              <span data-translate="method_core_label">KIFlowstate</span>
+              <strong data-translate="method_core_title">Ein Ablauf</strong>
+              <small data-translate="method_core_text">Klar, getestet, dokumentiert</small>
+            </div>
+
+            <div class="method-output method-output-data">
+              <span data-translate="method_output_1_label">01</span>
+              <strong data-translate="method_output_1_title">Daten</strong>
+            </div>
+            <div class="method-output method-output-docs">
+              <span data-translate="method_output_2_label">02</span>
+              <strong data-translate="method_output_2_title">Belege</strong>
+            </div>
+            <div class="method-output method-output-send">
+              <span data-translate="method_output_3_label">03</span>
+              <strong data-translate="method_output_3_title">Versand</strong>
+            </div>
+            <div class="method-output method-output-team">
+              <span data-translate="method_output_4_label">04</span>
+              <strong data-translate="method_output_4_title">Team</strong>
+            </div>
+
+            <div class="method-orbit method-orbit-1"></div>
+            <div class="method-orbit method-orbit-2"></div>
+            <div class="method-scanline"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -427,36 +630,64 @@
 
     <!-- ▸▸ APPOINTMENT ----------------------------------------------------- -->
     <section id="appointment" class="appointment reveal">
-      <div class="container">
-        <h2 data-translate="appointment_title">Termin Buchen</h2>
-        <p data-translate="appointment_text">
-          Wählen Sie einen passenden Zeitpunkt für ein 30‑minütiges
-          Strategiegespräch.
-        </p>
+      <div class="container appointment-inner">
+        <div class="appointment-head">
+          <p class="section-kicker" data-translate="appointment_kicker">Kostenloses Erstgespräch</p>
+          <h2 data-translate="appointment_title">Termin buchen</h2>
+          <p class="section-lead" data-translate="appointment_text">
+            Wählen Sie einen passenden Zeitpunkt für ein 15‑minütiges Strategiegespräch zu KI-Automation.
+          </p>
+        </div>
 
-        <div class="calendar-wrapper" id="calendar-wrapper">
-          <!-- Iframe is injected by JS only after cookie consent. -->
-          <div class="calendar-placeholder" id="calendar-placeholder">
-            <i class="fas fa-calendar-days" aria-hidden="true"></i>
-            <p data-translate="calendar_blocked">
-              Der Buchungskalender lädt von Google. Bitte stimmen Sie den Cookies zu, um ihn anzuzeigen.
-            </p>
-            <button type="button" class="cta-btn cta-btn-dark" id="calendar-allow" data-translate="calendar_allow_btn">
-              Cookies zulassen &amp; Kalender laden
-            </button>
+        <div class="appointment-booking" data-translate-aria-label="appointment_panel_aria" aria-label="Terminbuchung">
+          <div class="appointment-meta">
+            <div class="appointment-meta-item">
+              <span class="appointment-meta-icon" aria-hidden="true"><i class="fas fa-stopwatch"></i></span>
+              <span data-translate="appointment_meta_duration">15 Minuten Discovery Call</span>
+            </div>
+            <div class="appointment-meta-item">
+              <span class="appointment-meta-icon" aria-hidden="true"><i class="fas fa-diagram-project"></i></span>
+              <span data-translate="appointment_meta_focus">KI-Automation für Ihren Alltag</span>
+            </div>
+            <div class="appointment-meta-item">
+              <span class="appointment-meta-icon" aria-hidden="true"><i class="fas fa-video"></i></span>
+              <span data-translate="appointment_meta_meet">Google Meet nach Buchung</span>
+            </div>
+            <a
+              class="appointment-open"
+              href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span data-translate="appointment_open_calendar">Kalender in neuem Tab öffnen</span>
+              <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            </a>
           </div>
-          <template id="calendar-template">
-            <iframe
-              class="calendar-embed"
-              src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy?gv=true"
-              style="border: 0"
-              width="100%"
-              height="600"
-              frameborder="0"
-              loading="lazy"
-              title="KIFlowstate Online Booking Calendar"
-            ></iframe>
-          </template>
+
+          <div class="calendar-wrapper" id="calendar-wrapper">
+            <!-- Iframe is injected by JS only after cookie consent. -->
+            <div class="calendar-placeholder" id="calendar-placeholder">
+              <i class="fas fa-calendar-days" aria-hidden="true"></i>
+              <p data-translate="calendar_blocked">
+                Der Buchungskalender lädt von Google. Bitte stimmen Sie den Cookies zu, um ihn anzuzeigen.
+              </p>
+              <button type="button" class="cta-btn cta-btn-dark" id="calendar-allow" data-translate="calendar_allow_btn">
+                Cookies zulassen &amp; Kalender laden
+              </button>
+            </div>
+            <template id="calendar-template">
+              <iframe
+                class="calendar-embed"
+                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy?gv=true"
+                style="border: 0"
+                width="100%"
+                height="800"
+                frameborder="0"
+                loading="lazy"
+                title="KIFlowstate Online Booking Calendar"
+              ></iframe>
+            </template>
+          </div>
         </div>
       </div>
     </section>
