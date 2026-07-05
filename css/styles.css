@@ -828,6 +828,62 @@ section:not(.hero) .container {
   border-color: var(--primary);
 }
 
+/* Phone booking card: Google's booking page works best full screen on
+   mobile, so below 720px we swap the cramped iframe for a direct CTA. */
+.appointment-mobile-book {
+  display: none;
+  padding: 1.5rem 1.25rem 1.35rem;
+  border: 1px solid rgba(51, 105, 242, 0.2);
+  border-radius: 8px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(51, 105, 242, 0.06), rgba(255, 255, 255, 0.4)),
+    #fff;
+}
+
+.appointment-mobile-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+  color: #fff;
+  font-size: 1.2rem;
+  box-shadow: 0 12px 28px rgba(51, 105, 242, 0.28);
+}
+
+.appointment-mobile-book p {
+  max-width: 30ch;
+  margin: 0.85rem auto 1.1rem;
+  color: var(--gray-500);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.appointment-mobile-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  min-height: 50px;
+  padding: 0.85rem 1.2rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 14px 30px rgba(51, 105, 242, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.appointment-mobile-cta:hover,
+.appointment-mobile-cta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(51, 105, 242, 0.36);
+}
+
 .calendar-wrapper {
   height: 757px;
   margin-top: 0;
@@ -876,21 +932,26 @@ section:not(.hero) .container {
   }
 }
 
+@media (max-width: 720px) {
+  .appointment-mobile-book {
+    display: block;
+  }
+
+  .calendar-wrapper,
+  .appointment-open {
+    display: none;
+  }
+}
+
 @media (max-width: 600px) {
   .appointment-booking {
     margin-inline: 0;
     padding: 0.65rem;
   }
 
-  .appointment-meta-item,
-  .appointment-open {
+  .appointment-meta-item {
     font-size: 0.84rem;
     padding: 0.5rem 0.6rem;
-  }
-
-  .calendar-wrapper,
-  .calendar-embed {
-    height: 720px;
   }
 }
 
@@ -3055,6 +3116,13 @@ section:not(.hero) .container {
   background: #fff;
   border-color: rgba(255, 255, 255, 0.16);
   box-shadow: 0 18px 48px rgb(0 0 0 / 0.5);
+}
+[data-theme="dark"] .appointment-mobile-book {
+  background: linear-gradient(180deg, rgba(51, 105, 242, 0.14), rgba(15, 24, 48, 0.6)), #131c33;
+  border-color: #2a3b63;
+}
+[data-theme="dark"] .appointment-mobile-book p {
+  color: #cbd5e1;
 }
 [data-theme="dark"] .calendar-placeholder {
   background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
@@ -7722,7 +7790,28 @@ body.invoice-demo-modal-open {
 
 .hub-top span {
   margin-right: auto;
+  min-width: 0;
   color: var(--story-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hub-scenario-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.6rem;
+  padding: 0.28rem 0.58rem;
+  border: 1px solid rgba(51, 105, 242, 0.18);
+  border-radius: 999px;
+  background: rgba(51, 105, 242, 0.08);
+  color: var(--story-blue-dark);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
 .hub-top i {
@@ -7768,6 +7857,11 @@ body.invoice-demo-modal-open {
   font-size: 14px;
 }
 
+.hub-panel strong,
+.hub-panel span {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
 .hub-panel.active {
   color: white;
   background: linear-gradient(160deg, rgba(51, 105, 242, 0.96), rgba(37, 78, 191, 0.98));
@@ -7776,6 +7870,24 @@ body.invoice-demo-modal-open {
 .hub-panel.active small,
 .hub-panel.active span {
   color: rgba(255, 255, 255, 0.82);
+}
+
+.story-hub.is-typewriting [data-flow-scenario-label]::after,
+.story-hub.is-typewriting [data-flow-scenario-doc-title]::after,
+.story-hub.is-typewriting [data-flow-scenario-doc-text]::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin-left: 0.18em;
+  border-radius: 999px;
+  background: currentColor;
+  vertical-align: -0.12em;
+  animation: hubTypingCaret 620ms steps(2, end) infinite;
+}
+
+@keyframes hubTypingCaret {
+  50% { opacity: 0; }
 }
 
 [data-theme="dark"] .flow-story {
@@ -7824,6 +7936,12 @@ body.invoice-demo-modal-open {
 
 [data-theme="dark"] .hub-top span {
   color: #fff;
+}
+
+[data-theme="dark"] .hub-scenario-badge {
+  background: rgba(143, 176, 255, 0.14);
+  border-color: rgba(143, 176, 255, 0.28);
+  color: #dbe8ff;
 }
 
 [data-theme="dark"] .story-demo-note {
@@ -8760,6 +8878,13 @@ body.invoice-demo-modal-open {
 .method-scrolly .method-chip-tool { left: 31%; top: 77%; }
 .method-scrolly .method-chip-manual { left: 7%; top: 48%; }
 
+/* Scattered chips sit slightly askew until the flow tidies them up. */
+.method-scrolly[data-method-phase="0"] .method-chip-mail { transform: rotate(-5deg); }
+.method-scrolly[data-method-phase="0"] .method-chip-excel { transform: rotate(4deg); }
+.method-scrolly[data-method-phase="0"] .method-chip-word { transform: rotate(-3deg); }
+.method-scrolly[data-method-phase="0"] .method-chip-tool { transform: rotate(6deg); }
+.method-scrolly[data-method-phase="0"] .method-chip-manual { transform: rotate(-7deg); }
+
 .method-scrolly[data-method-phase="1"] .method-chip-mail,
 .method-scrolly[data-method-phase="2"] .method-chip-mail { left: 7%; top: 28%; }
 .method-scrolly[data-method-phase="1"] .method-chip-excel,
@@ -8771,74 +8896,143 @@ body.invoice-demo-modal-open {
 .method-scrolly[data-method-phase="1"] .method-chip-manual,
 .method-scrolly[data-method-phase="2"] .method-chip-manual { left: 7%; top: 84%; }
 
+/* Chips glide into their sorted column one after another, like a current
+   picking them up. */
+.method-scrolly .method-chip-mail { transition-delay: 0s; }
+.method-scrolly .method-chip-excel { transition-delay: 0.07s; }
+.method-scrolly .method-chip-manual { transition-delay: 0.14s; }
+.method-scrolly .method-chip-word { transition-delay: 0.21s; }
+.method-scrolly .method-chip-tool { transition-delay: 0.28s; }
+
 .method-scrolly[data-method-phase="2"] .method-chaos-chip {
   opacity: 0.38;
   transform: scale(0.92);
 }
 
 .method-scrolly .method-flow-wave {
-  inset: 6.1rem 2rem 5.3rem;
+  /* Explicit width/height (not just inset): an <svg> with auto size keeps
+     its viewBox aspect ratio and never stretches, which would pin the wave
+     to the top third of the map. */
+  --method-wave-top: 6.1rem;
+  --method-wave-x: 2rem;
+  --method-wave-bottom: 5.3rem;
+  inset: auto;
+  top: var(--method-wave-top);
+  left: var(--method-wave-x);
+  width: calc(100% - var(--method-wave-x) * 2);
+  height: calc(100% - var(--method-wave-top) - var(--method-wave-bottom));
   filter: drop-shadow(0 12px 24px rgba(51, 105, 242, 0.16));
 }
 
 .method-scrolly .method-flow-wave path {
+  --method-wave-in: clamp(0, calc((var(--method-progress) - 0.10) / 0.05), 1);
   stroke-dasharray: var(--method-path-length, 1000);
   stroke-dashoffset: var(--method-path-offset, 1000);
+  opacity: var(--method-wave-in);
   animation: none;
   transition: stroke-dashoffset 0.08s linear;
 }
 
+.method-scrolly .method-flow-wave path.method-flow-echo {
+  opacity: calc(var(--method-wave-in) * 0.32);
+}
+
+/* Moving current on top of the drawn wave: appears once the flow is live. */
+.method-scrolly .method-flow-wave path.method-flow-current {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 2;
+  stroke-dasharray: 4 30;
+  stroke-dashoffset: 0;
+  opacity: calc(clamp(0, calc((var(--method-progress) - 0.86) / 0.1), 1) * 0.9);
+  animation: methodCurrentDrift 1.9s linear infinite;
+  transition: none;
+}
+
+@keyframes methodCurrentDrift {
+  to { stroke-dashoffset: -68; }
+}
+
 .method-scrolly .method-flow-core {
+  --method-core-in: clamp(0, calc((var(--method-progress) - 0.78) / 0.1), 1);
   right: 5.5%;
   width: min(230px, 38%);
-  transform: translateY(-50%) scale(calc(0.92 + var(--method-progress) * 0.08));
+  opacity: calc(0.12 + var(--method-core-in) * 0.88);
+  transform: translateY(calc(-50% + (1 - var(--method-core-in)) * 20px))
+    scale(calc(0.94 + var(--method-core-in) * 0.06));
   box-shadow: 0 28px 70px rgb(51 105 242 / 0.34);
 }
 
-.method-scrolly[data-method-phase="0"] .method-flow-core {
-  opacity: 0.72;
-}
-
-.method-output {
+/* Waypoints: stations on the wave, revealed as the line draws past them.
+   left/top are set by JS from the actual rendered path. */
+.method-waypoint {
+  --method-wp-in: clamp(0, calc((var(--method-progress) - var(--method-wp-t, 0.4)) / 0.08), 1);
   position: absolute;
   z-index: 4;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.45rem;
-  align-items: center;
-  min-height: 2.1rem;
-  padding: 0.38rem 0.65rem;
-  border: 1px solid rgba(51, 105, 242, 0.28);
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  opacity: var(--method-wp-in);
+}
+
+.method-waypoint-1 { --method-wp-t: 0.38; }
+.method-waypoint-2 { --method-wp-t: 0.54; }
+.method-waypoint-3 { --method-wp-t: 0.70; }
+
+.method-waypoint-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  transform: translate(-50%, -50%) scale(calc(0.4 + var(--method-wp-in) * 0.6));
+  background: #fff;
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 0 5px rgba(51, 105, 242, 0.14), 0 8px 18px rgba(51, 105, 242, 0.28);
+}
+
+.method-waypoint-label {
+  position: absolute;
+  left: 0;
+  bottom: 1rem;
+  padding: 0.45rem 0.7rem;
+  transform: translateX(-50%) translateY(calc((1 - var(--method-wp-in)) * 10px));
+  text-align: center;
+  white-space: nowrap;
+  border: 1px solid rgba(51, 105, 242, 0.22);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 30px rgb(15 23 42 / 0.10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.method-waypoint-2 .method-waypoint-label {
+  bottom: auto;
+  top: 1rem;
+  transform: translateX(-50%) translateY(calc((var(--method-wp-in) - 1) * -10px));
+}
+
+.method-waypoint-3 .method-waypoint-label {
+  bottom: 2.8rem;
+  transform: translateX(-82%) translateY(calc((1 - var(--method-wp-in)) * 10px));
+}
+
+.method-waypoint-label strong {
+  display: block;
   color: var(--primary-dark);
-  font-size: 0.84rem;
-  font-weight: 800;
-  opacity: 0;
-  transform: translateY(12px) scale(0.94);
-  box-shadow: 0 14px 30px rgb(15 23 42 / 0.08);
-  transition: opacity 0.35s cubic-bezier(0.2, 0, 0, 1),
-    transform 0.35s cubic-bezier(0.2, 0, 0, 1);
+  font-size: 0.88rem;
+  line-height: 1.2;
 }
 
-.method-output span {
-  color: var(--accent);
-  font-size: 0.74rem;
-}
-
-.method-output-data { right: 38%; top: 18%; }
-.method-output-docs { right: 39%; bottom: 20%; }
-.method-output-send { right: 5%; top: 28%; }
-.method-output-team { right: 6%; bottom: 25%; }
-
-.method-scrolly[data-method-phase="1"] .method-output {
-  opacity: 0.34;
-  transform: translateY(4px) scale(0.96);
-}
-
-.method-scrolly[data-method-phase="2"] .method-output {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+.method-waypoint-label small {
+  display: block;
+  margin-top: 0.1rem;
+  color: var(--gray-500);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .method-orbit {
@@ -8906,11 +9100,21 @@ body.invoice-demo-modal-open {
     opacity: 1;
     transform: none;
   }
+
+  /* Static final state below 900px: the map shows the finished flow. */
+  .method-scrolly .method-map {
+    min-height: 420px;
+    transform: none;
+  }
+
+  .method-phase-label {
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 600px) {
   .method-scrolly .method-map {
-    min-height: 430px;
+    min-height: 360px;
   }
 
   .method-phase-labels {
@@ -8919,25 +9123,36 @@ body.invoice-demo-modal-open {
   }
 
   .method-scrolly .method-flow-wave {
-    inset: 5.4rem 0.85rem 7.7rem;
+    --method-wave-top: 4.6rem;
+    --method-wave-x: 0.9rem;
+    --method-wave-bottom: 8.6rem;
   }
 
   .method-scrolly .method-flow-core {
+    top: auto;
     right: 1rem;
     bottom: 1rem;
     width: calc(100% - 2rem);
     transform: none;
   }
 
-  .method-output {
+  /* The copy above tells the jungle story; the small map only shows the
+     result. Chips would just clutter a 360px canvas. */
+  .method-scrolly .method-chaos-chip {
     display: none;
   }
 
-  .method-scrolly .method-chip-mail { left: 1rem; top: 4.6rem; }
-  .method-scrolly .method-chip-excel { left: 8rem; top: 7.9rem; }
-  .method-scrolly .method-chip-word { left: 1.3rem; top: 11.1rem; }
-  .method-scrolly .method-chip-tool { left: 10rem; top: 14rem; }
-  .method-scrolly .method-chip-manual { left: 1rem; top: 16.8rem; }
+  .method-waypoint-label {
+    padding: 0.34rem 0.55rem;
+  }
+
+  .method-waypoint-label strong {
+    font-size: 0.78rem;
+  }
+
+  .method-waypoint-label small {
+    display: none;
+  }
 
   .method-orbit,
   .method-scanline {
@@ -8950,12 +9165,15 @@ body.invoice-demo-modal-open {
   .method-scrolly .method-step,
   .method-scrolly .method-step p,
   .method-scrolly .method-chaos-chip,
-  .method-output,
   .method-phase-label,
   .method-scanline,
   .method-orbit {
     transition: none;
     transform: none;
+  }
+
+  .method-scrolly .method-flow-wave path.method-flow-current {
+    animation: none;
   }
 }
 
@@ -8972,10 +9190,24 @@ body.invoice-demo-modal-open {
 }
 
 [data-theme="dark"] .method-phase-label,
-[data-theme="dark"] .method-output {
+[data-theme="dark"] .method-waypoint-label {
   background: rgba(15, 24, 48, 0.86);
   border-color: #2a3b63;
   color: #e6ebf5;
+}
+
+[data-theme="dark"] .method-waypoint-label strong {
+  color: #dbe8ff;
+}
+
+[data-theme="dark"] .method-waypoint-label small {
+  color: #93a4c4;
+}
+
+[data-theme="dark"] .method-waypoint-dot {
+  background: #0f1830;
+  border-color: #9fc1ff;
+  box-shadow: 0 0 0 5px rgba(159, 193, 255, 0.16), 0 8px 18px rgb(0 0 0 / 0.4);
 }
 
 /* Services liquid wave scroll */
@@ -9430,8 +9662,28 @@ body.invoice-demo-modal-open {
     line-height: 1.25;
   }
 
+  .story-eyebrow::before {
+    width: 0.5rem;
+    height: 0.5rem;
+    box-shadow: 0 0 0 5px rgba(51, 105, 242, 0.1);
+  }
+
+  /* On phones both copy blocks stack, so give them a clear hierarchy:
+     the hook stays big, the payoff line reads as a follow-up. */
   .story-copy-flow {
-    margin-top: 1.65rem;
+    margin-top: 1.9rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid rgba(51, 105, 242, 0.16);
+  }
+
+  .story-copy-flow::before {
+    content: "";
+    display: block;
+    width: 46px;
+    height: 4px;
+    margin-bottom: 0.9rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--story-blue, #3369f2), rgba(51, 105, 242, 0.25));
   }
 
   .story-copy-block h2 {
@@ -9439,10 +9691,20 @@ body.invoice-demo-modal-open {
     line-height: 1.08;
   }
 
+  .story-copy-flow h2 {
+    font-size: 1.35rem;
+    line-height: 1.25;
+    color: var(--story-blue-dark, #254ebf);
+  }
+
   .story-copy-block p {
     margin-top: 0.8rem;
     font-size: 1rem;
     line-height: 1.55;
+  }
+
+  .story-copy-flow p {
+    font-size: 0.95rem;
   }
 
   .story-demo-cta-wrap {

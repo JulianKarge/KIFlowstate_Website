@@ -202,9 +202,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const hub = flowStory.querySelector(".story-hub");
     const waveFillPaths = Array.from(flowStory.querySelectorAll(".story-wave-fill-path"));
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const scenarioKeys = ["invoice", "reminder", "cancellation", "confirmation"];
+    const scenarioEls = {
+      label: flowStory.querySelector("[data-flow-scenario-label]"),
+      docTitle: flowStory.querySelector("[data-flow-scenario-doc-title]"),
+      docText: flowStory.querySelector("[data-flow-scenario-doc-text]")
+    };
     let storyRaf = 0;
     let storyCtaVisible = false;
     let storyCtaHasShown = false;
+    let scenarioIndex = 0;
+    let scenarioTimer = 0;
+    let scenarioAnimating = false;
+    let scenarioTypingTimers = [];
 
     const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
     const ease = (value) => {
@@ -215,6 +225,104 @@ document.addEventListener("DOMContentLoaded", () => {
     const dataNumber = (el, name) => Number(el.dataset[name] || 0);
     const ctaShowProgress = 0.82;
     const ctaHideProgress = 0.46;
+
+    const storyLang = () => document.documentElement.lang === "en" ? "en" : "de";
+    const decodeScenarioText = (value) => {
+      const textarea = document.createElement("textarea");
+      textarea.innerHTML = value;
+      return textarea.value;
+    };
+    const scenarioCopy = (scenario, field) => {
+      const key = field ? `flow_scenario_${scenario}_${field}` : `flow_scenario_${scenario}`;
+      const value = typeof translations !== "undefined" ? translations[storyLang()]?.[key] || "" : "";
+      return decodeScenarioText(value);
+    };
+    const scenarioTargets = (scenario) => [
+      { el: scenarioEls.label, key: `flow_scenario_${scenario}`, text: scenarioCopy(scenario, "") },
+      { el: scenarioEls.docTitle, key: `flow_scenario_${scenario}_doc_title`, text: scenarioCopy(scenario, "doc_title") },
+      { el: scenarioEls.docText, key: `flow_scenario_${scenario}_doc_text`, text: scenarioCopy(scenario, "doc_text") }
+    ].filter((target) => target.el);
+    const clearScenarioTimers = () => {
+      scenarioTypingTimers.forEach((timer) => window.clearTimeout(timer));
+      scenarioTypingTimers = [];
+    };
+    const typeDelay = (callback, delay) => {
+      const timer = window.setTimeout(() => {
+        scenarioTypingTimers = scenarioTypingTimers.filter((item) => item !== timer);
+        callback();
+      }, delay);
+      scenarioTypingTimers.push(timer);
+    };
+    const writeScenario = (scenario) => {
+      flowStory.dataset.flowScenario = scenario;
+      scenarioTargets(scenario).forEach(({ el, key, text }) => {
+        el.setAttribute("data-translate", key);
+        el.textContent = text;
+      });
+    };
+    const typeScenario = (scenario) => {
+      if (!hub) return;
+      clearScenarioTimers();
+      scenarioAnimating = true;
+      hub.classList.add("is-typewriting");
+
+      const targets = scenarioTargets(scenario).map((target) => ({
+        ...target,
+        from: target.el.textContent || ""
+      }));
+      const longestFrom = Math.max(...targets.map((target) => target.from.length), 0);
+      const longestTo = Math.max(...targets.map((target) => target.text.length), 0);
+      const eraseStepMs = 9;
+      const typeStepMs = 18;
+
+      for (let step = longestFrom; step >= 0; step -= 1) {
+        typeDelay(() => {
+          targets.forEach(({ el, from }) => {
+            el.textContent = from.slice(0, Math.min(step, from.length));
+          });
+        }, (longestFrom - step) * eraseStepMs);
+      }
+
+      const typeStart = longestFrom * eraseStepMs + 80;
+      typeDelay(() => {
+        flowStory.dataset.flowScenario = scenario;
+        targets.forEach(({ el, key }) => el.setAttribute("data-translate", key));
+      }, typeStart - 8);
+
+      for (let step = 0; step <= longestTo; step += 1) {
+        typeDelay(() => {
+          targets.forEach(({ el, text }) => {
+            el.textContent = text.slice(0, Math.min(step, text.length));
+          });
+        }, typeStart + step * typeStepMs);
+      }
+
+      typeDelay(() => {
+        writeScenario(scenario);
+        hub.classList.remove("is-typewriting");
+        scenarioAnimating = false;
+      }, typeStart + longestTo * typeStepMs + 120);
+    };
+    const setScenario = (index, animate = false) => {
+      scenarioIndex = (index + scenarioKeys.length) % scenarioKeys.length;
+      const scenario = scenarioKeys[scenarioIndex];
+      if (!animate || reduceMotion.matches || !hub || scenarioAnimating) {
+        writeScenario(scenario);
+        return;
+      }
+      typeScenario(scenario);
+    };
+    const startScenarioLoop = () => {
+      if (scenarioTimer || reduceMotion.matches) return;
+      scenarioTimer = window.setInterval(() => {
+        if (!document.hidden) setScenario(scenarioIndex + 1, true);
+      }, 4100);
+    };
+    const stopScenarioLoop = () => {
+      if (!scenarioTimer) return;
+      window.clearInterval(scenarioTimer);
+      scenarioTimer = 0;
+    };
 
     const updateWaveDraw = (progress) => {
       waveFillPaths.forEach((path) => {
@@ -313,10 +421,26 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", requestStoryUpdate, { passive: true });
     window.addEventListener("resize", requestStoryUpdate);
     if (reduceMotion.addEventListener) {
-      reduceMotion.addEventListener("change", requestStoryUpdate);
+      reduceMotion.addEventListener("change", () => {
+        if (reduceMotion.matches) stopScenarioLoop();
+        else startScenarioLoop();
+        requestStoryUpdate();
+      });
     } else if (reduceMotion.addListener) {
-      reduceMotion.addListener(requestStoryUpdate);
+      reduceMotion.addListener(() => {
+        if (reduceMotion.matches) stopScenarioLoop();
+        else startScenarioLoop();
+        requestStoryUpdate();
+      });
     }
+    document.addEventListener("kif:languagechange", () => {
+      clearScenarioTimers();
+      scenarioAnimating = false;
+      hub?.classList.remove("is-typewriting");
+      writeScenario(scenarioKeys[scenarioIndex]);
+    });
+    writeScenario(scenarioKeys[scenarioIndex]);
+    startScenarioLoop();
     updateStory();
   }
 
@@ -324,7 +448,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const methodStory = document.querySelector(".method-scrolly");
   if (methodStory) {
     const methodSteps = Array.from(methodStory.querySelectorAll("[data-method-step]"));
-    const methodPaths = Array.from(methodStory.querySelectorAll(".method-flow-wave path"));
+    const methodPaths = Array.from(
+      methodStory.querySelectorAll(".method-flow-wave path:not(.method-flow-current)")
+    );
     const methodReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let methodRaf = 0;
 
@@ -343,9 +469,38 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     };
 
+    /* Pin the waypoint stations onto the rendered wave. The SVG stretches
+       with preserveAspectRatio="none", so we project path points through
+       the actual viewBox-to-pixel scale instead of hardcoding positions. */
+    const methodMap = methodStory.querySelector(".method-map");
+    const methodMainPath = methodStory.querySelector(".method-flow-main");
+    const methodWaypoints = [
+      { el: methodStory.querySelector(".method-waypoint-1"), t: 0.32 },
+      { el: methodStory.querySelector(".method-waypoint-2"), t: 0.54 },
+      { el: methodStory.querySelector(".method-waypoint-3"), t: 0.7 },
+    ].filter((wp) => wp.el);
+
+    const positionMethodWaypoints = () => {
+      if (!methodMap || !methodMainPath) return;
+      const svg = methodMainPath.ownerSVGElement;
+      const svgRect = svg.getBoundingClientRect();
+      const mapRect = methodMap.getBoundingClientRect();
+      if (!svgRect.width || !mapRect.width) return;
+      const viewBox = svg.viewBox.baseVal;
+      const total = methodMainPath.getTotalLength();
+
+      methodWaypoints.forEach(({ el, t }) => {
+        const point = methodMainPath.getPointAtLength(total * t);
+        const x = svgRect.left - mapRect.left + (point.x / viewBox.width) * svgRect.width;
+        const y = svgRect.top - mapRect.top + (point.y / viewBox.height) * svgRect.height;
+        el.style.left = `${((x / mapRect.width) * 100).toFixed(2)}%`;
+        el.style.top = `${((y / mapRect.height) * 100).toFixed(2)}%`;
+      });
+    };
+
     const updateMethodStory = () => {
       methodRaf = 0;
-      const staticScene = methodReduceMotion.matches || window.innerWidth <= 720;
+      const staticScene = methodReduceMotion.matches || window.innerWidth <= 900;
       const total = Math.max(1, methodStory.offsetHeight - window.innerHeight);
       const progress = staticScene ? 1 : clampMethod(-methodStory.getBoundingClientRect().top / total);
       const phase = progress < 0.36 ? 0 : progress < 0.72 ? 1 : 2;
@@ -364,12 +519,17 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     window.addEventListener("scroll", requestMethodUpdate, { passive: true });
-    window.addEventListener("resize", requestMethodUpdate);
+    window.addEventListener("resize", () => {
+      positionMethodWaypoints();
+      requestMethodUpdate();
+    });
     if (methodReduceMotion.addEventListener) {
       methodReduceMotion.addEventListener("change", requestMethodUpdate);
     } else if (methodReduceMotion.addListener) {
       methodReduceMotion.addListener(requestMethodUpdate);
     }
+    window.addEventListener("load", positionMethodWaypoints);
+    positionMethodWaypoints();
     updateMethodStory();
   }
 
