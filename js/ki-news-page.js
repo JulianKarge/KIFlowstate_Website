@@ -1,7 +1,7 @@
 /* ============================================================
- * KIFlowstate – KI-News full page (horizontal card stage)
+ * KIFlowstate – KI-News full page
  * ------------------------------------------------------------
- *  Day rail  = horizontal, drag-to-swipe row of day cards.
+ *  Day archive = wrapping grid of all published days.
  *  Item rail = horizontal, drag-to-swipe gallery of news posts
  *              for the selected day.
  *
@@ -15,6 +15,7 @@
   const railEl = document.getElementById("ki-day-list");
   const emptyEl = document.getElementById("ki-day-list-empty");
   const contentEl = document.getElementById("ki-news-content");
+  const railHintEl = document.querySelector(".ki-rail-hint");
   if (!railEl || !contentEl) return;
 
   const t = KINews.t;
@@ -42,11 +43,19 @@
     return n < 10 ? "0" + n : "" + n;
   }
 
-  /* ── day rail ────────────────────────────────────────────── */
+  function updateDayArchiveHint() {
+    if (!railHintEl) return;
+    const count = days.length;
+    railHintEl.textContent =
+      KINews.lang() === "en" ? count + " days visible" : count + " Tage sichtbar";
+  }
+
+  /* ── day archive ─────────────────────────────────────────── */
   function renderDayRail() {
     if (!days.length) {
       railEl.innerHTML = "";
       if (emptyEl) emptyEl.hidden = false;
+      updateDayArchiveHint();
       return;
     }
     if (emptyEl) emptyEl.hidden = true;
@@ -82,19 +91,7 @@
       })
       .join("");
 
-    KINews.enableDragScroll(railEl);
-    KINews.bindRailEdges(
-      document.querySelector('.ki-rail-wrap[data-rail="days"]'),
-      railEl
-    );
-    scrollActiveDayIntoView();
-  }
-
-  function scrollActiveDayIntoView() {
-    const card = railEl.querySelector(".ki-day-card.is-active");
-    if (!card) return;
-    const target = card.offsetLeft - railEl.clientWidth / 2 + card.clientWidth / 2;
-    railEl.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+    updateDayArchiveHint();
   }
 
   /* ── content: language note, hero, item rail ─────────────── */

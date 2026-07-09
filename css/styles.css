@@ -4567,8 +4567,8 @@ section:not(.hero) .container {
 }
 
 /* ============================================================
-   KI-NEWS — horizontal card stage (full page redesign)
-   Day rail + item rail are drag-to-swipe horizontal scrollers.
+   KI-NEWS — full page archive
+   Day archive is a wrapping grid; item rail remains a drag scroller.
    ============================================================ */
 .kinews-main { overflow-x: hidden; }
 .kinews-stage {
@@ -4592,7 +4592,7 @@ section:not(.hero) .container {
   color: var(--gray-500);
 }
 .ki-rail-hint::before {
-  content: "\f25a"; /* fa hand-pointer */
+  content: "\f073"; /* fa calendar */
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
   color: var(--primary);
@@ -4619,7 +4619,6 @@ section:not(.hero) .container {
 .ki-rail-wrap.can-scroll-left::before { opacity: 1; }
 .ki-rail-wrap.can-scroll-right::after { opacity: 1; }
 
-.ki-day-rail,
 .ki-items-rail {
   display: flex;
   gap: 1rem;
@@ -4636,13 +4635,11 @@ section:not(.hero) .container {
   overscroll-behavior-x: contain;
   touch-action: pan-y;
 }
-.ki-day-rail.is-dragging,
 .ki-items-rail.is-dragging {
   cursor: grabbing;
   scroll-snap-type: none;
   user-select: none;
 }
-.ki-day-rail::-webkit-scrollbar,
 .ki-items-rail::-webkit-scrollbar {
   display: none;
 }
@@ -4694,20 +4691,33 @@ section:not(.hero) .container {
 }
 
 /* ── day cards ────────────────────────────────────────────── */
-/* Extra bottom room so the active card's glow isn't clipped by the
-   rail's overflow:hidden (which made it look like a hard-edged box). */
-.ki-day-rail { padding-block: 0.7rem 1.9rem; }
+.ki-rail-wrap[data-rail="days"]::before,
+.ki-rail-wrap[data-rail="days"]::after,
+.ki-rail-wrap[data-rail="days"] .ki-rail-arrow {
+  display: none;
+}
+
+.ki-day-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 172px), 1fr));
+  gap: 1rem;
+  overflow-x: visible;
+  overflow-y: visible;
+  scroll-snap-type: none;
+  list-style: none;
+  margin: 0;
+  padding: 0.7rem 0 1.9rem;
+  cursor: default;
+}
 
 .ki-day-rail > li {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  min-width: 0;
 }
 
 .ki-day-card {
   position: relative;
-  flex: 0 0 auto;
-  width: 172px;
+  width: 100%;
+  min-height: 124px;
   display: flex;
   flex-direction: column;
   gap: 0.12rem;
