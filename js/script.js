@@ -477,7 +477,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const methodWaypoints = [
       { el: methodStory.querySelector(".method-waypoint-1"), t: 0.32 },
       { el: methodStory.querySelector(".method-waypoint-2"), t: 0.54 },
-      { el: methodStory.querySelector(".method-waypoint-3"), t: 0.7 },
+      { el: methodStory.querySelector(".method-waypoint-3"), t: 0.72 },
     ].filter((wp) => wp.el);
 
     const positionMethodWaypoints = () => {

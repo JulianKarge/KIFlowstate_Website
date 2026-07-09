@@ -7636,28 +7636,33 @@ body.invoice-demo-modal-open {
 
 .story-scene {
   position: relative;
+  isolation: isolate;
   min-height: min(72svh, 690px);
   transform-style: preserve-3d;
 }
 
 .story-orbit {
   position: absolute;
+  z-index: 0;
   inset: 10% 5%;
+  pointer-events: none;
   border: 1px solid rgba(51, 105, 242, 0.18);
   border-radius: 48%;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.18)),
+    radial-gradient(closest-side at 50% 50%, rgba(51, 105, 242, 0.04), transparent 72%),
     repeating-linear-gradient(90deg, transparent 0 42px, rgba(51, 105, 242, 0.05) 42px 43px);
-  transform: rotateX(62deg) rotateZ(-10deg);
+  transform: translateZ(-220px) rotateX(62deg) rotateZ(-10deg);
   box-shadow: inset 0 0 70px rgba(51, 105, 242, 0.09);
   opacity: 0.9;
 }
 
 .story-flowline {
   position: absolute;
+  z-index: 1;
   left: 17%;
   right: 17%;
   top: 50%;
+  pointer-events: none;
   height: 2px;
   opacity: var(--flow-reveal);
   transform: translateY(-50%) scaleX(var(--flow-reveal));
@@ -7919,7 +7924,7 @@ body.invoice-demo-modal-open {
 [data-theme="dark"] .story-orbit {
   border-color: rgba(143, 176, 255, 0.22);
   background:
-    linear-gradient(135deg, rgba(19, 28, 51, 0.78), rgba(19, 28, 51, 0.2)),
+    radial-gradient(closest-side at 50% 50%, rgba(143, 176, 255, 0.055), transparent 72%),
     repeating-linear-gradient(90deg, transparent 0 42px, rgba(143, 176, 255, 0.07) 42px 43px);
 }
 
@@ -8733,7 +8738,7 @@ body.invoice-demo-modal-open {
 .method-step-list {
   position: relative;
   display: grid;
-  gap: 0.45rem;
+  gap: 0.32rem;
   margin-top: clamp(1.25rem, 3vh, 2rem);
 }
 
@@ -8751,9 +8756,9 @@ body.invoice-demo-modal-open {
   position: relative;
   display: grid;
   grid-template-columns: 2.45rem minmax(0, 1fr);
-  gap: 0.85rem;
+  gap: 0.78rem;
   align-items: start;
-  padding: 0.7rem 0 0.7rem 0.1rem;
+  padding: 0.6rem 0 0.6rem 0.1rem;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -8772,7 +8777,7 @@ body.invoice-demo-modal-open {
 
 .method-scrolly .method-step.is-active {
   opacity: 1;
-  transform: translateX(7px);
+  transform: translateX(5px);
 }
 
 .method-scrolly .method-number {
@@ -8791,6 +8796,7 @@ body.invoice-demo-modal-open {
   margin: 0;
   overflow: hidden;
   opacity: 0;
+  line-height: 1.46;
   transform: translateY(-4px);
   transition: max-height 0.34s cubic-bezier(0.2, 0, 0, 1),
     opacity 0.28s cubic-bezier(0.2, 0, 0, 1),
@@ -8798,8 +8804,8 @@ body.invoice-demo-modal-open {
 }
 
 .method-scrolly .method-step.is-active p {
-  max-height: 7rem;
-  margin-top: 0.38rem;
+  max-height: 6.4rem;
+  margin-top: 0.24rem;
   opacity: 1;
   transform: translateY(0);
 }
@@ -8896,15 +8902,15 @@ body.invoice-demo-modal-open {
 .method-scrolly[data-method-phase="0"] .method-chip-manual { transform: rotate(-7deg); }
 
 .method-scrolly[data-method-phase="1"] .method-chip-mail,
-.method-scrolly[data-method-phase="2"] .method-chip-mail { left: 7%; top: 28%; }
+.method-scrolly[data-method-phase="2"] .method-chip-mail { left: 8%; top: 26%; }
 .method-scrolly[data-method-phase="1"] .method-chip-excel,
-.method-scrolly[data-method-phase="2"] .method-chip-excel { left: 7%; top: 42%; }
+.method-scrolly[data-method-phase="2"] .method-chip-excel { left: 8%; top: 40%; }
 .method-scrolly[data-method-phase="1"] .method-chip-word,
-.method-scrolly[data-method-phase="2"] .method-chip-word { left: 7%; top: 56%; }
+.method-scrolly[data-method-phase="2"] .method-chip-word { left: 8%; top: 54%; }
 .method-scrolly[data-method-phase="1"] .method-chip-tool,
-.method-scrolly[data-method-phase="2"] .method-chip-tool { left: 7%; top: 70%; }
+.method-scrolly[data-method-phase="2"] .method-chip-tool { left: 8%; top: 68%; }
 .method-scrolly[data-method-phase="1"] .method-chip-manual,
-.method-scrolly[data-method-phase="2"] .method-chip-manual { left: 7%; top: 84%; }
+.method-scrolly[data-method-phase="2"] .method-chip-manual { left: 8%; top: 82%; }
 
 /* Chips glide into their sorted column one after another, like a current
    picking them up. */
@@ -8915,8 +8921,8 @@ body.invoice-demo-modal-open {
 .method-scrolly .method-chip-tool { transition-delay: 0.28s; }
 
 .method-scrolly[data-method-phase="2"] .method-chaos-chip {
-  opacity: 0.38;
-  transform: scale(0.92);
+  opacity: 0.28;
+  transform: scale(0.9);
 }
 
 .method-scrolly .method-flow-wave {
@@ -9006,6 +9012,7 @@ body.invoice-demo-modal-open {
   position: absolute;
   left: 0;
   bottom: 1rem;
+  min-width: 8.4rem;
   padding: 0.45rem 0.7rem;
   transform: translateX(-50%) translateY(calc((1 - var(--method-wp-in)) * 10px));
   text-align: center;
@@ -9025,8 +9032,8 @@ body.invoice-demo-modal-open {
 }
 
 .method-waypoint-3 .method-waypoint-label {
-  bottom: 2.8rem;
-  transform: translateX(-82%) translateY(calc((1 - var(--method-wp-in)) * 10px));
+  bottom: 1.15rem;
+  transform: translateX(-90%) translateY(calc((1 - var(--method-wp-in)) * 10px));
 }
 
 .method-waypoint-label strong {
@@ -9934,22 +9941,48 @@ body.invoice-demo-modal-open {
   }
 
   .method-scrolly .method-map {
-    min-height: 295px;
+    display: grid;
+    gap: 0.65rem;
+    min-height: auto;
     margin-top: 0.35rem;
+    padding: 0.85rem;
+    overflow: hidden;
     box-shadow: var(--shadow-sm);
     transform: none;
   }
 
+  .method-scrolly .method-map::before {
+    inset: 0.55rem;
+    pointer-events: none;
+  }
+
+  .method-scrolly .method-map::after {
+    display: none;
+  }
+
   .method-phase-labels {
-    left: 0.9rem;
-    top: 0.9rem;
+    position: relative;
+    z-index: 3;
+    left: auto;
+    top: auto;
     min-width: 0;
+    min-height: 0;
+    margin-bottom: 0.1rem;
   }
 
   .method-phase-label {
-    min-height: 1.95rem;
+    display: none;
+    position: static;
+    min-height: 1.9rem;
     padding: 0.25rem 0.55rem;
     font-size: 0.78rem;
+    box-shadow: 0 8px 18px rgba(51, 105, 242, 0.08);
+  }
+
+  .method-scrolly[data-method-phase="0"] .method-phase-label-0,
+  .method-scrolly[data-method-phase="1"] .method-phase-label-1,
+  .method-scrolly[data-method-phase="2"] .method-phase-label-2 {
+    display: inline-flex;
   }
 
   .method-scrolly .method-chaos-chip {
@@ -9957,22 +9990,105 @@ body.invoice-demo-modal-open {
   }
 
   .method-scrolly .method-flow-wave {
-    inset: 4.7rem 0.9rem 6.2rem;
-    opacity: 0.85;
+    display: none;
+  }
+
+  .method-waypoint,
+  .method-waypoint-1,
+  .method-waypoint-2,
+  .method-waypoint-3 {
+    position: relative !important;
+    z-index: 3;
+    left: auto !important;
+    top: auto !important;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    height: auto;
+    min-height: 3.35rem;
+    padding: 0.65rem 0.75rem;
+    opacity: 1;
+    border: 1px solid rgba(51, 105, 242, 0.13);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+  }
+
+  .method-waypoint::before {
+    content: "";
+    position: absolute;
+    left: 1.08rem;
+    top: calc(50% + 0.55rem);
+    bottom: -1.2rem;
+    width: 2px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(51, 105, 242, 0.28), rgba(51, 105, 242, 0));
+  }
+
+  .method-waypoint-3::before {
+    display: none;
+  }
+
+  [data-theme="dark"] .method-waypoint {
+    border-color: #2a3b63;
+    background: rgba(15, 24, 48, 0.72);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  }
+
+  .method-waypoint-dot {
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 0 0 0.86rem;
+    width: 0.86rem;
+    height: 0.86rem;
+    transform: none;
+    border-width: 2px;
+    box-shadow: 0 0 0 4px rgba(51, 105, 242, 0.12);
+  }
+
+  .method-waypoint-label,
+  .method-waypoint-2 .method-waypoint-label,
+  .method-waypoint-3 .method-waypoint-label {
+    position: static;
+    min-width: 0;
+    padding: 0;
+    transform: none;
+    text-align: left;
+    white-space: normal;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .method-waypoint-label strong {
+    font-size: 0.9rem;
+  }
+
+  .method-waypoint-label small {
+    display: block;
+    margin-top: 0.05rem;
+    font-size: 0.72rem;
   }
 
   .method-scrolly .method-flow-core {
-    left: 0.9rem;
-    right: 0.9rem;
-    bottom: 0.9rem;
+    position: relative;
+    z-index: 3;
+    inset: auto;
     width: auto;
-    padding: 0.9rem;
-    text-align: center;
+    margin-top: 0.1rem;
+    padding: 0.95rem;
+    text-align: left;
     transform: none;
+    opacity: 1;
+    box-shadow: 0 16px 34px rgba(51, 105, 242, 0.24);
   }
 
   .method-flow-core strong {
-    font-size: 1.25rem;
+    font-size: 1.12rem;
   }
 
   .integrations {
