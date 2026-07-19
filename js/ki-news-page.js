@@ -1,7 +1,7 @@
 /* ============================================================
  * KIFlowstate – KI-News full page
  * ------------------------------------------------------------
- *  Day archive = wrapping grid of all published days.
+ *  Day archive = wrapping grid on desktop, horizontal touch rail on mobile.
  *  Item rail = horizontal, drag-to-swipe gallery of news posts
  *              for the selected day.
  *
@@ -46,8 +46,12 @@
   function updateDayArchiveHint() {
     if (!railHintEl) return;
     const count = days.length;
-    railHintEl.textContent =
-      KINews.lang() === "en" ? count + " days visible" : count + " Tage sichtbar";
+    const isMobile = window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
+    railHintEl.textContent = isMobile
+      ? t("kinews_drag_hint", "Swipe for more days")
+      : KINews.lang() === "en"
+        ? count + " days visible"
+        : count + " Tage sichtbar";
   }
 
   /* ── day archive ─────────────────────────────────────────── */
@@ -332,6 +336,8 @@
     if (activeDate && dayCache[activeDate]) renderDay(dayCache[activeDate]);
     else if (!activeDate) emptyPanel();
   });
+
+  window.addEventListener("resize", updateDayArchiveHint);
 
   function dayExists(date) {
     return days.some((d) => d.date === date);

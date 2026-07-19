@@ -26,16 +26,10 @@ assert.doesNotMatch(
   /index\.days\s*\|\|\s*\[\]\)\.slice|slice\s*\(\s*0\s*,\s*(?:2|3|7|14)\s*\)/,
   "Full-page renderer must not truncate the day archive"
 );
-assert.doesNotMatch(
-  pageJs,
-  /enableDragScroll\(railEl\)|bindRailEdges\(\s*document\.querySelector\('\.ki-rail-wrap\[data-rail="days"\]'\)/,
-  "Day archive must not be wired as a horizontal drag rail"
-);
-
 assert.match(
   css,
   /\.ki-day-rail\s*\{[\s\S]*?display:\s*grid;/,
-  "Day archive must render as a wrapping grid"
+  "Day archive must render as a wrapping grid on larger screens"
 );
 assert.match(
   css,
@@ -44,13 +38,18 @@ assert.match(
 );
 assert.match(
   css,
-  /\.ki-day-rail\s*\{[\s\S]*?overflow-x:\s*visible;/,
-  "Day archive must not hide days behind horizontal overflow"
+  /\.ki-day-rail\s*>\s*li\s*\{[\s\S]*?min-width:\s*0;/,
+  "Day archive items must fit their columns"
 );
 assert.match(
   css,
-  /\.ki-day-rail\s*>\s*li\s*\{[\s\S]*?min-width:\s*0;/,
-  "Day archive grid items must fit their columns"
+  /@media\s*\(max-width:\s*760px\)[\s\S]*?\.ki-day-rail\s*\{[\s\S]*?display:\s*flex;[\s\S]*?overflow-x:\s*auto;/,
+  "Day archive must become a horizontal scroll rail on mobile"
+);
+assert.match(
+  css,
+  /@media\s*\(max-width:\s*760px\)[\s\S]*?\.ki-day-rail\s*>\s*li\s*\{[\s\S]*?flex:\s*0\s*0\s*clamp\(/,
+  "Mobile day cards must keep a fixed readable width"
 );
 
-console.log(`KI-News archive verified: ${index.days.length} days render as a full wrapping archive.`);
+console.log(`KI-News archive verified: ${index.days.length} days render as a desktop grid and mobile scroll rail.`);

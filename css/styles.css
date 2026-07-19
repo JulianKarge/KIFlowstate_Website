@@ -4568,7 +4568,8 @@ section:not(.hero) .container {
 
 /* ============================================================
    KI-NEWS — full page archive
-   Day archive is a wrapping grid; item rail remains a drag scroller.
+   Day archive is a wrapping grid on larger screens and a horizontal
+   touch rail on mobile; item rail remains a drag scroller.
    ============================================================ */
 .kinews-main { overflow-x: hidden; }
 .kinews-stage {
@@ -4712,6 +4713,46 @@ section:not(.hero) .container {
 
 .ki-day-rail > li {
   min-width: 0;
+}
+
+/* On phones, keep the day selector compact and discoverable. Cards stay wide
+   enough to read at a glance while the next card peeks in as a scroll cue. */
+@media (max-width: 760px) {
+  .ki-rail-wrap[data-rail="days"]::before,
+  .ki-rail-wrap[data-rail="days"]::after {
+    display: block;
+  }
+
+  .ki-day-rail {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    cursor: grab;
+    padding: 0.7rem 0.35rem 1.5rem;
+  }
+
+  .ki-day-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ki-day-rail.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .ki-day-rail > li {
+    flex: 0 0 clamp(158px, 46vw, 190px);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
 }
 
 .ki-day-card {
