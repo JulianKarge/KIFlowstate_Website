@@ -1,7 +1,7 @@
 /* ============================================================
  * KIFlowstate – KI-News full page
  * ------------------------------------------------------------
- *  Day archive = wrapping grid on desktop, horizontal touch rail on mobile.
+ *  Day archive = horizontal scroll rail at every viewport size.
  *  Item rail = horizontal, drag-to-swipe gallery of news posts
  *              for the selected day.
  *
@@ -45,13 +45,7 @@
 
   function updateDayArchiveHint() {
     if (!railHintEl) return;
-    const count = days.length;
-    const isMobile = window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
-    railHintEl.textContent = isMobile
-      ? t("kinews_drag_hint", "Swipe for more days")
-      : KINews.lang() === "en"
-        ? count + " days visible"
-        : count + " Tage sichtbar";
+    railHintEl.textContent = t("kinews_drag_hint", "Scroll for more days");
   }
 
   /* ── day archive ─────────────────────────────────────────── */
@@ -323,8 +317,12 @@
     if (date && date !== activeDate) selectDay(date, true);
   });
 
-  // Day-rail arrows (static in the HTML).
-  wireArrows(document.querySelector('.ki-rail-wrap[data-rail="days"]'), railEl);
+  // Day-rail controls work on desktop and mobile. Touch devices use native
+  // horizontal scrolling; desktop pointers also get click-drag support.
+  const dayRailWrap = document.querySelector('.ki-rail-wrap[data-rail="days"]');
+  KINews.enableDragScroll(railEl);
+  KINews.bindRailEdges(dayRailWrap, railEl);
+  wireArrows(dayRailWrap, railEl);
 
   window.addEventListener("hashchange", function () {
     const date = location.hash.replace(/^#/, "");

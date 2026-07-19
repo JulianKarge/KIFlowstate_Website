@@ -4568,8 +4568,8 @@ section:not(.hero) .container {
 
 /* ============================================================
    KI-NEWS — full page archive
-   Day archive is a wrapping grid on larger screens and a horizontal
-   touch rail on mobile; item rail remains a drag scroller.
+   Day archive is a horizontal scroll rail at every viewport size; item rail
+   remains a drag scroller.
    ============================================================ */
 .kinews-main { overflow-x: hidden; }
 .kinews-stage {
@@ -4593,7 +4593,7 @@ section:not(.hero) .container {
   color: var(--gray-500);
 }
 .ki-rail-hint::before {
-  content: "\f073"; /* fa calendar */
+  content: "\f337"; /* fa arrows-left-right */
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
   color: var(--primary);
@@ -4611,6 +4611,7 @@ section:not(.hero) .container {
   z-index: 2;
   pointer-events: none;
   opacity: 0;
+  display: block;
   transition: opacity 0.25s ease;
 }
 .ki-rail-wrap::before { left: 0; background: linear-gradient(90deg, var(--gray-100), transparent); }
@@ -4692,59 +4693,40 @@ section:not(.hero) .container {
 }
 
 /* ── day cards ────────────────────────────────────────────── */
-.ki-rail-wrap[data-rail="days"]::before,
-.ki-rail-wrap[data-rail="days"]::after,
-.ki-rail-wrap[data-rail="days"] .ki-rail-arrow {
-  display: none;
-}
-
 .ki-day-rail {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 172px), 1fr));
+  display: flex;
   gap: 1rem;
-  overflow-x: visible;
-  overflow-y: visible;
-  scroll-snap-type: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
   list-style: none;
   margin: 0;
-  padding: 0.7rem 0 1.9rem;
-  cursor: default;
+  padding: 0.7rem 0.35rem 1.9rem;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+}
+.ki-day-rail::-webkit-scrollbar { display: none; }
+.ki-day-rail.is-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .ki-day-rail > li {
+  flex: 0 0 clamp(172px, 18vw, 208px);
   min-width: 0;
+  scroll-snap-align: start;
 }
 
 /* On phones, keep the day selector compact and discoverable. Cards stay wide
    enough to read at a glance while the next card peeks in as a scroll cue. */
 @media (max-width: 760px) {
-  .ki-rail-wrap[data-rail="days"]::before,
-  .ki-rail-wrap[data-rail="days"]::after {
-    display: block;
-  }
-
   .ki-day-rail {
-    display: flex;
     gap: 0.75rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
-    touch-action: pan-x pan-y;
-    cursor: grab;
     padding: 0.7rem 0.35rem 1.5rem;
-  }
-
-  .ki-day-rail::-webkit-scrollbar {
-    display: none;
-  }
-
-  .ki-day-rail.is-dragging {
-    cursor: grabbing;
-    user-select: none;
   }
 
   .ki-day-rail > li {
