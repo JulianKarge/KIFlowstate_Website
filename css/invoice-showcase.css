@@ -995,6 +995,10 @@
 
 .showcase-wave-transition.is-closing svg {
   bottom: -4%;
+  left: 0;
+  width: 100%;
+  transform: scaleX(1.18);
+  transform-origin: center bottom;
 }
 
 .showcase-wave-transition.is-closing > span {
