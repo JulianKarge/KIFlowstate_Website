@@ -18,10 +18,10 @@
     <script data-goatcounter="https://kiflowstate.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
     <meta
       name="description"
-      content="KIFlowstate Belegdemo: eine sichere Browser-Sandbox fuer Rechnungen, Angebote, Mahnungen, Kunden und Belegvorschau."
+      content="KIFlowstate Rechnungs-Showcase: vom E-Mail-Eingang ueber den geprueften Rechnungsentwurf bis zum vorbereiteten Gmail-Versand."
       data-translate="invoice_demo_meta_description"
     />
-    <title data-translate="invoice_demo_title">Belegdemo | KIFlowstate</title>
+    <title data-translate="invoice_demo_title">Rechnungs-Showcase | KIFlowstate</title>
 
     <link rel="icon" href="images/kilogo.png" type="image/png" />
     <link rel="apple-touch-icon" href="images/kilogo.png" />
@@ -42,12 +42,13 @@
     />
 
     <link rel="stylesheet" href="css/vendor/swiper-bundle.min.css?v=mobile-swiper-2" />
-    <link rel="stylesheet" href="css/styles.css?v=invoice-print-4" />
+    <link rel="stylesheet" href="css/styles.css?v=showcase-film-1" />
+    <link rel="stylesheet" href="css/invoice-showcase.css?v=showcase-film-1" />
     <script defer src="js/translations.js"></script>
     <script defer src="js/script.js"></script>
     <script defer src="js/vendor/swiper-bundle.min.js?v=mobile-swiper-2"></script>
     <script defer src="js/mobile-card-swipers.js?v=mobile-swiper-2"></script>
-    <script defer src="js/invoice-demo.js?v=mobile-swiper-2"></script>
+    <script defer src="js/invoice-showcase.js?v=showcase-film-1"></script>
   </head>
 
   <body>
@@ -63,15 +64,15 @@
             <li><a href="index.html#method" data-translate="nav_method">Methode</a></li>
             <li><a href="index.html#appointment" data-translate="nav_appointment">Termin</a></li>
             <li><a href="index.html#contact" data-translate="nav_contact">Kontakt</a></li>
-            <li><a href="rechnung-demo.html" class="nav-link-secondary" data-translate="nav_invoice_demo" aria-current="page">Belegdemo</a></li>
+            <li><a href="rechnung-demo.html" class="nav-link-secondary" data-translate="nav_invoice_demo" aria-current="page">Rechnungs-Showcase</a></li>
             <li><a href="ki-news.html" class="nav-link-secondary" data-translate="nav_kinews">KI-News</a></li>
             <li><a href="resources.html" class="nav-link-secondary" data-translate="nav_resources">Ressourcen</a></li>
           </ul>
         </nav>
 
         <div class="lang-switcher">
-          <button id="lang-de" class="lang-btn active">DE</button>
-          <button id="lang-en" class="lang-btn">EN</button>
+          <button id="lang-de" class="lang-btn active" type="button" aria-label="Deutsch" aria-pressed="true">DE</button>
+          <button id="lang-en" class="lang-btn" type="button" aria-label="English" aria-pressed="false">EN</button>
         </div>
 
         <button
@@ -79,7 +80,7 @@
           class="theme-toggle"
           aria-label="Dunkles Design aktivieren"
           aria-pressed="false"
-          title="Theme wechseln"
+          title="Design wechseln"
         >
           <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
           <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
@@ -88,7 +89,8 @@
         <button
           class="hamburger"
           id="hamburger"
-          aria-label="Toggle navigation"
+          aria-label="Navigation ein- oder ausblenden"
+          data-translate-aria-label="nav_toggle"
           aria-controls="main-nav"
           aria-expanded="false"
         >
@@ -99,12 +101,11 @@
 
     <section class="invoice-hero">
       <div class="container">
-        <span class="invoice-hero-eyebrow" data-translate="invoice_hero_eyebrow">Interaktive Demo</span>
-        <h1 data-translate="invoice_hero_title">Beleg in Minuten erstellen</h1>
+        <span class="invoice-hero-eyebrow" data-translate="invoice_hero_eyebrow">Vom Posteingang bis zum Versand</span>
+        <h1 data-translate="invoice_hero_title">Wie aus einer E-Mail eine fertige Rechnung wird</h1>
         <p data-translate="invoice_hero_text">
-          Diese Demo l&auml;uft komplett in Ihrem Browser: keine Anmeldung, kein Backend,
-          keine echten Kundendaten. W&auml;hlen Sie Rechnung, Angebot oder Mahnung
-          und sehen Sie, wie ein gemeinsamer Beleg-Flow aussehen kann.
+          Ein cineastischer Einblick in den KIFlowstate-Flow: Kundendaten und Leistungen
+          werden erkannt, Rechnung, PDF und Gmail vorbereitet &ndash; Sie pr&uuml;fen und geben frei.
         </p>
         <div class="invoice-hero-cta">
           <a
@@ -140,269 +141,276 @@
     </section>
 
     <main class="invoice-demo-main">
-      <div class="invoice-demo-shell">
-        <section class="invoice-demo-workspace">
-          <form class="invoice-demo-editor" id="invoice-demo-form">
-            <section class="invoice-demo-panel invoice-demo-flow-card" aria-labelledby="invoice-flow-title">
-              <div class="invoice-demo-flow-head">
-                <span class="invoice-demo-step" aria-hidden="true">1</span>
-                <h2 id="invoice-flow-title" data-translate="invoice_flow_title">Beleg</h2>
-              </div>
-              <div class="invoice-demo-grid three">
-                <label>
-                  <span data-translate="invoice_label_type">Belegart</span>
-                  <select data-invoice="type">
-                    <option value="invoice" data-translate="invoice_doc_type_invoice">Rechnung</option>
-                    <option value="offer" data-translate="invoice_doc_type_offer">Angebot</option>
-                    <option value="reminder" data-translate="invoice_doc_type_reminder">Mahnung</option>
-                  </select>
-                </label>
-                <label>
-                  <span data-translate="invoice_label_number">Belegnummer</span>
-                  <input type="text" data-invoice="number" />
-                </label>
-                <label>
-                  <span data-translate="invoice_label_date">Datum</span>
-                  <input type="date" data-invoice="date" />
-                </label>
-                <label>
-                  <span data-translate="invoice_label_service_date">Leistungsdatum</span>
-                  <input type="date" data-invoice="serviceDate" />
-                </label>
-              </div>
-              <div class="invoice-demo-counter-row">
-                <button type="button" class="invoice-demo-ghost-btn" id="invoice-next-number" data-translate="invoice_next_number">
-                  N&auml;chste Nummer
-                </button>
-                <span id="invoice-next-hint"></span>
-              </div>
-            </section>
-
-            <section class="invoice-demo-panel invoice-demo-flow-card invoice-demo-positions" aria-labelledby="invoice-position-title">
-              <div class="invoice-demo-flow-head">
-                <span class="invoice-demo-step" aria-hidden="true">2</span>
-                <h2 id="invoice-position-title" data-translate="invoice_positions_title">Positionen</h2>
-                <button type="button" class="invoice-demo-ghost-btn invoice-demo-head-btn" id="invoice-add-position">
-                  <i class="fas fa-plus" aria-hidden="true"></i>
-                  <span data-translate="invoice_add_position">Position</span>
-                </button>
-              </div>
-              <div id="invoice-position-list"></div>
-            </section>
-
-            <section class="invoice-demo-panel invoice-demo-flow-card invoice-demo-actions" aria-labelledby="invoice-actions-title">
-              <div class="invoice-demo-flow-head">
-                <span class="invoice-demo-step" aria-hidden="true">3</span>
-                <h2 id="invoice-actions-title" data-translate="invoice_finish_title">Abschluss</h2>
-              </div>
-              <div class="invoice-demo-action-buttons">
-                <button type="button" class="invoice-demo-primary-btn" id="invoice-save-demo">
-                  <i class="fas fa-floppy-disk" aria-hidden="true"></i>
-                  <span data-translate="invoice_save_demo">Demo-Beleg speichern</span>
-                </button>
-                <button type="button" class="invoice-demo-ghost-btn" id="invoice-print">
-                  <i class="fas fa-print" aria-hidden="true"></i>
-                  Print/PDF
-                </button>
-                <button type="button" class="invoice-demo-ghost-btn" id="invoice-email">
-                  <i class="fas fa-envelope" aria-hidden="true"></i>
-                  <span data-translate="invoice_email_draft">E-Mail-Entwurf</span>
-                </button>
-              </div>
-              <p class="invoice-demo-status" id="invoice-demo-status" role="status" aria-live="polite"></p>
-            </section>
-          </form>
-
-          <section class="invoice-demo-preview" aria-label="Live Vorschau" data-translate-aria-label="invoice_preview_aria">
-            <div class="invoice-demo-preview-head">
-              <span data-translate="invoice_preview_label">Live-Vorschau</span>
-            </div>
-
-            <article class="invoice-demo-paper" id="invoice-preview-paper">
-              <header class="invoice-paper-header">
-                <div class="invoice-paper-brand">
-                  <img id="invoice-preview-logo" alt="" hidden />
-                  <span id="invoice-preview-company-name"></span>
-                </div>
-                <div class="invoice-paper-doc" id="invoice-preview-doc-type">Rechnung</div>
-              </header>
-
-              <svg class="invoice-paper-wave" viewBox="0 0 800 14" preserveAspectRatio="none" aria-hidden="true">
-                <path d="M 0 7 Q 100 1, 200 7 T 400 7 T 600 7 T 800 7" />
-              </svg>
-
-              <div class="invoice-paper-sender" id="invoice-preview-sender"></div>
-
-              <section class="invoice-paper-address-row">
-                <address id="invoice-preview-customer"></address>
-                <dl id="invoice-preview-meta"></dl>
-              </section>
-
-              <h2 id="invoice-preview-title"></h2>
-              <p class="invoice-paper-intro">
-                <span id="invoice-preview-salutation"></span>,<br />
-                <span id="invoice-preview-intro">vielen Dank f&uuml;r Ihr Vertrauen. Wir berechnen Ihnen folgende Leistungen:</span>
+      <section class="invoice-showcase-section" aria-labelledby="invoice-showcase-title">
+        <div class="invoice-showcase-copy">
+          <span class="invoice-showcase-kicker" data-translate="invoice_showcase_kicker">Ein Vorgang. Ein klarer Flow.</span>
+          <div class="invoice-showcase-heading-row">
+            <div>
+              <h2 id="invoice-showcase-title" data-translate="invoice_showcase_title">Eine Rechnung entsteht. Sie behalten die Kontrolle.</h2>
+              <p data-translate="invoice_showcase_text">
+                KIFlowstate bringt E-Mail, Kundendaten, Leistungsvorlage, Rechnung und Gmail
+                in eine ruhige Abfolge. Automatisch vorbereitet, sichtbar gepr&uuml;ft, bewusst freigegeben.
               </p>
-
-              <table class="invoice-paper-items">
-                <thead>
-                  <tr>
-                    <th data-translate="invoice_table_pos">Pos.</th>
-                    <th data-translate="invoice_table_description">Beschreibung</th>
-                    <th class="num" data-translate="invoice_table_qty">Menge</th>
-                    <th class="num" data-translate="invoice_table_unit">Einzelpreis netto</th>
-                    <th class="num" data-translate="invoice_table_total">Gesamt netto</th>
-                  </tr>
-                </thead>
-                <tbody id="invoice-preview-items"></tbody>
-              </table>
-
-              <div class="invoice-paper-totals">
-                <table>
-                  <tr>
-                    <td data-translate="invoice_total_net">Zwischensumme netto</td>
-                    <td id="invoice-total-net"></td>
-                  </tr>
-                  <tr>
-                    <td data-translate="invoice_total_vat">zzgl. 19 % USt.</td>
-                    <td id="invoice-total-vat"></td>
-                  </tr>
-                  <tr class="grand">
-                    <td data-translate="invoice_total_gross">Gesamtbetrag</td>
-                    <td id="invoice-total-gross"></td>
-                  </tr>
-                </table>
-              </div>
-
-              <section class="invoice-paper-payment">
-                <h3 id="invoice-payment-title">Zahlungshinweis</h3>
-                <p id="invoice-payment-text">Bitte &uuml;berweisen Sie den Gesamtbetrag innerhalb von 14 Tagen.</p>
-                <dl id="invoice-preview-payment"></dl>
-              </section>
-
-              <footer class="invoice-paper-footer" id="invoice-preview-footer"></footer>
-            </article>
-          </section>
-
-          <aside class="invoice-demo-side" aria-label="Demo-Daten und gespeicherte Belege" data-translate-aria-label="invoice_side_aria">
-            <div class="invoice-demo-alert" role="note">
-              <i class="fas fa-shield-halved" aria-hidden="true"></i>
-              <span data-translate="invoice_local_note">Lokale Demo: Kunden, Z&auml;hler und Belege bleiben nur in diesem Browser.</span>
             </div>
-
-            <section class="invoice-demo-panel invoice-demo-customer-card" aria-labelledby="invoice-customer-title">
-              <h2 id="invoice-customer-title" data-translate="invoice_customer_title">Kundenakte</h2>
-              <p class="invoice-demo-panel-copy" data-translate="invoice_customer_text">
-                W&auml;hlen Sie einen Demo-Kunden oder speichern Sie eine neue Version lokal.
-              </p>
-              <label>
-                <span data-translate="invoice_saved_customer_label">Gespeicherten Demo-Kunden w&auml;hlen</span>
-                <select id="invoice-customer-select"></select>
-              </label>
-              <div class="invoice-demo-grid compact">
-                <label>
-                  <span data-translate="invoice_company_label">Firma</span>
-                  <input type="text" data-customer="company" autocomplete="organization" />
-                </label>
-                <label>
-                  <span data-translate="contact_email">E-Mail</span>
-                  <input type="email" data-customer="email" autocomplete="email" />
-                </label>
-              </div>
-              <details class="invoice-demo-inline-details">
-                <summary data-translate="invoice_edit_address">Adresse &amp; Anrede bearbeiten</summary>
-                <label>
-                  <span data-translate="invoice_contact_person">Ansprechperson</span>
-                  <input type="text" data-customer="contact" autocomplete="name" />
-                </label>
-                <label>
-                  <span data-translate="invoice_address_label">Adresse</span>
-                  <textarea data-customer="address" rows="3"></textarea>
-                </label>
-                <label>
-                  <span data-translate="invoice_salutation_label">Anrede</span>
-                  <input type="text" data-customer="salutation" placeholder="Sehr geehrte Frau Beispiel" data-translate-placeholder="invoice_salutation_placeholder" />
-                </label>
-              </details>
-              <button type="button" class="invoice-demo-primary-btn" id="invoice-save-customer" data-translate="invoice_save_customer">
-                Kunde lokal speichern
+            <div class="invoice-showcase-controls">
+              <span class="invoice-showcase-duration">
+                <i class="fas fa-clock" aria-hidden="true"></i>
+                <span data-translate="invoice_showcase_duration">26 Sekunden &middot; l&auml;uft automatisch</span>
+              </span>
+              <button
+                type="button"
+                class="invoice-showcase-toggle"
+                data-showcase-toggle
+                aria-controls="invoice-showcase"
+                aria-label="Animation pausieren"
+                data-translate-aria-label="invoice_showcase_pause"
+              >
+                <span class="invoice-showcase-toggle-icon" aria-hidden="true">
+                  <i class="fas fa-pause"></i>
+                </span>
+                <span data-showcase-control-label>Animation pausieren</span>
               </button>
-            </section>
+            </div>
+          </div>
+        </div>
 
-            <details class="invoice-demo-panel">
-              <summary data-translate="invoice_company_details">Firmendaten</summary>
-              <div class="invoice-demo-grid compact">
-                <label>
-                  <span data-translate="invoice_company_label">Firma</span>
-                  <input type="text" data-company="name" autocomplete="organization" />
-                </label>
-                <label>
-                  <span data-translate="contact_email">E-Mail</span>
-                  <input type="email" data-company="email" autocomplete="email" />
-                </label>
+        <div
+          class="invoice-showcase"
+          id="invoice-showcase"
+          role="group"
+          aria-label="Cineastischer Rechnungs-Workflow in 26 Sekunden"
+          aria-describedby="invoice-showcase-description"
+          data-translate-aria-label="invoice_showcase_aria"
+          data-showcase
+          data-duration-ms="26000"
+        >
+          <p class="invoice-showcase-sr-only" id="invoice-showcase-description" data-translate="invoice_showcase_description">
+            Eine fiktive Kunden-E-Mail von Thomas M&uuml;ller wird in einen Rechnungsentwurf &uuml;bertragen.
+            Kundendaten, Leistung und Preis werden erkannt. Nach menschlicher Pr&uuml;fung werden ZUGFeRD,
+            PDF/A und Archivierung best&auml;tigt; anschlie&szlig;end ist ein Gmail-Entwurf mit PDF-Anhang versandbereit.
+          </p>
+
+          <div class="invoice-showcase-frame">
+            <div class="invoice-showcase-aurora invoice-showcase-animated" aria-hidden="true"></div>
+            <div class="invoice-showcase-grain" aria-hidden="true"></div>
+
+            <div class="invoice-showcase-topbar" aria-hidden="true">
+              <span class="invoice-showcase-example">
+                <i class="fas fa-shield-halved"></i>
+                <span data-translate="invoice_showcase_example">Fiktives Beispiel</span>
+              </span>
+              <span class="invoice-showcase-brand">
+                <span class="invoice-showcase-brand-wave"></span>
+                KIFlowstate
+              </span>
+              <span class="invoice-showcase-live">
+                <i></i>
+                <span data-translate="invoice_showcase_live">Automatischer Ablauf</span>
+              </span>
+            </div>
+
+            <div class="invoice-showcase-stage" aria-hidden="true">
+              <article class="showcase-glass-card showcase-email-card invoice-showcase-animated">
+                <header>
+                  <span class="showcase-app-icon"><i class="fas fa-envelope"></i></span>
+                  <span>
+                    <small data-translate="invoice_showcase_inbox">Neue Kunden-E-Mail</small>
+                    <strong data-translate="invoice_showcase_mail_subject">Rechnung f&uuml;r Innenausbau</strong>
+                  </span>
+                  <time>09:42</time>
+                </header>
+                <dl class="showcase-email-meta">
+                  <div>
+                    <dt data-translate="invoice_showcase_from">Von</dt>
+                    <dd>Thomas M&uuml;ller</dd>
+                  </div>
+                  <div>
+                    <dt data-translate="invoice_showcase_email">E-Mail</dt>
+                    <dd>thomas.mueller@beispielbetrieb.de</dd>
+                  </div>
+                </dl>
+                <p data-translate="invoice_showcase_mail_body">
+                  Guten Tag, bitte erstellen Sie mir die Rechnung f&uuml;r die abgeschlossene Montage
+                  der Einbauschr&auml;nke. Viele Gr&uuml;&szlig;e, Thomas M&uuml;ller
+                </p>
+              </article>
+
+              <div class="showcase-ai-statuses">
+                <div class="showcase-glass-card showcase-ai-chip is-customer invoice-showcase-animated">
+                  <span><i class="fas fa-user-check"></i></span>
+                  <strong data-translate="invoice_showcase_customer_recognized">Kunde erkannt</strong>
+                </div>
+                <div class="showcase-glass-card showcase-ai-chip is-service invoice-showcase-animated">
+                  <span><i class="fas fa-wand-magic-sparkles"></i></span>
+                  <strong data-translate="invoice_showcase_service_matched">Leistung zugeordnet</strong>
+                </div>
+                <div class="showcase-glass-card showcase-ai-chip is-price invoice-showcase-animated">
+                  <span><i class="fas fa-tags"></i></span>
+                  <strong data-translate="invoice_showcase_price_template">Preis aus Leistungsvorlage</strong>
+                </div>
               </div>
-              <label>
-                <span data-translate="invoice_address_label">Adresse</span>
-                <textarea data-company="address" rows="3"></textarea>
-              </label>
-              <div class="invoice-demo-grid compact">
-                <label>
-                  <span data-translate="invoice_phone_label">Telefon</span>
-                  <input type="text" data-company="phone" autocomplete="tel" />
-                </label>
-                <label>
-                  <span>Web</span>
-                  <input type="text" data-company="web" autocomplete="url" />
-                </label>
-                <label>
-                  <span data-translate="invoice_tax_number">Steuernummer</span>
-                  <input type="text" data-company="taxNumber" />
-                </label>
-                <label>
-                  <span>USt-IdNr.</span>
-                  <input type="text" data-company="vatId" />
-                </label>
-                <label>
-                  <span>Bank</span>
-                  <input type="text" data-company="bank" />
-                </label>
-                <label>
-                  <span>IBAN</span>
-                  <input type="text" data-company="iban" />
-                </label>
-                <label>
-                  <span>BIC</span>
-                  <input type="text" data-company="bic" />
-                </label>
-                <label class="invoice-demo-logo-field">
-                  <span>Logo</span>
-                  <input type="file" id="invoice-logo-input" accept="image/png,image/jpeg,image/webp" />
-                </label>
+
+              <div class="showcase-invoice-orbit invoice-showcase-animated">
+                <article class="showcase-invoice-paper">
+                  <div class="showcase-invoice-shine invoice-showcase-animated"></div>
+                  <header class="showcase-invoice-head">
+                    <div class="showcase-paper-brand">
+                      <span class="showcase-paper-mark"></span>
+                      <strong>KIFlowstate</strong>
+                    </div>
+                    <div>
+                      <small data-translate="invoice_showcase_invoice_number_label">Rechnungsnummer</small>
+                      <strong>RE-2026-1048</strong>
+                    </div>
+                  </header>
+
+                  <div class="showcase-paper-wave">
+                    <svg viewBox="0 0 520 28" preserveAspectRatio="none">
+                      <path d="M0 16 C70 2 120 2 190 16 S310 30 380 16 S470 2 520 12" />
+                    </svg>
+                  </div>
+
+                  <div class="showcase-invoice-title-row">
+                    <div>
+                      <small data-translate="invoice_showcase_invoice_to">Rechnung an</small>
+                      <h3 data-translate="invoice_showcase_invoice_title">Rechnung</h3>
+                    </div>
+                    <div class="showcase-invoice-status-stack">
+                      <span class="is-draft invoice-showcase-animated" data-translate="invoice_showcase_status_draft">Entwurf</span>
+                      <span class="is-reviewed invoice-showcase-animated" data-translate="invoice_showcase_status_reviewed">Gepr&uuml;ft</span>
+                      <span class="is-ready invoice-showcase-animated" data-translate="invoice_showcase_status_ready">Versandbereit</span>
+                      <span class="is-sent invoice-showcase-animated" data-translate="invoice_showcase_status_sent">Versendet</span>
+                    </div>
+                  </div>
+
+                  <div class="showcase-invoice-recipient invoice-showcase-animated">
+                    <strong>M&uuml;ller Innenausbau GmbH</strong>
+                    <span>Thomas M&uuml;ller</span>
+                    <span>Hauptstra&szlig;e 24</span>
+                    <span>45127 Essen</span>
+                  </div>
+
+                  <div class="showcase-invoice-meta invoice-showcase-animated">
+                    <span>
+                      <small data-translate="invoice_showcase_date">Datum</small>
+                      <strong data-translate="invoice_showcase_date_value">22.07.2026</strong>
+                    </span>
+                    <span>
+                      <small data-translate="invoice_showcase_due">Zahlungsziel</small>
+                      <strong data-translate="invoice_showcase_due_value">14 Tage</strong>
+                    </span>
+                  </div>
+
+                  <div class="showcase-invoice-line invoice-showcase-animated">
+                    <span class="showcase-line-index">01</span>
+                    <span class="showcase-line-copy">
+                      <strong data-translate="invoice_showcase_service_name">Montage Einbauschr&auml;nke</strong>
+                      <small data-translate="invoice_showcase_service_source">Aus Leistungsvorlage</small>
+                    </span>
+                    <span class="showcase-line-qty">1</span>
+                    <strong data-translate="invoice_showcase_net_value">2.450,00&nbsp;&euro;</strong>
+                  </div>
+
+                  <div class="showcase-invoice-totals invoice-showcase-animated">
+                    <span><small data-translate="invoice_showcase_net">Netto</small><strong data-translate="invoice_showcase_net_value">2.450,00&nbsp;&euro;</strong></span>
+                    <span><small data-translate="invoice_showcase_vat">19 % USt.</small><strong data-translate="invoice_showcase_vat_value">465,50&nbsp;&euro;</strong></span>
+                    <span class="is-total"><small data-translate="invoice_showcase_total">Gesamt</small><strong data-translate="invoice_showcase_total_value">2.915,50&nbsp;&euro;</strong></span>
+                  </div>
+
+                  <div class="showcase-compliance invoice-showcase-animated">
+                    <span><i class="fas fa-circle-check"></i> ZUGFeRD</span>
+                    <span><i class="fas fa-circle-check"></i> PDF/A</span>
+                    <span><i class="fas fa-box-archive"></i> <span data-translate="invoice_showcase_archived">Archiviert</span></span>
+                  </div>
+                </article>
               </div>
-              <button type="button" class="invoice-demo-ghost-btn" id="invoice-logo-remove" data-translate="invoice_remove_logo">Logo entfernen</button>
-            </details>
 
-            <section class="invoice-demo-panel invoice-demo-saved" aria-labelledby="invoice-saved-title">
-              <h2 id="invoice-saved-title" data-translate="invoice_saved_title">Lokale Demo-Belege</h2>
-              <div id="invoice-saved-list"></div>
-            </section>
+              <article class="showcase-glass-card showcase-gmail-card invoice-showcase-animated">
+                <header>
+                  <span class="showcase-gmail-mark"><i class="fas fa-envelope-open-text"></i></span>
+                  <div>
+                    <small>Gmail</small>
+                    <strong data-translate="invoice_showcase_gmail_draft">Versand vorbereitet</strong>
+                  </div>
+                  <span class="showcase-gmail-status invoice-showcase-animated" data-translate="invoice_showcase_status_ready">Versandbereit</span>
+                </header>
+                <dl>
+                  <div>
+                    <dt data-translate="invoice_showcase_to">An</dt>
+                    <dd>thomas.mueller@beispielbetrieb.de</dd>
+                  </div>
+                  <div>
+                    <dt data-translate="invoice_showcase_subject">Betreff</dt>
+                    <dd data-translate="invoice_showcase_gmail_subject">Rechnung RE-2026-1048 &ndash; M&uuml;ller Innenausbau GmbH</dd>
+                  </div>
+                </dl>
+                <p data-translate="invoice_showcase_gmail_body">
+                  Guten Tag Herr M&uuml;ller, anbei erhalten Sie Ihre Rechnung. Bei R&uuml;ckfragen melden Sie sich gerne.
+                </p>
+                <div class="showcase-attachment">
+                  <i class="fas fa-file-pdf"></i>
+                  <span>
+                    <strong data-translate="invoice_showcase_attachment">Rechnung_RE-2026-1048.pdf</strong>
+                    <small>PDF/A &middot; ZUGFeRD</small>
+                  </span>
+                  <i class="fas fa-check-circle"></i>
+                </div>
+              </article>
 
-            <section class="invoice-demo-panel invoice-demo-sales-card" aria-label="Anfrage" data-translate-aria-label="invoice_request_aria">
-              <h2 data-translate="invoice_sales_title">Vom Demo-Flow zum echten Tool</h2>
-              <p class="invoice-demo-panel-copy" data-translate="invoice_sales_text">
-                So k&ouml;nnte ein eigener Belegprozess f&uuml;r Angebote, Rechnungen und Dokumente aussehen.
-              </p>
-              <a
-                href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy"
-                target="_blank"
-                rel="noopener"
-                class="cta-btn cta-btn-dark"
-                data-translate="invoice_cta_book"
-              >Termin buchen</a>
-            </section>
-          </aside>
-        </section>
-      </div>
+              <div class="showcase-human-check showcase-glass-card invoice-showcase-animated">
+                <span class="showcase-human-avatar"><i class="fas fa-user"></i></span>
+                <span>
+                  <small data-translate="invoice_showcase_human_step">Menschliche Best&auml;tigung</small>
+                  <strong data-translate="invoice_showcase_reviewed_by_you">Von Ihnen gepr&uuml;ft und freigegeben</strong>
+                </span>
+                <i class="fas fa-circle-check"></i>
+              </div>
+
+              <aside class="showcase-document-timeline showcase-glass-card invoice-showcase-animated">
+                <span class="showcase-timeline-title" data-translate="invoice_showcase_same_flow">Auch im selben Flow</span>
+                <ol>
+                  <li>
+                    <i class="fas fa-file-signature"></i>
+                    <span><strong data-translate="invoice_showcase_order">Auftragsbest&auml;tigung</strong><small data-translate="invoice_showcase_order_state">automatisch vorbereitet</small></span>
+                  </li>
+                  <li>
+                    <i class="fas fa-clock-rotate-left"></i>
+                    <span><strong data-translate="invoice_showcase_payment_reminder">Zahlungserinnerung</strong><small data-translate="invoice_showcase_payment_reminder_state">regelbasiert vorbereitet</small></span>
+                  </li>
+                  <li>
+                    <i class="fas fa-file-circle-check"></i>
+                    <span><strong data-translate="invoice_showcase_dunning">Mahnung</strong><small data-translate="invoice_showcase_dunning_state">nach Freigabe versendet</small></span>
+                  </li>
+                </ol>
+              </aside>
+
+              <div class="showcase-wave-transition is-transfer invoice-showcase-animated">
+                <svg viewBox="0 0 1440 260" preserveAspectRatio="none">
+                  <path class="wave-one" d="M-80 160 C170 20 360 260 620 110 S1080 10 1520 155 L1520 270 L-80 270 Z" />
+                  <path class="wave-two" d="M-80 188 C190 54 390 278 680 136 S1120 42 1520 178 L1520 270 L-80 270 Z" />
+                  <path class="wave-three" d="M-80 212 C240 96 470 282 760 168 S1190 92 1520 205 L1520 270 L-80 270 Z" />
+                </svg>
+              </div>
+              <div class="showcase-wave-transition is-closing invoice-showcase-animated">
+                <svg viewBox="0 0 1440 260" preserveAspectRatio="none">
+                  <path class="wave-one" d="M-80 160 C170 20 360 260 620 110 S1080 10 1520 155 L1520 270 L-80 270 Z" />
+                  <path class="wave-two" d="M-80 188 C190 54 390 278 680 136 S1120 42 1520 178 L1520 270 L-80 270 Z" />
+                  <path class="wave-three" d="M-80 212 C240 96 470 282 760 168 S1190 92 1520 205 L1520 270 L-80 270 Z" />
+                </svg>
+                <span data-translate="invoice_showcase_loop_note">Bereit f&uuml;r den n&auml;chsten Vorgang</span>
+              </div>
+            </div>
+
+            <ol class="invoice-showcase-storyline" aria-hidden="true">
+              <li class="is-email invoice-showcase-animated"><i class="fas fa-envelope"></i><span data-translate="invoice_showcase_phase_email">Kunden-E-Mail</span></li>
+              <li class="is-ai invoice-showcase-animated"><i class="fas fa-wand-magic-sparkles"></i><span data-translate="invoice_showcase_phase_ai">KI-Entwurf</span></li>
+              <li class="is-review invoice-showcase-animated"><i class="fas fa-user-check"></i><span data-translate="invoice_showcase_phase_review">Pr&uuml;fung</span></li>
+              <li class="is-send invoice-showcase-animated"><i class="fas fa-paper-plane"></i><span data-translate="invoice_showcase_phase_send">Gmail-Versand</span></li>
+            </ol>
+            <div class="invoice-showcase-progress" aria-hidden="true"><i class="invoice-showcase-animated"></i></div>
+          </div>
+        </div>
+      </section>
 
       <section class="invoice-capabilities" aria-labelledby="invoice-capabilities-title">
         <div class="invoice-capabilities-inner">
@@ -412,7 +420,7 @@
               <h2 id="invoice-capabilities-title" data-translate="invoice_capabilities_title">Mehr als nur ein Beleg</h2>
             </div>
             <p data-translate="invoice_capabilities_text">
-              Die Demo zeigt den Kern. Daraus kann ein kompletter Beleg-Flow entstehen,
+              Der Showcase zeigt den Kern. Daraus kann ein kompletter Beleg-Flow entstehen,
               der Kunden, Dokumenttypen, offene Zahlungen und den Versand sauber zusammenbringt.
             </p>
           </div>
@@ -447,8 +455,8 @@
                 </div>
                 <div class="invoice-capability-visual invoice-customer-stack" aria-hidden="true">
                   <div class="invoice-mini-contact is-main">
-                    <span data-translate="invoice_visual_customer_company">Beispielkunde GmbH</span>
-                    <strong>Mara Beispiel</strong>
+                    <span data-translate="invoice_visual_customer_company">M&uuml;ller Innenausbau GmbH</span>
+                    <strong>Thomas M&uuml;ller</strong>
                   </div>
                   <div class="invoice-mini-contact">
                     <span data-translate="invoice_visual_new_invoice">Neue Rechnung</span>
@@ -520,8 +528,8 @@
                     <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
                     <span data-translate="invoice_visual_draft_ready">Entwurf bereit</span>
                   </div>
-                  <strong data-translate="invoice_visual_mail_subject">Rechnung 2602 f&uuml;r Mara Beispiel</strong>
-                  <p data-translate="invoice_visual_mail_text">Guten Tag Frau Beispiel, anbei erhalten Sie...</p>
+                  <strong data-translate="invoice_visual_mail_subject">Rechnung RE-2026-1048 f&uuml;r M&uuml;ller Innenausbau GmbH</strong>
+                  <p data-translate="invoice_visual_mail_text">Guten Tag Herr M&uuml;ller, anbei erhalten Sie Ihre Rechnung...</p>
                 </div>
               </article>
 
@@ -639,7 +647,7 @@
             >Termin buchen</a>
           </div>
           <p class="invoice-outro-note" data-translate="invoice_outro_note">
-            Kostenlos und unverbindlich. Ihre Demo-Daten bleiben in Ihrem Browser.
+            Kostenlos und unverbindlich. Der Showcase verwendet ausschlie&szlig;lich fiktive Beispieldaten.
           </p>
 
           <form
@@ -668,7 +676,7 @@
 
             <label class="form-field" id="invoice-contact">
               <span data-translate="contact_message">Nachricht</span>
-              <textarea name="message" rows="5" required data-translate-placeholder="invoice_contact_placeholder" placeholder="Ich habe die Belegdemo ausprobiert und m&ouml;chte mehr erfahren."></textarea>
+              <textarea name="message" rows="5" required data-translate-placeholder="invoice_contact_placeholder" placeholder="Ich habe den Rechnungs-Showcase gesehen und m&ouml;chte mehr erfahren."></textarea>
             </label>
 
             <div class="hp-field" aria-hidden="true">
@@ -678,7 +686,7 @@
               </label>
             </div>
 
-            <input type="hidden" name="_subject" value="KIFlowstate Belegdemo" />
+            <input type="hidden" name="_subject" value="KIFlowstate Rechnungs-Showcase" />
 
             <button type="submit" class="cta-btn form-submit" data-translate="contact_submit">
               Nachricht senden
@@ -724,29 +732,6 @@
         </svg>
       </div>
     </aside>
-
-    <div class="invoice-demo-modal" id="invoice-email-modal" role="dialog" aria-modal="true" aria-labelledby="invoice-email-title" hidden>
-      <div class="invoice-demo-modal-card">
-        <button type="button" class="invoice-demo-modal-close" id="invoice-email-close" aria-label="Schliessen" data-translate-aria-label="invoice_modal_close">
-          <i class="fas fa-xmark" aria-hidden="true"></i>
-        </button>
-        <h2 id="invoice-email-title" data-translate="invoice_email_draft">E-Mail-Entwurf</h2>
-        <p data-translate="invoice_email_modal_text">Dieser Demo-Button nutzt nur einen Mailto-Link. Es wird keine externe E-Mail-API verwendet.</p>
-        <label>
-          <span data-translate="invoice_email_to">Empf&auml;nger</span>
-          <input type="text" id="invoice-email-to" readonly />
-        </label>
-        <label>
-          <span data-translate="contact_subject">Betreff</span>
-          <input type="text" id="invoice-email-subject" readonly />
-        </label>
-        <label>
-          <span data-translate="contact_message">Nachricht</span>
-          <textarea id="invoice-email-body" rows="8" readonly></textarea>
-        </label>
-        <a href="#" class="cta-btn cta-btn-dark" id="invoice-email-link" data-translate="invoice_email_open">Im Mailprogramm &ouml;ffnen</a>
-      </div>
-    </div>
 
     <footer class="footer">
       <div class="container footer-content">

@@ -8,6 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const THEME_KEY = "kif_theme";
   const currentTheme = () =>
     document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  const themeText = (key, fallbackDe, fallbackEn) => {
+    const lang = document.documentElement.lang === "en" ? "en" : "de";
+    return (
+      (typeof translations !== "undefined" && translations[lang] && translations[lang][key]) ||
+      (lang === "en" ? fallbackEn : fallbackDe)
+    );
+  };
   const applyTheme = (theme) => {
     document.documentElement.setAttribute("data-theme", theme);
     document.querySelectorAll(".theme-toggle").forEach((btn) => {
@@ -15,8 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.setAttribute("aria-pressed", String(isDark));
       btn.setAttribute(
         "aria-label",
-        isDark ? "Helles Design aktivieren" : "Dunkles Design aktivieren"
+        isDark
+          ? themeText("theme_enable_light", "Helles Design aktivieren", "Enable light theme")
+          : themeText("theme_enable_dark", "Dunkles Design aktivieren", "Enable dark theme")
       );
+      btn.setAttribute("title", themeText("theme_toggle_title", "Design wechseln", "Switch theme"));
     });
   };
 
@@ -29,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try { localStorage.setItem(THEME_KEY, next); } catch (err) {}
     applyTheme(next);
   });
+  document.addEventListener("kif:languagechange", () => applyTheme(currentTheme()));
 
   /* ▸ Dynamic copyright year */
   const setYear = () => {
@@ -742,6 +753,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const setLanguage = (lang) => {
       langDeBtn.classList.toggle("active", lang === "de");
       langEnBtn.classList.toggle("active", lang === "en");
+      langDeBtn.setAttribute("aria-pressed", String(lang === "de"));
+      langEnBtn.setAttribute("aria-pressed", String(lang === "en"));
       document.documentElement.lang = lang;
 
       document.querySelectorAll("[data-translate]").forEach((element) => {
