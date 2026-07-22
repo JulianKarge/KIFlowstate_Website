@@ -28,6 +28,42 @@
 
 const VIDEOS = [
   {
+    id: "eXKRngP-vQQ",
+    title: {
+      de: "So maximierst du dein ChatGPT Codex Workflow",
+      en: "How to maximize your ChatGPT Codex workflow"
+    },
+    publishedAt: "2026-07-22",
+    description: {
+      de: "OpenAI ist gerade großzügig mit den Tokens bei Codex, das lohnt sich auszunutzen. Tipps, mit denen du mehr aus deinem ChatGPT Codex Workflow rausholst. Weitere Prompts aus dem Video folgen hier.",
+      en: "OpenAI is being generous with Codex tokens right now, so it's worth making the most of it. Tips to get more out of your ChatGPT Codex workflow. More prompts from the video will be added here."
+    },
+    sections: [
+      {
+        heading: { de: "Links & Ressourcen", en: "Links & resources" },
+        type: "links",
+        items: [
+          {
+            label: "ChatGPT Codex",
+            url: "https://chatgpt.com/codex",
+            description: {
+              de: "Codex direkt in ChatGPT öffnen und loslegen.",
+              en: "Open Codex directly in ChatGPT and get started."
+            }
+          },
+          {
+            label: "Codex Safety-Hooks Prompt (Matt Berman)",
+            url: "https://gist.github.com/mberman84/b4e22cb3ac7782a1c43d5324a0413505",
+            description: {
+              de: "Der Prompt aus dem Video: richtet einen echten Codex-Lifecycle-Hook ein, der destruktive Befehle wie rm -rf / vor der Ausführung blockiert.",
+              en: "The prompt from the video: sets up a real Codex lifecycle hook that blocks destructive commands like rm -rf / before they run."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "O45ecYSe5HE",
     title: {
       de: "ChatGPT gesperrt? Diese KI läuft auf deinem PC.",
