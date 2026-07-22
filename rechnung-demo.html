@@ -43,12 +43,12 @@
 
     <link rel="stylesheet" href="css/vendor/swiper-bundle.min.css?v=mobile-swiper-2" />
     <link rel="stylesheet" href="css/styles.css?v=showcase-film-1" />
-    <link rel="stylesheet" href="css/invoice-showcase.css?v=showcase-film-4" />
+    <link rel="stylesheet" href="css/invoice-showcase.css?v=showcase-film-5" />
     <script defer src="js/translations.js"></script>
     <script defer src="js/script.js"></script>
     <script defer src="js/vendor/swiper-bundle.min.js?v=mobile-swiper-2"></script>
     <script defer src="js/mobile-card-swipers.js?v=mobile-swiper-2"></script>
-    <script defer src="js/invoice-showcase.js?v=showcase-film-1"></script>
+    <script defer src="js/invoice-showcase.js?v=showcase-film-2"></script>
   </head>
 
   <body>
@@ -104,8 +104,8 @@
         <span class="invoice-hero-eyebrow" data-translate="invoice_hero_eyebrow">Vom Posteingang bis zum Versand</span>
         <h1 data-translate="invoice_hero_title">Wie aus einer E-Mail eine fertige Rechnung wird</h1>
         <p data-translate="invoice_hero_text">
-          Ein cineastischer Einblick in den KIFlowstate-Flow: Kundendaten und Leistungen
-          werden erkannt, Rechnung, PDF und Gmail vorbereitet &ndash; Sie pr&uuml;fen und geben frei.
+          So arbeitet der KIFlowstate-Flow: Kundendaten und Leistungen werden erkannt,
+          Rechnung, PDF und Gmail-Entwurf stehen bereit. Sie pr&uuml;fen und geben frei.
         </p>
         <div class="invoice-hero-cta">
           <a
@@ -178,7 +178,7 @@
           class="invoice-showcase"
           id="invoice-showcase"
           role="group"
-          aria-label="Cineastischer Rechnungs-Workflow in 26 Sekunden"
+          aria-label="Animierter Rechnungs-Workflow in 26 Sekunden"
           aria-describedby="invoice-showcase-description"
           data-translate-aria-label="invoice_showcase_aria"
           data-showcase
@@ -205,7 +205,7 @@
               </span>
               <span class="invoice-showcase-live">
                 <i></i>
-                <span data-translate="invoice_showcase_live">Automatischer Ablauf</span>
+                <span data-showcase-phase-label>Automatischer Ablauf</span>
               </span>
             </div>
 
@@ -235,7 +235,7 @@
                 </p>
               </article>
 
-              <div class="showcase-ai-statuses">
+              <div class="showcase-ai-statuses invoice-showcase-animated">
                 <div class="showcase-glass-card showcase-ai-chip is-customer invoice-showcase-animated">
                   <span><i class="fas fa-user-check"></i></span>
                   <strong data-translate="invoice_showcase_customer_recognized">Kunde erkannt</strong>
@@ -341,7 +341,7 @@
                   </div>
                   <div>
                     <dt data-translate="invoice_showcase_subject">Betreff</dt>
-                    <dd data-translate="invoice_showcase_gmail_subject">Rechnung RE-2026-1048 &ndash; M&uuml;ller Innenausbau GmbH</dd>
+                    <dd data-translate="invoice_showcase_gmail_subject">Rechnung RE-2026-1048, M&uuml;ller Innenausbau GmbH</dd>
                   </div>
                 </dl>
                 <p data-translate="invoice_showcase_gmail_body">
@@ -386,13 +386,39 @@
 
             </div>
 
-            <ol class="invoice-showcase-storyline" aria-hidden="true">
-              <li class="is-email invoice-showcase-animated"><i class="fas fa-envelope"></i><span data-translate="invoice_showcase_phase_email">Kunden-E-Mail</span></li>
-              <li class="is-ai invoice-showcase-animated"><i class="fas fa-wand-magic-sparkles"></i><span data-translate="invoice_showcase_phase_ai">KI-Entwurf</span></li>
-              <li class="is-review invoice-showcase-animated"><i class="fas fa-user-check"></i><span data-translate="invoice_showcase_phase_review">Pr&uuml;fung</span></li>
-              <li class="is-send invoice-showcase-animated"><i class="fas fa-paper-plane"></i><span data-translate="invoice_showcase_phase_send">Gmail-Versand</span></li>
-            </ol>
-            <div class="invoice-showcase-progress" aria-hidden="true"><i class="invoice-showcase-animated"></i></div>
+            <div
+              class="invoice-showcase-chapters"
+              role="group"
+              aria-label="Kapitel des Ablaufs"
+              data-translate-aria-label="invoice_showcase_chapters_aria"
+            >
+              <button type="button" class="invoice-showcase-chapter is-email" data-showcase-chapter="email" aria-label="Zu Schritt 1 springen: Kunden-E-Mail" data-translate-aria-label="invoice_showcase_chapter_email_aria">
+                <i class="fas fa-envelope" aria-hidden="true"></i><span data-translate="invoice_showcase_phase_email">Kunden-E-Mail</span>
+              </button>
+              <button type="button" class="invoice-showcase-chapter is-ai" data-showcase-chapter="ai" aria-label="Zu Schritt 2 springen: KI-Entwurf" data-translate-aria-label="invoice_showcase_chapter_ai_aria">
+                <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i><span data-translate="invoice_showcase_phase_ai">KI-Entwurf</span>
+              </button>
+              <button type="button" class="invoice-showcase-chapter is-review" data-showcase-chapter="review" aria-label="Zu Schritt 3 springen: Pr&uuml;fung" data-translate-aria-label="invoice_showcase_chapter_review_aria">
+                <i class="fas fa-user-check" aria-hidden="true"></i><span data-translate="invoice_showcase_phase_review">Pr&uuml;fung</span>
+              </button>
+              <button type="button" class="invoice-showcase-chapter is-send" data-showcase-chapter="send" aria-label="Zu Schritt 4 springen: Gmail-Versand" data-translate-aria-label="invoice_showcase_chapter_send_aria">
+                <i class="fas fa-paper-plane" aria-hidden="true"></i><span data-translate="invoice_showcase_phase_send">Gmail-Versand</span>
+              </button>
+            </div>
+
+            <div class="invoice-showcase-timeline">
+              <input
+                type="range"
+                class="invoice-showcase-scrubber"
+                min="0"
+                max="1000"
+                step="1"
+                value="0"
+                data-showcase-scrubber
+                aria-label="Zeitleiste des Ablaufs"
+                data-translate-aria-label="invoice_showcase_scrubber_aria"
+              />
+            </div>
           </div>
         </div>
       </section>

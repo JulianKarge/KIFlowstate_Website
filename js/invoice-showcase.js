@@ -25,6 +25,23 @@
     });
   }
 
+  // The four story chapters on the shared clock. `start` marks where a
+  // chapter begins (drives the highlight), `jump` is the moment a chapter
+  // button seeks to: slightly past the start so the scene is already built.
+  const SHOWCASE_CHAPTERS = [
+    { key: "email", start: 0, jump: 0.035 },
+    { key: "ai", start: 0.17, jump: 0.28 },
+    { key: "review", start: 0.49, jump: 0.57 },
+    { key: "send", start: 0.78, jump: 0.84 }
+  ];
+
+  const CHAPTER_NAME_FALLBACKS = {
+    email: { de: "Kunden-E-Mail", en: "Customer email" },
+    ai: { de: "KI-Entwurf", en: "AI draft" },
+    review: { de: "Prüfung", en: "Review" },
+    send: { de: "Gmail-Versand", en: "Gmail delivery" }
+  };
+
   function createShowcaseController(root) {
     const durationFromMarkup = Number(root.dataset.durationMs);
     const duration = Number.isFinite(durationFromMarkup) && durationFromMarkup > 0
@@ -33,34 +50,138 @@
     const toggle = findShowcaseToggle(root);
     const label = toggle && toggle.querySelector("[data-showcase-control-label]");
     const icon = toggle && toggle.querySelector(".invoice-showcase-toggle-icon i");
+    const scrubber = root.querySelector("[data-showcase-scrubber]");
+    const phaseLabel = root.querySelector("[data-showcase-phase-label]");
+    const chapterButtons = Array.from(root.querySelectorAll("[data-showcase-chapter]"));
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const hasIntersectionObserver = typeof window.IntersectionObserver === "function";
+    // Scrubbing works by pausing every CSS animation through the Web
+    // Animations API and setting their currentTime from one shared clock.
+    const supportsScrubbing = typeof root.getAnimations === "function" &&
+      typeof window.CSSAnimation === "function";
 
     let userPaused = false;
     let offscreenPaused = hasIntersectionObserver;
     let documentPaused = document.hidden;
     let reducedMotion = motionQuery.matches;
     let hasStarted = false;
+    let scrubbing = false;
+    let holdUntil = 0;
+    let resumeTimer = null;
     let elapsed = 0;
     let cycle = 0;
     let frame = null;
     let previousFrameTime = null;
+    let animations = [];
+    let announcedSecond = -1;
+    let announcedPhase = "";
 
     root.style.setProperty("--showcase-duration", `${duration}ms`);
+    root.style.setProperty("--showcase-progress", "0");
     root.dataset.showcaseReady = "false";
     root.dataset.showcaseCycle = "0";
     root.dataset.showcasePhase = reducedMotion ? "static" : "email";
 
     const isPaused = () => (
-      !hasStarted || reducedMotion || userPaused || offscreenPaused || documentPaused
+      !hasStarted || reducedMotion || userPaused || offscreenPaused ||
+      documentPaused || scrubbing || performance.now() < holdUntil
     );
 
+    const progressNow = () => (elapsed % duration) / duration;
+
+    const chapterIndexForProgress = (progress) => {
+      let index = 0;
+      SHOWCASE_CHAPTERS.forEach((chapter, i) => {
+        if (progress >= chapter.start) index = i;
+      });
+      return index;
+    };
+
     const phaseForProgress = (progress) => {
-      if (progress < 0.19) return "email";
-      if (progress < 0.49) return "ai";
-      if (progress < 0.73) return "review";
-      if (progress < 0.93) return "send";
-      return "closing";
+      if (progress >= 0.965) return "closing";
+      return SHOWCASE_CHAPTERS[chapterIndexForProgress(progress)].key;
+    };
+
+    const collectAnimations = () => {
+      if (!supportsScrubbing) return;
+      animations = root.getAnimations({ subtree: true }).filter(
+        (animation) => animation instanceof window.CSSAnimation
+      );
+      animations.forEach((animation) => {
+        try {
+          animation.pause();
+        } catch (err) {}
+      });
+    };
+
+    const renderAnimations = () => {
+      if (!supportsScrubbing) return;
+      const time = elapsed % duration;
+      animations.forEach((animation) => {
+        try {
+          animation.currentTime = time;
+        } catch (err) {}
+      });
+    };
+
+    const chapterName = (key) => {
+      const fallback = CHAPTER_NAME_FALLBACKS[key] || CHAPTER_NAME_FALLBACKS.email;
+      return translatedShowcaseLabel(`invoice_showcase_phase_${key}`, fallback);
+    };
+
+    const updateTimelineUi = (force) => {
+      const progress = progressNow();
+      const chapterIndex = chapterIndexForProgress(progress);
+      const chapterKey = SHOWCASE_CHAPTERS[chapterIndex].key;
+      const second = Math.min(Math.round(duration / 1000), Math.floor((elapsed % duration) / 1000) + 1);
+      const totalSeconds = Math.round(duration / 1000);
+
+      root.style.setProperty("--showcase-progress", progress.toFixed(4));
+
+      if (scrubber && !scrubbing) {
+        scrubber.value = String(Math.round(progress * 1000));
+      }
+
+      if (!force && second === announcedSecond && chapterKey === announcedPhase) return;
+      announcedSecond = second;
+      announcedPhase = chapterKey;
+
+      if (scrubber) {
+        const template = translatedShowcaseLabel("invoice_showcase_position", {
+          de: "Sekunde {s} von {t}: {phase}",
+          en: "Second {s} of {t}: {phase}"
+        });
+        scrubber.setAttribute(
+          "aria-valuetext",
+          template
+            .replace("{s}", String(second))
+            .replace("{t}", String(totalSeconds))
+            .replace("{phase}", chapterName(chapterKey))
+        );
+      }
+
+      chapterButtons.forEach((button) => {
+        const isActive = button.dataset.showcaseChapter === chapterKey && !reducedMotion;
+        button.classList.toggle("is-active", isActive);
+        if (isActive) button.setAttribute("aria-current", "step");
+        else button.removeAttribute("aria-current");
+      });
+
+      if (phaseLabel) {
+        if (reducedMotion) {
+          phaseLabel.textContent = translatedShowcaseLabel("invoice_showcase_static_scene", {
+            de: "Statische Ansicht",
+            en: "Static view"
+          });
+        } else {
+          const stepTemplate = translatedShowcaseLabel("invoice_showcase_step", {
+            de: "Schritt {n} von 4",
+            en: "Step {n} of 4"
+          });
+          phaseLabel.textContent =
+            `${stepTemplate.replace("{n}", String(chapterIndex + 1))} · ${chapterName(chapterKey)}`;
+        }
+      }
     };
 
     const updateTimelineHooks = () => {
@@ -70,11 +191,8 @@
         return;
       }
 
-      const nextCycle = Math.floor(elapsed / duration);
-      const progress = (elapsed % duration) / duration;
-      if (nextCycle !== cycle) cycle = nextCycle;
       root.dataset.showcaseCycle = String(cycle);
-      root.dataset.showcasePhase = phaseForProgress(progress);
+      root.dataset.showcasePhase = phaseForProgress(progressNow());
     };
 
     const tick = (time) => {
@@ -89,7 +207,13 @@
       } else {
         elapsed += Math.max(0, time - previousFrameTime);
         previousFrameTime = time;
+        if (elapsed >= duration) {
+          elapsed = elapsed % duration;
+          cycle += 1;
+        }
+        renderAnimations();
         updateTimelineHooks();
+        updateTimelineUi(false);
       }
 
       frame = window.requestAnimationFrame(tick);
@@ -105,6 +229,25 @@
       if (frame != null || !hasStarted || isPaused()) return;
       previousFrameTime = null;
       frame = window.requestAnimationFrame(tick);
+    };
+
+    const seekToProgress = (progress) => {
+      elapsed = Math.max(0, Math.min(0.999, progress)) * duration;
+      renderAnimations();
+      updateTimelineHooks();
+      updateTimelineUi(true);
+    };
+
+    // After a scrub interaction, hold the frame briefly, then let autoplay
+    // continue on its own so the loop keeps its promise of running itself.
+    const holdThenResume = (delay) => {
+      holdUntil = performance.now() + delay;
+      if (resumeTimer) window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => {
+        resumeTimer = null;
+        syncState();
+      }, delay + 40);
+      syncState();
     };
 
     const updateLabel = () => {
@@ -142,15 +285,22 @@
       }
     };
 
-    const syncState = () => {
+    function syncState() {
       const pauseReasons = [];
       if (userPaused) pauseReasons.push("user");
       if (offscreenPaused) pauseReasons.push("offscreen");
       if (documentPaused) pauseReasons.push("document");
       if (reducedMotion) pauseReasons.push("reduced-motion");
+      if (scrubbing || performance.now() < holdUntil) pauseReasons.push("scrubbing");
       if (!hasStarted) pauseReasons.push("not-started");
 
-      root.classList.toggle("is-running", hasStarted && !reducedMotion);
+      // With scrub support the animations are always WAAPI-paused and the
+      // stage renders from frame zero; without it, fall back to free-running
+      // CSS animations gated on the first viewport contact.
+      const running = supportsScrubbing
+        ? !reducedMotion
+        : hasStarted && !reducedMotion;
+      root.classList.toggle("is-running", running);
       root.classList.toggle("is-user-paused", userPaused);
       root.classList.toggle("is-viewport-paused", offscreenPaused);
       root.classList.toggle("is-document-paused", documentPaused);
@@ -160,11 +310,17 @@
       root.dataset.showcaseMotion = reducedMotion ? "reduced" : "full";
       root.dataset.showcaseStarted = String(hasStarted);
 
+      if (supportsScrubbing && running && !animations.length) {
+        collectAnimations();
+        renderAnimations();
+      }
+
       updateTimelineHooks();
+      updateTimelineUi(true);
       updateLabel();
       if (isPaused()) stopClock();
       else startClock();
-    };
+    }
 
     const resetTimeline = () => {
       elapsed = 0;
@@ -178,19 +334,98 @@
       toggle.addEventListener("click", () => {
         if (reducedMotion) return;
         userPaused = !userPaused;
+        hasStarted = true;
         syncState();
       });
     }
+
+    if (scrubber) {
+      scrubber.max = "1000";
+      scrubber.addEventListener("input", () => {
+        hasStarted = true;
+        seekToProgress(Number(scrubber.value) / 1000);
+        holdThenResume(1200);
+      });
+      // The native 1/1000 step is perfect for dragging but far too fine for
+      // keys, so keyboard seeking is handled explicitly: arrows move one
+      // second, Home/End hit the ends, PageUp/PageDown jump chapters.
+      scrubber.addEventListener("keydown", (event) => {
+        const progress = progressNow();
+        const secondStep = 1000 / duration;
+        let next = null;
+        if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+          next = progress + secondStep;
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+          next = progress - secondStep;
+        } else if (event.key === "Home") {
+          next = 0;
+        } else if (event.key === "End") {
+          next = 0.999;
+        } else if (event.key === "PageUp" || event.key === "PageDown") {
+          const forward = event.key === "PageUp";
+          const index = chapterIndexForProgress(progress);
+          const target = SHOWCASE_CHAPTERS[
+            Math.max(0, Math.min(SHOWCASE_CHAPTERS.length - 1, index + (forward ? 1 : -1)))
+          ];
+          next = target.jump;
+        }
+        if (next == null) return;
+        event.preventDefault();
+        hasStarted = true;
+        seekToProgress(next);
+        holdThenResume(1200);
+      });
+      scrubber.addEventListener("pointerdown", () => {
+        scrubbing = true;
+        syncState();
+      });
+      const releaseScrub = () => {
+        if (!scrubbing) return;
+        scrubbing = false;
+        holdThenResume(650);
+      };
+      scrubber.addEventListener("pointerup", releaseScrub);
+      scrubber.addEventListener("pointercancel", releaseScrub);
+      scrubber.addEventListener("blur", releaseScrub);
+    }
+
+    chapterButtons.forEach((button) => {
+      button.disabled = !supportsScrubbing;
+      button.addEventListener("click", () => {
+        if (reducedMotion || !supportsScrubbing) return;
+        const chapter = SHOWCASE_CHAPTERS.find(
+          (entry) => entry.key === button.dataset.showcaseChapter
+        );
+        if (!chapter) return;
+        hasStarted = true;
+        seekToProgress(chapter.jump);
+        holdThenResume(250);
+      });
+    });
 
     document.addEventListener("visibilitychange", () => {
       documentPaused = document.hidden;
       syncState();
     });
 
+    // Responsive breakpoints swap some animation names, which creates new
+    // CSSAnimation objects; re-collect so the scrub clock keeps control.
+    let resizeTimer = null;
+    window.addEventListener("resize", () => {
+      if (!supportsScrubbing) return;
+      if (resizeTimer) window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        resizeTimer = null;
+        collectAnimations();
+        renderAnimations();
+      }, 220);
+    });
+
     const handleMotionChange = (event) => {
       reducedMotion = event.matches;
       resetTimeline();
       if (!reducedMotion && !offscreenPaused) hasStarted = true;
+      if (!reducedMotion) animations = [];
       syncState();
     };
 
@@ -219,10 +454,16 @@
     }
 
     root.classList.add("is-enhanced");
+    root.classList.toggle("is-scrub-enabled", supportsScrubbing);
     syncState();
     root.dataset.showcaseReady = "true";
 
-    return { updateLabel };
+    return {
+      updateLabel: () => {
+        updateLabel();
+        updateTimelineUi(true);
+      }
+    };
   }
 
   function findShowcaseToggle(root) {
