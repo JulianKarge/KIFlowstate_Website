@@ -53,10 +53,13 @@
     const scrubber = root.querySelector("[data-showcase-scrubber]");
     const phaseLabel = root.querySelector("[data-showcase-phase-label]");
     const chapterButtons = Array.from(root.querySelectorAll("[data-showcase-chapter]"));
+    const timeline = root.querySelector(".invoice-showcase-timeline");
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const hasIntersectionObserver = typeof window.IntersectionObserver === "function";
-    // Scrubbing works by pausing every CSS animation through the Web
-    // Animations API and setting their currentTime from one shared clock.
+    // Scrubbing uses the Web Animations API, but only takes manual control
+    // of currentTime while seeking. During autoplay the CSS animations run
+    // natively so the compositor keeps doing the heavy lifting; the rAF
+    // loop merely reads the time back for the UI.
     const supportsScrubbing = typeof root.getAnimations === "function" &&
       typeof window.CSSAnimation === "function";
 
@@ -73,8 +76,10 @@
     let frame = null;
     let previousFrameTime = null;
     let animations = [];
+    let animationsRunning = false;
     let announcedSecond = -1;
     let announcedPhase = "";
+    let lastProgressStep = -1;
 
     root.style.setProperty("--showcase-duration", `${duration}ms`);
     root.style.setProperty("--showcase-progress", "0");
@@ -102,19 +107,7 @@
       return SHOWCASE_CHAPTERS[chapterIndexForProgress(progress)].key;
     };
 
-    const collectAnimations = () => {
-      if (!supportsScrubbing) return;
-      animations = root.getAnimations({ subtree: true }).filter(
-        (animation) => animation instanceof window.CSSAnimation
-      );
-      animations.forEach((animation) => {
-        try {
-          animation.pause();
-        } catch (err) {}
-      });
-    };
-
-    const renderAnimations = () => {
+    const setAnimationsTime = () => {
       if (!supportsScrubbing) return;
       const time = elapsed % duration;
       animations.forEach((animation) => {
@@ -122,6 +115,54 @@
           animation.currentTime = time;
         } catch (err) {}
       });
+    };
+
+    // The animations share one clock, so any of them can report the time.
+    const referenceTime = () => {
+      for (const animation of animations) {
+        try {
+          const time = animation.currentTime;
+          if (typeof time === "number") return time;
+        } catch (err) {}
+      }
+      return null;
+    };
+
+    const playAnimations = () => {
+      if (!supportsScrubbing) return;
+      setAnimationsTime();
+      animations.forEach((animation) => {
+        try {
+          animation.play();
+        } catch (err) {}
+      });
+      animationsRunning = true;
+    };
+
+    const pauseAnimations = () => {
+      if (!supportsScrubbing) return;
+      if (animationsRunning) {
+        const time = referenceTime();
+        if (time != null) elapsed = time % duration;
+      }
+      animations.forEach((animation) => {
+        try {
+          animation.pause();
+        } catch (err) {}
+      });
+      setAnimationsTime();
+      animationsRunning = false;
+    };
+
+    const collectAnimations = () => {
+      if (!supportsScrubbing) return;
+      const wasRunning = animationsRunning;
+      animations = root.getAnimations({ subtree: true }).filter(
+        (animation) => animation instanceof window.CSSAnimation
+      );
+      animationsRunning = false;
+      if (wasRunning) playAnimations();
+      else pauseAnimations();
     };
 
     const chapterName = (key) => {
@@ -136,10 +177,16 @@
       const second = Math.min(Math.round(duration / 1000), Math.floor((elapsed % duration) / 1000) + 1);
       const totalSeconds = Math.round(duration / 1000);
 
-      root.style.setProperty("--showcase-progress", progress.toFixed(4));
-
-      if (scrubber && !scrubbing) {
-        scrubber.value = String(Math.round(progress * 1000));
+      // Only touch the DOM when the scrubber would visibly move: writing
+      // the progress var and range value every frame forces needless
+      // style recalculation.
+      const progressStep = Math.round(progress * 1000);
+      if (force || progressStep !== lastProgressStep) {
+        lastProgressStep = progressStep;
+        (timeline || root).style.setProperty("--showcase-progress", progress.toFixed(4));
+        if (scrubber && !scrubbing) {
+          scrubber.value = String(progressStep);
+        }
       }
 
       if (!force && second === announcedSecond && chapterKey === announcedPhase) return;
@@ -185,14 +232,10 @@
     };
 
     const updateTimelineHooks = () => {
-      if (reducedMotion) {
-        root.dataset.showcasePhase = "static";
-        root.dataset.showcaseCycle = String(cycle);
-        return;
-      }
-
-      root.dataset.showcaseCycle = String(cycle);
-      root.dataset.showcasePhase = phaseForProgress(progressNow());
+      const phase = reducedMotion ? "static" : phaseForProgress(progressNow());
+      const cycleValue = String(cycle);
+      if (root.dataset.showcasePhase !== phase) root.dataset.showcasePhase = phase;
+      if (root.dataset.showcaseCycle !== cycleValue) root.dataset.showcaseCycle = cycleValue;
     };
 
     const tick = (time) => {
@@ -202,7 +245,17 @@
         return;
       }
 
-      if (previousFrameTime == null) {
+      if (supportsScrubbing && animationsRunning) {
+        // The animations advance themselves; read the shared clock back.
+        const referenced = referenceTime();
+        if (referenced != null) {
+          const next = referenced % duration;
+          if (next < elapsed) cycle += 1;
+          elapsed = next;
+          updateTimelineHooks();
+          updateTimelineUi(false);
+        }
+      } else if (previousFrameTime == null) {
         previousFrameTime = time;
       } else {
         elapsed += Math.max(0, time - previousFrameTime);
@@ -211,7 +264,6 @@
           elapsed = elapsed % duration;
           cycle += 1;
         }
-        renderAnimations();
         updateTimelineHooks();
         updateTimelineUi(false);
       }
@@ -233,7 +285,7 @@
 
     const seekToProgress = (progress) => {
       elapsed = Math.max(0, Math.min(0.999, progress)) * duration;
-      renderAnimations();
+      setAnimationsTime();
       updateTimelineHooks();
       updateTimelineUi(true);
     };
@@ -247,7 +299,9 @@
         resumeTimer = null;
         syncState();
       }, delay + 40);
-      syncState();
+      // During a pointer drag the state is already paused; re-running the
+      // full sync for every input event would just churn the DOM.
+      if (!scrubbing) syncState();
     };
 
     const updateLabel = () => {
@@ -312,7 +366,14 @@
 
       if (supportsScrubbing && running && !animations.length) {
         collectAnimations();
-        renderAnimations();
+      }
+
+      if (supportsScrubbing && running) {
+        const shouldAnimate = !isPaused();
+        if (shouldAnimate && !animationsRunning) playAnimations();
+        else if (!shouldAnimate && animationsRunning) pauseAnimations();
+      } else if (supportsScrubbing && animationsRunning) {
+        pauseAnimations();
       }
 
       updateTimelineHooks();
@@ -409,7 +470,7 @@
     });
 
     // Responsive breakpoints swap some animation names, which creates new
-    // CSSAnimation objects; re-collect so the scrub clock keeps control.
+    // CSSAnimation objects; re-collect so the shared clock keeps control.
     let resizeTimer = null;
     window.addEventListener("resize", () => {
       if (!supportsScrubbing) return;
@@ -417,7 +478,6 @@
       resizeTimer = window.setTimeout(() => {
         resizeTimer = null;
         collectAnimations();
-        renderAnimations();
       }, 220);
     });
 
