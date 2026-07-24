@@ -4,23 +4,30 @@ const net = require("net");
 const path = require("path");
 
 const SITE = path.resolve(__dirname, "..");
-const PLAYWRIGHT_FALLBACK = path.resolve(
-  SITE,
-  "..",
-  "..",
-  "Workspace",
-  "Browser_Automation",
-  "node_modules",
-  "playwright"
-);
+const PLAYWRIGHT_FALLBACKS = [
+  path.resolve(SITE, ".playwright-test", "node_modules", "playwright"),
+  path.resolve(
+    SITE,
+    "..",
+    "Workspace",
+    "Browser_Automation",
+    "node_modules",
+    "playwright"
+  )
+];
 const { chromium } = loadPlaywright();
 const checks = [];
 
 function loadPlaywright() {
   try {
     return require("playwright");
-  } catch (error) {
-    return require(PLAYWRIGHT_FALLBACK);
+  } catch (primaryError) {
+    for (const fallback of PLAYWRIGHT_FALLBACKS) {
+      try {
+        return require(fallback);
+      } catch {}
+    }
+    throw primaryError;
   }
 }
 
@@ -198,6 +205,7 @@ async function verifyLayout(browser, origin, spec) {
         playingVideos: videos.filter(video => !video.paused).length,
         stageAnimations: stage?.getAnimations({ subtree: true }).length || 0,
         legacyFilmNodes: stage?.querySelectorAll(".invoice-showcase-animated").length || 0,
+        floatingNudgePresent: Boolean(document.querySelector("#invoice-demo-nudge")),
         scrollWidth: document.documentElement.scrollWidth,
         clientWidth: document.documentElement.clientWidth
       };
@@ -207,6 +215,11 @@ async function verifyLayout(browser, origin, spec) {
     check(
       `${spec.name}: legacy film has no live DOM or CSS animations`,
       state.stageAnimations === 0 && state.legacyFilmNodes === 0,
+      JSON.stringify(state)
+    );
+    check(
+      `${spec.name}: no floating CTA can cover the showcase`,
+      state.floatingNudgePresent === false,
       JSON.stringify(state)
     );
     check(`${spec.name}: no horizontal overflow`, state.scrollWidth <= state.clientWidth + 1, `${state.scrollWidth}/${state.clientWidth}`);

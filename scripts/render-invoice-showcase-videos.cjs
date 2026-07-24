@@ -7,15 +7,17 @@ const { spawn } = require("child_process");
 
 const SITE = path.resolve(__dirname, "..");
 const OUTPUT = path.join(SITE, "media", "invoice-showcase");
-const PLAYWRIGHT_FALLBACK = path.resolve(
-  SITE,
-  "..",
-  "..",
-  "Workspace",
-  "Browser_Automation",
-  "node_modules",
-  "playwright"
-);
+const PLAYWRIGHT_FALLBACKS = [
+  path.resolve(SITE, ".playwright-test", "node_modules", "playwright"),
+  path.resolve(
+    SITE,
+    "..",
+    "Workspace",
+    "Browser_Automation",
+    "node_modules",
+    "playwright"
+  )
+];
 const { chromium } = loadPlaywright();
 const DURATION_MS = 26000;
 const FPS = 24;
@@ -79,8 +81,13 @@ const RENDERS = requestedNames.size
 function loadPlaywright() {
   try {
     return require("playwright");
-  } catch (error) {
-    return require(PLAYWRIGHT_FALLBACK);
+  } catch (primaryError) {
+    for (const fallback of PLAYWRIGHT_FALLBACKS) {
+      try {
+        return require(fallback);
+      } catch {}
+    }
+    throw primaryError;
   }
 }
 
@@ -131,6 +138,12 @@ async function prepareAnimation(page, origin, render) {
 
     const navbar = document.querySelector(".navbar");
     if (navbar) navbar.style.setProperty("visibility", "hidden", "important");
+
+    // Fixed page UI can overlap the stage even when it lives outside the
+    // showcase DOM. Remove all explicitly excluded elements before capture.
+    document.querySelectorAll(
+      "[data-showcase-recording-exclude], .invoice-demo-nudge"
+    ).forEach(element => element.remove());
 
     const stage = root.querySelector(".invoice-showcase-stage");
     const template = document.querySelector("#invoice-showcase-render-template");
@@ -297,9 +310,16 @@ async function main() {
   try {
     await waitForServer(`${origin}/rechnung-demo.html`);
     browser = await chromium.launch({ headless: true });
-    for (const render of RENDERS) {
-      await renderVideo(browser, origin, render);
-    }
+    let nextRenderIndex = 0;
+    const workerCount = Math.min(3, RENDERS.length);
+    const workers = Array.from({ length: workerCount }, async () => {
+      while (nextRenderIndex < RENDERS.length) {
+        const render = RENDERS[nextRenderIndex];
+        nextRenderIndex += 1;
+        await renderVideo(browser, origin, render);
+      }
+    });
+    await Promise.all(workers);
   } finally {
     if (browser) await browser.close();
     server.kill();
