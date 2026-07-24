@@ -19,6 +19,7 @@
 
   function bindShowcases() {
     document.querySelectorAll("[data-showcase]").forEach((root) => {
+      if (root.querySelector("[data-showcase-video-stack]")) return;
       if (root.dataset.showcaseBound) return;
       root.dataset.showcaseBound = "1";
       showcaseControllers.push(createShowcaseController(root));

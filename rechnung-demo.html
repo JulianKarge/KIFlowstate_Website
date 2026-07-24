@@ -43,12 +43,13 @@
 
     <link rel="stylesheet" href="css/vendor/swiper-bundle.min.css?v=mobile-swiper-2" />
     <link rel="stylesheet" href="css/styles.css?v=showcase-film-1" />
-    <link rel="stylesheet" href="css/invoice-showcase.css?v=showcase-film-6" />
+    <link rel="stylesheet" href="css/invoice-showcase.css?v=showcase-video-1" />
     <script defer src="js/translations.js"></script>
     <script defer src="js/script.js"></script>
     <script defer src="js/vendor/swiper-bundle.min.js?v=mobile-swiper-2"></script>
     <script defer src="js/mobile-card-swipers.js?v=mobile-swiper-2"></script>
-    <script defer src="js/invoice-showcase.js?v=showcase-film-3"></script>
+    <script defer src="js/invoice-showcase.js?v=showcase-video-1"></script>
+    <script defer src="js/invoice-showcase-video.js?v=showcase-video-1"></script>
   </head>
 
   <body>
@@ -210,6 +211,41 @@
             </div>
 
             <div class="invoice-showcase-stage" aria-hidden="true">
+              <div class="invoice-showcase-video-stack" data-showcase-video-stack>
+                <video
+                  class="invoice-showcase-video is-active"
+                  data-showcase-video="de"
+                  data-desktop-src="media/invoice-showcase/invoice-showcase-de-desktop.mp4"
+                  data-laptop-src="media/invoice-showcase/invoice-showcase-de-laptop.mp4"
+                  data-tablet-src="media/invoice-showcase/invoice-showcase-de-tablet.mp4"
+                  data-mobile-src="media/invoice-showcase/invoice-showcase-de-mobile.mp4"
+                  muted
+                  playsinline
+                  loop
+                  preload="auto"
+                  tabindex="-1"
+                  aria-hidden="true"
+                ></video>
+                <video
+                  class="invoice-showcase-video"
+                  data-showcase-video="en"
+                  data-desktop-src="media/invoice-showcase/invoice-showcase-en-desktop.mp4"
+                  data-laptop-src="media/invoice-showcase/invoice-showcase-en-laptop.mp4"
+                  data-tablet-src="media/invoice-showcase/invoice-showcase-en-tablet.mp4"
+                  data-mobile-src="media/invoice-showcase/invoice-showcase-en-mobile.mp4"
+                  muted
+                  playsinline
+                  loop
+                  preload="auto"
+                  tabindex="-1"
+                  aria-hidden="true"
+                ></video>
+                <span class="invoice-showcase-video-loading" aria-hidden="true">
+                  <i class="fas fa-circle-notch fa-spin"></i>
+                </span>
+              </div>
+
+              <template id="invoice-showcase-render-template">
               <article class="showcase-glass-card showcase-email-card invoice-showcase-animated">
                 <header>
                   <span class="showcase-app-icon"><i class="fas fa-envelope"></i></span>
@@ -383,7 +419,7 @@
                   </li>
                 </ol>
               </aside>
-
+              </template>
             </div>
 
             <div
