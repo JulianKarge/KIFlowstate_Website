@@ -4,15 +4,14 @@ let logoInstance = null;
 let loading = false;
 
 async function loadLogo() {
-  if (!stage || logoInstance || loading) return;
+  if (!stage || !desktopLogo.matches || logoInstance || loading) return;
   loading = true;
 
   try {
     const { mountHeroLogo } = await import('./flowstate-3d/hero-logo-3d.js');
+    if (!desktopLogo.matches) return;
     stage.classList.remove('is-fallback');
-    logoInstance = mountHeroLogo(stage, {
-      backgroundMode: !desktopLogo.matches,
-    });
+    logoInstance = mountHeroLogo(stage);
   } catch (error) {
     stage.classList.add('is-fallback');
     console.warn('The interactive hero logo could not be loaded.', error);
@@ -26,11 +25,11 @@ function onBreakpointChange() {
     logoInstance.dispose();
     logoInstance = null;
   }
-  loadLogo();
+  if (desktopLogo.matches) loadLogo();
 }
 
 if (stage) {
-  loadLogo();
+  if (desktopLogo.matches) loadLogo();
   desktopLogo.addEventListener('change', onBreakpointChange);
 
   const onPageHide = (event) => {
