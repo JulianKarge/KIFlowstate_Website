@@ -1,76 +1,77 @@
 <claude-mem-context>
 # Memory Context
 
-# [Website] recent context, 2026-07-05 10:46pm GMT+2
+# [Website] recent context, 2026-07-24 10:06pm GMT+2
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 50 obs (21.687t read) | 733.786t work | 97% savings
+Stats: 50 obs (21.164t read) | 346.499t work | 94% savings
 
-### Jul 4, 2026
-S393 Fix resources entry with incorrect YouTube video ID and remove duplicate field (Jul 4, 8:12 PM)
-### Jul 5, 2026
-S394 Frontend refinements to rechnung-demo.html for KIFlowState website—fix layout issues with numbered elements and button styling, improve conversion flow with brand-aligned design (Jul 5, 1:43 AM)
-S395 Remove secondary "Nachricht schreiben" CTA buttons from invoice demo page and redesign the contact form to match the main page's "Schreiben Sie Uns" form styling and functionality (Jul 5, 11:01 AM)
-S396 Add animated wave-triggered CTA button to website section with chaos-related documents, directing customers to demo page (Jul 5, 11:44 AM)
-S397 Add CTA button that pops up when wave animation completes, linking to demo page; preserve existing animation and integrate button naturally (Jul 5, 2:14 PM)
-S398 Add wave-end CTA button to chaos section: keep the wave animation, reveal button when wave completes, link to demo page, make it visually appealing (Jul 5, 2:14 PM)
-S399 Move CTA section down away from wave graphic; ensure mobile responsiveness and English translation for all content (Jul 5, 2:18 PM)
-S400 Move CTA lower to clear wave graphic; ensure mobile responsiveness and English translation (Jul 5, 2:26 PM)
-1286 2:26p 🔵 Carousel drag interaction verified with automation script
-1287 " ✅ CTA visibility logic refactored with hysteresis to prevent scroll flickering
-1288 2:27p 🟣 CTA exit animation added with storyCtaLeave keyframes
-1289 " 🔵 Verification passed: CTA hysteresis logic and exit animation fully implemented
-1290 " 🔵 Scroll hysteresis and exit animation behavior verified across full scroll cycle
-1291 2:28p 🔵 Mobile static scene verified: CTA immediately visible without scroll-based animation
-1292 " 🔵 Website structure: Two main sections already implemented with animations
-S401 Read-only audit of two KIFlowstate homepage sections (Services #services and Method #method / Vom KI-Dschungel in den Flow) to document current HTML/CSS/JS structure, translation keys, brand constraints, active work conflicts, and redesign recommendations before proceeding with changes. (Jul 5, 2:29 PM)
-1293 2:29p ⚖️ Delegated GitHub design pattern research to parallel explorer agent
-1294 " ⚖️ Spawned Pascal audit agent and initiated four-step redesign plan
-1295 " 🔵 Brand system architecture: comprehensive guidelines for services and flow sections
-1296 2:30p 🔵 Current site structure: Services and Method sections fully implemented with CSS grid, dark mode, responsive design
-1297 " 🔵 Development environment: HTTP server ready; in-app browser unavailable
-1298 2:31p 🔵 No browser backends available in session environment
-1299 " 🔵 Playwright visual regression test suite with baseline screenshots available
-1300 " ✅ Created Playwright capture script for target sections visual audit
-1301 2:32p 🔵 Playwright browsers missing; requires installation
-1302 " ✅ Updated capture script to use available Chromium 1228 executable
-1303 " 🔵 Captured baseline layout dimensions for services and method sections
-1304 2:33p 🔵 KI-News carousel drag and animation implementation discovered
-1305 2:34p 🟣 Stage-mode carousel drag-to-flip animation implemented
-1306 " 🔵 Carousel drag animation validated and automated test created
-1307 2:36p 🔵 Current Services & Method Section Architecture Analyzed
-1308 2:37p 🔵 Complete HTML/CSS/Translation Infrastructure Mapped for Redesign
-1309 2:38p 🟣 Services & Method Sections Redesigned with New Visual Metaphors
-1310 2:39p ✅ Translation Strings Updated for Services & Method Redesign
-1311 2:40p 🟣 CSS Redesign: Services & Method Sections with Visual Flow Metaphors
-1313 2:41p 🔵 Mobile card swiper implementation uses Swiper.js library with responsive breakpoint detection
-1312 " 🔵 CSS Patch Application Failed: Line Ending Mismatch
-1314 " 🔵 Mobile swiper tuned with specific gesture parameters for momentum and edge behavior on touch devices
-1316 " ⚖️ Created Playwright-based mobile swipe testing script with iPhone 13 device profile and CDP touch event simulation
-1315 2:42p 🟣 Complete CSS Redesign Applied: Services & Method Sections Ready
-1317 " ✅ Service Demo Flow Elements Internationalized
-1318 " 🔵 Mobile swiper functionality verified working on both invoice and news-items carousels on iPhone 13
-1319 " ✅ Service Demo Flow Translations Completed; Redesign Implementation Finalized
-1320 " 🔵 Redesign Implementation Verified: Syntax & Completeness Checks Passed
-1321 " 🟣 Visual Verification Test Created for Redesign Sections
-1322 2:43p 🟣 Visual Verification Complete: Redesign Renders Correctly Across All Breakpoints
-S402 Verify carousel drag functionality works consistently across desktop (mouse), mobile (touch), and keyboard/navigation inputs; ensure smooth finger-tracking behavior on real devices (Jul 5, 2:43 PM)
-1323 8:18p 🔵 KIFlowstate Website Structure Analysis
-1324 8:27p ✅ Improved Method Section Copy and Messaging
-1325 8:30p ✅ Redesigned Method Flow Visualization with Waypoint Architecture
-1326 " 🟣 Mobile-Optimized Appointment Booking Experience
-1327 8:31p ✅ Added "Before" State Label to Flow Story Section
-1328 " ✅ Completed Before/After Narrative with "After" State Label
-1329 " ✅ Removed "Before" State Label from Flow Story
-1330 8:32p ✅ Method scrolly mobile responsiveness improvements
-1331 8:34p ✅ Story Copy Flow Visual Hierarchy Redesigned
-1332 " 🟣 Dynamic Waypoint Positioning on Method Flow Wave
-1333 " 🔴 Waypoint Positioning Resilience on SVG Render Completion
-1334 8:39p 🔵 Browser automation script created to inspect "Vom KI-Dschungel in den Flow" section layout
-1335 8:43p ✅ Fine-tune method story waypoint animation timing
+### Jul 10, 2026
+S425 User uploaded a new YouTube video (eXKRngP-vQQ) and requested: pull latest changes from laptop, add the video to the website, fetch metadata/thumbnail, and use the appropriate skill for video management (Jul 10, 4:41 PM)
+### Jul 22, 2026
+S426 Add newly uploaded YouTube video (eXKRngP-vQQ, "So maximierst du dein ChatGPT Codex Workflow") to the website's video resources page with thumbnail, metadata, and supporting resource links (Jul 22, 8:08 PM)
+S427 Configure winclipshot.exe to run automatically on PC restart as a persistent background process (Jul 22, 8:18 PM)
+### Jul 24, 2026
+S428 Make WinClipShot process persist across PC restarts by configuring automatic startup on logon (Jul 24, 6:47 PM)
+S429 Implement Ctrl+Shift+V keybinding to convert screenshot clipboard to file path in terminals, while keeping Ctrl+V as normal image paste (Jul 24, 6:48 PM)
+1495 7:26p 🔵 winclipshot clipboard interception mechanism
+1496 " 🔵 AutoHotkey not installed; winclipshot help verified
+1497 7:27p 🔵 .NET and PowerShell compilation infrastructure available
+1499 " 🟣 WinClipShotHotkey .NET tool created for Ctrl+Shift+V custom paste
+1498 7:28p 🔵 Browser runtime unavailable for local website preview
+1501 7:29p 🟣 Hero section redesigned with canvas-based wave system and glassmorphism
+1500 " 🔴 WinClipShotHotkey compilation errors fixed
+1502 " 🟣 WinClipShotHotkey compiled and published successfully
+1503 " 🟣 WinClipShotHotkey built and deployed to project root
+1506 7:30p 🟣 Hero section messaging and layout redesigned to emphasize operational automation
+1504 " ✅ WinClipShotHotkey registered as Windows Scheduled Task for auto-launch at logon
+1505 7:31p 🔵 WinClipShotHotkey active and monitoring VS Code processes
+S430 Improve KIFlowstate website hero section: reduce "AI slop" appearance, make more immersive, fix wave particles (Jul 24, 7:31 PM)
+1507 7:32p ✅ SEO metadata and page title updated to reflect SMB-focused positioning
+1508 " 🟣 Translation strings updated to support redesigned hero section with SMB messaging
+S431 Redesign the KIFlowstate hero section to be "less AI looking" by improving typography, hierarchy, and wave treatment while preserving all existing copy. (Jul 24, 7:32 PM)
+1509 7:34p ⚖️ Hero section design direction reverted to aspirational aesthetic; SMB operational messaging abandoned
+1510 " ✅ Translation strings reverted; SMB-specific messaging and workflow-log keys removed
+1511 7:35p 🔵 CSS/HTML mismatch: hero styles not reverted while HTML and translations were
+1512 7:36p 🟣 Hero section CSS completely redesigned with typographic-focused layout and architectural styling
+1513 7:37p 🔵 CSS patch application failed: target lines not found in file
+S432 Redesign KIFlowstate website hero section: remove problematic wave particle animation, make text less AI-generated-looking, create immersive but authentic design (Jul 24, 7:37 PM)
+1514 7:46p ✅ Hero Section Redesign: Removed Wave Particles, Restructured Layout
+1515 7:47p ✅ Hero Section CSS Redesign: Dark Animated to Light Brand-Focused
+1516 7:48p ✅ CTA Button and Social Links Styling Updated to Light Theme
+1517 " 🔄 Tablet Breakpoint Responsive Design Simplified
+1518 " ✅ Dark Theme CTA Button Hover State Fixed
+S433 Redesign KIFlowstate website hero: reduce AI-generated appearance, make immersive without distracting particle effects, improve wave animation (Jul 24, 7:48 PM)
+1519 7:49p ⚖️ Design Direction Pivot: Restore Animated Wave Hero with Refinements
+1520 7:50p ✅ Restore Animated Wave Hero While Preserving Layout Restructuring
+1521 " ✅ Hero CSS Overhaul: Bright Flow Field with Wave Animation and Refined Typography
+1522 " ✅ CTA Button and Social Links Redesigned for Dark Wave Background
+1523 " 🔄 Mobile Hero Typography Consolidated and Layout Simplified
+1524 7:51p 🟣 Hero Wave Animation System Recreated: Clean, Interactive Canvas Rendering
+1525 7:52p ✅ Hero Title Hierarchy Refined: Prefix and Suffix Typography Tuning
+1526 " ⚖️ Hero Redesign Project Completed: Bright Flow Field with Clean Wave Animation
+1527 9:05p 🔵 CSS spacing inspection between hero and flow-story sections
+1528 " 🔴 Located flow-story section causing gap; changed border-block to border-bottom
+1529 " 🔵 Verified CSS structure for flow-story with responsive and dark-mode rules intact
+1530 9:06p 🔵 Examined visual/scene elements of flow-story section with 3D transforms
+1531 9:07p 🔴 Applied targeted CSS fix to reduce gap in flow-story section
+1532 " 🔵 Verified CSS patch applied successfully with no syntax errors
+S434 Fix vertical gap between flow-story "documents without word chaos" section and starting page without altering other design elements (Jul 24, 9:07 PM)
+1533 9:59p 🔵 /watch skill setup preflight on Windows
+1534 " ✅ yt-dlp binary installed on Windows
+1535 10:00p 🔵 Watch setup progressed to API key configuration stage
+1536 " 🟣 Video analysis workflow operational on YouTube Shorts
+1537 " 🔵 YouTube Shorts is sports video, not music content
+1538 10:03p 🟣 Shazamio music identification library installed
+1539 " 🔵 Shazamio music recognition script failed on video file
+1540 " 🔵 Shazamio import fails in subprocess despite successful installation
+1541 10:04p 🔵 Shazamio native extension crashes with access violation on import
+1542 " 🔵 Shazamio successfully installed for Python 3.12 using pre-built wheels
+1543 " 🟣 Music identification via Shazamio successfully identifies YouTube Shorts song
+1544 10:05p 🟣 Full version of song identified and located on YouTube
 
-Access 734k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 346k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>

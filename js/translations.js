@@ -16,6 +16,7 @@ const translations = {
 
     hero_title_1: "Erreiche den",
     hero_title_2: "mit KI-gesteuerter Automation",
+    hero_eyebrow: "KI-Automationsagentur",
     hero_subtitle: "Wir entwerfen, bauen & warten End‑to‑End-Automatisierungen, die Ihnen Ihre Fokuszeit zurückgeben.",
     hero_cta: "Kostenloses Erstgespräch buchen",
     flow_story_kicker: "Beleg-Flow f&uuml;r kleine Betriebe",
@@ -431,6 +432,7 @@ const translations = {
 
     hero_title_1: "Unlock",
     hero_title_2: "with AI‑Driven Automation",
+    hero_eyebrow: "AI Automation Agency",
     hero_subtitle: "We design, build & maintain end‑to‑end automations that give you back your focus time.",
     hero_cta: "Book a Free Discovery Call",
     flow_story_kicker: "Document flow for small businesses",
