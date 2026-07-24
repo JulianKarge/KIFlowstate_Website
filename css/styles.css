@@ -9983,39 +9983,7 @@ section:not(.hero) .container {
   }
 
   .hero-logo-slot {
-    position: absolute;
-    z-index: 1;
-    top: clamp(2.4rem, 8vw, 4.2rem);
-    right: clamp(-5rem, -12vw, -4rem);
-    display: block;
-    width: clamp(19rem, 76vw, 25rem);
-    margin: 0;
-    opacity: 0.24;
-    pointer-events: none;
-    -webkit-mask-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(0, 0, 0, 0.22) 22%,
-      #000 52%,
-      #000 100%
-    );
-    mask-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(0, 0, 0, 0.22) 22%,
-      #000 52%,
-      #000 100%
-    );
-  }
-
-  .hero-logo-slot::after,
-  .hero-logo-hint {
     display: none;
-  }
-
-  .hero-logo-stage.is-background-mode {
-    cursor: default;
-    pointer-events: none;
   }
 }
 
