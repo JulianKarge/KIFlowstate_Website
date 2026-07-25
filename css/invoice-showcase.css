@@ -175,6 +175,7 @@
   --showcase-glass: rgba(255, 255, 255, 0.73);
   --showcase-glass-border: rgba(255, 255, 255, 0.66);
   perspective: 1600px;
+  scroll-margin-top: 5rem;
 }
 
 .invoice-showcase-cta {
@@ -1881,11 +1882,12 @@
   }
 
   .invoice-showcase-frame {
-    min-height: 892px;
+    min-height: 0;
+    padding-bottom: 102px;
   }
 
   .invoice-showcase-stage {
-    height: 730px;
+    height: min(730px, calc(200.55vw - 52.14px));
   }
 
   .showcase-email-card,
