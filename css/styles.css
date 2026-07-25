@@ -9806,7 +9806,8 @@ section:not(.hero) .container {
 /* ─── INTERACTIVE 3D HERO MARK ─────────────────────────────────────────────
    The existing flow field stays the hero's atmosphere; the physical mark is
    the single foreground object. It occupies the desktop whitespace without
-   competing with the headline and is deliberately skipped on small screens. */
+   competing with the headline, then becomes a restrained background layer
+   behind the copy on small screens. */
 .hero-content {
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(22rem, 0.88fr);
@@ -9978,12 +9979,55 @@ section:not(.hero) .container {
 
 @media (max-width: 860px) {
   .hero-content {
+    position: relative;
     display: block;
     width: min(100% - 2rem, 1100px);
   }
 
+  .hero-copy {
+    position: relative;
+    z-index: 2;
+  }
+
   .hero-logo-slot {
+    position: absolute;
+    z-index: 0;
+    top: clamp(4.5rem, 10vw, 6.5rem);
+    right: -7.5rem;
+    display: block;
+    width: clamp(19rem, 80vw, 26rem);
+    margin: 0;
+    opacity: 0.3;
+    pointer-events: none;
+    contain: layout paint;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.2) 24%,
+      #000 56%,
+      #000 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.2) 24%,
+      #000 56%,
+      #000 100%
+    );
+  }
+
+  .hero-logo-slot::after,
+  .hero-logo-hint {
     display: none;
+  }
+
+  .hero-logo-stage::before {
+    opacity: 0.48;
+  }
+
+  .hero-logo-stage.is-background-mode {
+    cursor: default;
+    pointer-events: none;
   }
 }
 
