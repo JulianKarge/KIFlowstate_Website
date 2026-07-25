@@ -8177,11 +8177,13 @@ section:not(.hero) .container {
     text-align: center;
   }
 
+  /* On phones the row is the last thing in the hero, so it reads best as a
+     centred strip rather than a ragged left-aligned block. */
   .hero-social-links {
-    justify-content: flex-start;
+    justify-content: center;
     gap: 0.5rem;
     width: 100%;
-    margin: 1.9rem 0 0;
+    margin: 1.9rem auto 0;
   }
 
   /* Labels collapse to clean icon circles on small screens. */
@@ -10695,7 +10697,12 @@ section:not(.hero) .container {
   }
 }
 
-/* -- Phones and small tablets: no pinning, calm resolved band ---------- */
+/* -- Phones and small tablets: no pinning, calm resolved band ----------
+   The scroll chapter is a desktop story. On a phone the section keeps only
+   what it can say well: the promise, three numbered steps, the settled
+   water, and the stations as a waterline under it. Tokens, the pinned
+   statement, the from/to bar and the step body copy all need scroll runway
+   or hover that a phone does not have, so they stay out. */
 
 @media (max-width: 900px) {
   .flowfield {
@@ -10707,83 +10714,170 @@ section:not(.hero) .container {
     display: flex;
     flex-direction: column;
     height: auto;
+    padding-bottom: clamp(1.75rem, 6vw, 3rem);
   }
 
   .flowfield-canvas {
     position: relative;
     order: 2;
     inset: auto;
-    height: clamp(190px, 30vh, 260px);
-    margin-top: clamp(1.25rem, 4vw, 2rem);
+    height: clamp(168px, 25vh, 225px);
+    margin-top: clamp(1.5rem, 5vw, 2.25rem);
+    /* The band no longer runs to the bottom of a pinned stage, so the water
+       is faded out instead of cut off by the canvas edge. */
+    -webkit-mask-image: linear-gradient(180deg, #000 76%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(180deg, #000 76%, rgba(0, 0, 0, 0) 100%);
   }
 
   .flowfield-inner {
     display: block;
     order: 1;
     height: auto;
-    padding-top: clamp(3.5rem, 9vw, 5rem);
+    /* Clears the sticky navbar so the kicker is never half-hidden when the
+       section is scrolled to from the menu. */
+    padding-top: clamp(4.5rem, 12vw, 5.5rem);
   }
 
-  .flowfield-stations {
-    order: 3;
+  #method.flowfield #method-title {
+    max-width: 15ch;
+    font-size: clamp(2rem, 8.6vw, 2.7rem);
+    line-height: 1.05;
   }
 
+  .flowfield-lead {
+    max-width: 32ch;
+    margin-top: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  /* One sentence carries the promise here; the second is desktop breathing
+     room and would push the steps below the fold. */
+  .flowfield-lead-rest {
+    display: none;
+  }
+
+  /* The rail becomes a quiet numbered list: step name, one supporting line,
+     hairline between. Nothing expands, nothing is tappable. */
   .flowfield-steps {
     max-width: none;
-    margin-top: clamp(1.75rem, 5vw, 2.5rem);
+    margin-top: clamp(1.6rem, 5vw, 2.1rem);
+    border-left: 0;
+    border-bottom: 1px solid var(--flow-hair);
+    counter-reset: flowstep;
   }
 
-  .flowfield-step-label {
-    color: var(--primary-dark);
+  .flowfield-step {
+    counter-increment: flowstep;
+    display: grid;
+    grid-template-columns: 2.3rem minmax(0, 1fr);
+    align-items: start;
+    border-top: 1px solid var(--flow-hair);
   }
 
-  .flowfield-step-title {
+  .flowfield-step::before,
+  .flowfield-step.is-active::before {
+    content: counter(flowstep, decimal-leading-zero);
+    position: static;
+    width: auto;
+    height: auto;
+    padding-top: 0.98rem;
+    background: none;
+    color: var(--accent);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    opacity: 1;
+    transform: none;
+  }
+
+  .flowfield-step button {
+    padding: 0.85rem 0 0.95rem;
+    cursor: default;
+  }
+
+  /* Name first, explanation second: the reverse of the desktop rail, where
+     the label is only a marker for the active chapter. Selectors are kept
+     at the same weight as the `.is-active` rules above so no chapter can
+     colour itself differently here. */
+  .flowfield-step .flowfield-step-label {
+    color: var(--flow-ink);
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .flowfield-step .flowfield-step-title {
+    margin-top: 0.1rem;
+    color: var(--flow-muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* Dark keeps the same hierarchy: the accent stays on the number, the step
+     name reads as ink like it does in light. */
+  [data-theme="dark"] .flowfield-step .flowfield-step-label {
     color: var(--flow-ink);
   }
 
   .flowfield-step-text,
-  .flowfield-step.is-active .flowfield-step-text {
-    max-height: none;
-    margin-top: 0.32rem;
-    opacity: 1;
-  }
-
-  /* Every chapter is fully readable here, so none of them is "the active
-     one" and the rail marks all three the same way. */
-  .flowfield-step::before,
-  .flowfield-step.is-active::before {
-    opacity: 1;
-    transform: scaleY(1);
-    background: var(--accent);
-  }
-
-  /* The drifting tokens and the pinned statement need scroll room the
-     phone layout does not have. The steps carry the same story in text. */
   .flowfield-tokens,
-  .flowfield-statement {
+  .flowfield-statement,
+  .flowfield-state {
     display: none;
   }
 
+  /* Stations read as the waterline under the canvas: one marker per stage
+     on a hairline, labels only. */
   .flowfield-stations {
-    position: static;
+    position: relative;
+    order: 3;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.9rem;
+    gap: 0.4rem;
     width: min(100% - clamp(2.5rem, 8vw, 8rem), 1320px);
-    margin: clamp(1.75rem, 5vw, 2.5rem) auto 0;
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--flow-hair);
+    margin: clamp(1.1rem, 4vw, 1.6rem) auto 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .flowfield-stations::before {
+    content: "";
+    position: absolute;
+    top: 0.24rem;
+    right: 16.6%;
+    left: 16.6%;
+    height: 1px;
+    background: var(--flow-hair);
   }
 
   .flowfield-station {
     --station-in: 1;
-    position: static;
+    position: relative;
+    /* Base width is max-content for the canvas scene; here the cell has to
+       fill its grid column or the marker sits off to the left of it. */
+    width: auto;
     max-width: none;
+    padding-top: 1.15rem;
+    text-align: center;
     transform: none !important;
   }
 
   .flowfield-station::after {
-    display: none;
+    display: block;
+    top: 0;
+    left: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    box-shadow: 0 0 0 4px rgba(51, 105, 242, 0.1);
+    transform: translateX(-50%);
+  }
+
+  .flowfield-station strong {
+    font-size: 0.82rem;
+    line-height: 1.25;
   }
 
   .flowfield-station strong,
@@ -10791,16 +10885,16 @@ section:not(.hero) .container {
     transform: none;
   }
 
-  .flowfield-state {
-    position: static;
-    margin-top: 1.5rem;
+  /* The stage names are the point here; their examples belong to the
+     desktop scene, where there is room for them. */
+  .flowfield-station small {
+    display: none;
   }
 }
 
-@media (max-width: 560px) {
-  .flowfield-stations {
-    grid-template-columns: 1fr;
-    gap: 0.6rem;
+@media (max-width: 360px) {
+  .flowfield-station strong {
+    font-size: 0.76rem;
   }
 }
 
@@ -10864,6 +10958,15 @@ section:not(.hero) .container {
 
   .flowfield-line.is-active {
     display: block;
+  }
+}
+
+/* The phone stage is already static and compact, so the desktop
+   reduced-motion min-height would only open a gap under the steps. */
+
+@media (prefers-reduced-motion: reduce) and (max-width: 900px) {
+  .flowfield-inner {
+    min-height: 0;
   }
 }
 

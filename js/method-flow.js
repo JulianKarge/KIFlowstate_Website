@@ -190,7 +190,9 @@
   let lastTime = 0;
   let running = false;
   let visible = false;
-  let chapter = -1;
+  /* null, not -1: the compact layout asks for chapter -1 straight away and
+     that first call still has to clear the markup's default active step. */
+  let chapter = null;
   let pointerX = 0.5;
   let pointerTargetX = 0.5;
   let response = 0;
@@ -614,6 +616,9 @@
   /* Step buttons scroll to their own chapter, which keeps the rail usable
      by keyboard without a second set of controls. */
   const jumpTo = (index) => {
+    /* The compact layout has no pinned runway, so a tap would scroll to an
+       arbitrary point inside the section instead of to its chapter. */
+    if (compactQuery.matches) return;
     const runway = Math.max(1, section.offsetHeight - window.innerHeight);
     const top = section.getBoundingClientRect().top + window.scrollY;
     const stops = [0.06, 0.44, 0.78];
