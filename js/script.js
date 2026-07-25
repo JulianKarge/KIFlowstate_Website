@@ -89,11 +89,18 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ▸ Navbar shrink/elevate on scroll */
   const navbar = document.querySelector(".navbar");
   if (navbar) {
-    const onScroll = () => {
-      navbar.classList.toggle("scrolled", window.scrollY > 12);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    const navSentinel = document.createElement("span");
+    navSentinel.className = "nav-scroll-sentinel";
+    navSentinel.setAttribute("aria-hidden", "true");
+    document.body.prepend(navSentinel);
+
+    if ("IntersectionObserver" in window) {
+      const navObserver = new IntersectionObserver(
+        ([entry]) => navbar.classList.toggle("scrolled", !entry.isIntersecting),
+        { threshold: 0 }
+      );
+      navObserver.observe(navSentinel);
+    }
   }
 
   /* ▸ Reveal-on-scroll via IntersectionObserver */
@@ -211,6 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const scene = flowStory.querySelector(".story-scene");
     const cards = Array.from(flowStory.querySelectorAll(".story-piece"));
     const hub = flowStory.querySelector(".story-hub");
+    const hubPanels = Array.from(flowStory.querySelectorAll(".hub-panel"));
     const waveFillPaths = Array.from(flowStory.querySelectorAll(".story-wave-fill-path"));
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const scenarioKeys = ["invoice", "reminder", "cancellation", "confirmation"];
@@ -222,10 +230,16 @@ document.addEventListener("DOMContentLoaded", () => {
     let storyRaf = 0;
     let storyCtaVisible = false;
     let storyCtaHasShown = false;
+    let flowStoryVisible = false;
     let scenarioIndex = 0;
     let scenarioTimer = 0;
     let scenarioAnimating = false;
     let scenarioTypingTimers = [];
+    let storyLoopActive = false;
+    let scenePointerTargetX = 0;
+    let scenePointerTargetY = 0;
+    let scenePointerX = 0;
+    let scenePointerY = 0;
 
     const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
     const ease = (value) => {
@@ -344,28 +358,39 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const updateStory = () => {
-      storyRaf = 0;
       if (!scene || !hub) return;
 
-      const staticScene = reduceMotion.matches || window.innerWidth <= 720;
       const total = Math.max(1, flowStory.offsetHeight - window.innerHeight);
-      const rawProgress = staticScene ? 1 : clamp(-flowStory.getBoundingClientRect().top / total);
-      const waveProgress = staticScene ? 1 : clamp(rawProgress / 0.9);
-      const flowReveal = ease((rawProgress - 0.36) / 0.26);
-      const ctaReveal = ease((rawProgress - ctaShowProgress) / 0.05);
-      const flyIn = ease(rawProgress / 0.34);
-      const organize = ease((rawProgress - 0.38) / 0.30);
-      const ctaShouldShow = staticScene || rawProgress >= ctaShowProgress || (storyCtaVisible && rawProgress > ctaHideProgress);
+      const rawProgress = reduceMotion.matches
+        ? 1
+        : clamp(-flowStory.getBoundingClientRect().top / total);
+      const waveProgress = reduceMotion.matches ? 1 : clamp(rawProgress / 0.9);
+      const flowReveal = ease((rawProgress - 0.47) / 0.22);
+      const ctaReveal = ease((rawProgress - ctaShowProgress) / 0.08);
+      const gather = ease((rawProgress - 0.12) / 0.36);
+      const organize = ease((rawProgress - 0.47) / 0.3);
+      const ctaShouldShow = rawProgress >= ctaShowProgress || (storyCtaVisible && rawProgress > ctaHideProgress);
+      const flowPhase = rawProgress < 0.34 ? "chaos" : rawProgress < 0.68 ? "routing" : "ready";
 
       if (ctaShouldShow !== storyCtaVisible) {
         storyCtaVisible = ctaShouldShow;
         if (storyCtaVisible) storyCtaHasShown = true;
       }
 
+      flowStory.dataset.flowPhase = flowPhase;
       flowStory.style.setProperty("--story-progress", rawProgress.toFixed(4));
       flowStory.style.setProperty("--story-pct", `${(rawProgress * 100).toFixed(2)}%`);
       flowStory.style.setProperty("--flow-reveal", flowReveal.toFixed(4));
       flowStory.style.setProperty("--story-cta-reveal", ctaReveal.toFixed(4));
+      // The two copy blocks share one box, so they hand over in sequence: the
+      // chaos block is fully gone before the flow block starts to appear.
+      // Overlapping the fades printed both headlines on top of each other.
+      flowStory.style.setProperty("--copy-out", (1 - ease((rawProgress - 0.42) / 0.08)).toFixed(4));
+      flowStory.style.setProperty("--copy-in", ease((rawProgress - 0.5) / 0.08).toFixed(4));
+      const ingestIn = ease((rawProgress - 0.2) / 0.18);
+      const ingestOut = ease((rawProgress - 0.58) / 0.18);
+      flowStory.style.setProperty("--ingest-opacity", (ingestIn * (1 - ingestOut * 0.72)).toFixed(3));
+      flowStory.style.setProperty("--ingest-scale", mix(0.72, 1.18, gather).toFixed(3));
       flowStory.classList.toggle("is-story-cta-ready", storyCtaVisible);
       flowStory.classList.toggle("is-story-cta-exiting", !storyCtaVisible && storyCtaHasShown);
       updateWaveDraw(waveProgress);
@@ -374,33 +399,39 @@ document.addEventListener("DOMContentLoaded", () => {
       const sceneHeight = Math.max(420, scene.clientHeight);
 
       cards.forEach((card, index) => {
-        const fromX = sceneWidth * dataNumber(card, "fromX") / 100;
-        const fromY = sceneHeight * dataNumber(card, "fromY") / 100;
-        const midX = sceneWidth * dataNumber(card, "midX") / 100;
-        const midY = sceneHeight * dataNumber(card, "midY") / 100;
+        // Keep the scattered documents inside the portal at the start.
+        // Their original coordinates still define the composition, while the
+        // factor prevents the "chaos" chapter from opening on an empty stage.
+        const fromX = sceneWidth * dataNumber(card, "fromX") * 0.45 / 100;
+        const fromY = sceneHeight * dataNumber(card, "fromY") * 0.45 / 100;
+        // The gathered pile keeps its shape but stays readable: without the
+        // spread the six cards stacked almost on one point.
+        const midX = sceneWidth * dataNumber(card, "midX") * 1.7 / 100;
+        const midY = sceneHeight * dataNumber(card, "midY") * 1.7 / 100;
         const toX = sceneWidth * dataNumber(card, "toX") / 100;
         const toY = sceneHeight * dataNumber(card, "toY") / 100;
         const fromRot = dataNumber(card, "fromRot");
         const midRot = dataNumber(card, "midRot");
         const toRot = dataNumber(card, "toRot");
         const depth = dataNumber(card, "depth");
-        const ripple = Math.sin(rawProgress * 18 + index * 1.7) * (1 - organize);
+        const ripple = Math.sin(rawProgress * 20 + index * 1.7) * (1 - organize);
 
-        const stagedX = mix(fromX, midX, flyIn);
-        const stagedY = mix(fromY, midY, flyIn);
-        const stagedRot = mix(fromRot, midRot, flyIn);
+        const stagedX = mix(fromX, midX, gather);
+        const stagedY = mix(fromY, midY, gather);
+        const stagedRot = mix(fromRot, midRot, gather);
         const x = mix(stagedX, toX, organize) + ripple * 9;
         const y = mix(stagedY, toY, organize) + ripple * 5;
         const rotation = mix(stagedRot, toRot, organize) + ripple * 1.4;
-        const z = mix(depth, 10, flyIn);
-        const finalZ = mix(z, -80 + index * 8, organize);
-        const scale = mix(mix(0.78, 1, flyIn), 0.76, organize);
-        const opacity = clamp(mix(0, 1, flyIn) * mix(1, 0.28, organize), 0, 1);
-        const tiltX = mix(18 - index * 1.8, -4, flyIn);
-        const tiltY = mix(index % 2 ? -18 : 18, 0, flyIn);
-
-        card.style.opacity = opacity.toFixed(3);
-        card.style.transform = [
+        const z = mix(depth, 18, gather);
+        const finalZ = mix(z, -150 + index * 10, organize);
+        const scale = mix(mix(0.88, 1, gather), 0.48, organize);
+        // The documents dissolve completely into the flow. Leaving a residual
+        // opacity left washed-out ghost cards sitting behind the finished hub.
+        const dissolve = ease((rawProgress - 0.5) / 0.16);
+        const opacity = clamp(mix(0.94, 1, gather) * (1 - dissolve), 0, 1);
+        const tiltX = mix(16 - index * 1.6, -3, gather);
+        const tiltY = mix(index % 2 ? -16 : 16, 0, gather);
+        const transform = [
           "translate3d(-50%, -50%, 0)",
           `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${finalZ.toFixed(1)}px)`,
           `rotateX(${tiltX.toFixed(2)}deg)`,
@@ -408,39 +439,93 @@ document.addEventListener("DOMContentLoaded", () => {
           `rotateZ(${rotation.toFixed(2)}deg)`,
           `scale(${scale.toFixed(3)})`
         ].join(" ");
+        card.style.setProperty("--card-opacity", opacity.toFixed(3));
+        card.style.setProperty("--card-transform", transform);
       });
 
-      const hubIn = ease((rawProgress - 0.48) / 0.18);
-      const hubY = mix(54, 0, hubIn);
-      const hubZ = mix(80, 190, hubIn);
-      const hubScale = mix(0.84, 1, hubIn);
-      const hubTilt = mix(9, 0, hubIn);
-
-      hub.style.opacity = hubIn.toFixed(3);
-      hub.style.transform = [
+      const hubIn = ease((rawProgress - 0.6) / 0.18);
+      const hubY = mix(70, 0, hubIn);
+      const hubZ = mix(-40, 180, hubIn);
+      const hubScale = mix(0.78, 1, hubIn);
+      const hubTilt = mix(12, 0, hubIn);
+      const hubTransform = [
         `translate3d(-50%, -50%, ${hubZ.toFixed(1)}px)`,
         `translateY(${hubY.toFixed(1)}px)`,
         `rotateX(${hubTilt.toFixed(2)}deg)`,
         `scale(${hubScale.toFixed(3)})`
       ].join(" ");
+      hub.style.setProperty("--hub-opacity", hubIn.toFixed(3));
+      hub.style.setProperty("--hub-transform", hubTransform);
+
+      const hubStage = rawProgress < 0.72 ? 0 : rawProgress < 0.86 ? 1 : 2;
+      hubPanels.forEach((panel, index) => {
+        panel.classList.remove("active");
+        panel.classList.toggle("is-current", index === hubStage);
+      });
+
+      scenePointerX += (scenePointerTargetX - scenePointerX) * 0.075;
+      scenePointerY += (scenePointerTargetY - scenePointerY) * 0.075;
+      scene.style.transform = `rotateX(${scenePointerY.toFixed(2)}deg) rotateY(${scenePointerX.toFixed(2)}deg)`;
+
+      if (flowStoryVisible && rawProgress > 0.72) startScenarioLoop();
+      else stopScenarioLoop();
+    };
+
+    const runStoryLoop = () => {
+      if (!storyLoopActive) return;
+      updateStory();
+      storyRaf = window.requestAnimationFrame(runStoryLoop);
+    };
+
+    const startStoryRender = () => {
+      if (storyLoopActive) return;
+      storyLoopActive = true;
+      storyRaf = window.requestAnimationFrame(runStoryLoop);
+    };
+
+    const stopStoryRender = () => {
+      storyLoopActive = false;
+      if (storyRaf) window.cancelAnimationFrame(storyRaf);
+      storyRaf = 0;
     };
 
     const requestStoryUpdate = () => {
-      if (!storyRaf) storyRaf = window.requestAnimationFrame(updateStory);
+      if (!storyLoopActive) updateStory();
     };
 
-    window.addEventListener("scroll", requestStoryUpdate, { passive: true });
+    if (scene) {
+      scene.addEventListener("pointermove", (event) => {
+        const rect = scene.getBoundingClientRect();
+        const normalizedX = clamp((event.clientX - rect.left) / Math.max(1, rect.width), 0, 1) * 2 - 1;
+        const normalizedY = clamp((event.clientY - rect.top) / Math.max(1, rect.height), 0, 1) * 2 - 1;
+        scenePointerTargetX = normalizedX * 4.5;
+        scenePointerTargetY = normalizedY * -3.2;
+      });
+      scene.addEventListener("pointerleave", () => {
+        scenePointerTargetX = 0;
+        scenePointerTargetY = 0;
+      });
+    }
+
     window.addEventListener("resize", requestStoryUpdate);
     if (reduceMotion.addEventListener) {
       reduceMotion.addEventListener("change", () => {
-        if (reduceMotion.matches) stopScenarioLoop();
-        else startScenarioLoop();
+        if (reduceMotion.matches) {
+          stopScenarioLoop();
+          stopStoryRender();
+        } else if (flowStoryVisible) {
+          startStoryRender();
+        }
         requestStoryUpdate();
       });
     } else if (reduceMotion.addListener) {
       reduceMotion.addListener(() => {
-        if (reduceMotion.matches) stopScenarioLoop();
-        else startScenarioLoop();
+        if (reduceMotion.matches) {
+          stopScenarioLoop();
+          stopStoryRender();
+        } else if (flowStoryVisible) {
+          startStoryRender();
+        }
         requestStoryUpdate();
       });
     }
@@ -451,97 +536,27 @@ document.addEventListener("DOMContentLoaded", () => {
       writeScenario(scenarioKeys[scenarioIndex]);
     });
     writeScenario(scenarioKeys[scenarioIndex]);
-    startScenarioLoop();
     updateStory();
-  }
 
-  /* ▸ Method story: scroll-linked AI jungle to flow transformation */
-  const methodStory = document.querySelector(".method-scrolly");
-  if (methodStory) {
-    const methodSteps = Array.from(methodStory.querySelectorAll("[data-method-step]"));
-    const methodPaths = Array.from(
-      methodStory.querySelectorAll(".method-flow-wave path:not(.method-flow-current)")
-    );
-    const methodReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let methodRaf = 0;
-
-    const clampMethod = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
-    const easeMethod = (value) => {
-      const t = clampMethod(value);
-      return t * t * (3 - 2 * t);
-    };
-
-    const updateMethodPaths = (progress) => {
-      methodPaths.forEach((path) => {
-        const length = path.getTotalLength();
-        const draw = easeMethod((progress - 0.12) / 0.74);
-        path.style.setProperty("--method-path-length", length.toFixed(2));
-        path.style.setProperty("--method-path-offset", (length * (1 - draw)).toFixed(2));
-      });
-    };
-
-    /* Pin the waypoint stations onto the rendered wave. The SVG stretches
-       with preserveAspectRatio="none", so we project path points through
-       the actual viewBox-to-pixel scale instead of hardcoding positions. */
-    const methodMap = methodStory.querySelector(".method-map");
-    const methodMainPath = methodStory.querySelector(".method-flow-main");
-    const methodWaypoints = [
-      { el: methodStory.querySelector(".method-waypoint-1"), t: 0.32 },
-      { el: methodStory.querySelector(".method-waypoint-2"), t: 0.54 },
-      { el: methodStory.querySelector(".method-waypoint-3"), t: 0.72 },
-    ].filter((wp) => wp.el);
-
-    const positionMethodWaypoints = () => {
-      if (!methodMap || !methodMainPath) return;
-      const svg = methodMainPath.ownerSVGElement;
-      const svgRect = svg.getBoundingClientRect();
-      const mapRect = methodMap.getBoundingClientRect();
-      if (!svgRect.width || !mapRect.width) return;
-      const viewBox = svg.viewBox.baseVal;
-      const total = methodMainPath.getTotalLength();
-
-      methodWaypoints.forEach(({ el, t }) => {
-        const point = methodMainPath.getPointAtLength(total * t);
-        const x = svgRect.left - mapRect.left + (point.x / viewBox.width) * svgRect.width;
-        const y = svgRect.top - mapRect.top + (point.y / viewBox.height) * svgRect.height;
-        el.style.left = `${((x / mapRect.width) * 100).toFixed(2)}%`;
-        el.style.top = `${((y / mapRect.height) * 100).toFixed(2)}%`;
-      });
-    };
-
-    const updateMethodStory = () => {
-      methodRaf = 0;
-      const staticScene = methodReduceMotion.matches || window.innerWidth <= 900;
-      const total = Math.max(1, methodStory.offsetHeight - window.innerHeight);
-      const progress = staticScene ? 1 : clampMethod(-methodStory.getBoundingClientRect().top / total);
-      const phase = progress < 0.36 ? 0 : progress < 0.72 ? 1 : 2;
-
-      methodStory.style.setProperty("--method-progress", progress.toFixed(4));
-      methodStory.dataset.methodPhase = String(phase);
-      methodSteps.forEach((step, index) => {
-        const isActive = staticScene ? index === 2 : index === phase;
-        step.classList.toggle("is-active", isActive);
-      });
-      updateMethodPaths(progress);
-    };
-
-    const requestMethodUpdate = () => {
-      if (!methodRaf) methodRaf = window.requestAnimationFrame(updateMethodStory);
-    };
-
-    window.addEventListener("scroll", requestMethodUpdate, { passive: true });
-    window.addEventListener("resize", () => {
-      positionMethodWaypoints();
-      requestMethodUpdate();
-    });
-    if (methodReduceMotion.addEventListener) {
-      methodReduceMotion.addEventListener("change", requestMethodUpdate);
-    } else if (methodReduceMotion.addListener) {
-      methodReduceMotion.addListener(requestMethodUpdate);
+    if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+      flowStory.classList.add("is-assembled");
+      updateStory();
+    } else {
+      const storyObserver = new IntersectionObserver(
+        ([entry]) => {
+          flowStoryVisible = entry.isIntersecting;
+          if (flowStoryVisible) {
+            flowStory.classList.add("is-assembled");
+            startStoryRender();
+          } else {
+            stopStoryRender();
+            stopScenarioLoop();
+          }
+        },
+        { threshold: 0.01, rootMargin: "15% 0px 15% 0px" }
+      );
+      storyObserver.observe(flowStory);
     }
-    window.addEventListener("load", positionMethodWaypoints);
-    positionMethodWaypoints();
-    updateMethodStory();
   }
 
   /* ▸ Services liquid wave: short scroll-linked flow reveal */
@@ -574,23 +589,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const updateServicesFlow = () => {
       servicesRaf = 0;
-      const staticScene = servicesReduceMotion.matches;
-      const rect = servicesFlow.getBoundingClientRect();
-      const sectionTop = window.scrollY + rect.top;
-      const travel = Math.max(1, servicesFlow.offsetHeight * 0.68);
-      const rawProgress = staticScene
-        ? 1
-        : clampServices((window.scrollY - sectionTop) / travel);
-      const progress = staticScene ? 1 : clampServices(rawProgress / 0.84);
-
-      setServicesProgress(progress, rawProgress);
+      setServicesProgress(1, 1);
     };
 
     const requestServicesUpdate = () => {
       if (!servicesRaf) servicesRaf = window.requestAnimationFrame(updateServicesFlow);
     };
 
-    window.addEventListener("scroll", requestServicesUpdate, { passive: true });
     window.addEventListener("resize", requestServicesUpdate);
     if (servicesReduceMotion.addEventListener) {
       servicesReduceMotion.addEventListener("change", requestServicesUpdate);

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <!-- Theme bootstrap — runs before paint to avoid flash of wrong theme.
+    <!-- Theme bootstrap: runs before paint to avoid flash of wrong theme.
          New visitors get light mode; only an explicit saved choice flips it. -->
     <script>
       (function () {
@@ -20,7 +20,7 @@
     <script data-goatcounter="https://kiflowstate.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
     <meta
       name="description"
-      content="KIFlowstate – AI-gesteuerte Automationsagentur, die Ihre Geschäftsprozesse optimiert."
+      content="KIFlowstate: AI-gesteuerte Automationsagentur, die Ihre Geschäftsprozesse optimiert."
       data-translate="meta_description"
     />
     <meta
@@ -69,7 +69,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;600;700&family=Schibsted+Grotesk:ital,wght@0,500;0,600;0,700;1,600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap"
       rel="stylesheet"
     />
 
@@ -83,7 +83,7 @@
     />
 
     <!-- Local assets (CORRECTED PATHS) -->
-    <link rel="stylesheet" href="css/styles.css?v=hero-logo-bg-2" />
+    <link rel="stylesheet" href="css/styles.css?v=flowfield-1" />
     <script type="importmap">
       {
         "imports": {
@@ -95,9 +95,10 @@
         }
       }
     </script>
-    <script defer src="js/translations.js"></script>
-    <script defer src="js/script.js"></script>
+    <script defer src="js/translations.js?v=flowfield-1"></script>
+    <script defer src="js/script.js?v=flowfield-1"></script>
     <script defer src="js/hero-waves.js"></script>
+    <script defer src="js/method-flow.js?v=flowfield-2"></script>
     <script defer src="js/ki-news.js"></script>
     <script defer src="js/ki-news-home.js"></script>
     <script type="module" src="js/hero-logo-loader.js?v=hero-logo-bg-2"></script>
@@ -154,7 +155,7 @@
       </div>
     </header>
 
-    <!-- ▸▸ HERO — BRIGHT FLOW FIELD -------------------------------------- -->
+    <!-- ▸▸ HERO: BRIGHT FLOW FIELD --------------------------------------- -->
     <section class="hero">
       <canvas class="hero-ocean" aria-hidden="true"></canvas>
       <div class="container hero-content">
@@ -202,19 +203,19 @@
     <!-- ABOUT section paused until founder/side-hustle approval is cleared. -->
 
     <!-- ▸▸ BELEG FLOW STORY -------------------------------------------------- -->
-    <section class="flow-story" id="beleg-flow" aria-label="Vom Word-Chaos zum Beleg-Flow">
+    <section class="flow-story" id="beleg-flow" data-flow-phase="chaos" aria-labelledby="flow-story-title">
       <div class="story-sticky">
         <div class="story-copy">
           <p class="story-eyebrow" data-translate="flow_story_kicker">Beleg-Flow f&uuml;r kleine Betriebe</p>
           <div class="story-copy-stack">
             <div class="story-copy-block story-copy-chaos">
-              <h2 data-translate="flow_story_chaos_title">Belege ohne Word-Chaos.</h2>
+              <h2 id="flow-story-title" data-translate="flow_story_chaos_title">Belege ohne Word-Chaos.</h2>
               <p data-translate="flow_story_chaos_text">
                 Vorlage suchen, alte Rechnung kopieren, Nummer anpassen, PDF speichern, Mailtext bauen. Kleine Schritte, aber jeden Tag ein bisschen Reibung.
               </p>
             </div>
             <div class="story-copy-block story-copy-flow">
-              <h2 data-translate="flow_story_flow_title">Aus losen Handgriffen wird ein klarer Ablauf.</h2>
+              <h3 data-translate="flow_story_flow_title">Aus Word-Chaos wird ein klarer Beleg-Flow.</h3>
               <p data-translate="flow_story_flow_text">
                 Kundendaten, Positionen, Steuer, PDF und Gmail werden nicht gr&ouml;&szlig;er als n&ouml;tig. Sie liegen einfach in der richtigen Reihenfolge.
               </p>
@@ -268,9 +269,18 @@
         </div>
 
         <div class="story-scene" aria-hidden="true">
+          <div class="story-depth-field"></div>
+          <div class="story-stage-rail">
+            <span data-translate="flow_stage_chaos">Word-Chaos</span>
+            <span data-translate="flow_stage_sort">Daten erkannt</span>
+            <strong data-translate="flow_stage_ready">Rechnung bereit</strong>
+          </div>
           <div class="story-orbit"></div>
           <div class="story-flowline">
             <i></i><i></i>
+          </div>
+          <div class="story-ingest-ring">
+            <i></i><i></i><i></i>
           </div>
 
           <article class="story-piece word-card card-word" data-from-x="-86" data-from-y="-38" data-from-rot="-18" data-mid-x="-18" data-mid-y="-12" data-mid-rot="-8" data-to-x="-35" data-to-y="-18" data-to-rot="-3" data-depth="90">
@@ -409,97 +419,85 @@
     </section>
     -->
 
-    <!-- ▸▸ METHOD ---------------------------------------------------------- -->
-    <section id="method" class="method method-scrolly reveal" aria-labelledby="method-title">
-      <div class="container method-inner method-scroll-inner">
-        <div class="method-copy">
-          <p class="section-kicker" data-translate="method_kicker">Unsere Methode</p>
-          <h2 id="method-title" data-translate="method_title">Vom KI-Dschungel in den Flow</h2>
-          <p class="section-lead" data-translate="method_lead">
-            Jede Woche ein neues KI-Tool, und trotzdem bleibt die Arbeit liegen. Wir starten bei Ihren echten Abläufen und bauen daraus einen Flow, der Ihren Alltag wirklich trägt.
+    <!-- ▸▸ METHOD / FLOW FIELD ---------------------------------------------
+      Full-bleed scroll chapter. A canvas current runs left to right under the
+      copy: scattered conflicting streams at the start, one braided flow at the
+      end. All text stays in the 2D plane so it remains crisp and selectable;
+      only the water is drawn on canvas (js/method-flow.js).
+    -->
+    <section id="method" class="flowfield" data-flow-chapter="0" aria-labelledby="method-title">
+      <div class="flowfield-stage">
+        <canvas class="flowfield-canvas" aria-hidden="true"></canvas>
+
+        <div class="flowfield-inner">
+          <div class="flowfield-head">
+            <p class="flowfield-kicker" data-translate="method_kicker">Unsere Methode</p>
+            <h2 id="method-title" data-translate="method_title">KI, die dem Mittelstand Zeit zurückgibt.</h2>
+            <p class="flowfield-lead" data-translate="method_lead">
+              Wir verwandeln fragmentierte Abläufe in verlässliche KI-Flows. Damit Ihr Team weniger verwaltet und mehr von dem tun kann, was den Betrieb wirklich voranbringt.
+            </p>
+          </div>
+
+          <ol class="flowfield-steps" data-translate-aria-label="method_steps_aria" aria-label="KIFlowstate Methode">
+            <li class="flowfield-step is-active" data-flow-step="0">
+              <button type="button" aria-current="step">
+                <span class="flowfield-step-label" data-translate="method_step1_label">Engpass sehen</span>
+                <span class="flowfield-step-title" data-translate="method_step1_title">Wo verliert Ihr Team jeden Tag Zeit?</span>
+                <span class="flowfield-step-text" data-translate="method_step1_text">Wir machen Aufgaben, Übergaben und Reibung sichtbar. Der stärkste Hebel wird zum Startpunkt.</span>
+              </button>
+            </li>
+            <li class="flowfield-step" data-flow-step="1">
+              <button type="button">
+                <span class="flowfield-step-label" data-translate="method_step2_label">Flow verbinden</span>
+                <span class="flowfield-step-title" data-translate="method_step2_title">Tools, Daten und Entscheidungen greifen ineinander</span>
+                <span class="flowfield-step-text" data-translate="method_step2_text">Wir bauen die Automation um Ihren Betrieb herum und verbinden, was bereits funktioniert.</span>
+              </button>
+            </li>
+            <li class="flowfield-step" data-flow-step="2">
+              <button type="button">
+                <span class="flowfield-step-label" data-translate="method_step3_label">Freiraum gewinnen</span>
+                <span class="flowfield-step-title" data-translate="method_step3_title">Mehr Zeit für Kunden, Handwerk und Wachstum</span>
+                <span class="flowfield-step-text" data-translate="method_step3_text">Der Flow wird getestet, dokumentiert und so verankert, dass Ihr Team ihn souverän nutzt.</span>
+              </button>
+            </li>
+          </ol>
+
+          <!-- Chapter statement: one line at a time, riding above the current. -->
+          <p class="flowfield-statement" aria-live="polite">
+            <span class="flowfield-line is-active" data-flow-line="0" data-translate="method_gate1_title">Reibung bekommt einen Namen.</span>
+            <span class="flowfield-line" data-flow-line="1" data-translate="method_gate2_title">Aus Einzelteilen wird ein System.</span>
+            <span class="flowfield-line" data-flow-line="2" data-translate="method_gate3_title">Technik arbeitet. Menschen gestalten.</span>
           </p>
-          <div class="method-state-line" aria-hidden="true">
+
+          <p class="flowfield-state" aria-hidden="true">
             <span data-translate="method_state_from">Tool-Dschungel</span>
             <i></i>
             <strong data-translate="method_state_to">KI-Flow im Betrieb</strong>
-          </div>
-
-          <div class="method-step-list" data-translate-aria-label="method_steps_aria" aria-label="KIFlowstate Methode">
-            <article class="method-step" data-method-step="0">
-              <span class="method-number">01</span>
-              <div>
-                <h3 data-translate="method_step1_title">Abläufe sichtbar machen</h3>
-                <p data-translate="method_step1_text">Wir schauen gemeinsam auf Ihre Aufgaben und finden die Stellen, an denen Zeit und Nerven verloren gehen.</p>
-              </div>
-            </article>
-            <article class="method-step" data-method-step="1">
-              <span class="method-number">02</span>
-              <div>
-                <h3 data-translate="method_step2_title">Den größten Hebel wählen</h3>
-                <p data-translate="method_step2_text">Nicht zehn Baustellen auf einmal: Wir starten mit der einen Automation, die sofort spürbar entlastet.</p>
-              </div>
-            </article>
-            <article class="method-step" data-method-step="2">
-              <span class="method-number">03</span>
-              <div>
-                <h3 data-translate="method_step3_title">Flow bauen und verankern</h3>
-                <p data-translate="method_step3_text">Wir bauen, testen und dokumentieren den Ablauf, bis Ihr Team ihn ohne uns souverän nutzt.</p>
-              </div>
-            </article>
-          </div>
+          </p>
         </div>
 
-        <div class="method-flow-panel">
-          <div class="method-map" aria-hidden="true">
-            <div class="method-phase-labels">
-              <span class="method-phase-label method-phase-label-0" data-translate="method_phase_1">Ihr Alltag heute</span>
-              <span class="method-phase-label method-phase-label-1" data-translate="method_phase_2">Wir sortieren</span>
-              <span class="method-phase-label method-phase-label-2" data-translate="method_phase_3">Flow aktiv</span>
-            </div>
+        <!-- Tokens and stations are placed in canvas coordinates, so they sit
+             next to the canvas rather than inside the text column. -->
+        <div class="flowfield-tokens" aria-hidden="true">
+          <span class="flowfield-token" data-token="0" data-translate="method_chip_mail">E-Mail</span>
+          <span class="flowfield-token" data-token="1" data-translate="method_chip_excel">Excel</span>
+          <span class="flowfield-token" data-token="2" data-translate="method_chip_word">Word</span>
+          <span class="flowfield-token" data-token="3" data-translate="method_chip_tool">Tool-Liste</span>
+          <span class="flowfield-token" data-token="4" data-translate="method_chip_manual">manuelle Aufgabe</span>
+        </div>
 
-            <div class="method-chaos-chip method-chip-mail" data-translate="method_chip_mail">E-Mail</div>
-            <div class="method-chaos-chip method-chip-excel" data-translate="method_chip_excel">Excel</div>
-            <div class="method-chaos-chip method-chip-word" data-translate="method_chip_word">Word</div>
-            <div class="method-chaos-chip method-chip-tool" data-translate="method_chip_tool">Tool-Liste</div>
-            <div class="method-chaos-chip method-chip-manual" data-translate="method_chip_manual">manuelle Aufgabe</div>
-
-            <svg class="method-flow-wave" viewBox="0 0 620 210" preserveAspectRatio="none" aria-hidden="true">
-              <path class="method-flow-main" d="M10 122 C92 60 172 166 270 110 C342 68 398 140 484 102"></path>
-              <path class="method-flow-echo" d="M10 138 C96 78 176 180 274 126 C346 86 402 154 484 118"></path>
-              <path class="method-flow-current" d="M10 122 C92 60 172 166 270 110 C342 68 398 140 484 102"></path>
-            </svg>
-
-            <div class="method-waypoint method-waypoint-1">
-              <span class="method-waypoint-dot"></span>
-              <span class="method-waypoint-label">
-                <strong data-translate="method_way1_title">Kommt rein</strong>
-                <small data-translate="method_way1_text">Anfrage, E-Mail, Beleg</small>
-              </span>
-            </div>
-            <div class="method-waypoint method-waypoint-2">
-              <span class="method-waypoint-dot"></span>
-              <span class="method-waypoint-label">
-                <strong data-translate="method_way2_title">Wird verarbeitet</strong>
-                <small data-translate="method_way2_text">Daten am richtigen Ort</small>
-              </span>
-            </div>
-            <div class="method-waypoint method-waypoint-3">
-              <span class="method-waypoint-dot"></span>
-              <span class="method-waypoint-label">
-                <strong data-translate="method_way3_title">Geht raus</strong>
-                <small data-translate="method_way3_text">Antwort, PDF, Versand</small>
-              </span>
-            </div>
-
-            <div class="method-flow-core">
-              <span data-translate="method_core_label">KIFlowstate</span>
-              <strong data-translate="method_core_title">Ein Ablauf</strong>
-              <small data-translate="method_core_text">Klar, getestet, dokumentiert</small>
-            </div>
-
-            <div class="method-orbit method-orbit-1"></div>
-            <div class="method-orbit method-orbit-2"></div>
-            <div class="method-scanline"></div>
+        <div class="flowfield-stations" aria-hidden="true">
+          <div class="flowfield-station" data-station="0">
+            <strong data-translate="method_way1_title">Eingang</strong>
+            <small data-translate="method_way1_text">Anfrage, E-Mail oder Beleg</small>
+          </div>
+          <div class="flowfield-station" data-station="1">
+            <strong data-translate="method_way2_title">Verarbeitung</strong>
+            <small data-translate="method_way2_text">Daten landen am richtigen Ort</small>
+          </div>
+          <div class="flowfield-station" data-station="2">
+            <strong data-translate="method_way3_title">Ergebnis</strong>
+            <small data-translate="method_way3_text">Antwort, PDF oder Versand</small>
           </div>
         </div>
       </div>
@@ -507,7 +505,7 @@
 
     <!-- ▸▸ INTEGRATIONS (wave-flow marquee) ------------------------------ -->
     <section id="integrations" class="integrations reveal" aria-label="Integrationen">
-      <!-- Top wave divider — viewBox doubled and path repeated for seamless drift -->
+      <!-- Top wave divider: viewBox doubled and path repeated for seamless drift -->
       <svg class="wave-divider wave-top" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 C1680,90 1920,0 2160,40 C2400,80 2640,10 2880,40 L2880,0 L0,0 Z"></path>
       </svg>
@@ -515,7 +513,7 @@
       <div class="container integrations-inner">
         <h2 data-translate="integrations_title">Im Flow mit Ihren Tools</h2>
         <p class="section-lead" data-translate="integrations_lead">
-          Wir verbinden, was Sie bereits nutzen — und schließen die Lücken dazwischen.
+          Wir verbinden, was Sie bereits nutzen, und schließen die Lücken dazwischen.
         </p>
 
         <div class="marquee" id="integrations-marquee">
@@ -632,7 +630,7 @@
         </p>
       </div>
 
-      <!-- Bottom wave divider (mirrored) — viewBox doubled and path repeated for seamless drift -->
+      <!-- Bottom wave divider (mirrored): viewBox doubled and path repeated for seamless drift -->
       <svg class="wave-divider wave-bottom" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 C1680,0 1920,80 2160,40 C2400,0 2640,80 2880,40 L2880,80 L0,80 Z"></path>
       </svg>
