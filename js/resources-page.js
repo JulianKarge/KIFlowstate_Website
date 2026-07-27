@@ -19,7 +19,14 @@
   const toast        = document.getElementById("copy-toast");
   if (!sidebar || !content) return;
 
+  // This is a regular selection list, not a full ARIA tabs widget. Keeping
+  // native list + button semantics avoids promising unsupported tab behavior.
+  sidebar.removeAttribute("role");
+  sidebar.removeAttribute("aria-orientation");
+
   /* ── helpers ─────────────────────────────────────────────── */
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
   const t = (key, fallback) => {
     const lang = document.documentElement.lang || "de";
     return (
@@ -122,12 +129,11 @@
       const isActive = v.id === activeId;
       const thumb = thumbUrl(v, "small");
       return `
-        <li role="presentation">
+        <li>
           <button
             type="button"
             class="video-tab ${isActive ? "is-active" : ""}"
-            role="tab"
-            aria-selected="${isActive}"
+            aria-pressed="${isActive}"
             data-video-id="${escapeHtml(v.id)}"
           >
             <span class="video-tab-thumb">
@@ -257,12 +263,12 @@
     content.innerHTML = `
       <article class="resource-video" data-video-id="${escapeHtml(video.id)}">
         ${ytId
-          ? `<div class="video-player" data-yt-id="${escapeHtml(ytId)}" tabindex="0" role="button" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
+          ? `<div class="video-player" data-yt-id="${escapeHtml(ytId)}">
               <img
                 src="${escapeHtml(heroThumb)}"
                 alt=""
                 loading="lazy"
-                onerror="this.src='${ytThumb(ytId)}'"
+                onerror="this.onerror=null;this.src='${ytThumb(ytId)}'"
               />
               <button type="button" class="video-player-play" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
                 <i class="fas fa-play" aria-hidden="true"></i>
@@ -314,6 +320,12 @@
   /* ── interactions ────────────────────────────────────────── */
   const findVideo = (id) => VIDEOS.find((v) => v.id === id);
 
+  const restoreSidebarFocus = (id) => {
+    const next = Array.from(sidebar.querySelectorAll(".video-tab"))
+      .find((button) => button.dataset.videoId === id);
+    if (next) next.focus({ preventScroll: true });
+  };
+
   // Mark prompts that are tall enough to be worth collapsing on mobile.
   // The CSS only collapses cards with `.is-collapsible` (and only at mobile
   // widths), so short prompts never get a fade or "Mehr anzeigen" button.
@@ -344,7 +356,9 @@
       renderEmpty();
       return;
     }
+    const restoreFocus = sidebar.contains(document.activeElement);
     renderSidebar(video.id);
+    if (restoreFocus) restoreSidebarFocus(video.id);
     renderVideo(video);
     // Wait one frame so layout has settled before measuring.
     requestAnimationFrame(refreshPromptCollapsibility);
@@ -357,7 +371,10 @@
     }
 
     if (scroll) {
-      content.scrollIntoView({ behavior: "smooth", block: "start" });
+      content.scrollIntoView({
+        behavior: reducedMotion.matches ? "auto" : "smooth",
+        block: "start"
+      });
     }
   };
 
@@ -384,9 +401,14 @@
     if (player && !player.querySelector("iframe")) {
       const id = player.dataset.ytId;
       if (id) {
+        const videoId = player.closest("[data-video-id]")?.dataset.videoId;
+        const video = videoId ? findVideo(videoId) : null;
+        const frameTitle = video
+          ? pick(video.title)
+          : t("resources_play", "Video abspielen");
         player.innerHTML = `<iframe
           src="${ytEmbed(id)}"
-          title="YouTube video player"
+          title="${escapeHtml(frameTitle)}"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen></iframe>`;
       }
@@ -450,15 +472,6 @@
         showToast(t("resources_copy_failed", "Kopieren fehlgeschlagen"));
       }
     }
-  });
-
-  // Keyboard support for the player facade
-  content.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter" && e.key !== " ") return;
-    const player = e.target.closest(".video-player");
-    if (!player) return;
-    e.preventDefault();
-    player.click();
   });
 
   // Hash → video on load

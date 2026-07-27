@@ -18,6 +18,11 @@
   const railHintEl = document.querySelector(".ki-rail-hint");
   if (!railEl || !contentEl) return;
 
+  // The day rail is a native list of selection buttons. It intentionally
+  // avoids ARIA tab semantics because there is no matching tabpanel pattern.
+  railEl.removeAttribute("role");
+  railEl.removeAttribute("aria-orientation");
+
   const t = KINews.t;
   const esc = KINews.esc;
 
@@ -48,8 +53,36 @@
     railHintEl.textContent = t("kinews_drag_hint", "Scroll for more days");
   }
 
+  function arrowLabel(direction, kind) {
+    const english = document.documentElement.lang === "en";
+    if (kind === "items") {
+      if (direction < 0) {
+        return english ? "Show previous update" : "Vorherige Meldung anzeigen";
+      }
+      return english ? "Show next update" : "Nächste Meldung anzeigen";
+    }
+    if (direction < 0) {
+      return english ? "Scroll day selection left" : "Tagesauswahl nach links scrollen";
+    }
+    return english ? "Scroll day selection right" : "Tagesauswahl nach rechts scrollen";
+  }
+
+  function updateArrowLabels(wrap) {
+    if (!wrap) return;
+    const kind = wrap.dataset.rail === "items" ? "items" : "days";
+    wrap.querySelectorAll(".ki-rail-arrow").forEach(function (button) {
+      const direction = parseInt(button.getAttribute("data-dir"), 10) || 1;
+      button.setAttribute("aria-label", arrowLabel(direction, kind));
+    });
+  }
+
   /* ── day archive ─────────────────────────────────────────── */
   function renderDayRail() {
+    const focused = railEl.contains(document.activeElement)
+      ? document.activeElement.closest(".ki-day-card")
+      : null;
+    const focusedDate = focused ? focused.getAttribute("data-date") : "";
+
     if (!days.length) {
       railEl.innerHTML = "";
       if (emptyEl) emptyEl.hidden = false;
@@ -64,21 +97,21 @@
         const parts = splitLabel(day);
         const count = (day.item_count || 0) + " " + t("kinews_items_label", "updates");
         return (
-          '<li role="presentation">' +
+          "<li>" +
           '<button class="ki-day-card' +
           (active ? " is-active" : "") +
-          '" role="tab" type="button" data-date="' +
+          '" type="button" data-date="' +
           esc(day.date) +
-          '" aria-selected="' +
+          '" aria-pressed="' +
           (active ? "true" : "false") +
           '">' +
           '<span class="ki-day-card-num">' +
           pad2(days.length - i) +
           "</span>" +
-          '<span class="ki-day-card-weekday">' +
+          '<span class="ki-day-card-weekday" lang="de">' +
           esc(parts.weekday) +
           "</span>" +
-          '<span class="ki-day-card-date">' +
+          '<span class="ki-day-card-date" lang="de">' +
           esc(parts.date) +
           "</span>" +
           '<span class="ki-day-card-count"><i class="fas fa-newspaper" aria-hidden="true"></i>' +
@@ -90,6 +123,11 @@
       .join("");
 
     updateDayArchiveHint();
+    if (focusedDate) {
+      const replacement = Array.from(railEl.querySelectorAll(".ki-day-card"))
+        .find((button) => button.getAttribute("data-date") === focusedDate);
+      if (replacement) replacement.focus({ preventScroll: true });
+    }
   }
 
   /* ── content: language note, hero, item rail ─────────────── */
@@ -149,7 +187,7 @@
   function tagChips(tags) {
     if (!tags || !tags.length) return "";
     const chips = tags
-      .map((tag) => '<span class="ki-tag">#' + esc(tag) + "</span>")
+      .map((tag) => '<span class="ki-tag" lang="de">#' + esc(tag) + "</span>")
       .join("");
     return '<div class="ki-item-tags">' + chips + "</div>";
   }
@@ -159,6 +197,7 @@
     const long = why.length > 240;
     const conf = item.confidence || "medium";
     const title = item.title || "";
+    const whyId = "ki-item-why-" + i;
 
     return (
       '<article class="ki-item" role="listitem" style="--ki-stagger:' +
@@ -173,19 +212,21 @@
       '"><span class="ki-conf-dot" aria-hidden="true"></span>' +
       esc(KINews.confidenceLabel(conf)) +
       "</span>" +
-      '<h3 class="ki-item-title" title="' +
+      '<h3 class="ki-item-title" lang="de" title="' +
       esc(title) +
       '">' +
       esc(title) +
       "</h3>" +
       (why
-        ? '<div class="ki-item-why' +
+        ? '<div id="' +
+          whyId +
+          '" class="ki-item-why' +
           (long ? " is-clamped" : "") +
           '">' +
           '<span class="ki-item-why-label">' +
           esc(t("kinews_why", "Why it matters")) +
           "</span>" +
-          '<p class="ki-item-why-text">' +
+          '<p class="ki-item-why-text" lang="de">' +
           esc(why) +
           "</p>" +
           (long
@@ -193,6 +234,8 @@
               esc(t("kinews_more", "more")) +
               '" data-less="' +
               esc(t("kinews_less", "less")) +
+              '" aria-expanded="false" aria-controls="' +
+              whyId +
               '"><span class="ki-why-toggle-label">' +
               esc(t("kinews_more", "more")) +
               '</span><i class="fas fa-chevron-down" aria-hidden="true"></i>' +
@@ -223,23 +266,23 @@
       esc(accent) +
       '">' +
       '<span class="ki-day-hero-bar" aria-hidden="true"></span>' +
-      '<p class="ki-day-hero-date">' +
+      '<p class="ki-day-hero-date" lang="de">' +
       esc(day.date_label || day.date) +
       "</p>" +
-      (dek ? '<p class="ki-day-hero-dek">' + esc(dek) + "</p>" : "") +
+      (dek ? '<p class="ki-day-hero-dek" lang="de">' + esc(dek) + "</p>" : "") +
       '<p class="ki-day-hero-meta">' +
       esc(meta.join(" · ")) +
       "</p>" +
       "</header>" +
       '<div class="ki-rail-wrap ki-items-wrap" data-rail="items">' +
       '<button class="ki-rail-arrow ki-rail-prev" type="button" data-dir="-1" aria-label="' +
-      esc(t("kinews_more", "more")) +
+      esc(arrowLabel(-1, "items")) +
       '"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>' +
       '<div class="ki-items-rail" id="ki-items-rail" role="list">' +
       items.map(itemCard).join("") +
       "</div>" +
       '<button class="ki-rail-arrow ki-rail-next" type="button" data-dir="1" aria-label="' +
-      esc(t("kinews_more", "more")) +
+      esc(arrowLabel(1, "items")) +
       '"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>' +
       "</div>";
 
@@ -258,6 +301,7 @@
         if (!box) return;
         const clamped = box.classList.toggle("is-clamped");
         btn.classList.toggle("is-open", !clamped);
+        btn.setAttribute("aria-expanded", String(!clamped));
         const label = btn.querySelector(".ki-why-toggle-label");
         if (label) {
           label.textContent = clamped
@@ -271,6 +315,7 @@
   /* ── rail arrow wiring ───────────────────────────────────── */
   function wireArrows(wrap, scroller) {
     if (!wrap || !scroller) return;
+    updateArrowLabels(wrap);
     wrap.querySelectorAll(".ki-rail-arrow").forEach(function (btn) {
       btn.addEventListener("click", function () {
         KINews.scrollRailBy(scroller, parseInt(btn.getAttribute("data-dir"), 10) || 1);
@@ -331,6 +376,7 @@
 
   KINews.onLangChange(function () {
     renderDayRail();
+    updateArrowLabels(dayRailWrap);
     if (activeDate && dayCache[activeDate]) renderDay(dayCache[activeDate]);
     else if (!activeDate) emptyPanel();
   });

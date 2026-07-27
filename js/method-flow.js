@@ -366,9 +366,14 @@
   const headX = () => width * (0.04 + progress * 0.92);
 
   const drawCurrent = (line, time) => {
+    const isTrio = line.into >= 0;
+    /* Absorbed currents can disappear completely. Skip their path sampling
+       once there is nothing left to paint. */
+    const strokeAlpha = isTrio ? mix(0.8, 1, order) : 1 - ramp(order, 0.15, 0.8);
+    if (strokeAlpha <= 0.01) return;
+
     sample(line, time);
 
-    const isTrio = line.into >= 0;
     const band = palette.bands[isTrio ? line.into : 1];
     const bodyIn = isTrio ? order : 0;
     const surface = surfacePath();
@@ -407,10 +412,6 @@
       strokeOffset(surface, line.amp * 1.5, band.under, 1);
       ctx.restore();
     }
-
-    /* Absorbed currents thin out and disappear as the flow settles. */
-    const strokeAlpha = isTrio ? mix(0.8, 1, order) : 1 - ramp(order, 0.15, 0.8);
-    if (strokeAlpha <= 0.01) return;
 
     if (!isTrio) {
       /* Loose currents are still water, not wireframe: a faint sheet under
@@ -628,6 +629,13 @@
     });
   };
 
+  const syncStepControls = () => {
+    steps.forEach((item) => {
+      const button = item.querySelector("button");
+      if (button) button.disabled = compactQuery.matches;
+    });
+  };
+
   steps.forEach((item, index) => {
     const button = item.querySelector("button");
     if (button) button.addEventListener("click", () => jumpTo(index));
@@ -672,7 +680,9 @@
   });
   compactQuery.addEventListener?.("change", () => {
     resize();
+    syncStepControls();
     if (!running) drawStatic();
   });
+  syncStepControls();
   drawStatic();
 })();

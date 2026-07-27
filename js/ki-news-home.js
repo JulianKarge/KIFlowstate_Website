@@ -84,7 +84,7 @@
           '<li class="ki-home-item">' +
           '<span class="ki-home-bullet" aria-hidden="true"></span>' +
           '<div class="ki-home-item-body">' +
-          '<p class="ki-home-item-title">' +
+          '<p class="ki-home-item-title" lang="de">' +
           title +
           "</p>" +
           chip +
@@ -97,14 +97,14 @@
 
     mount.innerHTML =
       '<div class="ki-home-card-head">' +
-      '<span class="ki-home-date"><i class="fas fa-calendar-day" aria-hidden="true"></i>' +
+      '<span class="ki-home-date" lang="de"><i class="fas fa-calendar-day" aria-hidden="true"></i>' +
       esc(dateLabel(day)) +
       "</span>" +
       '<span class="ki-home-meta">' +
       esc(metaLine(day)) +
       "</span>" +
       "</div>" +
-      (dek ? '<p class="ki-home-dek">' + esc(dek) + "</p>" : "") +
+      (dek ? '<p class="ki-home-dek" lang="de">' + esc(dek) + "</p>" : "") +
       '<ul class="ki-home-list">' +
       rows +
       "</ul>" +

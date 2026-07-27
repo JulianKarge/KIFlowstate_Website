@@ -176,6 +176,11 @@ window.KINews = (function () {
    * Click-and-drag (pointer) to move one card at a time. Suppresses
    * the click that would otherwise fire on a link after a drag.      */
   const railStageActive = new WeakMap();
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function railScrollBehavior() {
+    return reducedMotion.matches ? "auto" : "smooth";
+  }
 
   function railSnapItems(scroller) {
     return Array.from(scroller ? scroller.children : []).filter(function (item) {
@@ -238,7 +243,10 @@ window.KINews = (function () {
       updateRailDepth(scroller);
       return;
     }
-    scroller.scrollTo({ left: railSnapLeft(scroller, items[safeIndex]), behavior: "smooth" });
+    scroller.scrollTo({
+      left: railSnapLeft(scroller, items[safeIndex]),
+      behavior: railScrollBehavior(),
+    });
   }
 
   function updateRailDepth(scroller) {
@@ -304,7 +312,7 @@ window.KINews = (function () {
       const target = railSnapLeft(scroller, items[index]);
       if (Math.abs(scroller.scrollLeft - target) < 3) return;
       mobileSnapping = true;
-      scroller.scrollTo({ left: target, behavior: "smooth" });
+      scroller.scrollTo({ left: target, behavior: railScrollBehavior() });
       window.setTimeout(function () { mobileSnapping = false; }, 420);
     };
 
@@ -522,19 +530,24 @@ window.KINews = (function () {
    * side is fully clear, so the active first card is never covered.   */
   function bindRailEdges(wrap, scroller) {
     if (!wrap || !scroller) return;
-    wrap.classList.toggle(
-      "is-looping",
-      scroller.classList.contains("ki-items-rail") && railSnapItems(scroller).length > 1
-    );
+    const isItemRail = scroller.classList.contains("ki-items-rail");
+    const isLooping = isItemRail && railSnapItems(scroller).length > 1;
+    const previous = wrap.querySelector(".ki-rail-prev");
+    const next = wrap.querySelector(".ki-rail-next");
+    wrap.classList.toggle("is-looping", isLooping);
 
     // Tolerance must exceed the rail's leading inline padding + scroll-snap
     // rest offset (~5px), otherwise the start position reads as "scrolled".
     const EDGE = 16;
     function update() {
-      const max = scroller.scrollWidth - scroller.clientWidth;
+      const max = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
       const x = scroller.scrollLeft;
-      wrap.classList.toggle("can-scroll-left", x > EDGE);
-      wrap.classList.toggle("can-scroll-right", x < max - EDGE);
+      const canScrollLeft = isItemRail ? isLooping : x > EDGE;
+      const canScrollRight = isItemRail ? isLooping : x < max - EDGE;
+      wrap.classList.toggle("can-scroll-left", canScrollLeft);
+      wrap.classList.toggle("can-scroll-right", canScrollRight);
+      if (previous) previous.disabled = !canScrollLeft;
+      if (next) next.disabled = !canScrollRight;
     }
 
     if (!scroller.dataset.edgeBound) {

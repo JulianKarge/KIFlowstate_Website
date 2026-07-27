@@ -20,14 +20,14 @@
     <script data-goatcounter="https://kiflowstate.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
     <meta
       name="description"
-      content="KIFlowstate: AI-gesteuerte Automationsagentur, die Ihre Geschäftsprozesse optimiert."
+      content="KIFlowstate: KI-Automationsagentur für klare, verlässliche Geschäftsprozesse."
       data-translate="meta_description"
     />
     <meta
       name="keywords"
       content="KI-Automation, Geschäftsprozessautomatisierung, Custom Tools, Datenanalyse, KIFlowstate, Luca, Julian"
     />
-    <title>KIFlowstate | AI Automation Agency</title>
+    <title data-translate="document_title">KIFlowstate | KI-Automationsagentur</title>
 
     <!-- Favicon -->
     <link rel="icon" href="images/kilogo.png" type="image/png" />
@@ -38,7 +38,7 @@
     <meta property="og:url" content="https://www.kiflowstate.de/" />
     <meta
       property="og:title"
-      content="KIFlowstate | AI Automation Agency"
+      content="KIFlowstate | KI-Automationsagentur"
     />
     <meta
       property="og:description"
@@ -47,13 +47,16 @@
     />
     <meta
       property="og:image"
-      content="https://www.kiflowstate.de/images/social-share-banner.jpg"
+      content="https://www.kiflowstate.de/images/kilogo.png"
     />
-    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="og:image:width" content="547" />
+    <meta property="og:image:height" content="547" />
+    <meta property="og:image:alt" content="KIFlowstate Logo" />
+    <meta property="twitter:card" content="summary" />
     <meta property="twitter:url" content="https://www.kiflowstate.de/" />
     <meta
       property="twitter:title"
-      content="KIFlowstate | AI Automation Agency"
+      content="KIFlowstate | KI-Automationsagentur"
     />
     <meta
       property="twitter:description"
@@ -62,8 +65,9 @@
     />
     <meta
       property="twitter:image"
-      content="https://www.kiflowstate.de/images/social-share-banner.jpg"
+      content="https://www.kiflowstate.de/images/kilogo.png"
     />
+    <meta property="twitter:image:alt" content="KIFlowstate Logo" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -105,11 +109,12 @@
   </head>
 
   <body>
+    <a class="skip-link" href="#main-content" data-translate="skip_to_content">Zum Hauptinhalt springen</a>
     <!-- ▸▸ NAVBAR ---------------------------------------------------------- -->
     <header class="navbar">
       <div class="container nav-wrapper">
         <a href="/" class="logo">
-          <img src="images/kilogo.png" alt="KIFlowstate Logo" />
+          <img src="images/kilogo.png" width="547" height="547" alt="KIFlowstate Logo" />
         </a>
 
         <nav>
@@ -127,8 +132,8 @@
 
         <!-- Language Switcher -->
         <div class="lang-switcher">
-          <button id="lang-de" class="lang-btn active">DE</button>
-          <button id="lang-en" class="lang-btn">EN</button>
+          <button id="lang-de" class="lang-btn active" type="button" aria-label="Deutsch" aria-pressed="true">DE</button>
+          <button id="lang-en" class="lang-btn" type="button" aria-label="English" aria-pressed="false">EN</button>
         </div>
 
         <!-- Theme toggle -->
@@ -144,9 +149,11 @@
         </button>
 
         <button
+          type="button"
           class="hamburger"
           id="hamburger"
-          aria-label="Toggle navigation"
+          aria-label="Navigation ein- oder ausblenden"
+          data-translate-aria-label="nav_toggle"
           aria-controls="main-nav"
           aria-expanded="false"
         >
@@ -155,20 +162,21 @@
       </div>
     </header>
 
+    <main id="main-content">
     <!-- ▸▸ HERO: BRIGHT FLOW FIELD --------------------------------------- -->
-    <section class="hero">
+    <section class="hero" aria-labelledby="hero-title">
       <canvas class="hero-ocean" aria-hidden="true"></canvas>
       <div class="container hero-content">
         <div class="hero-copy">
           <p class="hero-eyebrow" data-translate="hero_eyebrow">KI-Automationsagentur</p>
-          <h1>
-            <span class="hero-title-prefix" data-translate="hero_title_1">Erreiche den</span>
+          <h1 id="hero-title">
+            <span class="hero-title-prefix" data-translate="hero_title_1">Erreichen Sie den</span>
             <span class="highlight"><span class="flow-letter">F</span><span class="flow-letter">l</span><span class="flow-letter">o</span><span class="flow-letter">w</span></span>
             <span class="hero-title-suffix" data-translate="hero_title_2">mit KI-gesteuerter Automation</span>
           </h1>
           <div class="hero-support">
             <p class="hero-subtitle" data-translate="hero_subtitle">
-              Wir entwerfen, bauen & warten End‑to‑End-Automatisierungen, die Ihnen
+              Wir entwerfen, bauen &amp; warten End‑to‑End-Automatisierungen, die Ihnen
               Ihre Fokuszeit zurückgeben.
             </p>
             <a href="#appointment" class="cta-btn cta-btn-glass" data-translate="hero_cta">Kostenloses Erstgespräch buchen</a>
@@ -507,14 +515,14 @@
     </section>
 
     <!-- ▸▸ INTEGRATIONS (wave-flow marquee) ------------------------------ -->
-    <section id="integrations" class="integrations reveal" aria-label="Integrationen">
+    <section id="integrations" class="integrations reveal" aria-labelledby="integrations-title">
       <!-- Top wave divider: viewBox doubled and path repeated for seamless drift -->
       <svg class="wave-divider wave-top" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 C1680,90 1920,0 2160,40 C2400,80 2640,10 2880,40 L2880,0 L0,0 Z"></path>
       </svg>
 
       <div class="container integrations-inner">
-        <h2 data-translate="integrations_title">Im Flow mit Ihren Tools</h2>
+        <h2 id="integrations-title" data-translate="integrations_title">Im Flow mit Ihren Tools</h2>
         <p class="section-lead" data-translate="integrations_lead">
           Wir verbinden, was Sie bereits nutzen, und schließen die Lücken dazwischen.
         </p>
@@ -543,21 +551,21 @@
 
             <div class="int-pill" data-tip="Claude">
               <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/claude.png" alt="" loading="lazy" decoding="async" />
+                <img src="images/tools/claude.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
               </span>
               <span class="int-label">Claude</span>
             </div>
 
             <div class="int-pill" data-tip="Claude Code">
               <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/claude-code.png" alt="" loading="lazy" decoding="async" />
+                <img src="images/tools/claude-code.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
               </span>
               <span class="int-label">Claude Code</span>
             </div>
 
             <div class="int-pill" data-tip="Codex">
               <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/codex.png" alt="" loading="lazy" decoding="async" />
+                <img src="images/tools/codex.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
               </span>
               <span class="int-label">Codex</span>
             </div>
@@ -583,21 +591,21 @@
 
             <div class="int-pill" data-tip="Antigravity">
               <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/antigravity.png" alt="" loading="lazy" decoding="async" />
+                <img src="images/tools/antigravity.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
               </span>
               <span class="int-label">Antigravity</span>
             </div>
 
             <div class="int-pill" data-tip="Hermes Agent">
               <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/hermes.png" alt="" loading="lazy" decoding="async" />
+                <img src="images/tools/hermes.png" width="128" height="85" alt="" loading="lazy" decoding="async" />
               </span>
               <span class="int-label">Hermes</span>
             </div>
 
             <div class="int-pill" data-tip="OpenClaw">
               <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/openclaw.png" alt="" loading="lazy" decoding="async" />
+                <img src="images/tools/openclaw.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
               </span>
               <span class="int-label">OpenClaw</span>
             </div>
@@ -640,17 +648,17 @@
     </section>
 
     <!-- ▸▸ APPOINTMENT ----------------------------------------------------- -->
-    <section id="appointment" class="appointment reveal">
+    <section id="appointment" class="appointment reveal" aria-labelledby="appointment-title">
       <div class="container appointment-inner">
         <div class="appointment-head">
           <p class="section-kicker" data-translate="appointment_kicker">Kostenloses Erstgespräch</p>
-          <h2 data-translate="appointment_title">Termin buchen</h2>
+          <h2 id="appointment-title" data-translate="appointment_title">Termin buchen</h2>
           <p class="section-lead" data-translate="appointment_text">
             Wählen Sie einen passenden Zeitpunkt für ein 15‑minütiges Strategiegespräch zu KI-Automation.
           </p>
         </div>
 
-        <div class="appointment-booking" data-translate-aria-label="appointment_panel_aria" aria-label="Terminbuchung">
+        <div class="appointment-booking" role="region" data-translate-aria-label="appointment_panel_aria" aria-label="Terminbuchung">
           <div class="appointment-meta">
             <div class="appointment-meta-item">
               <span class="appointment-meta-icon" aria-hidden="true"><i class="fas fa-stopwatch"></i></span>
@@ -704,10 +712,6 @@
               <iframe
                 class="calendar-embed"
                 src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy?gv=true"
-                style="border: 0"
-                width="100%"
-                height="800"
-                frameborder="0"
                 loading="lazy"
                 title="KIFlowstate Online Booking Calendar"
               ></iframe>
@@ -723,7 +727,7 @@
       runtime from the separate DailyNews JSON feed (Hermes agent updates it);
       #ki-news-latest is filled by js/ki-news-home.js. Full archive: ki-news.html.
     -->
-    <section id="ki-news" class="ki-news-band reveal" aria-label="KI-News">
+    <section id="ki-news" class="ki-news-band reveal" aria-labelledby="ki-news-title">
       <svg class="wave-divider wave-top" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0,40 C200,10 400,10 600,30 C800,50 1000,50 1200,20 L1200,0 L0,0 Z"></path>
       </svg>
@@ -731,7 +735,7 @@
       <div class="container ki-news-band-inner">
         <div class="ki-news-band-head">
           <span class="section-kicker ki-news-kicker" data-translate="kinews_home_kicker">Tägliche KI-News</span>
-          <h2 data-translate="kinews_home_title">Was heute in der KI-Welt passiert</h2>
+          <h2 id="ki-news-title" data-translate="kinews_home_title">Was heute in der KI-Welt passiert</h2>
           <p class="ki-news-band-lead" data-translate="kinews_home_lead">
             Jeden Tag fasst unser Agent die wichtigsten KI-Entwicklungen zusammen, mit Quellen und einer Einordnung, was sie für den Mittelstand bedeuten.
           </p>
@@ -756,9 +760,9 @@
         3. Replace YOUR_FORM_ID below with the real ID.
       Until you do that, submissions will not be delivered.
     -->
-    <section id="contact" class="contact reveal">
+    <section id="contact" class="contact reveal" aria-labelledby="contact-title">
       <div class="container">
-        <h2 data-translate="contact_title">Schreiben Sie Uns</h2>
+        <h2 id="contact-title" data-translate="contact_title">Schreiben Sie uns</h2>
         <p class="section-lead" data-translate="contact_lead">
           Lieber kurz tippen statt telefonieren? Wir antworten meist innerhalb von 24 Stunden.
         </p>
@@ -810,6 +814,7 @@
         </form>
       </div>
     </section>
+    </main>
 
     <!-- ▸▸ FOOTER ---------------------------------------------------------- -->
     <footer class="footer">
@@ -849,7 +854,7 @@
     <div
       id="cookie-banner"
       class="cookie-banner"
-      role="dialog"
+      role="region"
       aria-labelledby="cookie-title"
       aria-describedby="cookie-text"
       hidden

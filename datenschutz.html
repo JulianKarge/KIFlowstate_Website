@@ -26,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap"
       rel="stylesheet"
     />
 
@@ -118,9 +118,9 @@
       .legal-page a:hover { color: var(--primary-dark); }
       .legal-page .legal-intro {
         background: #fff;
-        border-left: 3px solid var(--primary);
+        border: 1px solid rgba(51, 105, 242, 0.24);
         padding: 1rem 1.1rem;
-        border-radius: 0 var(--radius) var(--radius) 0;
+        border-radius: var(--radius);
         box-shadow: var(--shadow-sm);
         margin-block: 1rem 1.5rem;
       }
@@ -167,10 +167,11 @@
   </head>
 
   <body class="legal-page">
+    <a class="skip-link" href="#main-content">Zum Hauptinhalt springen</a>
     <header class="legal-header">
       <div class="legal-nav-wrapper">
         <a href="index.html" class="logo" aria-label="KIFlowstate Startseite">
-          <img src="images/kilogo.png" alt="KIFlowstate Logo" />
+          <img src="images/kilogo.png" width="547" height="547" alt="KIFlowstate Logo" />
         </a>
         <div style="display: flex; align-items: center; gap: 0.25rem;">
           <a href="index.html" class="legal-nav-link">← Zurück zur Startseite</a>
@@ -188,7 +189,7 @@
       </div>
     </header>
 
-    <main class="legal-main">
+    <main class="legal-main" id="main-content">
       <h1>Datenschutzerklärung</h1>
 
       <div class="legal-intro">
@@ -280,11 +281,12 @@
 
       <h2>6. Cookies und Einwilligungs-Banner</h2>
       <p>
-        Unsere Website verwendet ausschließlich technisch notwendige Cookies sowie –
-        nach Ihrer ausdrücklichen Einwilligung – einen optionalen Terminbuchungsdienst
-        (siehe Ziffer 8). Beim ersten Besuch unserer Website wird Ihnen ein
-        Einwilligungs-Banner angezeigt, über das Sie Ihre Auswahl treffen können. Ihre
-        Einwilligung wird in Ihrem Browser (z. B. im <code>localStorage</code>)
+        Unsere Website verwendet ausschließlich technisch notwendige Cookies. Nach
+        Ihrer ausdrücklichen Einwilligung wird zusätzlich ein optionaler
+        Terminbuchungsdienst geladen (siehe Ziffer 8). Beim ersten Besuch unserer
+        Website wird Ihnen ein Einwilligungs-Banner angezeigt, über das Sie Ihre
+        Auswahl treffen können. Ihre Einwilligung wird in Ihrem Browser (z. B. im
+        <code>localStorage</code>)
         gespeichert, damit das Banner bei Folgebesuchen nicht erneut erscheint.
       </p>
       <p>
@@ -310,15 +312,15 @@
         Ihrer Anfrage). Mit Formspree wurde ein Vertrag zur Auftragsverarbeitung
         geschlossen. Da Formspree Daten in den USA verarbeitet, erfolgt die
         Übermittlung auf Grundlage der EU-Standardvertragsklauseln gemäß Art. 46
-        Abs. 2 lit. c DSGVO bzw. – soweit anwendbar – auf Basis des EU-US Data
+        Abs. 2 lit. c DSGVO oder, soweit anwendbar, auf Basis des EU-US Data
         Privacy Framework (Angemessenheitsbeschluss der EU-Kommission vom
         10. Juli 2023).
       </p>
       <p>
         Ihre Anfragen werden gespeichert, bis der Zweck der Speicherung entfällt
         (i. d. R. nach abschließender Bearbeitung Ihres Anliegens). Etwaige
-        gesetzliche Aufbewahrungspflichten – insbesondere aus dem Steuer- und
-        Handelsrecht – bleiben unberührt. Weitere Informationen finden Sie in der
+        gesetzliche Aufbewahrungspflichten, insbesondere aus dem Steuer- und
+        Handelsrecht, bleiben unberührt. Weitere Informationen finden Sie in der
         Datenschutzerklärung von Formspree:
         <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">https://formspree.io/legal/privacy-policy/</a>.
       </p>
@@ -434,7 +436,7 @@
         eingebundene Plug-ins oder Tracking-Pixel. Erst durch Klick auf eines dieser
         Symbole werden Sie auf die jeweilige Plattform weitergeleitet. Zu diesem
         Zeitpunkt erhalten die Plattform-Betreiber Kenntnis von Ihrem Besuch und
-        können – sofern Sie dort eingeloggt sind – Ihren Aufruf Ihrem Nutzerkonto
+        können, sofern Sie dort eingeloggt sind, Ihren Aufruf Ihrem Nutzerkonto
         zuordnen. Auf die weitere Datenverarbeitung haben wir keinen Einfluss. Bitte
         beachten Sie hierzu die Datenschutzerklärungen der jeweiligen Anbieter.
       </p>

@@ -199,7 +199,10 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
     camera.updateProjectionMatrix();
   }
 
-  const resizeObserver = new ResizeObserver(resize);
+  const resizeObserver = new ResizeObserver(() => {
+    resize();
+    if (reducedMotion && !dragging) updateLoop();
+  });
   resizeObserver.observe(container);
   resize();
   prepareEntry();
@@ -357,11 +360,16 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
 
   function updateLoop() {
     if (disposed) return;
-    const shouldRun = inView && !document.hidden;
-    if (shouldRun === loopRunning) return;
-    loopRunning = shouldRun;
-    previousFrame = performance.now();
-    renderer.setAnimationLoop(shouldRun ? renderFrame : null);
+    const canRender = inView && !document.hidden;
+    const shouldRun = canRender && (!reducedMotion || dragging);
+    if (shouldRun !== loopRunning) {
+      loopRunning = shouldRun;
+      previousFrame = performance.now();
+      renderer.setAnimationLoop(shouldRun ? renderFrame : null);
+    }
+    if (!shouldRun && canRender && reducedMotion && !dragging) {
+      renderFrame(performance.now());
+    }
   }
 
   const intersectionObserver = new IntersectionObserver(
@@ -395,6 +403,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
     motion.vz = 0;
     container.setPointerCapture(event.pointerId);
     container.classList.add('is-grabbing', 'is-interacted');
+    updateLoop();
   }
 
   function onPointerMove(event) {
@@ -435,18 +444,21 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
     } else {
       returnStartsAt = performance.now() + 360;
     }
+    updateLoop();
   }
 
   function onReducedMotionChange(event) {
     reducedMotion = event.matches;
-    if (!reducedMotion) return;
-    settleEntry(performance.now());
-    motion.x = rest.x;
-    motion.y = rest.y;
-    motion.z = rest.z;
-    motion.vx = 0;
-    motion.vy = 0;
-    motion.vz = 0;
+    if (reducedMotion) {
+      settleEntry(performance.now());
+      motion.x = rest.x;
+      motion.y = rest.y;
+      motion.z = rest.z;
+      motion.vx = 0;
+      motion.vy = 0;
+      motion.vz = 0;
+    }
+    updateLoop();
   }
 
   function onContextLost() {
@@ -457,6 +469,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
   function onContextRestored() {
     container.classList.remove('is-fallback');
     container.classList.add('is-ready');
+    updateLoop();
   }
 
   container.addEventListener('pointerdown', onPointerDown);
