@@ -549,16 +549,8 @@
   function bindCapabilityCarousel() {
     const rail = document.getElementById("invoice-capability-rail");
     const wrap = document.querySelector("[data-invoice-carousel]");
-    if (
-      rail &&
-      wrap &&
-      window.KIMobileCardSwipers &&
-      window.KIMobileCardSwipers.shouldUse()
-    ) {
-      window.KIMobileCardSwipers.mountInvoice();
-      return;
-    }
     if (!rail || !wrap || rail.dataset.carouselBound) return;
+    if (window.KIMobileCardSwipers) window.KIMobileCardSwipers.mountInvoice();
 
     rail.dataset.carouselBound = "1";
 
@@ -579,6 +571,7 @@
     const isStageMode = () => window.matchMedia("(min-width: 901px)").matches;
     const isCoarsePointer = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
     const isMobileRail = () => !isStageMode() && isCoarsePointer();
+    const isMobileSwiperActive = () => wrap.classList.contains("kif-mobile-swiper");
 
     const normalizeIndex = (index) => {
       if (!cards.length) return 0;
@@ -594,6 +587,7 @@
     };
 
     const update = () => {
+      if (isMobileSwiperActive()) return;
       const max = rail.scrollWidth - rail.clientWidth;
       const x = rail.scrollLeft;
       const looping = cards.length > 1;
@@ -661,6 +655,7 @@
     };
 
     const scrollToIndex = (index) => {
+      if (isMobileSwiperActive()) return;
       const safeIndex = normalizeIndex(index);
       const target = cards[isStageMode() ? safeIndex : Math.max(0, Math.min(cards.length - 1, index))];
       if (!target) return;
@@ -681,7 +676,7 @@
     };
 
     const snapMobileRail = () => {
-      if (!isMobileRail() || mobileSnapping) return;
+      if (isMobileSwiperActive() || !isMobileRail() || mobileSnapping) return;
       const target = cards[nearestIndex()];
       if (!target) return;
       const left = targetLeftForCard(target);
@@ -692,7 +687,7 @@
     };
 
     const scheduleMobileSnap = () => {
-      if (!isMobileRail() || down) return;
+      if (isMobileSwiperActive() || !isMobileRail() || down) return;
       if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
       mobileSnapTimer = window.setTimeout(snapMobileRail, 120);
     };
@@ -713,7 +708,7 @@
     }, { passive: true });
 
     rail.addEventListener("touchstart", (event) => {
-      if (!isMobileRail() || !event.touches || !event.touches.length) return;
+      if (isMobileSwiperActive() || !isMobileRail() || !event.touches || !event.touches.length) return;
       if (mobileSnapTimer) window.clearTimeout(mobileSnapTimer);
       mobileSnapping = true;
       touchStartX = event.touches[0].clientX;
@@ -722,7 +717,7 @@
     }, { passive: true });
 
     rail.addEventListener("touchend", (event) => {
-      if (!isMobileRail()) return;
+      if (isMobileSwiperActive() || !isMobileRail()) return;
       const touch = event.changedTouches && event.changedTouches[0];
       if (!touch) return;
       const dx = touch.clientX - touchStartX;
@@ -736,6 +731,7 @@
     }, { passive: true });
 
     rail.addEventListener("keydown", (event) => {
+      if (isMobileSwiperActive()) return;
       if (event.key === "ArrowLeft") {
         event.preventDefault();
         scrollToIndex(activeIndex - 1);
@@ -796,7 +792,7 @@
     };
 
     rail.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "touch" || isCoarsePointer()) return;
+      if (isMobileSwiperActive() || event.pointerType === "touch" || isCoarsePointer()) return;
       if (event.button != null && event.button !== 0) return;
       down = true;
       dragging = false;
@@ -810,7 +806,7 @@
     });
 
     rail.addEventListener("pointermove", (event) => {
-      if (!down) return;
+      if (isMobileSwiperActive() || !down) return;
       const dx = event.clientX - startX;
       dragDelta = dx;
       if (!dragging) {
@@ -871,13 +867,17 @@
     rail.addEventListener("pointercancel", release);
     if ("onscrollend" in window) {
       rail.addEventListener("scrollend", () => {
-        if (isCoarsePointer() || !isStageMode()) return;
+        if (isMobileSwiperActive() || isCoarsePointer() || !isStageMode()) return;
         if (!down) snapToNearest();
       });
     }
     rail.addEventListener(
       "click",
       (event) => {
+        if (isMobileSwiperActive()) {
+          moved = false;
+          return;
+        }
         if (!moved) return;
         event.preventDefault();
         event.stopPropagation();

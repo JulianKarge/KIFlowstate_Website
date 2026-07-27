@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   /* ▸ Theme toggle (light / dark) — pre-DOM script in <head> already
      applied the saved theme to <html> to avoid FOUC. Here we wire the
@@ -52,11 +52,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.getElementById("hamburger");
   const navLinks = document.querySelector(".nav-links");
 
-  const closeNav = () => {
+  const closeNav = (restoreFocus = false) => {
     if (!hamburger || !navLinks) return;
+    const wasOpen = navLinks.classList.contains("open");
     navLinks.classList.remove("open");
     hamburger.classList.remove("is-active");
     hamburger.setAttribute("aria-expanded", "false");
+    if (restoreFocus && wasOpen) hamburger.focus();
   };
 
   if (hamburger && navLinks) {
@@ -64,10 +66,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const isOpen = navLinks.classList.toggle("open");
       hamburger.classList.toggle("is-active", isOpen);
       hamburger.setAttribute("aria-expanded", String(isOpen));
+      if (isOpen) {
+        window.requestAnimationFrame(() => navLinks.querySelector("a")?.focus());
+      }
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeNav();
+      if (e.key === "Escape") closeNav(true);
     });
   }
 
@@ -80,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!target) return;
       e.preventDefault();
       target.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
+        behavior: reducedMotionQuery.matches ? "auto" : "smooth",
       });
       closeNav();
     });
@@ -106,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ▸ Reveal-on-scroll via IntersectionObserver */
   const revealEls = document.querySelectorAll(".reveal");
   if (revealEls.length) {
-    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
       revealEls.forEach((el) => el.classList.add("is-visible"));
     } else {
       const io = new IntersectionObserver(
@@ -128,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const counters = document.querySelectorAll("[data-count-to]");
   const animateCount = (el) => {
     const target = Number(el.dataset.countTo) || 0;
-    if (prefersReducedMotion) {
+    if (reducedMotionQuery.matches) {
       el.textContent = target.toLocaleString();
       return;
     }
@@ -220,6 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hub = flowStory.querySelector(".story-hub");
     const hubPanels = Array.from(flowStory.querySelectorAll(".hub-panel"));
     const waveFillPaths = Array.from(flowStory.querySelectorAll(".story-wave-fill-path"));
+    const waveFillLengths = new WeakMap();
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const scenarioKeys = ["invoice", "reminder", "cancellation", "confirmation"];
     const scenarioEls = {
@@ -351,7 +357,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const updateWaveDraw = (progress) => {
       waveFillPaths.forEach((path) => {
-        const length = path.getTotalLength();
+        let length = waveFillLengths.get(path);
+        if (!length) {
+          length = path.getTotalLength();
+          waveFillLengths.set(path, length);
+        }
         path.style.setProperty("--wave-length", length.toFixed(2));
         path.style.setProperty("--wave-offset", (length * (1 - clamp(progress))).toFixed(2));
       });
@@ -614,6 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const calendarTemplate = document.getElementById("calendar-template");
   const calendarWrapper = document.getElementById("calendar-wrapper");
   const calendarAllowBtn = document.getElementById("calendar-allow");
+  let cookieBannerTimer = 0;
 
   const loadCalendar = () => {
     if (!calendarTemplate || !calendarWrapper) return;
@@ -636,6 +647,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const setConsent = (value) => {
+    if (cookieBannerTimer) {
+      window.clearTimeout(cookieBannerTimer);
+      cookieBannerTimer = 0;
+    }
     try {
       localStorage.setItem(
         CONSENT_KEY,
@@ -649,9 +664,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let stored = null;
   try { stored = JSON.parse(localStorage.getItem(CONSENT_KEY) || "null"); } catch (e) {}
 
-  if (!stored) {
+  const storedConsentIsValid =
+    stored && (stored.value === "accepted" || stored.value === "essential");
+
+  if (!storedConsentIsValid) {
     // Defer the banner so it doesn't fight the hero animation
-    setTimeout(showBanner, 800);
+    cookieBannerTimer = window.setTimeout(() => {
+      cookieBannerTimer = 0;
+      showBanner();
+    }, 800);
   } else if (stored.value === "accepted") {
     loadCalendar();
   }
@@ -686,7 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!contactForm.checkValidity()) {
         formStatus.textContent = t(
           "contact_invalid",
-          "Bitte fülle alle Pflichtfelder korrekt aus."
+          "Bitte füllen Sie alle Pflichtfelder korrekt aus."
         );
         formStatus.classList.add("is-error");
         contactForm.reportValidity();

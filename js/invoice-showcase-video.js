@@ -264,6 +264,11 @@
       root.classList.toggle("is-document-paused", documentPaused);
       root.classList.toggle("is-reduced-motion", reducedMotion);
 
+      if (scrubber) scrubber.disabled = reducedMotion;
+      chapterButtons.forEach(button => {
+        button.disabled = reducedMotion;
+      });
+
       if (paused) pauseAll();
       else playActive();
 
@@ -277,22 +282,28 @@
       if (Number.isFinite(pending)) setVideoTime(video, pending);
     };
 
+    const configureVideoSource = (video, layout, preserveTime) => {
+      const source = video.dataset[`${layout}Src`];
+      if (!source || video.dataset.showcaseLayout === layout) {
+        setVideoTime(video, preserveTime);
+        return;
+      }
+
+      video.dataset.showcaseLayout = layout;
+      video.dataset.pendingShowcaseTime = String(preserveTime);
+      video.setAttribute("src", source);
+      video.load();
+    };
+
     const configureSources = (layout, preserveTime) => {
       activeLayout = layout;
       fallbackTime = preserveTime;
       pauseAll();
 
       Object.values(videos).forEach(video => {
-        const source = video.dataset[`${layout}Src`];
-        if (!source || video.dataset.showcaseLayout === layout) {
-          setVideoTime(video, preserveTime);
-          return;
-        }
-        video.dataset.showcaseLayout = layout;
-        video.dataset.pendingShowcaseTime = String(preserveTime);
-        video.setAttribute("src", source);
-        video.load();
+        video.preload = video === activeVideo ? "auto" : "none";
       });
+      configureVideoSource(activeVideo, layout, preserveTime);
 
       root.dataset.showcaseVideoLayout = layout;
       root.dataset.showcaseVideoReady = String(activeVideo.readyState >= 2);
@@ -309,13 +320,15 @@
       const outgoing = activeVideo;
       const time = currentTime();
       outgoing.pause();
+      outgoing.preload = "none";
       outgoing.classList.remove("is-active");
 
       activeLanguage = nextLanguage;
       activeVideo = videos[activeLanguage];
+      activeVideo.preload = "auto";
       fallbackTime = time;
       previousMediaTime = time;
-      setVideoTime(activeVideo, time);
+      configureVideoSource(activeVideo, activeLayout || currentLayout(), time);
       activeVideo.classList.add("is-active");
       root.dataset.showcaseVideoLanguage = activeLanguage;
       root.dataset.showcaseVideoReady = String(activeVideo.readyState >= 2);

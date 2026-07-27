@@ -23,6 +23,12 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
   const DEFAULT_FEEDBACK_COLLECTION = feedbackCollection || "feedbackSubmissions";
   const REQUIRED_FIREBASE_FIELDS = ["apiKey", "authDomain", "projectId", "appId"];
   let feedbackDb = null;
+  let refreshConfigurationStatus = () => {};
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function scrollBehavior() {
+    return reducedMotion.matches ? "auto" : "smooth";
+  }
 
   // Wave geometry. One calm body wave per side (BG + FILL), no animation,
   // no crest highlight — read as a still water surface. The path is
@@ -132,7 +138,8 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
               'id="slider-' + escapeAttr(name) + '" ' +
               'name="' + escapeAttr(name) + '" ' +
               'min="0" max="100" step="1" value="0" ' +
-              (required ? 'data-required="true" ' : "") +
+              (required ? 'data-required="true" aria-required="true" ' : "") +
+              'aria-invalid="false" ' +
               'aria-label="' + escapeAttr(qText) + '" />' +
           '</div>' +
 
@@ -158,6 +165,16 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
 
       const clearError = () => {
         slider.classList.remove("has-error");
+        input.setAttribute("aria-invalid", "false");
+        const errorId = input.id + "-error";
+        const describedBy = (input.getAttribute("aria-describedby") || "")
+          .split(/\s+/)
+          .filter((id) => id && id !== errorId);
+        if (describedBy.length) {
+          input.setAttribute("aria-describedby", describedBy.join(" "));
+        } else {
+          input.removeAttribute("aria-describedby");
+        }
         const err = q.querySelector(".wave-error");
         if (err) err.remove();
       };
@@ -204,25 +221,58 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
       const name = group.dataset.name;
       const hidden = document.querySelector('input[type="hidden"][name="' + name + '"]');
       const otherField = group.parentElement.querySelector(".chip-other-field");
+      const chips = Array.from(group.querySelectorAll(".chip"));
+      if (!chips.length) return;
 
-      group.querySelectorAll(".chip").forEach((chip) => {
-        chip.addEventListener("click", () => {
-          group.querySelectorAll(".chip").forEach((c) => {
-            c.classList.remove("is-active");
-            c.setAttribute("aria-checked", "false");
-          });
-          chip.classList.add("is-active");
-          chip.setAttribute("aria-checked", "true");
-          if (hidden) hidden.value = chip.dataset.value;
+      const initialTabStop =
+        chips.find((chip) => chip.getAttribute("aria-checked") === "true") ||
+        chips.find((chip) => chip.tabIndex === 0) ||
+        chips[0];
+      chips.forEach((chip) => {
+        chip.tabIndex = chip === initialTabStop ? 0 : -1;
+      });
 
-          if (otherField) {
-            const isOther = chip.dataset.value === "Sonstiges";
-            otherField.hidden = !isOther;
-            if (isOther) {
-              const inp = otherField.querySelector("input");
-              if (inp) setTimeout(() => inp.focus(), 80);
-            }
+      const selectChip = (chip, options = {}) => {
+        chips.forEach((candidate) => {
+          const selected = candidate === chip;
+          candidate.classList.toggle("is-active", selected);
+          candidate.setAttribute("aria-checked", String(selected));
+          candidate.tabIndex = selected ? 0 : -1;
+        });
+        if (hidden) hidden.value = chip.dataset.value;
+
+        if (otherField) {
+          const isOther = chip.dataset.value === "Sonstiges";
+          otherField.hidden = !isOther;
+          if (isOther && options.focusOther) {
+            const input = otherField.querySelector("input");
+            if (input) setTimeout(() => input.focus(), 80);
           }
+        }
+
+        if (options.focusChip) chip.focus();
+      };
+
+      chips.forEach((chip, index) => {
+        chip.addEventListener("click", (event) => {
+          selectChip(chip, { focusOther: event.detail > 0 });
+        });
+
+        chip.addEventListener("keydown", (event) => {
+          let nextIndex = null;
+          if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+            nextIndex = (index - 1 + chips.length) % chips.length;
+          } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+            nextIndex = (index + 1) % chips.length;
+          } else if (event.key === "Home") {
+            nextIndex = 0;
+          } else if (event.key === "End") {
+            nextIndex = chips.length - 1;
+          }
+
+          if (nextIndex === null) return;
+          event.preventDefault();
+          selectChip(chips[nextIndex], { focusChip: true });
         });
       });
     });
@@ -239,16 +289,35 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
     if (!form || !status) return;
 
     const submitBtn = form.querySelector(".form-submit");
+    const firebaseConfigured = isFirebaseConfigured(firebaseConfig);
+    if (!firebaseConfigured) {
+      refreshConfigurationStatus = () => {
+        submitBtn.disabled = true;
+        submitBtn.dataset.unavailable = "true";
+        status.textContent = t(
+          "feedback_not_configured",
+          "Das Feedback-Formular ist vorübergehend nicht erreichbar. Bitte schreiben Sie uns an kontakt@kiflowstate.de."
+        );
+        status.classList.remove("is-success");
+        status.classList.add("is-error");
+      };
+      refreshConfigurationStatus();
+    }
+
     const showSuccess = () => {
       form.hidden = true;
       if (successPanel) {
         successPanel.hidden = false;
-        successPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        successPanel.scrollIntoView({ behavior: scrollBehavior(), block: "start" });
       }
     };
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (!firebaseConfigured) {
+        refreshConfigurationStatus();
+        return;
+      }
       status.textContent = "";
       status.classList.remove("is-success", "is-error");
 
@@ -261,18 +330,36 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
         missing.forEach((el) => {
           const slider = el.closest(".wave-slider");
           const wrapper = el.closest(".wave-question");
+          const errorId = el.id + "-error";
           slider.classList.add("has-error");
-          if (!wrapper.querySelector(".wave-error")) {
-            const err = document.createElement("p");
+          el.setAttribute("aria-invalid", "true");
+          const describedBy = (el.getAttribute("aria-describedby") || "")
+            .split(/\s+/)
+            .filter(Boolean);
+          if (!describedBy.includes(errorId)) {
+            describedBy.push(errorId);
+            el.setAttribute("aria-describedby", describedBy.join(" "));
+          }
+          let err = wrapper.querySelector(".wave-error");
+          if (!err) {
+            err = document.createElement("p");
             err.className = "wave-error";
             err.textContent = t("feedback_slider_required", "Bitte setzen Sie die Welle auf einen Wert.");
             wrapper.appendChild(err);
           }
+          err.id = errorId;
         });
         status.textContent = t("feedback_status_required", "Bitte beantworten Sie alle Pflichtfragen.");
         status.classList.add("is-error");
-        const firstWrapper = missing[0].closest(".wave-question");
-        if (firstWrapper) firstWrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+        const firstMissing = missing[0];
+        const firstWrapper = firstMissing.closest(".wave-question");
+        firstMissing.focus({ preventScroll: true });
+        if (firstWrapper) {
+          firstWrapper.scrollIntoView({
+            behavior: scrollBehavior(),
+            block: "center"
+          });
+        }
         return;
       }
 
@@ -400,6 +487,7 @@ import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
       const qKey = wrapper.dataset.questionKey;
       if (qKey) el.setAttribute("aria-label", t(qKey, qKey));
     });
+    refreshConfigurationStatus();
   }
 
   /* ───────────────────────────────────────────────────────────

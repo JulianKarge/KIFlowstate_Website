@@ -86,7 +86,7 @@ const VIDEOS = [
 <ol>
   <li><strong>Ollama herunterladen.</strong> Entweder &uuml;ber den Browser auf <a href="https://ollama.com/download" target="_blank" rel="noopener">ollama.com/download</a> oder direkt im Terminal mit dem passenden Installationsbefehl unten.</li>
   <li><strong>Ollama einmal &ouml;ffnen.</strong> Danach pr&uuml;fen, ob der Befehl <code>ollama</code> im Terminal funktioniert.</li>
-  <li><strong>Modell Ihrer Wahl herunterladen.</strong> Suchen Sie sich ein Modell aus der Ollama-Bibliothek aus und laden Sie es mit <code>ollama run &lt;modell&gt;</code>.</li>
+  <li><strong>Modell deiner Wahl herunterladen.</strong> Suche dir ein Modell aus der Ollama-Bibliothek aus und lade es mit <code>ollama run &lt;modell&gt;</code>.</li>
   <li><strong>Hermes installieren oder starten.</strong> Am einfachsten mit <code>ollama launch hermes</code>. Alternativ Hermes direkt mit dem passenden Terminal-Befehl f&uuml;r macOS, Linux, WSL oder Windows installieren.</li>
   <li><strong>Hermes verbinden.</strong> Im Setup den lokalen Ollama-Endpoint ausw&auml;hlen und das heruntergeladene Modell best&auml;tigen.</li>
 </ol>`,

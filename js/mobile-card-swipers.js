@@ -7,6 +7,7 @@
 
   const BREAKPOINT = "(max-width: 900px) and (hover: none), (max-width: 900px) and (pointer: coarse)";
   const instances = new WeakMap();
+  const controlCleanups = new WeakMap();
 
   function shouldUse() {
     return typeof window.Swiper === "function" && window.matchMedia(BREAKPOINT).matches;
@@ -14,8 +15,10 @@
 
   function destroy(root) {
     const instance = instances.get(root);
-    if (!instance) return;
-    instance.destroy(true, true);
+    const cleanupControls = controlCleanups.get(root);
+    if (cleanupControls) cleanupControls();
+    controlCleanups.delete(root);
+    if (instance && !instance.destroyed) instance.destroy(true, true);
     instances.delete(root);
     root.classList.remove("kif-mobile-swiper", "swiper");
     const wrapper = root.querySelector(".swiper-wrapper");
@@ -32,6 +35,7 @@
 
     const existing = instances.get(root);
     if (existing && !existing.destroyed) return existing;
+    if (existing) destroy(root);
 
     root.classList.add("kif-mobile-swiper", "swiper");
     rail.classList.add("swiper-wrapper");
@@ -71,13 +75,27 @@
       }
     });
 
-    if (prev) prev.addEventListener("click", () => swiper.slidePrev());
-    if (next) next.addEventListener("click", () => swiper.slideNext());
-    if (dots && dots.length) {
-      dots.forEach((dot, index) => {
-        dot.addEventListener("click", () => swiper.slideTo(index));
-      });
-    }
+    const handlePrevClick = () => {
+      if (!swiper.destroyed) swiper.slidePrev();
+    };
+    const handleNextClick = () => {
+      if (!swiper.destroyed) swiper.slideNext();
+    };
+    const dotHandlers = (dots || []).map((dot, index) => {
+      const handler = () => {
+        if (!swiper.destroyed) swiper.slideTo(index);
+      };
+      dot.addEventListener("click", handler);
+      return { dot, handler };
+    });
+
+    if (prev) prev.addEventListener("click", handlePrevClick);
+    if (next) next.addEventListener("click", handleNextClick);
+    controlCleanups.set(root, () => {
+      if (prev) prev.removeEventListener("click", handlePrevClick);
+      if (next) next.removeEventListener("click", handleNextClick);
+      dotHandlers.forEach(({ dot, handler }) => dot.removeEventListener("click", handler));
+    });
 
     instances.set(root, swiper);
     updateControls(swiper, prev, next, dots);

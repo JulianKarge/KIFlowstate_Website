@@ -19,12 +19,12 @@
     <script data-goatcounter="https://kiflowstate.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
     <meta
       name="description"
-      content="KIFlowstate – Kundenfeedback. Erzählen Sie uns, wie Ihr Flow war."
+      content="KIFlowstate: Kundenfeedback. Erzählen Sie uns, wie Ihr Flow war."
       data-translate="feedback_meta_description"
     />
     <!-- Private page: keep search engines out. -->
     <meta name="robots" content="noindex,nofollow" />
-    <title>Kundenfeedback | KIFlowstate</title>
+    <title data-translate="feedback_document_title">Kundenfeedback | KIFlowstate</title>
 
     <!-- Favicon -->
     <link rel="icon" href="images/kilogo.png" type="image/png" />
@@ -34,7 +34,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap"
       rel="stylesheet"
     />
 
@@ -56,6 +56,7 @@
   </head>
 
   <body>
+    <a class="skip-link" href="#main-content" data-translate="skip_to_content">Zum Hauptinhalt springen</a>
     <!-- Shared SVG defs — gradient reused by every wave-slider fill on the page. -->
     <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
       <defs>
@@ -70,12 +71,11 @@
     <header class="navbar">
       <div class="container nav-wrapper">
         <a href="index.html" class="logo">
-          <img src="images/kilogo.png" alt="KIFlowstate Logo" />
+          <img src="images/kilogo.png" width="547" height="547" alt="KIFlowstate Logo" />
         </a>
 
         <nav>
           <ul class="nav-links" id="main-nav">
-            <li><a href="index.html#services" data-translate="nav_services">Leistungen</a></li>
             <li><a href="index.html#method" data-translate="nav_method">Methode</a></li>
             <li><a href="index.html#appointment" data-translate="nav_appointment">Termin</a></li>
             <li><a href="index.html#contact" data-translate="nav_contact">Kontakt</a></li>
@@ -87,8 +87,8 @@
 
         <!-- Language Switcher -->
         <div class="lang-switcher">
-          <button id="lang-de" class="lang-btn active">DE</button>
-          <button id="lang-en" class="lang-btn">EN</button>
+          <button id="lang-de" class="lang-btn active" type="button" aria-label="Deutsch" aria-pressed="true">DE</button>
+          <button id="lang-en" class="lang-btn" type="button" aria-label="English" aria-pressed="false">EN</button>
         </div>
 
         <!-- Theme toggle -->
@@ -104,9 +104,11 @@
         </button>
 
         <button
+          type="button"
           class="hamburger"
           id="hamburger"
-          aria-label="Toggle navigation"
+          aria-label="Navigation ein- oder ausblenden"
+          data-translate-aria-label="nav_toggle"
           aria-controls="main-nav"
           aria-expanded="false"
         >
@@ -115,13 +117,14 @@
       </div>
     </header>
 
+    <main id="main-content">
     <!-- ▸▸ HERO ----------------------------------------------------------- -->
-    <section class="feedback-hero">
+    <section class="feedback-hero" aria-labelledby="feedback-title">
       <div class="container">
         <span class="resources-eyebrow" data-translate="feedback_eyebrow">Kundenfeedback</span>
-        <h1 data-translate="feedback_title">Wie war Ihr Flow mit uns?</h1>
+        <h1 id="feedback-title" data-translate="feedback_title">Wie war Ihr Flow mit uns?</h1>
         <p data-translate="feedback_subtitle">
-          Ihre ehrliche Einschätzung hilft uns, KIFlowstate besser zu machen —
+          Ihre ehrliche Einschätzung hilft uns, KIFlowstate besser zu machen,
           und uns auf das zu fokussieren, was wirklich für Sie zählt.
         </p>
       </div>
@@ -138,7 +141,7 @@
     </section>
 
     <!-- ▸▸ FORM ----------------------------------------------------------- -->
-    <main class="feedback-main">
+    <div class="feedback-main">
       <div class="container feedback-card-wrap">
         <form
           id="feedback-form"
@@ -174,40 +177,40 @@
             </div>
 
             <div class="feedback-q">
-              <span class="feedback-q-label" data-translate="feedback_q_quelle">
+              <span class="feedback-q-label" id="feedback-source-label" data-translate="feedback_q_quelle">
                 Wie haben Sie uns gefunden?
               </span>
               <div
                 class="chip-group"
                 role="radiogroup"
-                aria-label="Wie haben Sie uns gefunden?"
+                aria-labelledby="feedback-source-label"
                 data-name="quelle"
               >
-                <button type="button" class="chip" data-value="Empfehlung" role="radio" aria-checked="false">
+                <button type="button" class="chip" data-value="Empfehlung" role="radio" aria-checked="false" tabindex="0">
                   <i class="fas fa-handshake" aria-hidden="true"></i>
                   <span data-translate="feedback_quelle_empfehlung">Empfehlung</span>
                 </button>
-                <button type="button" class="chip" data-value="Google" role="radio" aria-checked="false">
+                <button type="button" class="chip" data-value="Google" role="radio" aria-checked="false" tabindex="-1">
                   <i class="fab fa-google" aria-hidden="true"></i>
                   <span data-translate="feedback_quelle_google">Google-Suche</span>
                 </button>
-                <button type="button" class="chip" data-value="LinkedIn" role="radio" aria-checked="false">
+                <button type="button" class="chip" data-value="LinkedIn" role="radio" aria-checked="false" tabindex="-1">
                   <i class="fab fa-linkedin-in" aria-hidden="true"></i>
                   <span data-translate="feedback_quelle_linkedin">LinkedIn</span>
                 </button>
-                <button type="button" class="chip" data-value="YouTube" role="radio" aria-checked="false">
+                <button type="button" class="chip" data-value="YouTube" role="radio" aria-checked="false" tabindex="-1">
                   <i class="fab fa-youtube" aria-hidden="true"></i>
                   <span data-translate="feedback_quelle_youtube">YouTube</span>
                 </button>
-                <button type="button" class="chip" data-value="Instagram / TikTok" role="radio" aria-checked="false">
+                <button type="button" class="chip" data-value="Instagram / TikTok" role="radio" aria-checked="false" tabindex="-1">
                   <i class="fab fa-instagram" aria-hidden="true"></i>
                   <span data-translate="feedback_quelle_social">Instagram / TikTok</span>
                 </button>
-                <button type="button" class="chip" data-value="Direkter Kontakt" role="radio" aria-checked="false">
+                <button type="button" class="chip" data-value="Direkter Kontakt" role="radio" aria-checked="false" tabindex="-1">
                   <i class="fas fa-envelope" aria-hidden="true"></i>
                   <span data-translate="feedback_quelle_direkt">Direkter Kontakt</span>
                 </button>
-                <button type="button" class="chip" data-value="Sonstiges" role="radio" aria-checked="false">
+                <button type="button" class="chip" data-value="Sonstiges" role="radio" aria-checked="false" tabindex="-1">
                   <i class="fas fa-ellipsis-h" aria-hidden="true"></i>
                   <span data-translate="feedback_quelle_other">Sonstiges</span>
                 </button>
@@ -231,7 +234,7 @@
           <fieldset class="feedback-section">
             <legend data-translate="feedback_section2_legend">Ihr Flow mit KIFlowstate</legend>
             <p class="legend-hint" data-translate="feedback_section2_hint">
-              Ziehen Sie die Welle nach rechts, um Ihre Bewertung zu setzen —
+              Ziehen Sie die Welle nach rechts, um Ihre Bewertung zu setzen.
               von 0&nbsp;% (kein Flow) bis 100&nbsp;% (volle Welle).
             </p>
 
@@ -301,7 +304,7 @@
               <textarea
                 name="was_besser"
                 rows="4"
-                placeholder="Sagen Sie es uns offen — wir hören gerne zu."
+                placeholder="Sagen Sie es uns offen. Wir hören gerne zu."
                 data-translate-placeholder="feedback_was_besser_placeholder"
               ></textarea>
             </label>
@@ -310,7 +313,7 @@
               <input type="checkbox" name="testimonial_ok" value="ja" />
               <span data-translate="feedback_testimonial">
                 Mein Feedback darf <strong>anonym</strong> als Testimonial
-                verwendet werden — ohne Nennung meines Namens.
+                verwendet werden, ohne Nennung meines Namens.
               </span>
             </label>
           </fieldset>
@@ -336,17 +339,18 @@
         <!-- Success panel — shown after a successful submit. -->
         <div class="feedback-success" id="feedback-success" hidden>
           <div class="feedback-success-logo" aria-hidden="true">
-            <img src="images/kilogo.png" alt="" />
+            <img src="images/kilogo.png" width="547" height="547" alt="" />
           </div>
           <h2 data-translate="feedback_success_title">Vielen Dank.</h2>
           <p data-translate="feedback_success_text">
-            Ihr Feedback ist bei uns gelandet — Julian und Luca lesen es
+            Ihr Feedback ist bei uns gelandet. Julian und Luca lesen es
             persönlich. Falls eine Rückfrage sinnvoll ist, melden wir uns
             innerhalb der nächsten Tage bei Ihnen.
           </p>
           <a href="index.html" class="cta-btn cta-btn-dark" data-translate="feedback_success_back">Zurück zur Startseite</a>
         </div>
       </div>
+    </div>
     </main>
 
     <!-- ▸▸ FOOTER ---------------------------------------------------------- -->
