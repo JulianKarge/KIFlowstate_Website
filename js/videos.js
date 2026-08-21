@@ -28,6 +28,531 @@
 
 const VIDEOS = [
   {
+    id: "Sgp9r4ZOn6k",
+    title: {
+      de: "Hat Europa im KI-Rennen überhaupt noch eine Chance?",
+      en: "Does Europe still stand a chance in the AI race?"
+    },
+    publishedAt: "2026-08-21",
+    description: {
+      de: "Welche Rolle spielt Europa im KI-Rennen? Ich schaue mir an, an welchen Stellen Europa gerade komplett abgehängt wird und wo echte Chancen liegen, in Zukunft vorne mit dabei zu sein.",
+      en: "What role does Europe actually play in the AI race? I look at where Europe is falling behind completely, and where the real chances are to stay in front in the future."
+    },
+    thumbnailUrl: "images/europa-ki-rennen-thumbnail.png",
+    sections: [
+      {
+        heading: { de: "Zu den Quellen", en: "About these sources" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `
+                <p>
+                  Alle Zahlen aus dem Video kommen aus öffentlich zugänglichen Quellen.
+                  Klapp eine Karte auf und du siehst, wer die Quelle herausgibt, wofür ich
+                  sie im Video verwendet habe und wie du selbst drankommst.
+                </p>
+              `,
+              en: `
+                <p>
+                  Every number in the video comes from a publicly available source.
+                  Open a card to see who published it, what I used it for in the video,
+                  and how you can access it yourself.
+                </p>
+              `
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Modelle: USA, China, Europa", en: "Models: US, China, Europe" },
+        type: "sources",
+        icon: "fa-brain",
+        items: [
+          {
+            ref: "S1",
+            title: {
+              de: "Stanford AI Index 2026, Kapitel Research and Development",
+              en: "Stanford AI Index 2026, Research and Development chapter"
+            },
+            publisher: "Stanford HAI",
+            published: "2026",
+            usedFor: {
+              de: "59 bedeutende KI-Modelle in den USA, 35 in China, 2 in Europa",
+              en: "59 notable AI models in the US, 35 in China, 2 in Europe"
+            },
+            description: {
+              de: "Der AI Index ist eine der umfangreichsten jährlichen Datensammlungen zur KI-Entwicklung. Dieses Kapitel untersucht, wo bedeutende KI-Modelle entstehen. Die zugrunde liegenden Modelldaten stammen von Epoch AI.",
+              en: "The AI Index is one of the most comprehensive annual data collections on AI development. This chapter looks at where notable AI models are built. The underlying model data comes from Epoch AI."
+            },
+            note: {
+              de: "Notable AI Models ist eine kuratierte Auswahl besonders relevanter Modelle, nicht ausschließlich Sprachmodelle und keine vollständige Zählung aller Veröffentlichungen.",
+              en: "Notable AI Models is a curated selection of especially relevant models, not only language models and not a complete count of everything published."
+            },
+            access: {
+              de: "Frei im Browser lesbar, kein Login. Das vollständige PDF gibt es auf derselben Seite.",
+              en: "Free to read in the browser, no login. The full PDF is on the same page."
+            },
+            url: "https://hai.stanford.edu/ai-index/2026-ai-index-report/research-and-development"
+          },
+          {
+            ref: "S2",
+            title: {
+              de: "Stanford AI Index 2026, Kapitel Technical Performance",
+              en: "Stanford AI Index 2026, Technical Performance chapter"
+            },
+            publisher: "Stanford HAI",
+            published: "2026",
+            usedFor: {
+              de: "Abstand zwischen bestem US- und bestem chinesischem Modell, rund 2,7 Prozent im März 2026",
+              en: "Gap between the best US and the best Chinese model, about 2.7 percent in March 2026"
+            },
+            description: {
+              de: "Dieses Kapitel misst nicht die Anzahl der Modelle, sondern ihre Leistung. Der Vergleich zwischen amerikanischen und chinesischen Systemen zeigt, dass die früher große Lücke inzwischen sehr klein geworden ist.",
+              en: "This chapter measures capability rather than volume. The comparison between American and Chinese systems shows that the formerly wide performance gap has become very small."
+            },
+            access: {
+              de: "Frei im Browser lesbar, kein Login.",
+              en: "Free to read in the browser, no login."
+            },
+            url: "https://hai.stanford.edu/ai-index/2026-ai-index-report/technical-performance"
+          },
+          {
+            ref: "S3",
+            title: { de: "Mistral AI: Mistral Medium 3.5", en: "Mistral AI: Mistral Medium 3.5" },
+            publisher: "Mistral AI",
+            published: "2026",
+            usedFor: {
+              de: "Europas sichtbarstes General-Purpose-Labor, 128 Milliarden Parameter, 256k Kontext",
+              en: "Europe's most visible general-purpose lab, 128 billion parameters, 256k context"
+            },
+            description: {
+              de: "Der offizielle Launch-Artikel beschreibt Architektur, Kontextlänge, Lizenzierung und Self-Hosting des Modells mit offenen Gewichten. Ideal für die technischen Daten.",
+              en: "The official launch post covers architecture, context length, licensing and self-hosting of the open-weight model. Ideal for the technical specs."
+            },
+            note: {
+              de: "Die 77,6 Prozent auf SWE-Bench Verified sind eine Herstellerangabe von Mistral, kein unabhängiges Ranking.",
+              en: "The 77.6 percent on SWE-Bench Verified is a vendor-reported number from Mistral, not an independent ranking."
+            },
+            access: {
+              de: "Frei lesbar. Die vollständigen Modelldaten stehen zusätzlich in der Mistral-Dokumentation.",
+              en: "Free to read. The full model card is also in the Mistral documentation."
+            },
+            url: "https://mistral.ai/news/vibe-remote-agents-mistral-medium-3-5/"
+          },
+          {
+            ref: "E1",
+            title: { de: "Alibaba Qwen: Qwen3.5", en: "Alibaba Qwen: Qwen3.5" },
+            publisher: "Alibaba Cloud, Qwen Team",
+            published: { de: "Februar 2026", en: "February 2026" },
+            usedFor: {
+              de: "Beleg, dass Alibaba eigene Modelle entwickelt und nicht nur in KI investiert",
+              en: "Evidence that Alibaba builds its own models rather than only investing in AI"
+            },
+            description: {
+              de: "Offizieller Artikel zur multimodalen, agentischen Modellfamilie Qwen3.5. Gutes Beispiel dafür, dass China mehrere voneinander unabhängige Modellfamilien besitzt.",
+              en: "Official article on the multimodal, agentic Qwen3.5 family. A good example of China having several independent model families."
+            },
+            access: {
+              de: "Frei lesbar auf dem Alibaba-Cloud-Blog, Englisch.",
+              en: "Free to read on the Alibaba Cloud blog, in English."
+            },
+            url: "https://www.alibabacloud.com/blog/qwen3-5-towards-native-multimodal-agents_602894"
+          },
+          {
+            ref: "E2",
+            title: { de: "ByteDance Seed: Seed2.1", en: "ByteDance Seed: Seed2.1" },
+            publisher: "ByteDance Seed",
+            published: { de: "Juni 2026", en: "June 2026" },
+            usedFor: {
+              de: "ByteDance betreibt ein eigenes KI-Forschungslabor",
+              en: "ByteDance runs its own AI research lab"
+            },
+            description: {
+              de: "Seed2.1 wurde 2026 als neue Generation agentischer Modelle für komplexe Arbeitsabläufe veröffentlicht.",
+              en: "Seed2.1 launched in 2026 as a new generation of agentic models for complex workflows."
+            },
+            access: {
+              de: "Frei lesbar auf der Seed-Seite von ByteDance, Englisch.",
+              en: "Free to read on ByteDance's Seed site, in English."
+            },
+            url: "https://seed.bytedance.com/en/blog/seed2-1-officially-released-advancing-ai-productivity"
+          },
+          {
+            ref: "E3",
+            title: { de: "Tencent Hunyuan: Hy3", en: "Tencent Hunyuan: Hy3" },
+            publisher: "Tencent",
+            published: { de: "Juli 2026", en: "July 2026" },
+            usedFor: {
+              de: "Tencent entwickelt mit Hunyuan eine eigene Modellfamilie",
+              en: "Tencent develops its own model family under the Hunyuan name"
+            },
+            description: {
+              de: "Offizielle Ankündigung zu Hy3. Das Modell wird bereits in mehreren Tencent-Produkten und über Tencent Cloud eingesetzt.",
+              en: "Official Hy3 announcement. The model is already used across several Tencent products and via Tencent Cloud."
+            },
+            access: {
+              de: "Frei lesbar auf tencent.com, Englisch.",
+              en: "Free to read on tencent.com, in English."
+            },
+            url: "https://www.tencent.com/en-us/articles/2202386.html"
+          },
+          {
+            ref: "E4",
+            title: { de: "Moonshot AI: Kimi K3", en: "Moonshot AI: Kimi K3" },
+            publisher: "Moonshot AI",
+            published: { de: "Juli 2026", en: "July 2026" },
+            usedFor: {
+              de: "Kimi K3 als Flaggschiff für Coding, Reasoning und agentische Anwendungen",
+              en: "Kimi K3 as a flagship for coding, reasoning and agentic work"
+            },
+            description: {
+              de: "Moonshot AI entwickelt die Kimi-Modellfamilie. Die Entwicklerseite beschreibt K3 mit Kontextfenster, Fähigkeiten und Zugriff über die API.",
+              en: "Moonshot AI builds the Kimi model family. The developer page describes K3 with its context window, capabilities and API access."
+            },
+            access: {
+              de: "Frei lesbar auf der Kimi-Entwicklerplattform, Englisch.",
+              en: "Free to read on the Kimi developer platform, in English."
+            },
+            url: "https://platform.kimi.ai/docs/guide/kimi-k3-quickstart"
+          }
+        ]
+      },
+      {
+        heading: { de: "Chips, EUV und Fertigung", en: "Chips, EUV and manufacturing" },
+        type: "sources",
+        icon: "fa-microchip",
+        items: [
+          {
+            ref: "S4",
+            title: {
+              de: "McKinsey: Time to place our bets, Europe's AI opportunity",
+              en: "McKinsey: Time to place our bets, Europe's AI opportunity"
+            },
+            publisher: "McKinsey Global Institute",
+            published: "2024",
+            usedFor: {
+              de: "Europas Anteil am Design KI-fähiger Logik-Halbleiter unter 2 Prozent",
+              en: "Europe's share of AI-capable logic semiconductor design below 2 percent"
+            },
+            description: {
+              de: "Die Studie zerlegt die Wertschöpfungskette generativer KI in einzelne Ebenen. Europa hat beim Chipdesign und bei der Fertigung moderner Logik-Chips nur geringe Anteile, steht bei Fertigungsanlagen für Halbleiter dagegen außergewöhnlich stark da.",
+              en: "The study breaks the generative AI value chain into layers. Europe holds small shares in chip design and leading-edge logic manufacturing, but an unusually strong position in semiconductor manufacturing equipment."
+            },
+            note: {
+              de: "Datenstand 2023. Die Zahl zeigt eine strukturelle Schwäche, keinen tagesaktuellen Marktanteil.",
+              en: "Data as of 2023. The figure shows a structural weakness, not a current market share."
+            },
+            access: {
+              de: "Frei auf mckinsey.com lesbar, für den vollständigen Report ist teilweise eine Registrierung nötig.",
+              en: "Free to read on mckinsey.com, the full report sometimes asks for registration."
+            },
+            url: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/time-to-place-our-bets-europes-ai-opportunity"
+          },
+          {
+            ref: "E5",
+            title: { de: "Huawei: Ascend AI Computing", en: "Huawei: Ascend AI computing" },
+            publisher: "Huawei",
+            published: "2025",
+            usedFor: {
+              de: "China baut ein eigenes KI-Compute-Ökosystem, nicht nur eigene Modelle",
+              en: "China is building its own AI compute ecosystem, not just its own models"
+            },
+            description: {
+              de: "Huawei beschreibt die Ascend-Prozessoren als Grundlage für KI-Training und Inferenz und baut die Produktfamilie samt Software-Stack weiter aus.",
+              en: "Huawei describes its Ascend processors as the basis for AI training and inference, and keeps expanding the family and its software stack."
+            },
+            access: {
+              de: "Frei zugänglich auf huawei.com, Englisch.",
+              en: "Freely available on huawei.com, in English."
+            },
+            url: "https://www.huawei.com/en/news/2025/9/hc-shengten-opensource"
+          },
+          {
+            ref: "S5",
+            title: { de: "ASML: EUV Lithography Systems", en: "ASML: EUV lithography systems" },
+            publisher: "ASML",
+            published: { de: "laufend aktualisiert", en: "continuously updated" },
+            usedFor: {
+              de: "Wie EUV funktioniert und wofür es in der Chipfertigung gebraucht wird",
+              en: "How EUV works and what it is needed for in chip manufacturing"
+            },
+            description: {
+              de: "Die offizielle Produktseite erklärt die Funktionsweise von EUV, den Unterschied zwischen klassischem EUV und High-NA EUV und die Rolle der Technologie bei modernen Logik- und Speicherchips.",
+              en: "The official product page explains how EUV works, the difference between classic EUV and High-NA EUV, and the role of the technology in modern logic and memory chips."
+            },
+            access: {
+              de: "Frei zugänglich, kein Login.",
+              en: "Freely available, no login."
+            },
+            url: "https://www.asml.com/en/products/euv-lithography-systems"
+          },
+          {
+            ref: "E6",
+            title: { de: "ASML: Über das Unternehmen", en: "ASML: About the company" },
+            publisher: "ASML",
+            published: { de: "laufend aktualisiert", en: "continuously updated" },
+            usedFor: {
+              de: "ASML baut die Maschinen, nicht die Chips",
+              en: "ASML builds the machines, not the chips"
+            },
+            description: {
+              de: "ASML produziert selbst keine Mikrochips, sondern die Lithographiesysteme, mit denen Hersteller wie TSMC, Samsung und Intel Strukturen auf Silizium-Wafer projizieren. Bei EUV ist ASML derzeit der einzige Anbieter kommerzieller Systeme.",
+              en: "ASML does not make microchips. It builds the lithography systems that manufacturers such as TSMC, Samsung and Intel use to project patterns onto silicon wafers. For EUV, ASML is currently the only supplier of commercial systems."
+            },
+            access: {
+              de: "Frei zugänglich, kein Login.",
+              en: "Freely available, no login."
+            },
+            url: "https://www.asml.com/en/company/about-asml"
+          },
+          {
+            ref: "S6",
+            title: { de: "ZEISS: High-NA EUV Lithography", en: "ZEISS: High-NA EUV lithography" },
+            publisher: "ZEISS SMT",
+            published: { de: "laufend aktualisiert", en: "continuously updated" },
+            usedFor: {
+              de: "Sprung der numerischen Apertur von 0,33 auf 0,55",
+              en: "The jump in numerical aperture from 0.33 to 0.55"
+            },
+            description: {
+              de: "ZEISS entwickelt die Spiegel- und Projektionssysteme, mit denen das EUV-Licht kontrolliert und auf den Wafer fokussiert wird, und liefert diese Optiken exklusiv an ASML.",
+              en: "ZEISS develops the mirror and projection systems that control and focus EUV light onto the wafer, and supplies these optics exclusively to ASML."
+            },
+            note: {
+              de: "ZEISS spricht von bis zu etwa dreimal mehr Strukturen auf vergleichbarer Fläche. Das ist nicht dasselbe wie dreimal mehr Leistung.",
+              en: "ZEISS talks about up to roughly three times more structures on a comparable area. That is not the same as three times more performance."
+            },
+            access: {
+              de: "Frei zugänglich, auf Deutsch und Englisch.",
+              en: "Freely available, in German and English."
+            },
+            url: "https://www.zeiss.com/semiconductor-manufacturing-technology/inspiring-technology/high-na-euv-lithography.html"
+          },
+          {
+            ref: "S7",
+            title: { de: "ZEISS: EUV Lithography and Technology", en: "ZEISS: EUV lithography and technology" },
+            publisher: "ZEISS SMT",
+            published: { de: "laufend aktualisiert", en: "continuously updated" },
+            usedFor: {
+              de: "Die Arbeitsteilung zwischen TRUMPF, ZEISS und ASML",
+              en: "How TRUMPF, ZEISS and ASML split the work"
+            },
+            description: {
+              de: "ZEISS erklärt den gesamten EUV-Prozess anschaulich: vom CO2-Laser von TRUMPF über das erzeugte Zinnplasma bis zu den ZEISS-Spiegeln und dem ASML-Gesamtsystem.",
+              en: "ZEISS walks through the entire EUV process: from TRUMPF's CO2 laser to the tin plasma it creates, the ZEISS mirrors and the complete ASML system."
+            },
+            access: {
+              de: "Frei zugänglich, auf Deutsch und Englisch.",
+              en: "Freely available, in German and English."
+            },
+            url: "https://www.zeiss.com/semiconductor-manufacturing-technology/inspiring-technology/euv-lithography.html"
+          }
+        ]
+      },
+      {
+        heading: { de: "Strom und Netze", en: "Power and grids" },
+        type: "sources",
+        icon: "fa-bolt",
+        items: [
+          {
+            ref: "S8",
+            title: { de: "IEA: Energy and AI", en: "IEA: Energy and AI" },
+            publisher: "International Energy Agency",
+            published: "2025",
+            usedFor: {
+              de: "45 Prozent USA, 25 Prozent China, 15 Prozent Europa am weltweiten Rechenzentrums-Strom 2024, insgesamt rund 415 TWh",
+              en: "45 percent US, 25 percent China, 15 percent Europe of global data centre electricity in 2024, around 415 TWh in total"
+            },
+            description: {
+              de: "Der erste umfassende IEA-Report zum Zusammenspiel von KI, Rechenzentren und Energiesystem. Liefert die wichtigsten internationalen Vergleichsdaten zum Strombedarf.",
+              en: "The first comprehensive IEA report on how AI, data centres and the energy system interact. It provides the key international comparison data on electricity demand."
+            },
+            note: {
+              de: "Die Steigerungen bis 2030 beschreiben den Stromverbrauch der Rechenzentren, nicht den Ausbau der Stromnetze.",
+              en: "The increases through 2030 describe data centre electricity consumption, not grid expansion."
+            },
+            access: {
+              de: "Frei online lesbar, PDF-Download ohne Bezahlschranke.",
+              en: "Free to read online, PDF download without a paywall."
+            },
+            url: "https://www.iea.org/reports/energy-and-ai"
+          },
+          {
+            ref: "S9",
+            title: {
+              de: "Berkeley Lab: U.S. Data Center Energy Usage Report, 2025 Update",
+              en: "Berkeley Lab: U.S. Data Center Energy Usage Report, 2025 Update"
+            },
+            publisher: "Lawrence Berkeley National Laboratory",
+            published: "2026",
+            usedFor: {
+              de: "Rechenzentren könnten 2030 rund 11,8 Prozent des gesamten US-Stromverbrauchs ausmachen",
+              en: "Data centres could account for around 11.8 percent of total US electricity use in 2030"
+            },
+            description: {
+              de: "Der Bericht modelliert den künftigen Strombedarf amerikanischer Rechenzentren anhand von Hardware-Auslieferungen, Energieverbrauch und Kühltechnik. Er ist die aktuellere Quelle als die ältere 2028-Prognose.",
+              en: "The report models future US data centre electricity demand from hardware shipments, energy use and cooling technology. It is more current than the older 2028 projection."
+            },
+            note: {
+              de: "Die modellierte Bandbreite liegt bei 9,5 bis 15,3 Prozent. 11,8 Prozent ist der mittlere Wert.",
+              en: "The modelled range is 9.5 to 15.3 percent. 11.8 percent is the central estimate."
+            },
+            access: {
+              de: "Kostenloser PDF-Download beim Berkeley Lab.",
+              en: "Free PDF download from Berkeley Lab."
+            },
+            url: "https://bies.lbl.gov/publications/united-states-data-center-energy-2025"
+          },
+          {
+            ref: "S10",
+            title: {
+              de: "US-Energieministerium: National Transmission Needs Study 2026",
+              en: "U.S. Department of Energy: National Transmission Needs Study 2026"
+            },
+            publisher: { de: "U.S. Department of Energy, Office of Electricity", en: "U.S. Department of Energy, Office of Electricity" },
+            published: { de: "Juli 2026, Entwurf", en: "July 2026, draft" },
+            usedFor: {
+              de: "Netzengpässe in den USA, KI-Rechenzentren als Treiber des Netzausbaus",
+              en: "US grid bottlenecks, with AI data centres driving transmission expansion"
+            },
+            description: {
+              de: "Das Energieministerium untersucht Engpässe im amerikanischen Übertragungsnetz und beschreibt steigende Lasten durch Hyperscale-Rechenzentren ausdrücklich als wesentlichen Treiber des künftigen Ausbaus.",
+              en: "The department examines bottlenecks in the US transmission grid and names rising loads from hyperscale data centres as a major driver of future expansion."
+            },
+            note: {
+              de: "Aktuell eine Entwurfsfassung in der öffentlichen Kommentierung, noch keine finale Studie.",
+              en: "Currently a draft in public comment, not yet a final study."
+            },
+            access: {
+              de: "Frei zugänglich, PDF beim DOE.",
+              en: "Freely available, PDF from the DOE."
+            },
+            url: "https://www.energy.gov/oe/articles/does-office-electricity-publishes-2026-draft-national-transmission-needs-study"
+          },
+          {
+            ref: "S11",
+            title: {
+              de: "China: Stromstatistik zum Jahresende 2025",
+              en: "China: power statistics for the end of 2025"
+            },
+            publisher: { de: "National Energy Administration, via gov.cn", en: "National Energy Administration, via gov.cn" },
+            published: { de: "Januar 2026", en: "January 2026" },
+            usedFor: {
+              de: "3,89 TW installierte Erzeugungskapazität, plus 16,1 Prozent, Solar 1,20 TW, Wind 0,64 TW",
+              en: "3.89 TW installed generation capacity, up 16.1 percent, solar 1.20 TW, wind 0.64 TW"
+            },
+            description: {
+              de: "Offizielle Statistik der chinesischen Energiebehörde zu installierter Kapazität sowie zum Ausbau von Solar-, Wind-, Kern- und fossiler Stromerzeugung.",
+              en: "Official statistics from China's energy administration on installed capacity and the build-out of solar, wind, nuclear and fossil generation."
+            },
+            note: {
+              de: "Die Zahlen gelten für Ende 2025. Die neuere Zahl für Ende Juni 2026 liegt bereits bei 4,04 TW.",
+              en: "These figures are for the end of 2025. The newer figure for end of June 2026 is already 4.04 TW."
+            },
+            access: {
+              de: "Frei zugänglich, Englisch.",
+              en: "Freely available, in English."
+            },
+            url: "https://english.www.gov.cn/archive/statistics/202601/30/content_WS697cb463c6d00ca5f9a08da7.html"
+          },
+          {
+            ref: "S12",
+            title: {
+              de: "State Grid: Investitionsplan 2026 bis 2030",
+              en: "State Grid: investment plan 2026 to 2030"
+            },
+            publisher: { de: "State Grid Corporation of China, via SASAC", en: "State Grid Corporation of China, via SASAC" },
+            published: { de: "Januar 2026", en: "January 2026" },
+            usedFor: {
+              de: "Bis zu 4 Billionen Yuan Investitionen, interregionale Übertragungskapazität plus über 30 Prozent",
+              en: "Up to 4 trillion yuan in investment, cross-regional transmission capacity up more than 30 percent"
+            },
+            description: {
+              de: "Staatliche Veröffentlichung zum geplanten Investitionsrahmen im 15. Fünfjahresplan und zum weiteren Ausbau der chinesischen Übertragungsinfrastruktur.",
+              en: "State publication on the planned investment envelope for the 15th Five-Year Plan and the further build-out of China's transmission infrastructure."
+            },
+            access: {
+              de: "Frei zugänglich, Englisch.",
+              en: "Freely available, in English."
+            },
+            url: "http://en.sasac.gov.cn/2026/01/22/c_20333.htm"
+          },
+          {
+            ref: "S13",
+            title: { de: "Eurostat: EU-Stromproduktion 2025", en: "Eurostat: EU electricity production 2025" },
+            publisher: "Eurostat",
+            published: { de: "März 2026", en: "March 2026" },
+            usedFor: {
+              de: "47,2 Prozent der EU-Stromproduktion aus Erneuerbaren, 23,2 Prozent aus Kernenergie",
+              en: "47.2 percent of EU electricity production from renewables, 23.2 percent from nuclear"
+            },
+            description: {
+              de: "Offizielle europäische Daten zur Stromerzeugung. Die Quelle zeigt, wie stark Erneuerbare und Kernenergie den europäischen Strommix inzwischen prägen.",
+              en: "Official European electricity generation data. It shows how strongly renewables and nuclear now shape the European power mix."
+            },
+            note: {
+              de: "Vorläufige Daten für 2025.",
+              en: "Preliminary data for 2025."
+            },
+            access: {
+              de: "Frei zugänglich, mit Datentabellen zum Download.",
+              en: "Freely available, with downloadable data tables."
+            },
+            url: "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260319-2"
+          },
+          {
+            ref: "S14",
+            title: { de: "Europäische Kommission: European Grids", en: "European Commission: European grids" },
+            publisher: { de: "Europäische Kommission", en: "European Commission" },
+            published: { de: "Dezember 2025", en: "December 2025" },
+            usedFor: {
+              de: "584 Milliarden Euro Investitionsbedarf, 40 Prozent der Verteilnetze älter als 40 Jahre, Warteschlangen bei Netzanschlüssen",
+              en: "584 billion euros of investment needed, 40 percent of distribution grids older than 40 years, connection queues"
+            },
+            description: {
+              de: "Die Kommission beschreibt Zustand, Modernisierungsbedarf und Engpässe des europäischen Stromnetzes. Genau hier liegt Europas eigentliche KI-Infrastrukturfrage: nicht zu wenig Strom, sondern neue große Lasten schnell genug ans richtige Netz zu bekommen.",
+              en: "The Commission describes the state, modernisation needs and bottlenecks of the European power grid. This is Europe's real AI infrastructure question: not too little electricity, but connecting large new loads to the right grid fast enough."
+            },
+            access: {
+              de: "Frei zugänglich, mit weiterführenden Dokumenten und Gesetzesvorschlägen.",
+              en: "Freely available, with further documents and legislative proposals."
+            },
+            url: "https://energy.ec.europa.eu/topics/infrastructure/european-grids_en"
+          }
+        ]
+      },
+      {
+        heading: { de: "Einordnung", en: "How to read this" },
+        type: "text",
+        items: [
+          {
+            html: {
+              de: `
+                <p>
+                  Die Vergleichsgrafik am Ende des Videos ist eine qualitative Einordnung
+                  auf Basis der hier verlinkten Quellen, kein offizieller Index. Das
+                  Diagramm zur Wertschöpfungskette ist bewusst vereinfacht: Die gezeigten
+                  Unternehmen stehen für Ebenen der Kette, die Pfeile bilden keine konkrete
+                  Lieferbeziehung zwischen einzelnen Firmen ab.
+                </p>
+              `,
+              en: `
+                <p>
+                  The comparison graphic at the end of the video is a qualitative reading of
+                  the sources linked here, not an official index. The value chain diagram is
+                  deliberately simplified: the companies shown stand for layers of the chain,
+                  and the arrows do not represent a concrete supply relationship between
+                  individual firms.
+                </p>
+              `
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "eXKRngP-vQQ",
     title: {
       de: "So maximierst du dein ChatGPT Codex Workflow",

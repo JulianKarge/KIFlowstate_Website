@@ -214,6 +214,67 @@
         `;
       }).join("");
       inner = `<div class="link-grid">${cards}</div>`;
+    } else if (section.type === "sources") {
+      // Collapsible source cards. Each item carries the four fields we want to
+      // keep per source (ref / publisher / published / usedFor) so a claim in a
+      // video can later be linked straight to the source that backs it.
+      icon = "fa-book-open";
+      const field = (label, value) =>
+        value
+          ? `<div class="source-field">
+              <dt>${escapeHtml(label)}</dt>
+              <dd>${escapeHtml(value)}</dd>
+            </div>`
+          : "";
+
+      const cards = items.map((s) => {
+        const ref       = pick(s.ref);
+        const title     = pick(s.title);
+        const publisher = pick(s.publisher);
+        const published = pick(s.published);
+        const usedFor   = pick(s.usedFor);
+        const desc      = pick(s.description);
+        const access    = pick(s.access);
+        const note      = pick(s.note);
+        const host      = hostFromUrl(s.url);
+        const metaLine  = [publisher, published].filter(Boolean).join(" · ");
+
+        return `
+          <details class="source-card"${ref ? ` data-source-ref="${escapeHtml(ref)}"` : ""}>
+            <summary title="${escapeHtml(t("resources_source_expand", "Details ein- oder ausklappen"))}">
+              ${ref ? `<span class="source-ref">${escapeHtml(ref)}</span>` : ""}
+              <span class="source-head">
+                <span class="source-title">${escapeHtml(title)}</span>
+                ${metaLine ? `<span class="source-meta-line">${escapeHtml(metaLine)}</span>` : ""}
+              </span>
+              <i class="fas fa-chevron-down source-chevron" aria-hidden="true"></i>
+            </summary>
+            <div class="source-body">
+              ${desc ? `<p class="source-desc">${escapeHtml(desc)}</p>` : ""}
+              ${note
+                ? `<p class="source-note">
+                    <strong>${escapeHtml(t("resources_source_note", "Einordnung"))}:</strong>
+                    ${escapeHtml(note)}
+                  </p>`
+                : ""}
+              <dl class="source-fields">
+                ${field(t("resources_source_publisher", "Herausgeber"), publisher)}
+                ${field(t("resources_source_published", "Veröffentlicht"), published)}
+                ${field(t("resources_source_used_for", "Verwendet für"), usedFor)}
+                ${field(t("resources_source_access", "So kommst du ran"), access)}
+              </dl>
+              ${s.url
+                ? `<a class="source-link" href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                    <span>${escapeHtml(t("resources_source_open", "Quelle öffnen"))}</span>
+                    ${host ? `<span class="source-link-host">${escapeHtml(host)}</span>` : ""}
+                  </a>`
+                : ""}
+            </div>
+          </details>
+        `;
+      }).join("");
+      inner = `<div class="source-list">${cards}</div>`;
     } else if (section.type === "text") {
       icon = "fa-circle-info";
       inner = items.map((it) => `<div class="resource-text">${pick(it.html)}</div>`).join("");
