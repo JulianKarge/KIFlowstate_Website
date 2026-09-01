@@ -28,6 +28,19 @@
 
 const VIDEOS = [
   {
+    id: "CQGqd_9pm4k",
+    title: {
+      de: "Fable 5.1 ist besser und günstiger, als jemals zuvor",
+      en: "Fable 5.1 is better and cheaper than ever"
+    },
+    publishedAt: "2026-09-01",
+    description: {
+      de: "Das neue Modell von Anthropic ist online und hat mich von den Socken gehauen. Price to performance ist wirklich insane – und zum Glück auch noch Teil des Abos.",
+      en: "Anthropic's new model is live and its price-to-performance ratio is genuinely impressive — while still being included in the subscription."
+    },
+    sections: []
+  },
+  {
     id: "Sgp9r4ZOn6k",
     title: {
       de: "Hat Europa im KI-Rennen überhaupt noch eine Chance?",
