@@ -1,77 +1,85 @@
 <claude-mem-context>
 # Memory Context
 
-# [Website] recent context, 2026-07-24 10:06pm GMT+2
+# [Website] recent context, 2026-09-02 1:02am GMT+2
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 50 obs (21.164t read) | 346.499t work | 94% savings
+Stats: 50 obs (16.794t read) | 406.519t work | 96% savings
 
-### Jul 10, 2026
-S425 User uploaded a new YouTube video (eXKRngP-vQQ) and requested: pull latest changes from laptop, add the video to the website, fetch metadata/thumbnail, and use the appropriate skill for video management (Jul 10, 4:41 PM)
-### Jul 22, 2026
-S426 Add newly uploaded YouTube video (eXKRngP-vQQ, "So maximierst du dein ChatGPT Codex Workflow") to the website's video resources page with thumbnail, metadata, and supporting resource links (Jul 22, 8:08 PM)
-S427 Configure winclipshot.exe to run automatically on PC restart as a persistent background process (Jul 22, 8:18 PM)
 ### Jul 24, 2026
-S428 Make WinClipShot process persist across PC restarts by configuring automatic startup on logon (Jul 24, 6:47 PM)
-S429 Implement Ctrl+Shift+V keybinding to convert screenshot clipboard to file path in terminals, while keeping Ctrl+V as normal image paste (Jul 24, 6:48 PM)
-1495 7:26p 🔵 winclipshot clipboard interception mechanism
-1496 " 🔵 AutoHotkey not installed; winclipshot help verified
-1497 7:27p 🔵 .NET and PowerShell compilation infrastructure available
-1499 " 🟣 WinClipShotHotkey .NET tool created for Ctrl+Shift+V custom paste
-1498 7:28p 🔵 Browser runtime unavailable for local website preview
-1501 7:29p 🟣 Hero section redesigned with canvas-based wave system and glassmorphism
-1500 " 🔴 WinClipShotHotkey compilation errors fixed
-1502 " 🟣 WinClipShotHotkey compiled and published successfully
-1503 " 🟣 WinClipShotHotkey built and deployed to project root
-1506 7:30p 🟣 Hero section messaging and layout redesigned to emphasize operational automation
-1504 " ✅ WinClipShotHotkey registered as Windows Scheduled Task for auto-launch at logon
-1505 7:31p 🔵 WinClipShotHotkey active and monitoring VS Code processes
-S430 Improve KIFlowstate website hero section: reduce "AI slop" appearance, make more immersive, fix wave particles (Jul 24, 7:31 PM)
-1507 7:32p ✅ SEO metadata and page title updated to reflect SMB-focused positioning
-1508 " 🟣 Translation strings updated to support redesigned hero section with SMB messaging
-S431 Redesign the KIFlowstate hero section to be "less AI looking" by improving typography, hierarchy, and wave treatment while preserving all existing copy. (Jul 24, 7:32 PM)
-1509 7:34p ⚖️ Hero section design direction reverted to aspirational aesthetic; SMB operational messaging abandoned
-1510 " ✅ Translation strings reverted; SMB-specific messaging and workflow-log keys removed
-1511 7:35p 🔵 CSS/HTML mismatch: hero styles not reverted while HTML and translations were
-1512 7:36p 🟣 Hero section CSS completely redesigned with typographic-focused layout and architectural styling
-1513 7:37p 🔵 CSS patch application failed: target lines not found in file
-S432 Redesign KIFlowstate website hero section: remove problematic wave particle animation, make text less AI-generated-looking, create immersive but authentic design (Jul 24, 7:37 PM)
-1514 7:46p ✅ Hero Section Redesign: Removed Wave Particles, Restructured Layout
-1515 7:47p ✅ Hero Section CSS Redesign: Dark Animated to Light Brand-Focused
-1516 7:48p ✅ CTA Button and Social Links Styling Updated to Light Theme
-1517 " 🔄 Tablet Breakpoint Responsive Design Simplified
-1518 " ✅ Dark Theme CTA Button Hover State Fixed
-S433 Redesign KIFlowstate website hero: reduce AI-generated appearance, make immersive without distracting particle effects, improve wave animation (Jul 24, 7:48 PM)
-1519 7:49p ⚖️ Design Direction Pivot: Restore Animated Wave Hero with Refinements
-1520 7:50p ✅ Restore Animated Wave Hero While Preserving Layout Restructuring
-1521 " ✅ Hero CSS Overhaul: Bright Flow Field with Wave Animation and Refined Typography
-1522 " ✅ CTA Button and Social Links Redesigned for Dark Wave Background
-1523 " 🔄 Mobile Hero Typography Consolidated and Layout Simplified
-1524 7:51p 🟣 Hero Wave Animation System Recreated: Clean, Interactive Canvas Rendering
-1525 7:52p ✅ Hero Title Hierarchy Refined: Prefix and Suffix Typography Tuning
-1526 " ⚖️ Hero Redesign Project Completed: Bright Flow Field with Clean Wave Animation
-1527 9:05p 🔵 CSS spacing inspection between hero and flow-story sections
-1528 " 🔴 Located flow-story section causing gap; changed border-block to border-bottom
-1529 " 🔵 Verified CSS structure for flow-story with responsive and dark-mode rules intact
-1530 9:06p 🔵 Examined visual/scene elements of flow-story section with 3D transforms
-1531 9:07p 🔴 Applied targeted CSS fix to reduce gap in flow-story section
-1532 " 🔵 Verified CSS patch applied successfully with no syntax errors
-S434 Fix vertical gap between flow-story "documents without word chaos" section and starting page without altering other design elements (Jul 24, 9:07 PM)
-1533 9:59p 🔵 /watch skill setup preflight on Windows
-1534 " ✅ yt-dlp binary installed on Windows
-1535 10:00p 🔵 Watch setup progressed to API key configuration stage
-1536 " 🟣 Video analysis workflow operational on YouTube Shorts
-1537 " 🔵 YouTube Shorts is sports video, not music content
-1538 10:03p 🟣 Shazamio music identification library installed
-1539 " 🔵 Shazamio music recognition script failed on video file
-1540 " 🔵 Shazamio import fails in subprocess despite successful installation
-1541 10:04p 🔵 Shazamio native extension crashes with access violation on import
-1542 " 🔵 Shazamio successfully installed for Python 3.12 using pre-built wheels
-1543 " 🟣 Music identification via Shazamio successfully identifies YouTube Shorts song
-1544 10:05p 🟣 Full version of song identified and located on YouTube
+S446 Integrate 3D logo with realistic drop animation from viewport, bounce physics, interactive spinning, and brand color calibration into main website page (Jul 24, 11:39 PM)
+S447 Refactor mobile hero logo from hidden to subtle background animation that spins continuously behind headline content (Jul 24, 11:50 PM)
+### Jul 25, 2026
+S448 Fix mobile centering issue on website logo/element (Jul 25, 12:07 AM)
+S449 Fix the Rechnungs-showcase video demonstration by removing a popup that appeared during recording and replacing it with a simpler, inline call-to-action component (Jul 25, 12:13 AM)
+S450 Fix and publish the Rechnungs-showcase video fix: remove popup, add inline CTA, regenerate videos, and prepare for GitHub PR publication (Jul 25, 12:31 AM)
+S451 Fix Rechnungs-showcase video by removing popup appearing during recording and replacing with simpler, smoother inline CTA component (Jul 25, 12:33 AM)
+S452 Fix Rechnungs-showcase video playback: remove embedded video recording, eliminate popup that appeared during recording, replace CTA with simpler alternative (Jul 25, 12:33 AM)
+1654 12:54a ✅ Production Verification Script Selector Corrected
+1655 7:25a 🔵 Browser runtime unavailable for live site inspection
+1656 7:26a 🔵 Live site content fetched; 3D logo and background images not rendering
+1657 " 🔵 3D logo implementation architecture and background mode configuration discovered
+1658 " 🔵 HTML/CSS hero logo structure complete; 3D logo not called with backgroundMode enabled
+1659 " ✅ Mobile screenshot diagnostic harness created for live site inspection
+1660 7:27a ✅ Mobile review automation added for invoice showcase testing
+1661 " 🔵 Invoice Showcase CTA Popup Issue Identified
+1662 7:33a 🔵 Multi-Viewport Testing Infrastructure Established for Invoice Showcase
+1663 7:49a ✅ Mobile hero logo repositioning from hidden to background layer
+1664 " ✅ Invoice showcase mobile height made responsive with calc-based scaling
+1665 7:50a ✅ Mobile responsiveness verification script created for local testing
+1666 7:51a 🔵 Mobile verification script timeout due to missing local dev server
+1667 " ✅ Mobile verification script made flexible with CLI width arguments
+1668 7:52a 🔵 Video playback fails at mobile widths 320px and 390px, succeeds at 430px
+1669 7:53a ✅ Invoice showcase and hero logo responsive layout refactor
+1670 7:54a ✅ Changes committed and pushed to feature branch
+1671 " 🔵 GitHub API connector lacks PR creation permissions
+1672 " ✅ PR description staged for gh CLI fallback
+1673 " ✅ Pull request #3 created and marked ready for review
+1674 " ✅ Pull request #3 merged to main with squash strategy
+1675 " ✅ Merge completed and GitHub Pages deployment triggered
+1676 7:55a ✅ GitHub Pages build and deployment completed successfully
+1677 " ✅ Production verification script created for mobile and desktop
+S453 Integrate new YouTube video (Sgp9r4ZOn6k, "Does Europe still stand a chance in the AI race?") into KIFlowstate Website and identify video upload/processing skills (Jul 25, 7:56 AM)
+### Aug 21, 2026
+1678 2:14p 🔵 Existing brand-video skill found in project
+1679 2:15p 🔵 KIFlowstate_Website project verified with dual skill systems
+1680 " 🔵 Comprehensive video production skill ecosystem identified across KIFlowstate projects
+1681 " 🔵 Global claude-video plugin with watch skill available for integration
+1682 " 🔵 Watch skill enables video analysis with frame extraction and transcription
+1683 2:16p 🔵 Existing videos.js infrastructure manages YouTube video metadata with bilingual support
+1684 " 🔵 Watch skill dependency missing: yt-dlp not installed
+1685 " 🔵 Watch skill setup incomplete: missing yt-dlp and Whisper API key configured
+1686 2:17p 🔵 YouTube oEmbed API request blocked with HTTP 403 Forbidden for new video
+1687 " 🔵 YouTube oEmbed 403 persists with User-Agent header; not bot-detection issue
+1688 2:18p 🟣 New video Sgp9r4ZOn6k added to website resources with bilingual metadata
+1689 2:19p ✅ Video Sgp9r4ZOn6k validated and integrated into rendering pipeline
+S454 Implement video upload skill integration for new video "europa-ki-rennen" (Europe AI Race) with proper site/version verification and source reference structure (Aug 21, 2:19 PM)
+1690 2:22p 🔵 Thumbnail source infrastructure identified outside project
+1691 " 🔵 Section rendering architecture documented: three content types with structured schema
+1692 2:23p ✅ Custom thumbnail deployed; video rendering supports draft/coming-soon states
+1693 " 🔵 Thumbnail resolution logic: custom override before YouTube fallback
+1694 2:33p 🟣 Video source documentation system implemented for AI geopolitics video
+1704 2:37p 🟣 New Video: "Europa KI-Rennen" Added with Complete Metadata and Validation
+1705 2:46p 🔵 KIFlowstate Website project has no GitHub workflows configured
+1706 " 🔵 GitHub Pages already configured for KIFlowstate_Website with custom domain
+1707 2:51p 🟣 Video resource with collapsible source cards system implemented
+1708 2:52p ✅ GitHub Pages deployment verified for video feature commit
+1709 " 🔵 End-to-end production verification: video feature live and operational
+1710 2:53p 🔵 Collapsible source card expansion non-functional in production
+1711 2:57p 🔵 Playwright test script created for resource card toggle validation
+1712 " 🔵 Resource card toggle and accessibility tests passed on live site
+S455 Implement video upload skill into KIFlowstate website starting with basics; verify correct site and version for YouTube video Sgp9r4ZOn6k (Aug 21, 2:57 PM)
+**Investigated**: Tested existing resource card functionality on live kiflowstate.de using Playwright automation—verified expand/collapse behavior, keyboard accessibility, thumbnail loading, link security attributes, console errors, and full card rendering across all 20 entries in production
 
-Access 346k tokens of past work via get_observations([IDs]) or mem-search skill.
+**Learned**: Resource cards use HTML details/summary elements for collapsible UI; embed resolves video ID at page load; player shows "Video unavailable" until YouTube upload goes public (self-heals without redeploy); thumbnail is 1.76 MB but could be optimized to 150-250 KB; all links properly secured with rel=noopener noreferrer; keyboard navigation fully functional (Enter toggles open state)
+
+**Completed**: Deployment complete: commit dd7531b pushed to main branch, Pages build finished in 36s, production verified at www.kiflowstate.de. All 20 resource cards render correctly in order with no console errors, no horizontal overflow, expand/collapse works (72px closed → 409px open → 72px), keyboard accessible, thumbnail loads, links open in new tabs with security attributes
+
+**Next Steps**: Await YouTube video going public (player currently shows unavailable but will resolve automatically); optional thumbnail re-encoding from 1.76 MB to 150-250 KB if optimization desired; verify McKinsey link (S4 entry) which was blocked during automated fetch
+
+
+Access 407k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>

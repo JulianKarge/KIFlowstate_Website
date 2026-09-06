@@ -87,7 +87,7 @@
     />
 
     <!-- Local assets (CORRECTED PATHS) -->
-    <link rel="stylesheet" href="css/styles.css?v=agenten-20260906" />
+    <link rel="stylesheet" href="css/styles.css?v=document-flow-20260906" />
     <script type="importmap">
       {
         "imports": {
@@ -99,10 +99,10 @@
         }
       }
     </script>
-    <script defer src="js/translations.js?v=agenten-20260906"></script>
-    <script defer src="js/script.js?v=agenten-20260906"></script>
+    <script defer src="js/translations.js?v=method-20260906"></script>
+    <script defer src="js/script.js?v=document-flow-20260906"></script>
     <script defer src="js/hero-waves.js"></script>
-    <script defer src="js/method-flow.js?v=flowfield-2"></script>
+    <script defer src="js/method-flow.js?v=flowfield-3"></script>
     <script defer src="js/ki-news.js"></script>
     <script defer src="js/ki-news-home.js"></script>
     <script type="module" src="js/hero-logo-loader.js?v=hero-logo-bg-2"></script>
@@ -435,18 +435,40 @@
     -->
     <section id="method" class="flowfield" data-flow-chapter="0" aria-labelledby="method-title">
       <div class="flowfield-stage">
-        <canvas class="flowfield-canvas" aria-hidden="true"></canvas>
-
         <div class="flowfield-inner">
           <div class="flowfield-head">
             <p class="flowfield-kicker" data-translate="method_kicker">Unsere Methode</p>
-            <h2 id="method-title" data-translate="method_title">KI, die dem Mittelstand Zeit zurückgibt.</h2>
-            <!-- Two sentences, two keys: the phone layout keeps only the first
-                 one so the section opens with a single clear promise. -->
+            <h2 id="method-title"><span data-translate="method_title_intro">KI, die dem Mittelstand</span> <em data-translate="method_title_payoff">Zeit zurückgibt.</em></h2>
             <p class="flowfield-lead">
               <span data-translate="method_lead_1">Wir verwandeln fragmentierte Abläufe in verlässliche KI-Flows.</span>
               <span class="flowfield-lead-rest" data-translate="method_lead_2">Damit Ihr Team weniger verwaltet und mehr von dem tun kann, was den Betrieb wirklich voranbringt.</span>
             </p>
+          </div>
+
+          <div class="flowfield-visual" aria-hidden="true">
+            <canvas class="flowfield-canvas"></canvas>
+            <div class="flowfield-tokens" aria-hidden="true">
+              <span class="flowfield-token" data-token="0" data-translate="method_chip_mail">E-Mail</span>
+              <span class="flowfield-token" data-token="1" data-translate="method_chip_excel">Excel</span>
+              <span class="flowfield-token" data-token="2" data-translate="method_chip_word">Word</span>
+              <span class="flowfield-token" data-token="3" data-translate="method_chip_tool">Tool-Liste</span>
+              <span class="flowfield-token" data-token="4" data-translate="method_chip_manual">manuelle Aufgabe</span>
+            </div>
+
+            <div class="flowfield-stations" aria-hidden="true">
+              <div class="flowfield-station" data-station="0">
+                <strong data-translate="method_way1_title">Eingang</strong>
+                <small data-translate="method_way1_text">Anfrage, E-Mail oder Beleg</small>
+              </div>
+              <div class="flowfield-station" data-station="1">
+                <strong data-translate="method_way2_title">Verarbeitung</strong>
+                <small data-translate="method_way2_text">Daten landen am richtigen Ort</small>
+              </div>
+              <div class="flowfield-station" data-station="2">
+                <strong data-translate="method_way3_title">Ergebnis</strong>
+                <small data-translate="method_way3_text">Antwort, PDF oder Versand</small>
+              </div>
+            </div>
           </div>
 
           <ol class="flowfield-steps" data-translate-aria-label="method_steps_aria" aria-label="KIFlowstate Methode">
@@ -476,8 +498,8 @@
           <!-- Chapter statement: one line at a time, riding above the current. -->
           <p class="flowfield-statement" aria-live="polite">
             <span class="flowfield-line is-active" data-flow-line="0" data-translate="method_gate1_title">Reibung bekommt einen Namen.</span>
-            <span class="flowfield-line" data-flow-line="1" data-translate="method_gate2_title">Aus Einzelteilen wird ein System.</span>
-            <span class="flowfield-line" data-flow-line="2" data-translate="method_gate3_title">Technik arbeitet. Menschen gestalten.</span>
+            <span class="flowfield-line" data-flow-line="1" aria-hidden="true" data-translate="method_gate2_title">Aus Einzelteilen wird ein System.</span>
+            <span class="flowfield-line" data-flow-line="2" aria-hidden="true" data-translate="method_gate3_title">Technik arbeitet. Menschen gestalten.</span>
           </p>
 
           <p class="flowfield-state" aria-hidden="true">
@@ -486,49 +508,11 @@
             <strong data-translate="method_state_to">KI-Flow im Betrieb</strong>
           </p>
         </div>
-
-        <!-- Tokens and stations are placed in canvas coordinates, so they sit
-             next to the canvas rather than inside the text column. -->
-        <div class="flowfield-tokens" aria-hidden="true">
-          <span class="flowfield-token" data-token="0" data-translate="method_chip_mail">E-Mail</span>
-          <span class="flowfield-token" data-token="1" data-translate="method_chip_excel">Excel</span>
-          <span class="flowfield-token" data-token="2" data-translate="method_chip_word">Word</span>
-          <span class="flowfield-token" data-token="3" data-translate="method_chip_tool">Tool-Liste</span>
-          <span class="flowfield-token" data-token="4" data-translate="method_chip_manual">manuelle Aufgabe</span>
-        </div>
-
-        <div class="flowfield-stations" aria-hidden="true">
-          <div class="flowfield-station" data-station="0">
-            <strong data-translate="method_way1_title">Eingang</strong>
-            <small data-translate="method_way1_text">Anfrage, E-Mail oder Beleg</small>
-          </div>
-          <div class="flowfield-station" data-station="1">
-            <strong data-translate="method_way2_title">Verarbeitung</strong>
-            <small data-translate="method_way2_text">Daten landen am richtigen Ort</small>
-          </div>
-          <div class="flowfield-station" data-station="2">
-            <strong data-translate="method_way3_title">Ergebnis</strong>
-            <small data-translate="method_way3_text">Antwort, PDF oder Versand</small>
-          </div>
-        </div>
       </div>
     </section>
 
     <!-- ▸▸ APPOINTMENT ----------------------------------------------------- -->
     <section id="appointment" class="appointment reveal" aria-labelledby="appointment-title">
-      <!-- Crest: the method chapter's water rises into the booking section, so the
-           handoff from the dark flow field reads as a current, not a hard cut. -->
-      <div class="appointment-crest" aria-hidden="true">
-        <svg viewBox="0 0 2880 130" preserveAspectRatio="none" focusable="false">
-          <path class="appointment-crest-back" d="M0,54 C240,6 480,96 720,54 C960,12 1200,96 1440,54 C1680,6 1920,96 2160,54 C2400,12 2640,96 2880,54 L2880,130 L0,130 Z"></path>
-          <path class="appointment-crest-mid" d="M0,74 C240,32 480,114 720,74 C960,34 1200,114 1440,74 C1680,32 1920,114 2160,74 C2400,34 2640,114 2880,74 L2880,130 L0,130 Z"></path>
-          <path class="appointment-crest-front" d="M0,94 C240,56 480,130 720,94 C960,58 1200,130 1440,94 C1680,56 1920,130 2160,94 C2400,58 2640,130 2880,94 L2880,130 L0,130 Z"></path>
-          <!-- Open copies of the same curves carry the logo's white wave lines. -->
-          <path class="appointment-crest-line appointment-crest-line-back" d="M0,54 C240,6 480,96 720,54 C960,12 1200,96 1440,54 C1680,6 1920,96 2160,54 C2400,12 2640,96 2880,54"></path>
-          <path class="appointment-crest-line appointment-crest-line-front" d="M0,94 C240,56 480,130 720,94 C960,58 1200,130 1440,94 C1680,56 1920,130 2160,94 C2400,58 2640,130 2880,94"></path>
-        </svg>
-      </div>
-
       <div class="container appointment-inner">
         <div class="appointment-head">
           <p class="section-kicker" data-translate="appointment_kicker">Kostenloses Erstgespräch</p>

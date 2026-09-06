@@ -5,10 +5,9 @@
    and statement stays in the DOM so it is crisp and translatable.
 
    The surface model is trochoidal rather than a plain sine, so the
-   water carries the three cues that make a wave read as water:
-   sharp crests over broad troughs, a bright lip with its own shaded
-   face just underneath, and a specular run that only lights the
-   slopes turned toward the light. Harmonics drift at their own
+   water carries broad troughs, softly reflected light below each
+   crest, and a fine specular run on slopes turned toward the light.
+   Harmonics drift at their own
    dispersion speed, so the profile evolves as it travels instead of
    sliding past as a rigid texture.
 
@@ -22,6 +21,7 @@
   if (!section || !canvas || !canvas.getContext) return;
 
   const ctx = canvas.getContext("2d");
+  if (!ctx) return;
   const stage = section.querySelector(".flowfield-stage");
   const steps = Array.from(section.querySelectorAll(".flowfield-step"));
   const lines = Array.from(section.querySelectorAll(".flowfield-line"));
@@ -45,7 +45,6 @@
      rigidly. Precomputed because they are used on every sample. */
   const D2 = Math.SQRT2;
   const D3 = Math.sqrt(3);
-  const D6 = Math.sqrt(6);
 
   /* The end state: the three-layer wave from the logo. Values are
      shares of the band, speeds match the hero so both drift alike.
@@ -73,11 +72,11 @@
   /* Where the day-to-day tokens float before the current takes them: the
      strip just above the water, clear of the headline and the step rail. */
   const TOKEN_SPOTS = [
-    { x: 0.08, y: 0.55, rot: -6 },
-    { x: 0.27, y: 0.51, rot: 5 },
-    { x: 0.46, y: 0.44, rot: -4 },
-    { x: 0.63, y: 0.52, rot: 7 },
-    { x: 0.79, y: 0.45, rot: -5 },
+    { x: 0.1, y: 0.68, rot: -5 },
+    { x: 0.3, y: 0.65, rot: 3 },
+    { x: 0.49, y: 0.68, rot: -3 },
+    { x: 0.68, y: 0.65, rot: 4 },
+    { x: 0.86, y: 0.68, rot: -3 },
   ];
 
   const STATION_X = [0.2, 0.5, 0.8];
@@ -189,6 +188,7 @@
   let elapsed = 0;
   let lastTime = 0;
   let running = false;
+  let frameId = 0;
   let visible = false;
   /* null, not -1: the compact layout asks for chapter -1 straight away and
      that first call still has to clear the markup's default active step. */
@@ -210,7 +210,7 @@
   };
 
   const resize = () => {
-    const rect = (stage || section).getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     width = Math.max(1, Math.round(rect.width));
     height = Math.max(1, Math.round(rect.height));
@@ -225,7 +225,7 @@
        lower half so the copy above it keeps a calm background. With reduced
        motion the section is not pinned, so the water drops further down to
        stay clear of the copy that now sits in normal flow. */
-    const top = compactQuery.matches ? -0.08 : motionQuery.matches ? 0.72 : 0.58;
+    const top = compactQuery.matches ? 0.02 : motionQuery.matches ? 0.76 : 0.67;
     bandTop = height * top;
     bandHeight = height * (0.98 - top);
   };
@@ -237,7 +237,7 @@
     return {
       y: bandTop + mix(line.y, target.y, order) * bandHeight,
       amp: mix(line.amp * 0.5, target.amp, order) * bandHeight,
-      len: mix(line.len, target.len, order),
+      len: mix(line.len, target.len, order) * (compactQuery.matches ? 1.5 : 1),
       tilt: mix(line.tilt, 0, order) * bandHeight,
       speed: mix(line.speed, target.speed, order),
       steep: mix(line.steep, target.steep, order),
@@ -268,9 +268,8 @@
     const drift = time * line.speed * 2.2;
     const shape =
       trochoid(space + drift, clamp(line.steep, 0, 0.6)) +
-      0.22 * Math.sin(2 * space + drift * D2 + 0.7) +
-      0.09 * (0.7 + 0.3 * detail) * Math.sin(3 * space + drift * D3 - 0.4) +
-      0.045 * detail * Math.sin(6 * space + drift * D6 + 1.9);
+      0.12 * Math.sin(2 * space + drift * D2 + 0.7) +
+      0.035 * detail * Math.sin(3 * space + drift * D3 - 0.4);
     const distance = x / Math.max(1, width) - pointerX;
     const bump = response * 14 * Math.exp(-(distance * distance) / 0.012);
     return line.y + shape * line.amp + line.tilt * (x / Math.max(1, width) - 0.5) - bump;
@@ -397,19 +396,19 @@
          crest so the tint does not drift with the band height. */
       const gradient = ctx.createLinearGradient(0, line.y - line.amp * 1.35, 0, height);
       gradient.addColorStop(0, band.body);
-      gradient.addColorStop(0.55, band.body);
-      gradient.addColorStop(1, band.deep);
+      gradient.addColorStop(0.24, band.body);
+      gradient.addColorStop(0.7, band.deep);
+      gradient.addColorStop(1, "rgba(51, 105, 242, 0)");
       ctx.fillStyle = gradient;
       ctx.fill(bodyPath());
 
-      /* The wave's own shaded face, hugging the surface from underneath.
-         That dark step right below a bright lip is what reads as a lip
-         instead of an outline. */
-      const shade = Math.max(6, line.amp * 0.5);
-      strokeOffset(surface, shade * 0.5 + 1.5, band.shade, shade);
-
-      /* The far face of the same wave, seen through the near water. */
-      strokeOffset(surface, line.amp * 1.5, band.under, 1);
+      /* A feathered reflection inside the surface replaces the hard offset
+         stripes. Broad faint strokes taper into one fine illuminated crest. */
+      ctx.clip(bodyPath());
+      for (let pass = 0; pass < 7; pass += 1) {
+        ctx.globalAlpha = bodyIn * 0.045;
+        strokeOffset(surface, 0, band.sheen, (7 - pass) * 7);
+      }
       ctx.restore();
     }
 
@@ -432,12 +431,12 @@
     ctx.save();
     ctx.globalAlpha = strokeAlpha;
     ctx.strokeStyle = order > 0.45 ? band.rim : palette.chaos;
-    ctx.lineWidth = line.weight;
+    ctx.lineWidth = line.weight * 0.65;
     ctx.lineJoin = "round";
     ctx.stroke(surface);
     ctx.restore();
 
-    strokeSheen(band.sheen, line.weight, strokeAlpha * mix(0.25, 1, order));
+    strokeSheen(band.sheen, line.weight * 0.65, strokeAlpha * mix(0.25, 0.8, order));
   };
 
   /* Bright travelling front on the top trio line, so scrolling reads as
@@ -501,7 +500,10 @@
         else button.removeAttribute("aria-current");
       }
     });
-    lines.forEach((line, index) => line.classList.toggle("is-active", index === next));
+    lines.forEach((line, index) => {
+      line.classList.toggle("is-active", index === next);
+      line.setAttribute("aria-hidden", String(index !== next));
+    });
   };
 
   /* Below 900px the tokens and stations are laid out by CSS, so the engine
@@ -543,21 +545,30 @@
   };
 
   const readProgress = () => {
-    /* Without a pinned stage there is no runway to tell the story, so the
-       compact layout shows the settled flow rather than a frame of chaos. */
-    if (compactQuery.matches) {
+    if (motionQuery.matches) {
       progress = 1;
       order = 1;
-      setChapter(-1);
+      setChapter(2);
       section.style.setProperty("--flow-progress", "1");
       section.style.setProperty("--flow-order", "1");
       return;
     }
-    const runway = Math.max(1, section.offsetHeight - window.innerHeight);
-    const raw = clamp(-section.getBoundingClientRect().top / runway);
-    /* The last stretch holds the finished flow instead of racing into the
-       next section (see site-notes: let the final state breathe). */
-    progress = clamp(raw / 0.86);
+    /* Mobile progress follows the actual step positions below the sticky
+       wave. Reading order stays natural, including when scrolling backwards. */
+    if (compactQuery.matches) {
+      const first = steps[0].getBoundingClientRect();
+      const last = steps[steps.length - 1].getBoundingClientRect();
+      const readingLine = Math.max(64 + height + 90, window.innerHeight * 0.63);
+      progress = clamp((readingLine - first.top - first.height * 0.3) / Math.max(1, last.top - first.top));
+      steps.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        item.style.setProperty("--step-in", ramp(window.innerHeight - rect.top, 30, Math.min(260, window.innerHeight * 0.4)).toFixed(3));
+      });
+    } else {
+      const runway = Math.max(1, section.offsetHeight - stage.offsetHeight);
+      const raw = clamp(-section.getBoundingClientRect().top / runway);
+      progress = clamp(raw / 0.86);
+    }
     order = ramp(progress, 0.12, 0.82);
     setChapter(progress < 0.34 ? 0 : progress < 0.7 ? 1 : 2);
     section.style.setProperty("--flow-progress", progress.toFixed(4));
@@ -568,6 +579,7 @@
     const front = drawFrame(time);
     if (compactQuery.matches) {
       releaseNodes();
+      stations.forEach((station, index) => station.style.setProperty("--station-in", ramp(progress, index * 0.32, index * 0.32 + 0.25).toFixed(3)));
       return;
     }
     placeTokens(front, time);
@@ -578,7 +590,7 @@
 
   const drawStatic = () => {
     /* Reduced motion and off-screen frames still show the finished flow. */
-    if (motionQuery.matches && !compactQuery.matches) {
+    if (motionQuery.matches) {
       progress = 1;
       order = 1;
       setChapter(2);
@@ -599,7 +611,7 @@
     response += (responseTarget - response) * 0.05;
     readProgress();
     render(elapsed);
-    requestAnimationFrame(tick);
+    frameId = requestAnimationFrame(tick);
   };
 
   const updateLoop = () => {
@@ -607,9 +619,10 @@
     if (shouldRun && !running) {
       running = true;
       lastTime = performance.now();
-      requestAnimationFrame(tick);
+      frameId = requestAnimationFrame(tick);
     } else if (!shouldRun) {
       running = false;
+      cancelAnimationFrame(frameId);
       drawStatic();
     }
   };
@@ -617,22 +630,16 @@
   /* Step buttons scroll to their own chapter, which keeps the rail usable
      by keyboard without a second set of controls. */
   const jumpTo = (index) => {
-    /* The compact layout has no pinned runway, so a tap would scroll to an
-       arbitrary point inside the section instead of to its chapter. */
-    if (compactQuery.matches) return;
-    const runway = Math.max(1, section.offsetHeight - window.innerHeight);
+    if (compactQuery.matches || motionQuery.matches) {
+      steps[index].scrollIntoView({ block: "start", behavior: motionQuery.matches ? "auto" : "smooth" });
+      return;
+    }
+    const runway = Math.max(1, section.offsetHeight - stage.offsetHeight);
     const top = section.getBoundingClientRect().top + window.scrollY;
     const stops = [0.06, 0.44, 0.78];
     window.scrollTo({
       top: top + runway * stops[clamp(index, 0, 2)],
       behavior: motionQuery.matches ? "auto" : "smooth",
-    });
-  };
-
-  const syncStepControls = () => {
-    steps.forEach((item) => {
-      const button = item.querySelector("button");
-      if (button) button.disabled = compactQuery.matches;
     });
   };
 
@@ -653,6 +660,7 @@
   }
 
   syncTheme();
+  section.classList.add("is-enhanced");
   resize();
 
   new ResizeObserver(() => {
@@ -680,9 +688,7 @@
   });
   compactQuery.addEventListener?.("change", () => {
     resize();
-    syncStepControls();
     if (!running) drawStatic();
   });
-  syncStepControls();
   drawStatic();
 })();

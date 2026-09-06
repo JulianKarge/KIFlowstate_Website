@@ -863,16 +863,7 @@ section:not(.hero) .container {
 
 /* ─── APPOINTMENT ─────────────────────────────────────────── */
 .appointment {
-  /* The method chapter's sticky stage ends exactly where this section starts,
-     so `--appt-from` is the colour that stage's bottom edge actually renders:
-     the flow-field canvas composited over its own background, measured at the
-     end of the chapter. Matching it lets the crest continue that water instead
-     of cutting across it. */
-  --appt-crest-h: clamp(84px, 8vw, 150px);
-  --appt-from: #cfdbf7;
-  --appt-crest-fill: var(--appt-ground);
-  --appt-crest-line: rgba(51, 105, 242, 0.4);
-  --appt-crest-line-soft: rgba(51, 105, 242, 0.18);
+  --appt-crest-h: 0px;
   --appt-ground: #f6f9ff;
   --appt-line: rgba(51, 105, 242, 0.16);
   position: relative;
@@ -882,50 +873,6 @@ section:not(.hero) .container {
     radial-gradient(circle at 12% 8%, rgba(51, 105, 242, 0.08), transparent 26rem),
     radial-gradient(circle at 88% 0%, rgba(51, 105, 242, 0.06), transparent 22rem),
     linear-gradient(180deg, var(--appt-ground) 0%, #eef4ff 100%);
-}
-
-/* Crest: three stacked wave paths rising out of the previous section. The strip
-   behind them is painted in `--appt-from` so the handoff works in both themes. */
-.appointment-crest {
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  z-index: 0;
-  height: var(--appt-crest-h);
-  background: var(--appt-from);
-  pointer-events: none;
-}
-
-.appointment-crest svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.appointment-crest path {
-  fill: var(--appt-ground);
-}
-
-/* Only the front layer has to land on the ground colour; the layers behind it
-   can be tinted so the water still reads when the strip above is pale. */
-.appointment-crest-back,
-.appointment-crest-mid {
-  fill: var(--appt-crest-fill);
-}
-
-.appointment-crest-back { opacity: 0.34; }
-.appointment-crest-mid { opacity: 0.62; }
-
-.appointment-crest-line {
-  fill: none;
-  stroke: var(--appt-crest-line);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
-
-.appointment-crest-line-back {
-  stroke: var(--appt-crest-line-soft);
-  stroke-width: 1.5;
 }
 
 .appointment::before {
@@ -1168,23 +1115,6 @@ section:not(.hero) .container {
 .appointment-mobile-cta:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 18px 36px rgba(51, 105, 242, 0.36);
-}
-
-/* Below 900px the method chapter's stage is no longer pinned, so the row above
-   this section is that section's own background rather than the composited
-   canvas. The crest has to pick up from there instead. */
-@media (max-width: 900px) {
-  .appointment {
-    --appt-from: var(--gray-100);
-    --appt-crest-fill: #dbe6fb;
-  }
-
-  /* `html[...]` outranks the base dark rule, which is defined later in the
-     file at otherwise equal specificity. */
-  html[data-theme="dark"] .appointment {
-    --appt-from: #0f1830;
-    --appt-crest-fill: #17264a;
-  }
 }
 
 .appointment-trust {
@@ -3848,13 +3778,7 @@ section:not(.hero) .container {
 /* Calendar — keep the Google iframe white, but let the surrounding booking
    surface belong to the dark theme. */
 [data-theme="dark"] .appointment {
-  /* Same measurement in the dark theme: the stage's bottom edge renders near
-     #14254c, so the crest picks the water up from there. */
-  --appt-from: #14254c;
   --appt-ground: #0a1224;
-  --appt-crest-fill: var(--appt-ground);
-  --appt-crest-line: rgba(255, 255, 255, 0.42);
-  --appt-crest-line-soft: rgba(255, 255, 255, 0.18);
   --appt-line: rgba(143, 176, 255, 0.22);
   background:
     radial-gradient(circle at 12% 8%, rgba(59, 130, 246, 0.14), transparent 26rem),
@@ -7426,9 +7350,9 @@ section:not(.hero) .container {
   transition: stroke-dashoffset 80ms linear;
 }
 
-.story-wave-fill path:nth-child(1) { stroke: url(#story-wave-primary); }
-.story-wave-fill path:nth-child(2) { stroke: url(#story-wave-deep); opacity: 0.62; }
-.story-wave-fill path:nth-child(3) { stroke: url(#story-wave-light); opacity: 0.36; }
+.story-wave-fill path:nth-of-type(1) { stroke: url(#story-wave-primary); }
+.story-wave-fill path:nth-of-type(2) { stroke: url(#story-wave-deep); opacity: 0.62; }
+.story-wave-fill path:nth-of-type(3) { stroke: url(#story-wave-light); opacity: 0.36; }
 
 .story-demo-cta-wrap {
   display: flex;
@@ -11109,656 +11033,196 @@ section:not(.hero) .container {
    chaos-to-flow story. Markup: index.html #method, engine: js/method-flow.js.
    ========================================================================== */
 
+/* Brand tokens: ink, mist, cobalt and a restrained ice-blue highlight.
+   The current is the signature; the process rail carries the explanation. */
 .flowfield {
   --flow-progress: 0;
   --flow-order: 0;
-  --flow-ink: #0d1b3e;
-  --flow-muted: #4b5873;
-  --flow-hair: rgba(51, 105, 242, 0.16);
+  --flow-ink: #10234b;
+  --flow-muted: #50617e;
+  --flow-accent: #275cda;
+  --flow-ground: #f1f5fd;
+  --flow-hair: rgb(51 105 242 / 18%);
+  --flow-panel: rgb(255 255 255 / 58%);
   position: relative;
-  min-height: 300svh;
-  /* The navbar is sticky, so anchor jumps need to clear it. */
+  min-height: 280svh;
   scroll-margin-top: 4.5rem;
-  background:
-    radial-gradient(circle at 84% 12%, rgba(59, 130, 246, 0.09), transparent 30rem),
-    linear-gradient(180deg, #eef4ff 0%, var(--gray-100) 100%);
+  background: var(--flow-ground);
 }
-
 .flowfield-stage {
   position: sticky;
   top: 0;
   height: 100svh;
+  min-height: 700px;
   overflow: hidden;
   isolation: isolate;
+  background: radial-gradient(ellipse at 8% 0%, rgb(111 158 255 / 9%), transparent 60%);
 }
-
-.flowfield-canvas {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
 .flowfield-inner {
   position: relative;
-  z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  grid-template-rows: auto 1fr;
+  grid-template-columns: 1.12fr 1fr;
   align-content: start;
-  column-gap: clamp(2rem, 5vw, 5rem);
+  gap: clamp(2rem, 6vw, 7rem);
   width: min(100% - clamp(2.5rem, 8vw, 8rem), 1320px);
   height: 100%;
   margin-inline: auto;
-  padding-top: clamp(5.5rem, 10vh, 7.5rem);
+  padding-top: clamp(6rem, 11vh, 8rem);
 }
-
-/* -- Head ------------------------------------------------------------- */
-
+.flowfield-head, .flowfield-steps { position: relative; z-index: 2; }
 .flowfield-kicker {
-  margin: 0 0 0.85rem;
-  color: var(--primary-dark);
-  font-size: 0.83rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+  color: var(--flow-accent);
+  font: 500 0.72rem/1.4 "IBM Plex Mono", monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
-
+.flowfield-kicker::before { content: ""; width: 1.8rem; height: 1px; background: currentColor; }
 #method.flowfield #method-title {
-  max-width: 14ch;
+  max-width: 15ch;
   margin: 0;
   color: var(--flow-ink);
-  font-size: clamp(2.5rem, 3.9vw, 4.1rem);
-  font-weight: 600;
-  line-height: 0.99;
-  letter-spacing: -0.035em;
+  font: 500 clamp(2.8rem, 4.3vw, 4.6rem)/1.04 "Schibsted Grotesk", sans-serif;
+  letter-spacing: -0.055em;
   text-wrap: balance;
 }
-
-.flowfield-lead {
-  max-width: 34ch;
-  margin: 1.1rem 0 0;
-  color: var(--flow-muted);
-  font-size: clamp(0.98rem, 1.15vw, 1.08rem);
-  line-height: 1.6;
-}
-
-/* -- Step rail -------------------------------------------------------- */
-
-.flowfield-steps {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: start;
-  max-width: 27rem;
-  margin: 0.4rem 0 0;
-  padding: 0;
-  list-style: none;
-  border-left: 1px solid var(--flow-hair);
-}
-
+#method-title em { display: block; color: var(--flow-accent); font-style: normal; }
+.flowfield-lead { max-width: 40ch; margin: 1.4rem 0 0; color: var(--flow-muted); font-size: 1rem; line-height: 1.65; }
+.flowfield-lead-rest { display: block; margin-top: 0.6rem; }
+.flowfield-steps { list-style: none; padding: 0; margin: 0; counter-reset: flowstep; align-self: start; }
 .flowfield-step {
+  counter-increment: flowstep;
   position: relative;
+  border-top: 1px solid var(--flow-hair);
+  transition: background 350ms ease;
 }
-
+.flowfield-step:last-child { border-bottom: 1px solid var(--flow-hair); }
+.flowfield-step.is-active { background: linear-gradient(90deg, var(--flow-panel), transparent); }
 .flowfield-step::before {
+  content: counter(flowstep, decimal-leading-zero);
+  position: absolute;
+  top: 1.3rem;
+  left: 0.85rem;
+  color: var(--flow-muted);
+  font: 400 0.75rem/1 "IBM Plex Mono", monospace;
+  transition: color 300ms ease;
+}
+.flowfield-step::after {
   content: "";
   position: absolute;
-  left: -1px;
-  top: 0.55rem;
-  bottom: 0.55rem;
+  left: 0; top: 0; bottom: 0;
   width: 2px;
-  background: var(--accent);
-  opacity: 0;
-  transform: scaleY(0.3);
+  background: var(--flow-accent);
+  transform: scaleY(0);
   transform-origin: top;
-  transition: opacity 220ms ease, transform 320ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 400ms ease;
 }
-
-.flowfield-step.is-active::before {
-  opacity: 1;
-  transform: scaleY(1);
-}
-
+.flowfield-step.is-active::before { color: var(--flow-accent); }
+.flowfield-step.is-active::after { transform: scaleY(1); }
 .flowfield-step button {
   display: grid;
   width: 100%;
-  padding: 0.62rem 0 0.62rem 1.15rem;
+  padding: 1.1rem 0.9rem 1.1rem 3.3rem;
   border: 0;
   background: transparent;
   color: inherit;
-  cursor: pointer;
   font: inherit;
   text-align: left;
+  cursor: pointer;
 }
-
-.flowfield-step button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-/* The inactive chapters step back through colour weight, not opacity, so
-   every label keeps its contrast. */
-.flowfield-step-label,
-.flowfield-step-title {
-  color: var(--flow-muted);
-  transition: color 220ms ease;
-}
-
-.flowfield-step.is-active .flowfield-step-label {
-  color: var(--primary-dark);
-}
-
-.flowfield-step.is-active .flowfield-step-title {
-  color: var(--flow-ink);
-}
-
-.flowfield-step-label {
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
-}
-
-.flowfield-step-title {
-  margin-top: 0.15rem;
-  font-size: clamp(0.95rem, 1.05vw, 1.05rem);
-  font-weight: 600;
-  line-height: 1.28;
-}
-
-/* Only the live chapter carries its full explanation. */
-.flowfield-step-text {
-  max-height: 0;
-  overflow: hidden;
-  color: var(--flow-muted);
-  font-size: 0.86rem;
-  line-height: 1.45;
-  opacity: 0;
-  transition: max-height 320ms cubic-bezier(0.23, 1, 0.32, 1), opacity 200ms ease,
-    margin-top 320ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.flowfield-step.is-active .flowfield-step-text {
-  max-height: 6rem;
-  margin-top: 0.32rem;
-  opacity: 1;
-}
-
-/* -- Chapter statement ------------------------------------------------ */
-
-/* The payoff line rides on the water at the foot of the stage, well clear
-   of the headline block so the two never read as competing titles. */
-.flowfield-statement {
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  bottom: clamp(3.4rem, 7vh, 5rem);
-  width: min(30ch, 44%);
-  min-height: 2.4em;
-  margin: 0;
-  color: var(--flow-ink);
-  font-size: clamp(1.3rem, 2.05vw, 1.95rem);
-  font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.025em;
-  pointer-events: none;
-}
-
-.flowfield-line {
-  position: absolute;
-  inset: 0 auto auto 0;
-  width: 100%;
-  opacity: 0;
-  transform: translateY(0.6rem);
-  transition: opacity 420ms ease, transform 520ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.flowfield-line.is-active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* -- Tokens from the working day -------------------------------------- */
-
-.flowfield-tokens,
-.flowfield-stations {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  pointer-events: none;
-}
-
+.flowfield-step button:focus-visible { outline: 2px solid var(--flow-accent); outline-offset: 4px; }
+.flowfield-step-label { color: var(--flow-accent); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }
+.flowfield-step-title { margin-top: 0.35rem; color: var(--flow-ink); font-size: clamp(1rem, 1.3vw, 1.2rem); line-height: 1.3; font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+.flowfield-step-text { margin-top: 0.5rem; color: var(--flow-muted); font-size: 0.85rem; line-height: 1.5; }
+.flowfield-visual { position: absolute; z-index: 0; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; pointer-events: none; }
+.flowfield-canvas { position: absolute; inset: 0; width: 100%; height: 100%; mask-image: linear-gradient(#000 85%, transparent); }
+.flowfield-tokens, .flowfield-stations { position: absolute; z-index: 1; inset: 0; pointer-events: none; }
 .flowfield-token {
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 0.42rem 0.72rem;
-  border: 1px solid rgba(51, 105, 242, 0.2);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 26px rgba(30, 58, 138, 0.1);
-  color: var(--primary-dark);
-  font-size: 0.76rem;
-  font-weight: 700;
+  position: absolute; left: 0; top: 0;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--flow-hair);
+  border-radius: 6px;
+  background: var(--flow-ground);
+  box-shadow: 0 6px 18px rgb(20 47 100 / 5%);
+  color: var(--flow-muted);
+  font: 500 0.72rem/1.3 "IBM Plex Mono", monospace;
   white-space: nowrap;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  will-change: transform, opacity;
+}
+.flowfield-station { --station-in: 0; position: absolute; left: 0; top: 0; width: max-content; max-width: 13rem; opacity: var(--station-in); }
+.flowfield-station::after { content: ""; position: absolute; left: 0; top: 0; width: 0.45rem; height: 0.45rem; border: 1px solid var(--flow-accent); border-radius: 50%; background: var(--flow-ground); box-shadow: 0 0 0 5px var(--flow-hair); transform: translate(-50%, -50%); }
+.flowfield-station strong, .flowfield-station small { display: block; transform: translate(-50%, -3.1rem); }
+.flowfield-station strong { color: var(--flow-ink); font-size: 0.82rem; font-weight: 600; }
+.flowfield-station small { margin-top: 0.2rem; color: var(--flow-muted); font-size: 0.7rem; }
+.flowfield-statement { position: absolute; z-index: 2; left: 0; bottom: 4.8rem; width: 70%; margin: 0; color: var(--flow-ink); font-size: clamp(1.5rem, 2.6vw, 2.5rem); font-weight: 500; line-height: 1.15; letter-spacing: -0.04em; }
+.flowfield-line { display: block; position: absolute; bottom: 0; opacity: 0; transform: translateY(0.6rem); transition: opacity 300ms ease, transform 450ms ease; }
+.flowfield-line.is-active { opacity: 1; transform: none; }
+.flowfield-state { position: absolute; z-index: 2; right: 0; bottom: 2rem; display: flex; align-items: center; gap: 0.8rem; margin: 0; color: var(--flow-muted); font: 400 0.68rem/1.4 "IBM Plex Mono", monospace; }
+.flowfield-state i { position: relative; width: clamp(3rem, 8vw, 8rem); height: 1px; background: var(--flow-hair); }
+.flowfield-state i::after { content: ""; position: absolute; inset: 0; background: var(--flow-accent); transform: scaleX(var(--flow-progress)); transform-origin: left; }
+.flowfield-state strong { color: var(--flow-accent); font-weight: 500; }
+[data-theme="dark"] .flowfield { --flow-ink: #eaf1ff; --flow-muted: #a8bad8; --flow-accent: #9fc1ff; --flow-ground: #0f1b35; --flow-hair: rgb(143 176 255 / 20%); --flow-panel: rgb(109 158 255 / 9%); }
+
+/* The extra SVG crest is removed. The canvas fades into a clean section edge. */
+#appointment { --appt-crest-h: 0px; border-top: 1px solid var(--appt-line); }
+#appointment .appointment-inner { padding-top: clamp(4rem, 7vw, 7rem); }
+
+@media (min-width: 901px) and (max-height: 800px) {
+  .flowfield-inner { padding-top: 5.5rem; gap: 4rem; }
+  #method.flowfield #method-title { font-size: clamp(2.7rem, 3.9vw, 3.7rem); }
+  .flowfield-lead { font-size: 0.92rem; margin-top: 1rem; }
+  .flowfield-step button { padding-block: 0.75rem; }
+  .flowfield-step::before { top: 1rem; }
+  .flowfield-step-text { font-size: 0.8rem; }
 }
 
-/* -- Stations on the water -------------------------------------------- */
-
-.flowfield-station {
-  --station-in: 0;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: max-content;
-  max-width: 13rem;
-  opacity: var(--station-in);
-  will-change: transform;
-}
-
-.flowfield-station::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 0.66rem;
-  height: 0.66rem;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 0 5px rgba(51, 105, 242, 0.12);
-  transform: translate(-50%, -50%) scale(calc(0.4 + var(--station-in) * 0.6));
-}
-
-.flowfield-station strong,
-.flowfield-station small {
-  display: block;
-  transform: translate(-50%, calc(-2.15rem - var(--station-in) * 0.35rem));
-}
-
-.flowfield-station strong {
-  color: var(--flow-ink);
-  font-size: 0.88rem;
-  line-height: 1.2;
-}
-
-.flowfield-station small {
-  margin-top: 0.1rem;
-  color: var(--flow-muted);
-  font-size: 0.73rem;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-/* -- From / to progress ----------------------------------------------- */
-
-.flowfield-state {
-  position: absolute;
-  z-index: 2;
-  right: 0;
-  bottom: clamp(1.1rem, 3vh, 2rem);
-  display: flex;
-  gap: 0.7rem;
-  align-items: center;
-  margin: 0;
-  color: var(--flow-muted);
-  font-size: 0.76rem;
-  font-weight: 700;
-}
-
-.flowfield-state i {
-  position: relative;
-  width: clamp(4rem, 9vw, 8rem);
-  height: 2px;
-  overflow: hidden;
-  border-radius: 2px;
-  background: var(--flow-hair);
-}
-
-.flowfield-state i::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #8fb0ff, var(--accent));
-  transform: scaleX(var(--flow-progress));
-  transform-origin: left center;
-}
-
-.flowfield-state strong {
-  color: var(--primary-dark);
-  font-weight: 800;
-}
-
-/* -- Short viewports: give the copy less vertical weight --------------- */
-
-@media (min-width: 901px) and (max-height: 880px) {
-  #method.flowfield #method-title {
-    font-size: clamp(2.4rem, 3.4vw, 3.4rem);
-  }
-
-  .flowfield-lead {
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-
-  .flowfield-statement {
-    bottom: clamp(2.6rem, 6vh, 4rem);
-    font-size: clamp(1.2rem, 1.9vw, 1.7rem);
-  }
-}
-
-/* -- Phones and small tablets: no pinning, calm resolved band ----------
-   The scroll chapter is a desktop story. On a phone the section keeps only
-   what it can say well: the promise, three numbered steps, the settled
-   water, and the stations as a waterline under it. Tokens, the pinned
-   statement, the from/to bar and the step body copy all need scroll runway
-   or hover that a phone does not have, so they stay out. */
-
+/* On mobile the wave stays in view while the three full steps scroll past.
+   No scroll hijacking; the document itself supplies the progress. */
 @media (max-width: 900px) {
-  .flowfield {
-    min-height: 0;
-  }
-
-  .flowfield-stage {
-    position: static;
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    padding-bottom: clamp(1.75rem, 6vw, 3rem);
-  }
-
-  .flowfield-canvas {
-    position: relative;
-    order: 2;
-    inset: auto;
-    height: clamp(168px, 25vh, 225px);
-    margin-top: clamp(1.5rem, 5vw, 2.25rem);
-    /* The band no longer runs to the bottom of a pinned stage, so the water
-       is faded out instead of cut off by the canvas edge. */
-    -webkit-mask-image: linear-gradient(180deg, #000 76%, rgba(0, 0, 0, 0) 100%);
-    mask-image: linear-gradient(180deg, #000 76%, rgba(0, 0, 0, 0) 100%);
-  }
-
-  .flowfield-inner {
-    display: block;
-    order: 1;
-    height: auto;
-    /* Clears the sticky navbar so the kicker is never half-hidden when the
-       section is scrolled to from the menu. */
-    padding-top: clamp(4.5rem, 12vw, 5.5rem);
-  }
-
-  #method.flowfield #method-title {
-    max-width: 15ch;
-    font-size: clamp(2rem, 8.6vw, 2.7rem);
-    line-height: 1.05;
-  }
-
-  .flowfield-lead {
-    max-width: 32ch;
-    margin-top: 0.9rem;
-    font-size: 1rem;
-    line-height: 1.55;
-  }
-
-  /* One sentence carries the promise here; the second is desktop breathing
-     room and would push the steps below the fold. */
-  .flowfield-lead-rest {
-    display: none;
-  }
-
-  /* The rail becomes a quiet numbered list: step name, one supporting line,
-     hairline between. Nothing expands, nothing is tappable. */
-  .flowfield-steps {
-    max-width: none;
-    margin-top: clamp(1.6rem, 5vw, 2.1rem);
-    border-left: 0;
-    border-bottom: 1px solid var(--flow-hair);
-    counter-reset: flowstep;
-  }
-
-  .flowfield-step {
-    counter-increment: flowstep;
-    display: grid;
-    grid-template-columns: 2.3rem minmax(0, 1fr);
-    align-items: start;
-    border-top: 1px solid var(--flow-hair);
-  }
-
-  .flowfield-step::before,
-  .flowfield-step.is-active::before {
-    content: counter(flowstep, decimal-leading-zero);
-    position: static;
-    width: auto;
-    height: auto;
-    padding-top: 0.98rem;
-    background: none;
-    color: var(--accent);
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    opacity: 1;
-    transform: none;
-  }
-
-  .flowfield-step button {
-    padding: 0.85rem 0 0.95rem;
-    cursor: default;
-  }
-
-  /* Name first, explanation second: the reverse of the desktop rail, where
-     the label is only a marker for the active chapter. Selectors are kept
-     at the same weight as the `.is-active` rules above so no chapter can
-     colour itself differently here. */
-  .flowfield-step .flowfield-step-label {
-    color: var(--flow-ink);
-    font-size: 0.98rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  .flowfield-step .flowfield-step-title {
-    margin-top: 0.1rem;
-    color: var(--flow-muted);
-    font-size: 0.88rem;
-    font-weight: 500;
-    line-height: 1.4;
-  }
-
-  /* Dark keeps the same hierarchy: the accent stays on the number, the step
-     name reads as ink like it does in light. */
-  [data-theme="dark"] .flowfield-step .flowfield-step-label {
-    color: var(--flow-ink);
-  }
-
-  .flowfield-step-text,
-  .flowfield-tokens,
-  .flowfield-statement,
-  .flowfield-state {
-    display: none;
-  }
-
-  /* Stations read as the waterline under the canvas: one marker per stage
-     on a hairline, labels only. */
-  .flowfield-stations {
-    position: relative;
-    order: 3;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.4rem;
-    width: min(100% - clamp(2.5rem, 8vw, 8rem), 1320px);
-    margin: clamp(1.1rem, 4vw, 1.6rem) auto 0;
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .flowfield-stations::before {
-    content: "";
-    position: absolute;
-    top: 0.24rem;
-    right: 16.6%;
-    left: 16.6%;
-    height: 1px;
-    background: var(--flow-hair);
-  }
-
-  .flowfield-station {
-    --station-in: 1;
-    position: relative;
-    /* Base width is max-content for the canvas scene; here the cell has to
-       fill its grid column or the marker sits off to the left of it. */
-    width: auto;
-    max-width: none;
-    padding-top: 1.15rem;
-    text-align: center;
-    transform: none !important;
-  }
-
-  .flowfield-station::after {
-    display: block;
-    top: 0;
-    left: 50%;
-    width: 0.5rem;
-    height: 0.5rem;
-    box-shadow: 0 0 0 4px rgba(51, 105, 242, 0.1);
-    transform: translateX(-50%);
-  }
-
-  .flowfield-station strong {
-    font-size: 0.82rem;
-    line-height: 1.25;
-  }
-
-  .flowfield-station strong,
-  .flowfield-station small {
-    transform: none;
-  }
-
-  /* The stage names are the point here; their examples belong to the
-     desktop scene, where there is room for them. */
-  .flowfield-station small {
-    display: none;
-  }
+  .flowfield { min-height: 0; }
+  .flowfield-stage { position: relative; display: flex; flex-direction: column; height: auto; min-height: 0; overflow: visible; padding-bottom: 3rem; }
+  .flowfield-inner { display: contents; }
+  .flowfield-head { order: 1; width: min(100% - 3rem, 38rem); margin: 0 auto; padding-top: 4.8rem; }
+  .flowfield-kicker { margin-bottom: 1rem; font-size: 0.67rem; }
+  #method.flowfield #method-title { max-width: 17ch; font-size: clamp(2.25rem, 7.7vw, 3.8rem); line-height: 1.07; }
+  .flowfield-lead { max-width: 40ch; margin-top: 1.2rem; font-size: 0.94rem; line-height: 1.6; }
+  .flowfield-lead-rest { margin-top: 0.5rem; }
+  .flowfield-visual { position: sticky; z-index: 3; order: 2; flex: none; top: 4rem; bottom: auto; left: auto; width: 100%; height: clamp(145px, 23svh, 205px); margin-top: 1.5rem; overflow: hidden; background: var(--flow-ground); border-bottom: 1px solid var(--flow-hair); }
+  .flowfield-canvas { mask-image: linear-gradient(#000 70%, transparent); }
+  .flowfield-tokens { display: none; }
+  .flowfield-stations { display: grid; grid-template-columns: repeat(3, 1fr); align-items: end; gap: 0.3rem; inset: auto 1.5rem 0.7rem; }
+  .flowfield-station { position: relative; width: auto; max-width: none; text-align: center; opacity: 1; transform: none !important; }
+  .flowfield-station::after { position: static; display: block; width: 0.3rem; height: 0.3rem; margin: 0.6rem auto 0; transform: none; box-shadow: none; background: var(--flow-accent); opacity: calc(0.25 + var(--station-in) * 0.75); }
+  .flowfield-station strong, .flowfield-station small { transform: none; }
+  .flowfield-station strong { font-size: 0.7rem; color: var(--flow-muted); }
+  .flowfield-station small { display: none; }
+  .flowfield-steps { order: 3; width: min(100% - 3rem, 38rem); margin: 1.3rem auto 0; }
+  .flowfield-step { scroll-margin-top: calc(4rem + clamp(145px, 23svh, 205px) + 1rem); }
+  .flowfield-step button { min-height: 225px; padding: 1.7rem 0.7rem 1.7rem 2.8rem; align-content: center; }
+  .flowfield-step::before { top: 2rem; left: 0.6rem; font-size: 0.68rem; }
+  .flowfield-step-label { font-size: 0.75rem; }
+  .flowfield-step-title { margin-top: 0.65rem; font-size: clamp(1.25rem, 4.8vw, 1.6rem); line-height: 1.2; text-wrap: pretty; }
+  .flowfield-step-text { margin-top: 0.75rem; font-size: 0.86rem; line-height: 1.6; }
+  .flowfield.is-enhanced .flowfield-step button { transform: translateY(calc((1 - var(--step-in, 1)) * 18px)); opacity: calc(0.55 + var(--step-in, 1) * 0.45); }
+  .flowfield-statement { order: 4; position: relative; left: auto; bottom: auto; width: min(100% - 3rem, 38rem); min-height: 3.5em; margin: 2.5rem auto 0; font-size: clamp(1.65rem, 6vw, 2.3rem); }
+  .flowfield-line { top: 0; bottom: auto; max-width: 21ch; }
+  .flowfield-state { order: 5; position: relative; right: auto; bottom: auto; width: min(100% - 3rem, 38rem); margin: 1.25rem auto 0; gap: 0.6rem; font-size: 0.58rem; }
+  .flowfield-state i { flex: 1; min-width: 1rem; }
 }
-
-@media (max-width: 360px) {
-  .flowfield-station strong {
-    font-size: 0.76rem;
-  }
-}
-
-/* -- Reduced motion: the finished flow, no pinning, no reveals --------- */
-
 @media (prefers-reduced-motion: reduce) {
-  .flowfield {
-    min-height: 0;
-  }
-
-  .flowfield-stage {
-    position: static;
-    height: auto;
-    padding-bottom: clamp(3rem, 6vw, 5rem);
-  }
-
-  .flowfield-inner {
-    height: auto;
-    min-height: 78svh;
-  }
-
-  .flowfield-step-label {
-    color: var(--primary-dark);
-  }
-
-  .flowfield-step-title {
-    color: var(--flow-ink);
-  }
-
-  .flowfield-step-text,
-  .flowfield-step.is-active .flowfield-step-text {
-    max-height: none;
-    margin-top: 0.32rem;
-    opacity: 1;
-    transition: none;
-  }
-
-  .flowfield-step::before,
-  .flowfield-line {
-    transition: none;
-  }
-
-  /* Nothing is pinned here, so the payoff line joins the copy column instead
-     of floating over the stations. */
-  .flowfield-statement {
-    position: static;
-    grid-column: 1;
-    grid-row: 2;
-    align-self: start;
-    width: min(30ch, 100%);
-    min-height: 0;
-    margin-top: clamp(1.5rem, 4vh, 2.5rem);
-  }
-
-  .flowfield-line {
-    position: static;
-    display: none;
-    transform: none;
-    opacity: 1;
-  }
-
-  .flowfield-line.is-active {
-    display: block;
-  }
+  .flowfield { min-height: 0; }
+  .flowfield-stage { position: relative; height: auto; min-height: 0; }
+  .flowfield-inner { height: auto; padding-bottom: 16rem; }
+  .flowfield-step, .flowfield-step::after, .flowfield-line { transition: none; }
+  .flowfield-line { display: none; transform: none; }
+  .flowfield-line.is-active { display: block; position: static; }
+  .flowfield.is-enhanced .flowfield-step button { transform: none; opacity: 1; }
 }
-
-/* The phone stage is already static and compact, so the desktop
-   reduced-motion min-height would only open a gap under the steps. */
-
 @media (prefers-reduced-motion: reduce) and (max-width: 900px) {
-  .flowfield-inner {
-    min-height: 0;
-  }
-}
-
-/* -- Dark ------------------------------------------------------------- */
-
-[data-theme="dark"] .flowfield {
-  --flow-ink: #eaf0fb;
-  --flow-muted: #9fb0d0;
-  --flow-hair: rgba(143, 176, 255, 0.2);
-  background:
-    radial-gradient(circle at 84% 12%, rgba(59, 130, 246, 0.13), transparent 30rem),
-    linear-gradient(180deg, #111f43 0%, #0f1830 100%);
-}
-
-[data-theme="dark"] .flowfield-kicker,
-[data-theme="dark"] .flowfield-step-label,
-[data-theme="dark"] .flowfield-state strong {
-  color: #9fc1ff;
-}
-
-[data-theme="dark"] .flowfield-token {
-  border-color: rgba(143, 176, 255, 0.24);
-  background: rgba(17, 31, 67, 0.82);
-  box-shadow: 0 12px 30px rgba(3, 9, 25, 0.36);
-  color: #dbe8ff;
-}
-
-[data-theme="dark"] .flowfield-station::after {
-  border-color: #9fc1ff;
-  background: #0f1830;
-  box-shadow: 0 0 0 5px rgba(143, 176, 255, 0.14);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .flowfield-step button:hover .flowfield-step-title {
-    color: var(--flow-ink);
-  }
+  .flowfield-visual { position: relative; top: auto; }
+  .flowfield-statement { min-height: 0; }
 }
 
 /* ==========================================================================
@@ -11856,6 +11320,207 @@ section:not(.hero) .container {
     opacity: 1;
     transform: none;
   }
+}
+
+/* Document-flow finish: retain the blue paper composition, with a quieter
+   surface and three living currents tied to the document choreography. */
+#beleg-flow .story-copy-stack {
+  display: grid;
+  min-height: 0;
+  align-items: center;
+}
+
+#beleg-flow .story-copy-block {
+  position: relative;
+  inset: auto;
+  grid-area: 1 / 1;
+  align-self: center;
+}
+
+#beleg-flow .story-copy-block h2,
+#beleg-flow .story-copy-block h3 {
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+}
+
+#beleg-flow .story-eyebrow {
+  margin-bottom: 1.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+}
+
+#beleg-flow .story-meter {
+  width: min(100%, 25rem);
+  height: 5rem;
+  margin: 1.45rem 0 1.25rem;
+  overflow: hidden;
+  border-radius: 0;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 89%, transparent);
+}
+
+#beleg-flow .story-meter::before,
+#beleg-flow .story-wave-fill-clip::after {
+  display: none;
+}
+
+#beleg-flow .story-meter svg {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#beleg-flow .story-wave-track path {
+  stroke-width: 2;
+  stroke: rgba(51, 105, 242, 0.12);
+}
+
+#beleg-flow .story-wave-fill path {
+  stroke-width: 6;
+  filter: none;
+  transition: none;
+}
+
+#beleg-flow .story-wave-fill path:nth-of-type(1) { opacity: 1; }
+#beleg-flow .story-wave-fill path:nth-of-type(2) { opacity: 0.8; stroke-width: 5; }
+#beleg-flow .story-wave-fill path:nth-of-type(3) { opacity: 0.65; stroke-width: 4; }
+
+#beleg-flow .story-scene {
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 50% 56%, rgba(143, 176, 255, 0.2), transparent 65%),
+    linear-gradient(150deg, #fbfcff, #edf3ff);
+  box-shadow: 0 20px 60px -20px rgba(37, 78, 191, 0.19), inset 0 1px 0 #fff;
+}
+
+#beleg-flow .story-scene:hover {
+  box-shadow: 0 24px 64px -20px rgba(37, 78, 191, 0.22), inset 0 1px 0 #fff;
+}
+
+#beleg-flow .story-depth-field {
+  inset: 0;
+  background:
+    linear-gradient(rgba(51, 105, 242, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(51, 105, 242, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse, #000, transparent 72%);
+  transform: none;
+  opacity: 0.7;
+}
+
+#beleg-flow .story-orbit {
+  background: none;
+  border-color: rgba(51, 105, 242, 0.1);
+  opacity: calc(0.55 * (1 - var(--flow-reveal)));
+}
+
+#beleg-flow .story-stage-rail {
+  inset: 1.4rem 1.5rem auto;
+  font-weight: 500;
+}
+
+#beleg-flow .story-stage-rail :is(span, strong) {
+  color: #72809a;
+  transition: color 280ms ease;
+}
+
+#beleg-flow[data-flow-phase="chaos"] .story-stage-rail span:first-child,
+#beleg-flow[data-flow-phase="routing"] .story-stage-rail span:nth-child(2),
+#beleg-flow[data-flow-phase="ready"] .story-stage-rail strong {
+  color: var(--story-blue-dark);
+}
+
+#beleg-flow .story-stage-rail::after { height: 2px; box-shadow: none; }
+
+#beleg-flow.flow-story .story-scene .story-piece {
+  border-color: rgba(51, 105, 242, 0.12);
+  box-shadow: 0 3px 7px rgba(30, 58, 138, 0.035), 0 16px 32px -12px rgba(30, 58, 138, 0.22);
+  transition: none;
+}
+
+#beleg-flow .word-card::before { width: 20px; height: 20px; opacity: 0.75; }
+#beleg-flow .story-piece small { font-weight: 600; letter-spacing: 0.06em; }
+#beleg-flow .story-piece strong { font-weight: 600; line-height: 1.3; }
+
+#beleg-flow.flow-story .story-scene .story-hub {
+  width: calc(100% - 3rem);
+  border-radius: 14px;
+  box-shadow: 0 3px 8px rgba(30, 58, 138, 0.04), 0 24px 48px -18px rgba(30, 58, 138, 0.24);
+}
+
+#beleg-flow .hub-top { font-weight: 600; padding: 1rem 1.15rem; }
+#beleg-flow .hub-top i { width: 5px; height: 5px; opacity: 0.6; }
+#beleg-flow .hub-panel { min-height: 11.25rem; padding: 1.25rem 1rem; }
+#beleg-flow .hub-panel small { font-weight: 600; line-height: 1.45; }
+#beleg-flow .hub-panel strong { font-weight: 600; line-height: 1.25; }
+#beleg-flow .hub-panel span { line-height: 1.55; }
+#beleg-flow .hub-scenario-badge { font-weight: 600; font-size: 0.6rem; }
+#beleg-flow [data-flow-scenario-doc-title] { min-height: 2.5em; }
+#beleg-flow [data-flow-scenario-doc-text] { min-height: 4.65em; }
+#beleg-flow [data-flow-scenario-label],
+#beleg-flow [data-flow-scenario-doc-title],
+#beleg-flow [data-flow-scenario-doc-text] { transition: opacity 220ms ease; }
+#beleg-flow .is-switching :is([data-flow-scenario-label], [data-flow-scenario-doc-title], [data-flow-scenario-doc-text]) { opacity: 0; }
+
+#beleg-flow .story-demo-cta-wrap { visibility: hidden; }
+#beleg-flow.is-story-cta-ready .story-demo-cta-wrap { visibility: visible; }
+#beleg-flow .story-demo-cta { box-shadow: 0 8px 20px -8px rgba(37, 78, 191, 0.38); }
+#beleg-flow .story-demo-note { font-size: 0.75rem; font-weight: 400; }
+
+[data-theme="dark"] #beleg-flow .story-wave-track path { stroke: rgba(143, 176, 255, 0.18); }
+[data-theme="dark"] #beleg-flow .hub-panel:not(.is-current) small { color: #9fc1ff; }
+[data-theme="dark"] #beleg-flow .story-scene:hover { box-shadow: 0 24px 64px -20px rgba(0, 0, 0, 0.4); }
+[data-theme="dark"] #beleg-flow .story-stage-rail :is(span, strong) { color: #aebbd2; }
+[data-theme="dark"] #beleg-flow[data-flow-phase="chaos"] .story-stage-rail span:first-child,
+[data-theme="dark"] #beleg-flow[data-flow-phase="routing"] .story-stage-rail span:nth-child(2),
+[data-theme="dark"] #beleg-flow[data-flow-phase="ready"] .story-stage-rail strong { color: #9fc1ff; }
+
+@media (min-width: 821px) and (max-height: 740px) {
+  #beleg-flow .story-copy-block h2,
+  #beleg-flow .story-copy-block h3 { font-size: clamp(2.5rem, 3.6vw, 3.5rem); max-width: 14ch; }
+  #beleg-flow .story-eyebrow { margin-bottom: 1rem; }
+  #beleg-flow .story-meter { height: 3.5rem; margin-block: 0.9rem; }
+}
+
+@media (max-width: 820px) {
+  #beleg-flow .story-sticky {
+    grid-template-rows: auto minmax(270px, 1fr);
+    height: calc(100svh - 58px);
+    gap: 0.85rem;
+    padding: 1rem 1rem 4.8rem;
+  }
+  #beleg-flow .story-eyebrow { margin-bottom: 0.8rem; font-size: 0.64rem; }
+  #beleg-flow .story-copy-block { align-self: start; }
+  #beleg-flow .story-copy-block h2,
+  #beleg-flow .story-copy-block h3 { max-width: 17ch; font-size: clamp(1.85rem, 7.8vw, 2.8rem); line-height: 1.06; }
+  #beleg-flow .story-copy-block p { font-size: 0.81rem; line-height: 1.5; margin-top: 0.7rem; }
+  #beleg-flow .story-meter { display: none; }
+  #beleg-flow .story-scene { border-radius: 14px; }
+  #beleg-flow .story-stage-rail { inset: 0.9rem 0.85rem auto; font-size: 0.52rem; }
+  #beleg-flow.flow-story .story-scene .story-hub { width: calc(100% - 1.5rem); max-height: none; top: 54%; }
+  #beleg-flow .hub-top { padding: 0.65rem 0.75rem; font-size: 0.6rem; }
+  #beleg-flow .hub-top i { display: none; }
+  #beleg-flow .hub-scenario-badge { font-size: 0.48rem; padding: 0.2rem 0.4rem; }
+  #beleg-flow .hub-panel { min-height: 0; padding: 0.6rem 0.75rem; }
+  #beleg-flow .hub-panel small { margin-bottom: 0.2rem; font-size: 0.5rem; }
+  #beleg-flow .hub-panel strong { font-size: 0.73rem; }
+  #beleg-flow .hub-panel span { margin-top: 0.2rem; font-size: 0.59rem; line-height: 1.35; }
+  #beleg-flow [data-flow-scenario-doc-title],
+  #beleg-flow [data-flow-scenario-doc-text] { min-height: 0; }
+}
+
+@media (max-width: 820px) and (max-height: 700px) {
+  #beleg-flow .story-sticky { grid-template-rows: auto minmax(220px, 1fr); }
+  #beleg-flow .hub-top { padding-block: 0.5rem; }
+  #beleg-flow .hub-panel { padding-block: 0.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #beleg-flow .story-sticky { height: auto; }
+  #beleg-flow .story-scene { transform: none !important; }
+  #beleg-flow .story-copy-stack { min-height: 0; }
+  #beleg-flow .story-demo-cta-wrap { visibility: visible; }
+  #beleg-flow .story-scene *, #beleg-flow .story-scene *::after { animation: none !important; transition: none !important; }
 }
 
 /* ─── TARGETED ACCESSIBILITY + DARK-MODE POLISH ─────────────── */

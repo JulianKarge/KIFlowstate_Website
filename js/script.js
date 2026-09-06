@@ -214,7 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const hub = flowStory.querySelector(".story-hub");
     const hubPanels = Array.from(flowStory.querySelectorAll(".hub-panel"));
     const waveFillPaths = Array.from(flowStory.querySelectorAll(".story-wave-fill-path"));
-    const waveFillLengths = new WeakMap();
+    const waveTrackPaths = Array.from(flowStory.querySelectorAll(".story-wave-track path"));
+    const waveMeter = flowStory.querySelector(".story-meter");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const scenarioKeys = ["invoice", "reminder", "cancellation", "confirmation"];
     const scenarioEls = {
@@ -229,12 +230,16 @@ document.addEventListener("DOMContentLoaded", () => {
     let scenarioIndex = 0;
     let scenarioTimer = 0;
     let scenarioAnimating = false;
-    let scenarioTypingTimers = [];
+    let scenarioTransitionTimers = [];
     let storyLoopActive = false;
     let scenePointerTargetX = 0;
     let scenePointerTargetY = 0;
     let scenePointerX = 0;
     let scenePointerY = 0;
+    let renderedProgress = null;
+    let previousFrame = 0;
+    let waveTime = 0;
+    let previousWaveFrame = 0;
 
     const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
     const ease = (value) => {
@@ -263,15 +268,15 @@ document.addEventListener("DOMContentLoaded", () => {
       { el: scenarioEls.docText, key: `flow_scenario_${scenario}_doc_text`, text: scenarioCopy(scenario, "doc_text") }
     ].filter((target) => target.el);
     const clearScenarioTimers = () => {
-      scenarioTypingTimers.forEach((timer) => window.clearTimeout(timer));
-      scenarioTypingTimers = [];
+      scenarioTransitionTimers.forEach((timer) => window.clearTimeout(timer));
+      scenarioTransitionTimers = [];
     };
-    const typeDelay = (callback, delay) => {
+    const scheduleScenarioTransition = (callback, delay) => {
       const timer = window.setTimeout(() => {
-        scenarioTypingTimers = scenarioTypingTimers.filter((item) => item !== timer);
+        scenarioTransitionTimers = scenarioTransitionTimers.filter((item) => item !== timer);
         callback();
       }, delay);
-      scenarioTypingTimers.push(timer);
+      scenarioTransitionTimers.push(timer);
     };
     const writeScenario = (scenario) => {
       flowStory.dataset.flowScenario = scenario;
@@ -280,48 +285,16 @@ document.addEventListener("DOMContentLoaded", () => {
         el.textContent = text;
       });
     };
-    const typeScenario = (scenario) => {
+    const transitionScenario = (scenario) => {
       if (!hub) return;
       clearScenarioTimers();
       scenarioAnimating = true;
-      hub.classList.add("is-typewriting");
-
-      const targets = scenarioTargets(scenario).map((target) => ({
-        ...target,
-        from: target.el.textContent || ""
-      }));
-      const longestFrom = Math.max(...targets.map((target) => target.from.length), 0);
-      const longestTo = Math.max(...targets.map((target) => target.text.length), 0);
-      const eraseStepMs = 9;
-      const typeStepMs = 18;
-
-      for (let step = longestFrom; step >= 0; step -= 1) {
-        typeDelay(() => {
-          targets.forEach(({ el, from }) => {
-            el.textContent = from.slice(0, Math.min(step, from.length));
-          });
-        }, (longestFrom - step) * eraseStepMs);
-      }
-
-      const typeStart = longestFrom * eraseStepMs + 80;
-      typeDelay(() => {
-        flowStory.dataset.flowScenario = scenario;
-        targets.forEach(({ el, key }) => el.setAttribute("data-translate", key));
-      }, typeStart - 8);
-
-      for (let step = 0; step <= longestTo; step += 1) {
-        typeDelay(() => {
-          targets.forEach(({ el, text }) => {
-            el.textContent = text.slice(0, Math.min(step, text.length));
-          });
-        }, typeStart + step * typeStepMs);
-      }
-
-      typeDelay(() => {
+      hub.classList.add("is-switching");
+      scheduleScenarioTransition(() => {
         writeScenario(scenario);
-        hub.classList.remove("is-typewriting");
+        hub.classList.remove("is-switching");
         scenarioAnimating = false;
-      }, typeStart + longestTo * typeStepMs + 120);
+      }, 220);
     };
     const setScenario = (index, animate = false) => {
       scenarioIndex = (index + scenarioKeys.length) % scenarioKeys.length;
@@ -330,39 +303,64 @@ document.addEventListener("DOMContentLoaded", () => {
         writeScenario(scenario);
         return;
       }
-      typeScenario(scenario);
+      transitionScenario(scenario);
     };
     const startScenarioLoop = () => {
       if (scenarioTimer || reduceMotion.matches) return;
       scenarioTimer = window.setInterval(() => {
         if (!document.hidden) setScenario(scenarioIndex + 1, true);
-      }, 4100);
+      }, 6200);
     };
     const stopScenarioLoop = () => {
-      if (!scenarioTimer) return;
+      if (!scenarioTimer && !scenarioAnimating) return;
       window.clearInterval(scenarioTimer);
       scenarioTimer = 0;
+      clearScenarioTimers();
+      if (scenarioAnimating) writeScenario(scenarioKeys[scenarioIndex]);
+      scenarioAnimating = false;
+      hub?.classList.remove("is-switching");
     };
 
-    const updateWaveDraw = (progress) => {
-      waveFillPaths.forEach((path) => {
-        let length = waveFillLengths.get(path);
-        if (!length) {
-          length = path.getTotalLength();
-          waveFillLengths.set(path, length);
+    // Three continuous currents become a single, evenly spaced rhythm.
+    // Normalized path lengths keep the reveal stable as the geometry changes.
+    const updateWaveDraw = (progress, timestamp) => {
+      if (!waveMeter?.clientWidth) return;
+      if (!reduceMotion.matches && timestamp - previousWaveFrame < 32) return;
+      previousWaveFrame = timestamp;
+      const order = ease(progress);
+      waveFillPaths.forEach((path, index) => {
+        const points = [];
+        for (let x = -12; x <= 272; x += 4) {
+          const phase = x / 260 * Math.PI * 2 - waveTime * 0.55;
+          const irregularity = Math.sin(phase * 1.65 + index * 1.7) * 7 * (1 - order);
+          const y = 49 + index * 31 + Math.sin(phase + index * 0.32 * (1 - order)) * (18 - order * 5) + irregularity;
+          points.push(`${x},${y.toFixed(2)}`);
         }
-        path.style.setProperty("--wave-length", length.toFixed(2));
-        path.style.setProperty("--wave-offset", (length * (1 - clamp(progress))).toFixed(2));
+        const geometry = `M${points.join(" L")}`;
+        path.setAttribute("d", geometry);
+        waveTrackPaths[index]?.setAttribute("d", geometry);
+        path.setAttribute("pathLength", "1");
+        path.style.setProperty("--wave-length", "1");
+        path.style.setProperty("--wave-offset", (1 - clamp(0.12 + progress * 0.96 - index * 0.025)).toFixed(4));
       });
     };
 
-    const updateStory = () => {
+    const updateStory = (timestamp = performance.now()) => {
       if (!scene || !hub) return;
 
       const total = Math.max(1, flowStory.offsetHeight - window.innerHeight);
-      const rawProgress = reduceMotion.matches
+      const targetProgress = reduceMotion.matches
         ? 1
         : clamp(-flowStory.getBoundingClientRect().top / total);
+      const delta = Math.min(64, previousFrame ? timestamp - previousFrame : 16.67);
+      previousFrame = timestamp;
+      const damping = 1 - Math.exp(-delta / 105);
+      renderedProgress = renderedProgress === null || reduceMotion.matches || !storyLoopActive
+        ? targetProgress
+        : mix(renderedProgress, targetProgress, damping);
+      if (Math.abs(renderedProgress - targetProgress) < 0.0001) renderedProgress = targetProgress;
+      const rawProgress = renderedProgress;
+      if (!reduceMotion.matches && flowStoryVisible) waveTime += delta / 1000;
       const waveProgress = reduceMotion.matches ? 1 : clamp(rawProgress / 0.9);
       const flowReveal = ease((rawProgress - 0.47) / 0.22);
       const ctaReveal = ease((rawProgress - ctaShowProgress) / 0.08);
@@ -388,25 +386,25 @@ document.addEventListener("DOMContentLoaded", () => {
       flowStory.style.setProperty("--copy-in", ease((rawProgress - 0.5) / 0.08).toFixed(4));
       const ingestIn = ease((rawProgress - 0.2) / 0.18);
       const ingestOut = ease((rawProgress - 0.58) / 0.18);
-      flowStory.style.setProperty("--ingest-opacity", (ingestIn * (1 - ingestOut * 0.72)).toFixed(3));
+      flowStory.style.setProperty("--ingest-opacity", (ingestIn * (1 - ingestOut)).toFixed(3));
       flowStory.style.setProperty("--ingest-scale", mix(0.72, 1.18, gather).toFixed(3));
-      flowStory.classList.toggle("is-story-cta-ready", storyCtaVisible);
+      flowStory.classList.toggle("is-story-cta-ready", storyCtaVisible && ctaReveal > 0);
       flowStory.classList.toggle("is-story-cta-exiting", !storyCtaVisible && storyCtaHasShown);
-      updateWaveDraw(waveProgress);
+      updateWaveDraw(waveProgress, timestamp);
 
-      const sceneWidth = Math.max(320, scene.clientWidth);
-      const sceneHeight = Math.max(420, scene.clientHeight);
+      const sceneWidth = Math.max(1, scene.clientWidth);
+      const sceneHeight = Math.max(1, scene.clientHeight);
 
       cards.forEach((card, index) => {
         // Keep the scattered documents inside the portal at the start.
         // Their original coordinates still define the composition, while the
         // factor prevents the "chaos" chapter from opening on an empty stage.
-        const fromX = sceneWidth * dataNumber(card, "fromX") * 0.45 / 100;
-        const fromY = sceneHeight * dataNumber(card, "fromY") * 0.45 / 100;
+        const fromX = sceneWidth * dataNumber(card, "fromX") * 0.36 / 100;
+        const fromY = sceneHeight * dataNumber(card, "fromY") * 0.36 / 100 + 14;
         // The gathered pile keeps its shape but stays readable: without the
         // spread the six cards stacked almost on one point.
-        const midX = sceneWidth * dataNumber(card, "midX") * 1.7 / 100;
-        const midY = sceneHeight * dataNumber(card, "midY") * 1.7 / 100;
+        const midX = sceneWidth * dataNumber(card, "midX") * 1.35 / 100;
+        const midY = sceneHeight * dataNumber(card, "midY") * 1.35 / 100;
         const toX = sceneWidth * dataNumber(card, "toX") / 100;
         const toY = sceneHeight * dataNumber(card, "toY") / 100;
         const fromRot = dataNumber(card, "fromRot");
@@ -415,18 +413,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const depth = dataNumber(card, "depth");
         const ripple = Math.sin(rawProgress * 20 + index * 1.7) * (1 - organize);
 
-        const stagedX = mix(fromX, midX, gather);
-        const stagedY = mix(fromY, midY, gather);
-        const stagedRot = mix(fromRot, midRot, gather);
-        const x = mix(stagedX, toX, organize) + ripple * 9;
-        const y = mix(stagedY, toY, organize) + ripple * 5;
-        const rotation = mix(stagedRot, toRot, organize) + ripple * 1.4;
+        const cardGather = ease((rawProgress - 0.1 - index * 0.012) / 0.36);
+        const cardOrganize = ease((rawProgress - 0.45 - index * 0.009) / 0.28);
+        const stagedX = mix(fromX, midX, cardGather);
+        const stagedY = mix(fromY, midY, cardGather);
+        const stagedRot = mix(fromRot * 0.7, midRot * 0.55, cardGather);
+        const float = reduceMotion.matches ? 0 : Math.sin(waveTime * 0.65 + index * 1.3) * 3 * (1 - organize);
+        const x = mix(stagedX, toX, cardOrganize) + ripple * 3;
+        const y = mix(stagedY, toY, cardOrganize) + float;
+        const rotation = mix(stagedRot, toRot, cardOrganize) + ripple * 0.5;
         const z = mix(depth, 18, gather);
         const finalZ = mix(z, -150 + index * 10, organize);
         const scale = mix(mix(0.88, 1, gather), 0.48, organize);
         // The documents dissolve completely into the flow. Leaving a residual
         // opacity left washed-out ghost cards sitting behind the finished hub.
-        const dissolve = ease((rawProgress - 0.5) / 0.16);
+        const dissolve = ease((rawProgress - 0.48 - index * 0.012) / 0.16);
         const opacity = clamp(mix(0.94, 1, gather) * (1 - dissolve), 0, 1);
         const tiltX = mix(16 - index * 1.6, -3, gather);
         const tiltY = mix(index % 2 ? -16 : 16, 0, gather);
@@ -443,10 +444,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const hubIn = ease((rawProgress - 0.6) / 0.18);
-      const hubY = mix(70, 0, hubIn);
-      const hubZ = mix(-40, 180, hubIn);
-      const hubScale = mix(0.78, 1, hubIn);
-      const hubTilt = mix(12, 0, hubIn);
+      const hubY = mix(32, 0, hubIn);
+      const hubZ = mix(-20, 45, hubIn);
+      const hubScale = mix(0.94, 1, hubIn);
+      const hubTilt = mix(5, 0, hubIn);
       const hubTransform = [
         `translate3d(-50%, -50%, ${hubZ.toFixed(1)}px)`,
         `translateY(${hubY.toFixed(1)}px)`,
@@ -470,14 +471,15 @@ document.addEventListener("DOMContentLoaded", () => {
       else stopScenarioLoop();
     };
 
-    const runStoryLoop = () => {
+    const runStoryLoop = (timestamp) => {
       if (!storyLoopActive) return;
-      updateStory();
+      updateStory(timestamp);
       storyRaf = window.requestAnimationFrame(runStoryLoop);
     };
 
     const startStoryRender = () => {
-      if (storyLoopActive) return;
+      if (storyLoopActive || reduceMotion.matches || document.hidden) return;
+      previousFrame = 0;
       storyLoopActive = true;
       storyRaf = window.requestAnimationFrame(runStoryLoop);
     };
@@ -494,11 +496,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (scene) {
       scene.addEventListener("pointermove", (event) => {
+        if (reduceMotion.matches || event.pointerType === "touch") return;
         const rect = scene.getBoundingClientRect();
         const normalizedX = clamp((event.clientX - rect.left) / Math.max(1, rect.width), 0, 1) * 2 - 1;
         const normalizedY = clamp((event.clientY - rect.top) / Math.max(1, rect.height), 0, 1) * 2 - 1;
-        scenePointerTargetX = normalizedX * 4.5;
-        scenePointerTargetY = normalizedY * -3.2;
+        scenePointerTargetX = normalizedX * 1.5;
+        scenePointerTargetY = normalizedY * -1;
       });
       scene.addEventListener("pointerleave", () => {
         scenePointerTargetX = 0;
@@ -506,7 +509,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    window.addEventListener("resize", requestStoryUpdate);
+    window.addEventListener("resize", () => requestStoryUpdate());
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopStoryRender();
+        stopScenarioLoop();
+      } else if (flowStoryVisible) startStoryRender();
+    });
     if (reduceMotion.addEventListener) {
       reduceMotion.addEventListener("change", () => {
         if (reduceMotion.matches) {
@@ -531,13 +540,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("kif:languagechange", () => {
       clearScenarioTimers();
       scenarioAnimating = false;
-      hub?.classList.remove("is-typewriting");
+      hub?.classList.remove("is-switching");
       writeScenario(scenarioKeys[scenarioIndex]);
     });
     writeScenario(scenarioKeys[scenarioIndex]);
     updateStory();
 
-    if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+    if (!("IntersectionObserver" in window)) {
       flowStory.classList.add("is-assembled");
       updateStory();
     } else {
