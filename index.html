@@ -87,7 +87,7 @@
     />
 
     <!-- Local assets (CORRECTED PATHS) -->
-    <link rel="stylesheet" href="css/styles.css?v=flowfield-1" />
+    <link rel="stylesheet" href="css/styles.css?v=agenten-20260906" />
     <script type="importmap">
       {
         "imports": {
@@ -99,8 +99,8 @@
         }
       }
     </script>
-    <script defer src="js/translations.js?v=flowfield-1"></script>
-    <script defer src="js/script.js?v=flowfield-1"></script>
+    <script defer src="js/translations.js?v=agenten-20260906"></script>
+    <script defer src="js/script.js?v=agenten-20260906"></script>
     <script defer src="js/hero-waves.js"></script>
     <script defer src="js/method-flow.js?v=flowfield-2"></script>
     <script defer src="js/ki-news.js"></script>
@@ -514,164 +514,63 @@
       </div>
     </section>
 
-    <!-- ▸▸ INTEGRATIONS (wave-flow marquee) ------------------------------ -->
-    <section id="integrations" class="integrations reveal" aria-labelledby="integrations-title">
-      <!-- Top wave divider: viewBox doubled and path repeated for seamless drift -->
-      <svg class="wave-divider wave-top" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 C1680,90 1920,0 2160,40 C2400,80 2640,10 2880,40 L2880,0 L0,0 Z"></path>
-      </svg>
-
-      <div class="container integrations-inner">
-        <h2 id="integrations-title" data-translate="integrations_title">Im Flow mit Ihren Tools</h2>
-        <p class="section-lead" data-translate="integrations_lead">
-          Wir verbinden, was Sie bereits nutzen, und schließen die Lücken dazwischen.
-        </p>
-
-        <div class="marquee" id="integrations-marquee">
-          <div class="marquee-track" id="integrations-track">
-            <!-- Track items (will be duplicated by JS for seamless loop) -->
-            <div class="int-pill" data-tip="OpenAI">
-              <span class="int-mark int-mark-openai" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M22.28 9.82a5.94 5.94 0 0 0-.51-4.91 6 6 0 0 0-6.46-2.87A6 6 0 0 0 4.98 4.18a5.94 5.94 0 0 0-3.97 2.87 6 6 0 0 0 .74 7.05 5.94 5.94 0 0 0 .51 4.91 6 6 0 0 0 6.46 2.87 5.99 5.99 0 0 0 4.51 2.02 6 6 0 0 0 5.72-4.18 5.94 5.94 0 0 0 3.97-2.87 6 6 0 0 0-.64-7.03Zm-9.06 12.62a4.46 4.46 0 0 1-2.86-1.04l.14-.08 4.74-2.74a.78.78 0 0 0 .39-.68v-6.69l2 1.16c.02 0 .04.03.04.06v5.54a4.5 4.5 0 0 1-4.45 4.47ZM3.6 17.97a4.43 4.43 0 0 1-.53-3l.14.09 4.74 2.74a.77.77 0 0 0 .78 0l5.79-3.34v2.31c0 .02-.01.05-.03.06l-4.79 2.77a4.5 4.5 0 0 1-6.1-1.63ZM2.36 7.6a4.5 4.5 0 0 1 2.34-1.97v5.65a.77.77 0 0 0 .39.68l5.78 3.33-2 1.16c-.01.01-.04.02-.06.01L4.02 13.7a4.5 4.5 0 0 1-1.66-6.1Zm16.41 3.81-5.79-3.36 2-1.15c.02-.01.04-.02.06-.01l4.79 2.77a4.5 4.5 0 0 1-.68 8.13v-5.65a.78.78 0 0 0-.38-.73Zm1.99-3-.14-.09-4.73-2.76a.77.77 0 0 0-.78 0l-5.79 3.34V6.6c0-.03.01-.05.03-.07l4.79-2.76a4.5 4.5 0 0 1 6.62 4.65ZM9.21 13.7l-2-1.15a.07.07 0 0 1-.04-.06V7a4.5 4.5 0 0 1 7.38-3.45l-.14.08-4.74 2.74a.78.78 0 0 0-.39.68l-.07 6.66Zm1.08-2.34L12.87 9.9l2.59 1.49v3l-2.58 1.5-2.59-1.49v-3.04Z"/></svg>
-              </span>
-              <span class="int-label">OpenAI</span>
-            </div>
-
-            <div class="int-pill" data-tip="n8n">
-              <span class="int-mark int-mark-n8n" aria-hidden="true">n8n</span>
-              <span class="int-label">n8n</span>
-            </div>
-
-            <div class="int-pill" data-tip="Zapier">
-              <span class="int-mark int-mark-zap" aria-hidden="true">
-                <i class="fas fa-bolt"></i>
-              </span>
-              <span class="int-label">Zapier</span>
-            </div>
-
-            <div class="int-pill" data-tip="Claude">
-              <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/claude.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
-              </span>
-              <span class="int-label">Claude</span>
-            </div>
-
-            <div class="int-pill" data-tip="Claude Code">
-              <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/claude-code.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
-              </span>
-              <span class="int-label">Claude Code</span>
-            </div>
-
-            <div class="int-pill" data-tip="Codex">
-              <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/codex.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
-              </span>
-              <span class="int-label">Codex</span>
-            </div>
-
-            <div class="int-pill" data-tip="Notion">
-              <span class="int-mark int-mark-notion" aria-hidden="true">N</span>
-              <span class="int-label">Notion</span>
-            </div>
-
-            <div class="int-pill" data-tip="Google Workspace">
-              <span class="int-mark int-mark-google" aria-hidden="true">
-                <i class="fab fa-google"></i>
-              </span>
-              <span class="int-label">Google</span>
-            </div>
-
-            <div class="int-pill" data-tip="Slack">
-              <span class="int-mark int-mark-slack" aria-hidden="true">
-                <i class="fab fa-slack"></i>
-              </span>
-              <span class="int-label">Slack</span>
-            </div>
-
-            <div class="int-pill" data-tip="Antigravity">
-              <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/antigravity.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
-              </span>
-              <span class="int-label">Antigravity</span>
-            </div>
-
-            <div class="int-pill" data-tip="Hermes Agent">
-              <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/hermes.png" width="128" height="85" alt="" loading="lazy" decoding="async" />
-              </span>
-              <span class="int-label">Hermes</span>
-            </div>
-
-            <div class="int-pill" data-tip="OpenClaw">
-              <span class="int-mark int-mark-img" aria-hidden="true">
-                <img src="images/tools/openclaw.png" width="128" height="128" alt="" loading="lazy" decoding="async" />
-              </span>
-              <span class="int-label">OpenClaw</span>
-            </div>
-
-            <div class="int-pill" data-tip="WhatsApp">
-              <span class="int-mark int-mark-whatsapp" aria-hidden="true">
-                <i class="fab fa-whatsapp"></i>
-              </span>
-              <span class="int-label">WhatsApp</span>
-            </div>
-
-            <div class="int-pill" data-tip="Microsoft 365">
-              <span class="int-mark int-mark-microsoft" aria-hidden="true">
-                <i class="fab fa-microsoft"></i>
-              </span>
-              <span class="int-label">Microsoft 365</span>
-            </div>
-
-            <div class="int-pill" data-tip="Shopify">
-              <span class="int-mark int-mark-shopify" aria-hidden="true">
-                <i class="fab fa-shopify"></i>
-              </span>
-              <span class="int-label">Shopify</span>
-            </div>
-          </div>
-          <!-- Edge fades for the wave effect -->
-          <span class="marquee-fade marquee-fade-l" aria-hidden="true"></span>
-          <span class="marquee-fade marquee-fade-r" aria-hidden="true"></span>
-        </div>
-
-        <p class="integrations-foot" data-translate="integrations_foot">
-          …und vieles mehr. Ihre Lieblings-Tools fehlen? Wir bauen die Brücke.
-        </p>
-      </div>
-
-      <!-- Bottom wave divider (mirrored): viewBox doubled and path repeated for seamless drift -->
-      <svg class="wave-divider wave-bottom" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 C1680,0 1920,80 2160,40 C2400,0 2640,80 2880,40 L2880,80 L0,80 Z"></path>
-      </svg>
-    </section>
-
     <!-- ▸▸ APPOINTMENT ----------------------------------------------------- -->
     <section id="appointment" class="appointment reveal" aria-labelledby="appointment-title">
+      <!-- Crest: the method chapter's water rises into the booking section, so the
+           handoff from the dark flow field reads as a current, not a hard cut. -->
+      <div class="appointment-crest" aria-hidden="true">
+        <svg viewBox="0 0 2880 130" preserveAspectRatio="none" focusable="false">
+          <path class="appointment-crest-back" d="M0,54 C240,6 480,96 720,54 C960,12 1200,96 1440,54 C1680,6 1920,96 2160,54 C2400,12 2640,96 2880,54 L2880,130 L0,130 Z"></path>
+          <path class="appointment-crest-mid" d="M0,74 C240,32 480,114 720,74 C960,34 1200,114 1440,74 C1680,32 1920,114 2160,74 C2400,34 2640,114 2880,74 L2880,130 L0,130 Z"></path>
+          <path class="appointment-crest-front" d="M0,94 C240,56 480,130 720,94 C960,58 1200,130 1440,94 C1680,56 1920,130 2160,94 C2400,58 2640,130 2880,94 L2880,130 L0,130 Z"></path>
+          <!-- Open copies of the same curves carry the logo's white wave lines. -->
+          <path class="appointment-crest-line appointment-crest-line-back" d="M0,54 C240,6 480,96 720,54 C960,12 1200,96 1440,54 C1680,6 1920,96 2160,54 C2400,12 2640,96 2880,54"></path>
+          <path class="appointment-crest-line appointment-crest-line-front" d="M0,94 C240,56 480,130 720,94 C960,58 1200,130 1440,94 C1680,56 1920,130 2160,94 C2400,58 2640,130 2880,94"></path>
+        </svg>
+      </div>
+
       <div class="container appointment-inner">
         <div class="appointment-head">
           <p class="section-kicker" data-translate="appointment_kicker">Kostenloses Erstgespräch</p>
-          <h2 id="appointment-title" data-translate="appointment_title">Termin buchen</h2>
+          <h2 id="appointment-title" data-translate="appointment_title">Reden wir über Ihren ersten KI-Flow.</h2>
           <p class="section-lead" data-translate="appointment_text">
-            Wählen Sie einen passenden Zeitpunkt für ein 15‑minütiges Strategiegespräch zu KI-Automation.
+            15 Minuten, ein Ablauf aus Ihrem Alltag und eine ehrliche Einschätzung. Ohne Vorbereitung, ohne Verkaufsdruck.
           </p>
         </div>
 
+        <!-- Three-step rail: sets expectations before the calendar, so the embed
+             is the last thing the visitor has to think about. -->
+        <ol class="appointment-steps" data-translate-aria-label="appointment_steps_aria" aria-label="Ablauf des Erstgesprächs">
+          <li class="appointment-step">
+            <span class="appointment-step-num" aria-hidden="true">01</span>
+            <strong data-translate="appointment_step1_title">Termin wählen</strong>
+            <small data-translate="appointment_step1_text">Freien Slot im Kalender buchen. Den Google-Meet-Link bekommen Sie sofort per Mail.</small>
+          </li>
+          <li class="appointment-step">
+            <span class="appointment-step-num" aria-hidden="true">02</span>
+            <strong data-translate="appointment_step2_title">Ablauf zeigen</strong>
+            <small data-translate="appointment_step2_text">Sie erzählen, welche Aufgabe im Betrieb gerade am meisten Zeit frisst.</small>
+          </li>
+          <li class="appointment-step">
+            <span class="appointment-step-num" aria-hidden="true">03</span>
+            <strong data-translate="appointment_step3_title">Einschätzung bekommen</strong>
+            <small data-translate="appointment_step3_text">Wir sagen Ihnen konkret, was sich automatisieren lässt und was besser Handarbeit bleibt.</small>
+          </li>
+        </ol>
+
         <div class="appointment-booking" role="region" data-translate-aria-label="appointment_panel_aria" aria-label="Terminbuchung">
-          <div class="appointment-meta">
-            <div class="appointment-meta-item">
-              <span class="appointment-meta-icon" aria-hidden="true"><i class="fas fa-stopwatch"></i></span>
-              <span data-translate="appointment_meta_duration">15 Minuten Discovery Call</span>
-            </div>
-            <div class="appointment-meta-item">
-              <span class="appointment-meta-icon" aria-hidden="true"><i class="fas fa-diagram-project"></i></span>
-              <span data-translate="appointment_meta_focus">KI-Automation für Ihren Alltag</span>
-            </div>
-            <div class="appointment-meta-item">
-              <span class="appointment-meta-icon" aria-hidden="true"><i class="fas fa-video"></i></span>
-              <span data-translate="appointment_meta_meet">Google Meet nach Buchung</span>
-            </div>
+          <div class="appointment-panel-bar">
+            <span class="appointment-panel-mark" aria-hidden="true">
+              <svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false">
+                <path d="M2 6c4-4 7 4 11 0s7 4 11 0 6 2 8 0" />
+                <path d="M2 12c4-4 7 4 11 0s7 4 11 0 6 2 8 0" />
+                <path d="M2 18c4-4 7 4 11 0s7 4 11 0 6 2 8 0" />
+              </svg>
+            </span>
+            <span class="appointment-panel-meta">
+              <strong data-translate="appointment_meta_duration">15 Minuten Discovery Call</strong>
+              <small data-translate="appointment_meta_meet">Google Meet nach Buchung</small>
+            </span>
             <a
               class="appointment-open"
               href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1tZ0S4bhDpr0zF0OFfqbIdis1Rw1szzT-DZfG7xxcTjkIVB-BPsRp8pd28M7lVL-OI0x2XVCiy"
@@ -718,6 +617,10 @@
             </template>
           </div>
         </div>
+
+        <p class="appointment-trust" data-translate="appointment_trust">
+          Sie bekommen eine ehrliche Einschätzung, auch wenn wir am Ende nicht der richtige Partner für Sie sind.
+        </p>
       </div>
     </section>
 

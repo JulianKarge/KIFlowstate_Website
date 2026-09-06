@@ -863,11 +863,69 @@ section:not(.hero) .container {
 
 /* ─── APPOINTMENT ─────────────────────────────────────────── */
 .appointment {
+  /* The method chapter's sticky stage ends exactly where this section starts,
+     so `--appt-from` is the colour that stage's bottom edge actually renders:
+     the flow-field canvas composited over its own background, measured at the
+     end of the chapter. Matching it lets the crest continue that water instead
+     of cutting across it. */
+  --appt-crest-h: clamp(84px, 8vw, 150px);
+  --appt-from: #cfdbf7;
+  --appt-crest-fill: var(--appt-ground);
+  --appt-crest-line: rgba(51, 105, 242, 0.4);
+  --appt-crest-line-soft: rgba(51, 105, 242, 0.18);
+  --appt-ground: #f6f9ff;
+  --appt-line: rgba(51, 105, 242, 0.16);
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 4.5rem;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(239, 246, 255, 0.88)),
-    linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+    radial-gradient(circle at 12% 8%, rgba(51, 105, 242, 0.08), transparent 26rem),
+    radial-gradient(circle at 88% 0%, rgba(51, 105, 242, 0.06), transparent 22rem),
+    linear-gradient(180deg, var(--appt-ground) 0%, #eef4ff 100%);
+}
+
+/* Crest: three stacked wave paths rising out of the previous section. The strip
+   behind them is painted in `--appt-from` so the handoff works in both themes. */
+.appointment-crest {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 0;
+  height: var(--appt-crest-h);
+  background: var(--appt-from);
+  pointer-events: none;
+}
+
+.appointment-crest svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.appointment-crest path {
+  fill: var(--appt-ground);
+}
+
+/* Only the front layer has to land on the ground colour; the layers behind it
+   can be tinted so the water still reads when the strip above is pale. */
+.appointment-crest-back,
+.appointment-crest-mid {
+  fill: var(--appt-crest-fill);
+}
+
+.appointment-crest-back { opacity: 0.34; }
+.appointment-crest-mid { opacity: 0.62; }
+
+.appointment-crest-line {
+  fill: none;
+  stroke: var(--appt-crest-line);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.appointment-crest-line-back {
+  stroke: var(--appt-crest-line-soft);
+  stroke-width: 1.5;
 }
 
 .appointment::before {
@@ -890,15 +948,24 @@ section:not(.hero) .container {
 
 .appointment-inner {
   position: relative;
-  z-index: 1;
+  /* Above the crest, and padded past its full height so the wave can never
+     run through the kicker. */
+  z-index: 2;
   max-width: 1180px;
-  padding-block: clamp(3rem, 6vw, 5rem);
+  padding-block:
+    calc(var(--appt-crest-h) + clamp(1.75rem, 3vw, 3.25rem))
+    clamp(3.5rem, 6vw, 5.5rem);
 }
 
 .appointment-head {
-  max-width: 760px;
+  max-width: 780px;
   margin-inline: auto;
   text-align: center;
+}
+
+.appointment-head h2 {
+  font-size: clamp(2.1rem, 3.4vw, 2.9rem);
+  line-height: 1.12;
 }
 
 .appointment-head .section-lead {
@@ -916,52 +983,126 @@ section:not(.hero) .container {
   -webkit-backdrop-filter: blur(14px);
 }
 
-.appointment-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.65rem;
-  margin-bottom: 0.85rem;
+/* Step rail: what the 15 minutes actually contain. Sits above the embed so the
+   calendar is the last decision left, not the first. */
+.appointment-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.75rem);
+  max-width: 1000px;
+  margin: clamp(2.25rem, 4vw, 3rem) auto 0;
+  padding: 0;
+  list-style: none;
   text-align: left;
 }
 
-.appointment-meta-item,
+/* One hairline current running behind the three numbers. */
+.appointment-steps::before {
+  content: "";
+  position: absolute;
+  top: 1.1rem;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--appt-line), transparent);
+}
+
+.appointment-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.appointment-step-num {
+  display: inline-grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-bottom: 0.35rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  box-shadow: 0 10px 22px rgba(51, 105, 242, 0.26);
+}
+
+.appointment-step strong {
+  color: var(--gray-900);
+  font-size: 1.02rem;
+  font-weight: 800;
+}
+
+.appointment-step small {
+  color: var(--gray-500);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+/* Panel bar: the booking facts and the escape hatch, on one line above the
+   embed. Google owns everything below it, so the brand lives up here. */
+.appointment-panel-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+  padding: 0.55rem 0.35rem 0.85rem;
+  border-bottom: 1px solid rgba(217, 225, 242, 0.9);
+  text-align: left;
+}
+
+.appointment-panel-mark {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+  color: #fff;
+}
+
+.appointment-panel-mark svg {
+  width: 1.35rem;
+  height: auto;
+}
+
+.appointment-panel-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.appointment-panel-meta strong {
+  color: var(--gray-900);
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.appointment-panel-meta small {
+  color: var(--gray-500);
+  font-size: 0.86rem;
+}
+
 .appointment-open {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
   min-height: 42px;
-  padding: 0.55rem 0.75rem;
-  border: 1px solid rgba(217, 225, 242, 0.96);
+  margin-left: auto;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(51, 105, 242, 0.2);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--gray-900);
   font-size: 0.9rem;
   font-weight: 800;
   line-height: 1.25;
-}
-
-.appointment-meta-item {
-  flex: 1 1 210px;
-}
-
-.appointment-meta-icon {
-  flex: 0 0 auto;
-  display: inline-grid;
-  place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 8px;
-  background: rgba(51, 105, 242, 0.1);
-  color: var(--accent);
-}
-
-.appointment-open {
-  margin-left: auto;
   text-decoration: none;
   color: var(--primary-dark);
   background: rgba(51, 105, 242, 0.08);
-  border-color: rgba(51, 105, 242, 0.2);
   transition: transform 0.2s, color 0.2s, background 0.2s, border-color 0.2s;
 }
 
@@ -1029,6 +1170,32 @@ section:not(.hero) .container {
   box-shadow: 0 18px 36px rgba(51, 105, 242, 0.36);
 }
 
+/* Below 900px the method chapter's stage is no longer pinned, so the row above
+   this section is that section's own background rather than the composited
+   canvas. The crest has to pick up from there instead. */
+@media (max-width: 900px) {
+  .appointment {
+    --appt-from: var(--gray-100);
+    --appt-crest-fill: #dbe6fb;
+  }
+
+  /* `html[...]` outranks the base dark rule, which is defined later in the
+     file at otherwise equal specificity. */
+  html[data-theme="dark"] .appointment {
+    --appt-from: #0f1830;
+    --appt-crest-fill: #17264a;
+  }
+}
+
+.appointment-trust {
+  max-width: 62ch;
+  margin: clamp(1.5rem, 3vw, 2.25rem) auto 0;
+  color: var(--gray-500);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
 .calendar-wrapper {
   height: 757px;
   margin-top: 0;
@@ -1053,16 +1220,26 @@ section:not(.hero) .container {
 }
 
 @media (max-width: 900px) {
-  .appointment-meta {
-    display: grid;
+  .appointment-steps {
     grid-template-columns: 1fr;
+    gap: 1.15rem;
   }
 
-  .appointment-meta-item,
+  .appointment-steps::before {
+    display: none;
+  }
+
+  /* The bar has to wrap before the link goes full width, otherwise the link
+     squeezes the meta text into a two-line column beside it. */
+  .appointment-panel-bar {
+    flex-wrap: wrap;
+    row-gap: 0.7rem;
+  }
+
   .appointment-open {
     width: 100%;
     margin-left: 0;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .calendar-wrapper {
@@ -1094,9 +1271,8 @@ section:not(.hero) .container {
     padding: 0.65rem;
   }
 
-  .appointment-meta-item {
-    font-size: 0.84rem;
-    padding: 0.5rem 0.6rem;
+  .appointment-panel-meta strong {
+    font-size: 0.92rem;
   }
 }
 
@@ -1257,36 +1433,6 @@ section:not(.hero) .container {
   color: var(--primary-dark);
 }
 
-/* ─── INTEGRATIONS (wave-flow marquee) ─────────────────────── */
-.integrations {
-  position: relative;
-  background: linear-gradient(180deg, var(--primary-dark) 0%, #2651c7 60%, var(--primary) 100%);
-  color: #fff;
-  padding-block: 0;
-  margin-block: 1rem 0;
-  overflow: hidden;
-}
-
-.integrations-inner {
-  position: relative;
-  z-index: 2;
-  padding-block: 4rem 4.5rem;
-}
-
-.integrations h2 {
-  color: #fff;
-}
-
-.integrations .section-lead {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.integrations-foot {
-  margin: 2rem auto 0;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.92rem;
-}
-
 .wave-divider {
   position: absolute;
   left: 0;
@@ -1306,144 +1452,6 @@ section:not(.hero) .container {
   bottom: -1px;
 }
 
-/* Slow horizontal drift on the integrations dividers — opposing currents
-   for layered, water-like motion. Scoped so other pages with .wave-divider
-   (feedback hero) stay static. */
-.integrations .wave-divider {
-  width: 200%;
-  max-width: none; /* override the global `img, iframe, svg { max-width: 100% }` cap */
-  animation: wave-drift 28s linear infinite;
-  will-change: transform;
-}
-.integrations .wave-bottom {
-  animation-direction: reverse;
-  animation-duration: 34s;
-}
-
-@keyframes wave-drift {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .integrations .wave-divider {
-    animation: none;
-  }
-}
-
-/* Marquee */
-.marquee {
-  position: relative;
-  margin-top: 2.5rem;
-  width: 100%;
-  /* `overflow-x: clip; overflow-y: visible` is a valid combo that does NOT
-     force overflow-y back to auto — so the pill hover shadow can spill down
-     without being clipped. */
-  overflow-x: clip;
-  overflow-y: visible;
-  padding-block: 1.75rem 3rem;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
-}
-
-.marquee-fade { display: none; }
-
-.marquee-track {
-  display: flex;
-  gap: 1.25rem;
-  width: max-content;
-  animation: marquee-scroll 38s linear infinite;
-  will-change: transform;
-}
-
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
-
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-/* Pills */
-.int-pill {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.7rem 1.15rem;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.95rem;
-  white-space: nowrap;
-  transition: background 0.25s, transform 0.3s cubic-bezier(0.2, 0, 0, 1),
-              border-color 0.25s, box-shadow 0.3s ease;
-}
-
-.int-pill:hover {
-  background: rgba(255, 255, 255, 0.24);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-4px) scale(1.04);
-  box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.28),
-    0 0 24px rgba(255, 255, 255, 0.14);
-}
-
-/* Subtle wave-flow on the marquee container itself — gentle, synchronized,
-   doesn't fight the horizontal scroll on the inner track. */
-.marquee {
-  animation: marquee-bob 5s ease-in-out infinite;
-}
-
-@keyframes marquee-bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-5px); }
-}
-
-/* Brand marks */
-.int-mark {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #fff;
-  flex: 0 0 auto;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.int-mark svg { display: block; }
-
-.int-mark-openai      { background: #fff; color: #000; }
-.int-mark-n8n         { background: #ea4b71; font-size: 0.7rem; letter-spacing: -0.02em; }
-.int-mark-zap         { background: #ff4f00; }
-.int-mark-notion      { background: #fff; color: #000; }
-.int-mark-google      { background: #fff; color: #4285f4; }
-.int-mark-slack       { background: #fff; color: #4a154b; }
-.int-mark-whatsapp    { background: #25d366; }
-.int-mark-microsoft   { background: #fff; color: #00a4ef; }
-.int-mark-shopify     { background: #95bf47; }
-
-/* Image-based marks: white tile with the brand artwork centered.
-   `object-fit: contain` keeps the icon's aspect ratio inside the 28px square. */
-.int-mark-img {
-  background: #fff;
-  padding: 2px;
-}
-.int-mark-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
 
 /* ─── COOKIE BANNER ────────────────────────────────────────── */
 .cookie-banner {
@@ -1594,8 +1602,6 @@ section:not(.hero) .container {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
-  .marquee { animation: none; }
   .cookie-banner { transition: opacity 0.2s; transform: none; }
 }
 
@@ -2097,7 +2103,7 @@ section:not(.hero) .container {
 /* ─── RESOURCES PAGE ───────────────────────────────────────── */
 .resources-hero {
   position: relative;
-  padding-block: clamp(3rem, 6vh, 5rem) clamp(4rem, 9vh, 7rem);
+  padding-block: 2.25rem 3.5rem;
   color: #fff;
   text-align: center;
   overflow: hidden;
@@ -2138,7 +2144,7 @@ section:not(.hero) .container {
 .resources-hero h1 {
   font-size: clamp(1.85rem, 1.4rem + 1.8vw, 2.75rem);
   margin: 0 auto 0.75rem;
-  max-width: 22ch;
+  max-width: 32ch;
 }
 
 .resources-hero p {
@@ -2182,7 +2188,7 @@ section:not(.hero) .container {
 
 .resources-container {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 280px minmax(0, 1fr);
   gap: 2rem;
   align-items: start;
   padding-block: 2.5rem 4rem;
@@ -2211,6 +2217,83 @@ section:not(.hero) .container {
   color: var(--gray-500);
   margin: 0 0 0.85rem;
   font-weight: 700;
+}
+
+.video-search {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  color: var(--gray-500);
+  background: var(--gray-100);
+}
+.video-search:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.video-search input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--gray-900);
+  font: inherit;
+  font-size: 0.9rem;
+}
+.video-search input::placeholder { color: var(--gray-500); opacity: 1; }
+.video-search .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.video-search-status { margin: 0.5rem 0 1rem; font-size: 0.78rem; color: var(--gray-500); }
+
+/* A compact video introduction keeps the actual guides within reach. */
+.video-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: 1.4rem;
+}
+.video-overview .video-header { margin-top: 0; gap: 0.9rem; }
+.video-overview .video-header h2 { font-size: clamp(1.3rem, 1.7vw, 1.75rem); }
+.video-overview .video-player-play { width: 54px; height: 54px; font-size: 1.1rem; }
+.video-overview.is-playing { grid-template-columns: 1fr; }
+.resource-jump { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.25rem 0; }
+.resource-jump button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 999px;
+  padding: 0.6rem 0.9rem;
+  min-height: 44px;
+  background: transparent;
+  color: var(--gray-900);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.resource-jump button:hover { border-color: var(--accent); color: var(--accent); }
+.resource-jump button > i { color: var(--accent); }
+.resource-jump button > i:last-child { font-size: 0.65rem; }
+.route-action { display: flex; align-items: center; gap: 0.6rem; color: var(--gray-500); font-size: 0.72rem; white-space: nowrap; }
+.route-action-open { display: none; }
+.route-card[open] .route-action-closed { display: none; }
+.route-card[open] .route-action-open { display: inline; }
+.route-card { scroll-margin-top: 100px; }
+@media (max-width: 1100px) {
+  .route-action > span { display: none !important; }
+}
+@media (max-width: 600px) {
+  .video-overview { grid-template-columns: 1fr; gap: 1rem; }
+  .video-overview .video-header h2 { font-size: 1.5rem; }
+  .resource-jump { gap: 0.45rem; }
+  .resource-jump button { font-size: 0.75rem; padding: 0.5rem 0.7rem; }
 }
 
 .video-list {
@@ -2287,7 +2370,7 @@ section:not(.hero) .container {
 
 .video-tab-thumb {
   position: relative;
-  flex: 0 0 128px;
+  flex: 0 0 88px;
   aspect-ratio: 16 / 9;
   border-radius: 8px;
   overflow: hidden;
@@ -2953,6 +3036,193 @@ section:not(.hero) .container {
   }
 }
 
+/* ── Route cards ──────────────────────────────────────────────
+   One collapsible card per alternative walkthrough. The reader picks a
+   route from the closed stack first, then unfolds only that one. */
+.route-card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Brand-blue current down the left edge, surfaces on hover and when open */
+.route-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.route-card:hover {
+  border-color: #c7d7fb;
+}
+
+.route-card[open] {
+  border-color: #c7d7fb;
+  box-shadow: 0 10px 30px rgb(51 105 242 / 0.08);
+}
+
+.route-card:hover::before,
+.route-card[open]::before {
+  opacity: 1;
+}
+
+.route-card > summary {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.15rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.route-card > summary::-webkit-details-marker { display: none; }
+.route-card > summary::marker { content: ""; }
+
+.route-card > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+  border-radius: var(--radius);
+}
+
+.route-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: rgba(51, 105, 242, 0.10);
+  color: var(--primary-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.route-card[open] .route-index {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+}
+
+.route-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: var(--primary);
+  font-size: 1.05rem;
+}
+
+.route-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.route-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  line-height: 1.3;
+}
+
+.route-sub {
+  font-size: 0.86rem;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+.route-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+}
+
+.route-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--primary-dark);
+  background: rgba(51, 105, 242, 0.08);
+  border-radius: 999px;
+  padding: 0.16rem 0.55rem;
+}
+
+.route-chevron {
+  color: var(--primary);
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+}
+
+.route-card[open] .route-chevron {
+  transform: rotate(180deg);
+}
+
+.route-body {
+  padding: 0 1.15rem 1.15rem;
+  border-top: 1px solid #eef2f8;
+  padding-top: 0.35rem;
+}
+
+/* Sections nested inside a route sit one level down visually */
+.route-body .resource-section {
+  margin-top: 1.1rem;
+}
+
+.route-body .resource-section-heading {
+  font-size: 0.98rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-card,
+  .route-card::before,
+  .route-index,
+  .route-chevron {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .route-card > summary {
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: 0.6rem;
+    padding: 0.85rem 0.95rem;
+  }
+
+  /* Number and chevron line up with the title, not the middle of a tall card */
+  .route-index,
+  .route-chevron {
+    margin-top: 0.1rem;
+  }
+
+  /* The number carries the ordering on small screens, the icon disc would
+     only eat width next to it */
+  .route-icon { display: none; }
+
+  .route-title { font-size: 0.96rem; }
+  .route-sub { font-size: 0.82rem; }
+
+  .route-body {
+    padding: 0.35rem 0.95rem 1rem;
+  }
+}
+
 /* Free-form text section */
 .resource-text {
   background: #fff;
@@ -3037,6 +3307,128 @@ section:not(.hero) .container {
   font-weight: 500;
 }
 
+/* Horizontal scroll shell so wide tables never push the page sideways */
+.resource-text .table-scroll {
+  margin: 0.9rem 0 0.7rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgb(51 105 242 / 0.16);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(51, 105, 242, 0.035), rgba(51, 105, 242, 0));
+}
+
+.resource-text .table-scroll > table.routing-table {
+  margin: 0;
+  min-width: 34rem;
+}
+
+/* Hardware / model-fit table: first column reads as a VRAM tier badge */
+.resource-text table.hw-table th,
+.resource-text table.hw-table td {
+  padding: 0.65rem 0.85rem;
+}
+
+.resource-text table.hw-table tbody th[scope="row"] {
+  background: transparent;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  white-space: nowrap;
+  border-left: 3px solid var(--primary);
+  padding-left: 0.75rem;
+}
+
+.resource-text table.hw-table tbody tr:hover {
+  background: rgba(51, 105, 242, 0.04);
+}
+
+.resource-text table.hw-table em {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.86em;
+  white-space: nowrap;
+}
+
+/* Keep a model tag and its file size glued together across line breaks */
+.resource-text table.hw-table .hw-model {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0.12rem 0.55rem 0.12rem 0;
+}
+
+/* On narrow screens the table collapses into one card per VRAM tier,
+   so the model column stays readable instead of scrolling out of view. */
+@media (max-width: 640px) {
+  .resource-text .table-scroll {
+    overflow-x: visible;
+    border: none;
+    border-radius: 0;
+    background: none;
+  }
+
+  .resource-text .table-scroll > table.hw-table {
+    min-width: 0;
+  }
+
+  /* Header stays for screen readers, the card layout carries it visually */
+  .resource-text table.hw-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .resource-text table.hw-table,
+  .resource-text table.hw-table tbody,
+  .resource-text table.hw-table tr,
+  .resource-text table.hw-table th,
+  .resource-text table.hw-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .resource-text table.hw-table tbody tr {
+    border: 1px solid rgb(51 105 242 / 0.16);
+    border-radius: 10px;
+    background: rgba(51, 105, 242, 0.035);
+    padding: 0.7rem 0.85rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .resource-text table.hw-table tbody tr:hover {
+    background: rgba(51, 105, 242, 0.035);
+  }
+
+  .resource-text table.hw-table tbody th[scope="row"] {
+    border-left: none;
+    border-bottom: none;
+    padding: 0 0 0.2rem;
+    font-size: 1.02rem;
+  }
+
+  .resource-text table.hw-table tbody td {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  .resource-text table.hw-table tbody td:first-of-type {
+    font-size: 0.84rem;
+    color: var(--gray-500);
+    margin-bottom: 0.45rem;
+  }
+}
+
+.resource-text .table-note {
+  font-size: 0.82rem;
+  color: var(--gray-500);
+}
+
 /* Toast */
 .copy-toast {
   position: fixed;
@@ -3098,6 +3490,8 @@ section:not(.hero) .container {
     scrollbar-width: thin;
     scrollbar-color: rgba(51, 105, 242, 0.45) transparent;
   }
+
+  .video-list > li { flex: 0 0 180px; min-width: 0; }
 
   .video-list::-webkit-scrollbar {
     height: 4px;
@@ -3454,9 +3848,39 @@ section:not(.hero) .container {
 /* Calendar — keep the Google iframe white, but let the surrounding booking
    surface belong to the dark theme. */
 [data-theme="dark"] .appointment {
+  /* Same measurement in the dark theme: the stage's bottom edge renders near
+     #14254c, so the crest picks the water up from there. */
+  --appt-from: #14254c;
+  --appt-ground: #0a1224;
+  --appt-crest-fill: var(--appt-ground);
+  --appt-crest-line: rgba(255, 255, 255, 0.42);
+  --appt-crest-line-soft: rgba(255, 255, 255, 0.18);
+  --appt-line: rgba(143, 176, 255, 0.22);
   background:
-    linear-gradient(135deg, rgba(10, 18, 36, 0.94), rgba(19, 28, 51, 0.96)),
-    #0a1224;
+    radial-gradient(circle at 12% 8%, rgba(59, 130, 246, 0.14), transparent 26rem),
+    radial-gradient(circle at 88% 0%, rgba(59, 130, 246, 0.1), transparent 22rem),
+    linear-gradient(180deg, var(--appt-ground) 0%, #0d162c 100%);
+}
+
+[data-theme="dark"] .appointment-step strong {
+  color: #e6ebf5;
+}
+
+[data-theme="dark"] .appointment-step small,
+[data-theme="dark"] .appointment-trust {
+  color: #9fb0d0;
+}
+
+[data-theme="dark"] .appointment-panel-bar {
+  border-bottom-color: #243352;
+}
+
+[data-theme="dark"] .appointment-panel-meta strong {
+  color: #e6ebf5;
+}
+
+[data-theme="dark"] .appointment-panel-meta small {
+  color: #9fb0d0;
 }
 [data-theme="dark"] .appointment::before {
   background:
@@ -3473,15 +3897,6 @@ section:not(.hero) .container {
   background: rgba(19, 28, 51, 0.84);
   border-color: #243352;
   box-shadow: 0 22px 52px rgb(0 0 0 / 0.46);
-}
-[data-theme="dark"] .appointment-meta-item {
-  background: rgba(10, 18, 36, 0.74);
-  border-color: #243352;
-  color: #e6ebf5;
-}
-[data-theme="dark"] .appointment-meta-icon {
-  background: rgba(59, 130, 246, 0.16);
-  color: #9fc1ff;
 }
 [data-theme="dark"] .appointment-open {
   background: rgba(59, 130, 246, 0.16);
@@ -3677,6 +4092,40 @@ section:not(.hero) .container {
   background: #9cc0ff;
 }
 
+[data-theme="dark"] .route-card {
+  background: #131c33;
+  border-color: #243352;
+}
+[data-theme="dark"] .route-card:hover,
+[data-theme="dark"] .route-card[open] {
+  border-color: #35497a;
+}
+[data-theme="dark"] .route-card[open] {
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+}
+[data-theme="dark"] .route-index {
+  background: rgba(122, 167, 255, 0.14);
+  color: #cfe0ff;
+}
+/* Nested blocks need to separate from the card they sit in */
+[data-theme="dark"] .route-body .resource-text {
+  background: #0e1730;
+}
+[data-theme="dark"] .route-icon {
+  background: rgba(122, 167, 255, 0.12);
+  color: #9cc0ff;
+}
+[data-theme="dark"] .route-tag {
+  background: rgba(122, 167, 255, 0.14);
+  color: #cfe0ff;
+}
+[data-theme="dark"] .route-chevron {
+  color: #7aa7ff;
+}
+[data-theme="dark"] .route-body {
+  border-top-color: #243352;
+}
+
 [data-theme="dark"] .resource-text {
   background: #131c33;
 }
@@ -3701,6 +4150,25 @@ section:not(.hero) .container {
 [data-theme="dark"] .resource-text table.routing-table em {
   background: rgba(122, 167, 255, 0.14);
   color: #cfe0ff;
+}
+[data-theme="dark"] .resource-text .table-scroll {
+  border-color: #243352;
+  background: linear-gradient(180deg, rgba(122, 167, 255, 0.06), rgba(122, 167, 255, 0));
+}
+[data-theme="dark"] .resource-text table.hw-table tbody th[scope="row"] {
+  background: transparent;
+  color: #cfe0ff;
+  border-left-color: #7aa7ff;
+}
+[data-theme="dark"] .resource-text table.hw-table tbody tr:hover {
+  background: rgba(122, 167, 255, 0.06);
+}
+@media (max-width: 640px) {
+  [data-theme="dark"] .resource-text table.hw-table tbody tr,
+  [data-theme="dark"] .resource-text table.hw-table tbody tr:hover {
+    border-color: #243352;
+    background: rgba(122, 167, 255, 0.05);
+  }
 }
 
 /* Active-tab indicator: keep brand-blue gradient, no change needed —
@@ -8561,37 +9029,8 @@ section:not(.hero) .container {
     line-height: 1.55;
   }
 
-  .integrations {
-    margin-block-start: 0;
-  }
-
-  .integrations-inner {
-    padding-block: 3.35rem 3.65rem;
-    text-align: center;
-  }
-
-  .integrations h2 {
-    font-size: 2rem;
-  }
-
-  .integrations .section-lead,
-  .integrations-foot {
-    margin-inline: auto;
-    text-align: center;
-  }
-
-  .marquee {
-    margin-top: 1.4rem;
-    padding-block: 1.1rem 1.75rem;
-  }
-
-  .int-pill {
-    padding: 0.6rem 0.95rem;
-    font-size: 0.86rem;
-  }
-
   .appointment-inner {
-    padding-block: 2.7rem 3rem;
+    padding-block: calc(var(--appt-crest-h) + 1.5rem) 3rem;
   }
 
   .appointment-head {
@@ -8607,16 +9046,17 @@ section:not(.hero) .container {
     padding: 0.55rem;
   }
 
-  .appointment-meta {
-    gap: 0.55rem;
+  .appointment-panel-bar {
+    flex-wrap: wrap;
+    gap: 0.7rem;
     margin-bottom: 0.65rem;
   }
 
-  .appointment-meta-item,
   .appointment-open {
+    width: 100%;
     min-height: 48px;
-    font-size: 0.9rem;
-    line-height: 1.25;
+    margin-left: 0;
+    justify-content: center;
   }
 
   .calendar-wrapper:has(.calendar-placeholder) {
@@ -8711,8 +9151,7 @@ section:not(.hero) .container {
 @media (max-width: 360px) {
   section:not(.hero) h2,
   .story-copy-block h2,
-  .ki-news-band-head h2,
-  .integrations h2 {
+  .ki-news-band-head h2 {
     font-size: 1.82rem;
   }
 
@@ -8733,88 +9172,76 @@ section:not(.hero) .container {
 }
 
 /* Mobile homepage polish, pass 2: replace the boxed-card / filled-badge look
-   on method, integrations and appointment with quieter editorial styling —
+   on method and appointment with quieter editorial styling —
    hairlines, typographic numbers, smaller marks. Phone only (≤600px). */
 @media (max-width: 600px) {
 
-  /* Integrations: less dead space, smaller heading, deliberate edge fades. */
-  .integrations .wave-divider {
-    height: 40px;
+  /* Appointment: quiet editorial rail instead of boxed rows. */
+  .appointment-inner {
+    padding-block: calc(var(--appt-crest-h) + 1.35rem) 3.25rem;
   }
 
-  .integrations-inner {
-    padding-block: 2.6rem 3rem;
+  .appointment-head h2 {
+    font-size: 1.85rem;
   }
 
-  .integrations h2 {
-    font-size: 1.72rem;
-    line-height: 1.15;
+  .appointment-steps {
+    gap: 0;
+    margin-top: 1.75rem;
   }
 
-  .integrations .section-lead {
-    font-size: 0.95rem;
+  .appointment-step {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    column-gap: 0.85rem;
+    row-gap: 0.15rem;
+    padding: 0.95rem 0.1rem;
   }
 
-  .marquee {
-    margin-top: 1.2rem;
-    padding-block: 0.9rem 1.4rem;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  .appointment-step + .appointment-step {
+    border-top: 1px solid rgba(217, 225, 242, 0.9);
   }
 
-  .marquee-track {
-    gap: 0.85rem;
+  /* Number drops the filled disc and becomes a plain typographic marker. */
+  .appointment-step-num {
+    grid-row: span 2;
+    width: auto;
+    height: auto;
+    margin: 0.1rem 0 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--accent);
+    font-size: 0.88rem;
+    place-items: start;
   }
 
-  .int-pill {
-    padding: 0.5rem 0.85rem;
-    font-size: 0.84rem;
+  .appointment-step strong {
+    font-size: 0.98rem;
   }
 
-  .int-mark {
-    width: 24px;
-    height: 24px;
-    font-size: 0.75rem;
+  .appointment-step small {
+    font-size: 0.9rem;
   }
 
-  .integrations-foot {
-    max-width: 34ch;
-    margin-top: 0.25rem;
-    font-size: 0.86rem;
-  }
-
-  /* Appointment: quiet fact list with hairlines instead of boxed rows. */
   .appointment-booking {
     padding: 0.9rem 1rem 1.1rem;
     box-shadow: var(--shadow-sm);
   }
 
-  .appointment-meta {
-    gap: 0;
-    margin-bottom: 0;
+  .appointment-panel-bar {
+    padding: 0.2rem 0.1rem 0.85rem;
   }
 
-  .appointment-meta-item {
-    min-height: 0;
-    padding: 0.72rem 0.1rem;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    font-size: 0.92rem;
-    font-weight: 600;
+  .appointment-panel-mark {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 8px;
   }
 
-  .appointment-meta-item + .appointment-meta-item {
-    border-top: 1px solid rgba(217, 225, 242, 0.9);
-  }
-
-  /* Icons lose their tinted tile and become small plain marks. */
-  .appointment-meta-icon {
-    width: 1.35rem;
-    height: 1.35rem;
-    border-radius: 0;
-    background: transparent;
-    font-size: 0.86rem;
+  .appointment-trust {
+    font-size: 0.9rem;
+    text-align: left;
   }
 
   .appointment-mobile-book {
@@ -8841,26 +9268,15 @@ section:not(.hero) .container {
   }
 }
 
-@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
-  .marquee {
-    animation: none;
-  }
-}
-
 @media (max-width: 600px) {
 
   [data-theme="dark"] .method-scrolly .method-step + .method-step,
-  [data-theme="dark"] .appointment-meta-item + .appointment-meta-item,
+  [data-theme="dark"] .appointment-step + .appointment-step,
   [data-theme="dark"] .appointment-mobile-book {
     border-top-color: #243352;
   }
 
-  [data-theme="dark"] .appointment-meta-item {
-    background: transparent;
-  }
-
-  [data-theme="dark"] .appointment-meta-icon {
-    background: transparent;
+  [data-theme="dark"] .appointment-step-num {
     color: #9fc1ff;
   }
 

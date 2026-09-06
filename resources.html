@@ -48,11 +48,11 @@
     />
 
     <!-- Local assets -->
-    <link rel="stylesheet" href="css/styles.css" />
-    <script defer src="js/translations.js"></script>
-    <script defer src="js/videos.js?v=fable-5-1-1"></script>
+    <link rel="stylesheet" href="css/styles.css?v=agenten-20260906" />
+    <script defer src="js/translations.js?v=agenten-20260906"></script>
+    <script defer src="js/videos.js?v=agenten-20260906"></script>
     <script defer src="js/script.js"></script>
-    <script defer src="js/resources-page.js"></script>
+    <script defer src="js/resources-page.js?v=agenten-20260906"></script>
   </head>
 
   <body>
@@ -146,6 +146,12 @@
         <!-- LEFT: VIDEO LIST -->
         <aside class="resources-sidebar" aria-label="Videoauswahl">
           <h2 class="resources-sidebar-title" data-translate="resources_sidebar_title">Alle Videos</h2>
+          <label class="video-search" for="video-search">
+            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+            <span class="sr-only" data-translate="resources_search">Videos durchsuchen</span>
+            <input type="search" id="video-search" placeholder="Videos durchsuchen" aria-controls="video-list" />
+          </label>
+          <p class="video-search-status" id="video-search-status" role="status"></p>
           <ul class="video-list" id="video-list">
             <!-- Populated by resources-page.js -->
           </ul>

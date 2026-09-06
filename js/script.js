@@ -206,17 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (arrowNext) arrowNext.addEventListener("click", () => showDemo(activeIdx + 1));
   }
 
-  /* ▸ Integrations marquee — duplicate items so the scroll loops seamlessly */
-  const marqueeTrack = document.getElementById("integrations-track");
-  if (marqueeTrack) {
-    const items = Array.from(marqueeTrack.children);
-    items.forEach((node) => {
-      const clone = node.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      marqueeTrack.appendChild(clone);
-    });
-  }
-
   /* ▸ Beleg-flow story: scroll-linked wave draw + 3D card choreography */
   const flowStory = document.querySelector(".flow-story");
   if (flowStory) {

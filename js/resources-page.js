@@ -117,6 +117,23 @@
   };
 
   /* ── rendering ───────────────────────────────────────────── */
+  const searchInput = document.getElementById("video-search");
+  const searchStatus = document.getElementById("video-search-status");
+  const filterVideos = () => {
+    const query = (searchInput?.value || "").trim().toLocaleLowerCase();
+    let count = 0;
+    sidebar.querySelectorAll("li").forEach((item) => {
+      const video = findVideo(item.querySelector("button").dataset.videoId);
+      const matches = `${pick(video.title)} ${pick(video.description)}`.toLocaleLowerCase().includes(query);
+      item.hidden = !matches;
+      if (matches) count++;
+    });
+    if (searchInput) searchInput.placeholder = t("resources_search", "Videos durchsuchen");
+    if (searchStatus) searchStatus.textContent = count
+      ? `${count} ${t("resources_search_results", "Videos")}`
+      : t("resources_search_empty", "Kein Treffer. Probiere einen anderen Suchbegriff.");
+  };
+
   const renderSidebar = (activeId) => {
     if (!VIDEOS.length) {
       sidebar.innerHTML = "";
@@ -154,6 +171,7 @@
         </li>
       `;
     }).join("");
+    filterVideos();
   };
 
   const renderSection = (section, sectionIndex = 0) => {
@@ -300,6 +318,64 @@
     `;
   };
 
+  // A video can bundle several of its sections into one collapsible "route"
+  // card, so a walkthrough with multiple alternative paths stays navigable:
+  // the reader picks a route first, then unfolds only that one.
+  //
+  //   video.groups   = [{ id, title, subtitle?, icon?, tags?, open? }, …]
+  //   section.group  = "<group id>"
+  //
+  // Sections without a `group` render inline, exactly as before.
+  const renderGroup = (group, index, body) => {
+    const subtitle = pick(group.subtitle);
+    const tags = Array.isArray(group.tags)
+      ? group.tags
+          .map((tag) => `<span class="route-tag">${escapeHtml(pick(tag))}</span>`)
+          .join("")
+      : "";
+
+    return `
+      <details class="route-card" name="video-routes" data-route="${escapeHtml(group.id)}"${group.open ? " open" : ""}>
+        <summary>
+          <span class="route-index" aria-hidden="true">${index}</span>
+          ${group.icon
+            ? `<span class="route-icon" aria-hidden="true"><i class="fas ${escapeHtml(group.icon)}"></i></span>`
+            : ""}
+          <span class="route-head">
+            <span class="route-title">${escapeHtml(pick(group.title))}</span>
+            ${subtitle ? `<span class="route-sub">${escapeHtml(subtitle)}</span>` : ""}
+            ${tags ? `<span class="route-tags">${tags}</span>` : ""}
+          </span>
+          <span class="route-action"><span class="route-action-closed">${escapeHtml(t("resources_route_open", "Anleitung öffnen"))}</span><span class="route-action-open">${escapeHtml(t("resources_route_close", "Schließen"))}</span><i class="fas fa-chevron-down route-chevron" aria-hidden="true"></i></span>
+        </summary>
+        <div class="route-body">${body}</div>
+      </details>
+    `;
+  };
+
+  const renderSections = (video) => {
+    const sections = Array.isArray(video.sections) ? video.sections : [];
+    const groups = Array.isArray(video.groups) ? video.groups : [];
+    if (!groups.length) return sections.map(renderSection).join("");
+
+    const byId = new Map(groups.map((g) => [g.id, g]));
+    const emitted = new Set();
+
+    return sections.map((section, i) => {
+      const gid = section.group;
+      if (!gid || !byId.has(gid)) return renderSection(section, i);
+      if (emitted.has(gid)) return "";      // already rendered with its group
+      emitted.add(gid);
+
+      const group = byId.get(gid);
+      // Keep the original index so prompt-card ids stay unique across groups.
+      const body = sections
+        .map((s, j) => (s.group === gid ? renderSection(s, j) : ""))
+        .join("");
+      return renderGroup(group, groups.findIndex((g) => g.id === gid) + 1, body);
+    }).join("");
+  };
+
   const renderEmpty = () => {
     content.innerHTML = `
       <div class="resource-empty-state">
@@ -317,12 +393,13 @@
 
     const title = pick(video.title);
     const desc  = pick(video.description);
-    const sections = (video.sections || []).map(renderSection).join("");
+    const sections = renderSections(video);
     const ytId = videoYouTubeId(video);
     const heroThumb = thumbUrl(video, "hq");
 
     content.innerHTML = `
       <article class="resource-video" data-video-id="${escapeHtml(video.id)}">
+        <div class="video-overview">
         ${ytId
           ? `<div class="video-player" data-yt-id="${escapeHtml(ytId)}">
               <img
@@ -370,8 +447,13 @@
             </button>
           </div>
         </header>
+        </div>
 
         ${desc ? `<p class="video-description">${escapeHtml(desc)}</p>` : ""}
+
+        ${video.groups?.length ? `<nav class="resource-jump" aria-label="${escapeHtml(t("resources_routes", "Direkt zur Anleitung"))}">
+          ${video.groups.map((g) => `<button type="button" data-open-route="${escapeHtml(g.id)}"><i class="fas ${escapeHtml(g.icon || "fa-book")}" aria-hidden="true"></i>${escapeHtml(pick(g.shortTitle || g.title))}<i class="fas fa-arrow-down" aria-hidden="true"></i></button>`).join("")}
+        </nav>` : ""}
 
         ${sections}
       </article>
@@ -379,7 +461,19 @@
   };
 
   /* ── interactions ────────────────────────────────────────── */
-  const findVideo = (id) => VIDEOS.find((v) => v.id === id);
+  const findVideo = (id) => VIDEOS.find((v) => v.id === id || v.youtubeId === id || v.aliases?.includes(id));
+
+  searchInput?.addEventListener("input", filterVideos);
+
+  // Closed details have no measurable prompt height. Measure after opening.
+  content.addEventListener("toggle", (event) => {
+    if (event.target.matches(".route-card") && event.target.open) {
+      content.querySelectorAll(".route-card[open]").forEach((card) => {
+        if (card !== event.target) card.open = false;
+      });
+      requestAnimationFrame(refreshPromptCollapsibility);
+    }
+  }, true);
 
   const restoreSidebarFocus = (id) => {
     const next = Array.from(sidebar.querySelectorAll(".video-tab"))
@@ -457,11 +551,24 @@
 
   // Click handlers inside the content area (delegated)
   content.addEventListener("click", async (e) => {
+    const routeButton = e.target.closest("[data-open-route]");
+    if (routeButton) {
+      const card = Array.from(content.querySelectorAll(".route-card"))
+        .find((el) => el.dataset.route === routeButton.dataset.openRoute);
+      if (card) {
+        content.querySelectorAll(".route-card[open]").forEach((other) => { other.open = false; });
+        card.open = true;
+        card.querySelector("summary").focus({ preventScroll: true });
+        card.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block: "start" });
+      }
+      return;
+    }
     // Play YouTube video (facade → iframe)
     const player = e.target.closest(".video-player");
     if (player && !player.querySelector("iframe")) {
       const id = player.dataset.ytId;
       if (id) {
+        player.closest(".video-overview")?.classList.add("is-playing");
         const videoId = player.closest("[data-video-id]")?.dataset.videoId;
         const video = videoId ? findVideo(videoId) : null;
         const frameTitle = video

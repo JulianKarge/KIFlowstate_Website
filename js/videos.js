@@ -28,6 +28,586 @@
 
 const VIDEOS = [
   {
+    id: "rcug4k3Nd5U",
+    aliases: ["ki-agenten-kostenlos"],
+    title: {
+      de: "Zahle nie wieder für KI Agenten",
+      en: "Never pay for AI agents again"
+    },
+    publishedAt: "2026-09-06",
+    description: {
+      de: "Drei Wege zu einem KI-Agenten, ohne monatliches Abo: Hermes lokal auf deiner eigenen Hardware mit Ollama, Claude Code über den Free-Claude-Code-Proxy, und OpenCode als offener Agent für Terminal und Desktop. Such dir unten einen Weg aus, die komplette Anleitung klappt darunter auf.",
+      en: "Three ways to run an AI agent without a monthly subscription: Hermes locally on your own hardware with Ollama, Claude Code through the Free Claude Code proxy, and OpenCode as an open agent for terminal and desktop. Pick a route below and the full walkthrough unfolds underneath."
+    },
+    thumbnailUrl: "images/vid19-agenten-kostenlos.png",
+    groups: [
+      {
+        id: "lokal",
+        shortTitle: { de: "Hermes lokal", en: "Local Hermes" },
+        icon: "fa-house-laptop",
+        title: { de: "Hermes lokal mit Ollama", en: "Hermes locally with Ollama" },
+        subtitle: {
+          de: "Für eigene Hardware: Das Modell rechnet lokal, ohne API-Gebühren. Eine passende GPU macht die Antworten schneller.",
+          en: "For your own hardware: the model runs locally without API fees. A suitable GPU makes responses faster."
+        },
+        tags: [
+          { de: "Lokales Modell", en: "Local model" },
+          { de: "GPU empfohlen", en: "GPU recommended" },
+          { de: "Hardware-Tabelle", en: "Hardware table" }
+        ]
+      },
+      {
+        id: "free-claude-code",
+        shortTitle: { de: "Claude Code + Proxy", en: "Claude Code + proxy" },
+        icon: "fa-key",
+        title: { de: "Claude Code mit kostenlosem Modell", en: "Claude Code with a free model" },
+        subtitle: {
+          de: "Du behältst Claude Code als Oberfläche, ein lokaler Proxy schickt die Anfragen an ein kostenloses Modell. Kein Abo, nur ein Gratis-API-Key.",
+          en: "You keep Claude Code as the interface while a local proxy sends the requests to a free model. No subscription, just a free API key."
+        },
+        tags: [
+          { de: "Kein Abo", en: "No subscription" },
+          { de: "Setup-Prompt", en: "Setup prompt" },
+          { de: "Gratis-Kontingente", en: "Free tiers" }
+        ]
+      },
+      {
+        id: "opencode",
+        shortTitle: "OpenCode",
+        icon: "fa-cube",
+        title: { de: "OpenCode als offener Agent", en: "OpenCode as an open agent" },
+        subtitle: {
+          de: "Quelloffener Coding-Agent für Terminal, Desktop und IDE. Du entscheidest selbst, welches Modell dahinter hängt.",
+          en: "Open source coding agent for terminal, desktop, and IDE. You decide which model sits behind it."
+        },
+        tags: [
+          { de: "Desktop-App", en: "Desktop app" },
+          { de: "Anbieter frei wählbar", en: "Any provider" },
+          { de: "Plan-Modus", en: "Plan mode" }
+        ]
+      }
+    ],
+    sections: [
+      {
+        heading: { de: "Drei Wege, du entscheidest", en: "Three routes, your choice" },
+        type: "text",
+        icon: "fa-route",
+        items: [
+          {
+            html: {
+              de: `<p>Klapp den Weg auf, der zu dir passt. Alle drei lassen sich ohne Abo nutzen: lokal mit Hardware- und Stromkosten, in der Cloud innerhalb der Gratis-Kontingente. Wähle auch für Fallbacks ausdrücklich kostenlose Modelle.</p>`,
+              en: `<p>Open the route that fits you. All three can work without a subscription: locally with hardware and electricity costs, or in the cloud within free-tier limits. Explicitly choose free models for fallbacks too.</p>`
+            }
+          }
+        ]
+      },
+
+      {
+        group: "lokal",
+        heading: { de: "So läuft der lokale Weg", en: "How the local route works" },
+        type: "text",
+        icon: "fa-house-laptop",
+        items: [
+          {
+            html: {
+              de: `<p>Ollama ist die Laufzeitumgebung für Open-Source-Modelle auf deinem eigenen Rechner. Hermes Agent von Nous Research setzt darauf auf: ein Agent mit eigenem Gedächtnis über Sessions hinweg, der sich selbst neue Skills schreibt. Ollama verbindet beide automatisch über einen OpenAI-kompatiblen Endpoint unter <code>http://127.0.0.1:11434/v1</code>.</p>
+<p>Wähle für diesen Weg ein lokales Modell ohne Cloud-Endung. Die Modellanfragen bleiben auf dem Rechner; Websuche, Messenger und andere externe Tools können Daten übertragen.</p>
+<ol>
+  <li><strong>Ollama installieren.</strong> Über <a href="https://ollama.com/download" target="_blank" rel="noopener">ollama.com/download</a> oder direkt im Terminal.</li>
+  <li><strong>Modell laden.</strong> Nimm ein Modell, das in deinen Grafikspeicher passt. Welches das ist, steht in der Tabelle weiter unten.</li>
+  <li><strong>Hermes starten.</strong> Ein einziger Befehl, <code>ollama launch hermes</code>. Ollama installiert Hermes bei Bedarf, lässt dich das Modell auswählen und richtet die Verbindung selbst ein.</li>
+</ol>`,
+              en: `<p>Ollama is the runtime for open-source models on your own machine. Hermes Agent by Nous Research sits on top of it: an agent with memory across sessions that writes its own new skills. Ollama connects the two automatically through an OpenAI-compatible endpoint at <code>http://127.0.0.1:11434/v1</code>.</p>
+<p>Choose a local model without a cloud suffix for this route. Model requests stay on your machine; web search, messaging, and other external tools can transmit data.</p>
+<ol>
+  <li><strong>Install Ollama.</strong> Via <a href="https://ollama.com/download" target="_blank" rel="noopener">ollama.com/download</a> or straight from the terminal.</li>
+  <li><strong>Pull a model.</strong> Pick one that fits your video memory. The table below tells you which.</li>
+  <li><strong>Launch Hermes.</strong> One command, <code>ollama launch hermes</code>. Ollama installs Hermes if needed, lets you pick the model, and wires up the connection itself.</li>
+</ol>`
+            }
+          }
+        ]
+      },
+
+      {
+        group: "lokal",
+        heading: { de: "Schritt 1 und 2: Ollama installieren, Modell laden", en: "Step 1 and 2: install Ollama, pull a model" },
+        type: "prompts",
+        icon: "fa-terminal",
+        items: [
+          {
+            title: {
+              de: "Option A: Download im Browser",
+              en: "Option A: browser download"
+            },
+            content: `https://ollama.com/download`
+          },
+          {
+            title: {
+              de: "Option B: Installation im Terminal",
+              en: "Option B: terminal install"
+            },
+            content: `# Linux / WSL
+curl -fsSL https://ollama.com/install.sh | sh
+
+# macOS: https://ollama.com/download/mac
+# Windows: https://ollama.com/download/windows`
+          },
+          {
+            title: {
+              de: "Modell laden und testen",
+              en: "Pull a model and test it"
+            },
+            content: `# Interaktives Menue oeffnen
+ollama
+
+# Oder direkt ein Modell starten (Beispiel: 4B, passt auf 8 GB VRAM)
+ollama run qwen3.5:4b
+
+# Chat wieder verlassen
+/bye`
+          }
+        ]
+      },
+
+      {
+        group: "lokal",
+        heading: { de: "Schritt 3: Hermes starten", en: "Step 3: launch Hermes" },
+        type: "prompts",
+        icon: "fa-robot",
+        items: [
+          {
+            title: {
+              de: "Der einzige Befehl, den du brauchst",
+              en: "The only command you need"
+            },
+            content: `ollama launch hermes`
+          },
+          {
+            title: {
+              de: "Was Ollama dabei automatisch macht",
+              en: "What Ollama does automatically"
+            },
+            content: `1. Installiert Hermes, falls es noch nicht da ist
+2. Laesst dich ein Modell auswaehlen (lokal oder Cloud)
+3. Traegt Ollama als Provider ein: http://127.0.0.1:11434/v1
+4. Verbindet optional Telegram, Discord, Slack, WhatsApp, Signal oder E-Mail`
+          }
+        ]
+      },
+
+      {
+        group: "lokal",
+        heading: { de: "Welches Modell passt auf deine Hardware?", en: "Which model fits your hardware?" },
+        type: "text",
+        icon: "fa-microchip",
+        items: [
+          {
+            html: {
+              de: `<p>Die Tabelle ist eine <strong>Orientierung anhand der Modelldateien, keine Garantie für den Speicherbedarf.</strong> Kontext, Bilder und parallele Anfragen brauchen zusätzlichen Speicher, bei langen Agenten-Sessions auch deutlich mehr als 1 bis 2 GB. Passt nicht alles in den Grafikspeicher, kann Ollama auf Arbeitsspeicher und CPU ausweichen, das macht Antworten langsamer. Kleine Chatmodelle eignen sich zum Einstieg, beherrschen aber nicht automatisch zuverlässige Tool-Aufrufe für Hermes.</p>
+<div class="table-scroll">
+<table class="routing-table hw-table">
+  <thead>
+    <tr>
+      <th>Grafikspeicher</th>
+      <th>Typische GPUs</th>
+      <th>Modell-Dateigrößen zur Orientierung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">4 GB</th>
+      <td>GTX 1650, RTX 3050 Laptop</td>
+      <td><span class="hw-model"><em>gemma3:1b</em> 815 MB</span> <span class="hw-model"><em>qwen3.5:2b</em> 2,7 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">8 GB</th>
+      <td>RTX 4060, RTX 5060</td>
+      <td><span class="hw-model"><em>gemma3:4b</em> 3,3 GB</span> <span class="hw-model"><em>qwen3.5:4b</em> 3,4 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">12 GB</th>
+      <td>RTX 3060 12 GB, RTX 4070, RTX 5070</td>
+      <td><span class="hw-model"><em>qwen3.5:9b</em> 6,6 GB</span> <span class="hw-model"><em>gemma4:12b</em> 7,6 GB</span> <span class="hw-model"><em>gemma3:12b</em> 8,1 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">16 GB</th>
+      <td>RTX 4060 Ti 16 GB, RTX 4080, RTX 5060 Ti 16 GB, RTX 5080</td>
+      <td><span class="hw-model"><em>gpt-oss:20b</em> 14 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">24 GB</th>
+      <td>RTX 3090, RTX 4090</td>
+      <td><span class="hw-model"><em>qwen3.5:27b</em> 17 GB</span> <span class="hw-model"><em>gemma3:27b</em> 17 GB</span> <span class="hw-model"><em>qwen3.8:27b</em> 18 GB</span> <span class="hw-model"><em>gemma4:26b</em> 19 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">32 GB</th>
+      <td>RTX 5090</td>
+      <td><span class="hw-model"><em>qwen3.5:35b</em> 24 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">96 GB und mehr</th>
+      <td>RTX PRO 6000 Blackwell, mehrere GPUs, Mac Studio</td>
+      <td><span class="hw-model"><em>gpt-oss:120b</em> 65 GB</span> <span class="hw-model"><em>qwen3.5:122b</em> 81 GB</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Apple Silicon.</strong> M-Chips haben keinen getrennten Grafikspeicher, CPU und GPU teilen sich denselben Arbeitsspeicher. Wie viel davon für das Modell verfügbar ist, hängt von macOS, laufenden Apps und dem Kontext ab. Plane ausreichend Reserve ein, statt den gesamten Arbeitsspeicher mit Modellgewichten zu füllen. Metal-Beschleunigung ist auf jedem Apple-Silicon-Mac ohne Konfiguration aktiv.</p>
+<p><strong>Voraussetzungen bei Nvidia und AMD.</strong> Ollama unterstützt Nvidia-Karten ab Compute Capability 5.0 und Treiber 550 oder neuer. Bei AMD läuft es über ROCm, unter Windows brauchst du einen ROCm-v7-fähigen Treiber. Die vollständigen Listen mit allen unterstützten Karten stehen in der <a href="https://docs.ollama.com/gpu" target="_blank" rel="noopener">Hardware-Übersicht von Ollama</a>.</p>
+<p><strong>Ohne GPU?</strong> Geht auch. Ollama läuft dann auf der CPU, du solltest aber bei sehr kleinen Modellen bleiben und mit deutlich langsameren Antworten rechnen.</p>
+<p class="table-note">Alle Größenangaben stammen direkt aus der Ollama-Modellbibliothek, geprüft am 6. September 2026. <a href="https://docs.ollama.com/context-length" target="_blank" rel="noopener noreferrer">Mehr zum Kontext und Speicherbedarf</a>.</p>`,
+              en: `<p>This table is <strong>a guide based on model file sizes, not a guarantee of memory requirements.</strong> Context, images, and parallel requests need extra memory, potentially much more than 1 to 2 GB for long agent sessions. Ollama can offload to system RAM and the CPU when video memory runs out, which slows responses. Small chat models are useful for getting started but do not necessarily support reliable tool calls for Hermes.</p>
+<div class="table-scroll">
+<table class="routing-table hw-table">
+  <thead>
+    <tr>
+      <th>Video memory</th>
+      <th>Typical GPUs</th>
+      <th>Model file sizes for reference</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">4 GB</th>
+      <td>GTX 1650, RTX 3050 laptop</td>
+      <td><span class="hw-model"><em>gemma3:1b</em> 815 MB</span> <span class="hw-model"><em>qwen3.5:2b</em> 2.7 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">8 GB</th>
+      <td>RTX 4060, RTX 5060</td>
+      <td><span class="hw-model"><em>gemma3:4b</em> 3.3 GB</span> <span class="hw-model"><em>qwen3.5:4b</em> 3.4 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">12 GB</th>
+      <td>RTX 3060 12 GB, RTX 4070, RTX 5070</td>
+      <td><span class="hw-model"><em>qwen3.5:9b</em> 6.6 GB</span> <span class="hw-model"><em>gemma4:12b</em> 7.6 GB</span> <span class="hw-model"><em>gemma3:12b</em> 8.1 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">16 GB</th>
+      <td>RTX 4060 Ti 16 GB, RTX 4080, RTX 5060 Ti 16 GB, RTX 5080</td>
+      <td><span class="hw-model"><em>gpt-oss:20b</em> 14 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">24 GB</th>
+      <td>RTX 3090, RTX 4090</td>
+      <td><span class="hw-model"><em>qwen3.5:27b</em> 17 GB</span> <span class="hw-model"><em>gemma3:27b</em> 17 GB</span> <span class="hw-model"><em>qwen3.8:27b</em> 18 GB</span> <span class="hw-model"><em>gemma4:26b</em> 19 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">32 GB</th>
+      <td>RTX 5090</td>
+      <td><span class="hw-model"><em>qwen3.5:35b</em> 24 GB</span></td>
+    </tr>
+    <tr>
+      <th scope="row">96 GB and up</th>
+      <td>RTX PRO 6000 Blackwell, multi-GPU, Mac Studio</td>
+      <td><span class="hw-model"><em>gpt-oss:120b</em> 65 GB</span> <span class="hw-model"><em>qwen3.5:122b</em> 81 GB</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p><strong>Apple Silicon.</strong> M-series chips have no separate video memory, CPU and GPU share the same RAM. Memory available to the model depends on macOS, running apps, and context. Leave enough headroom instead of filling all system memory with model weights. Metal acceleration is active on every Apple Silicon Mac with no configuration.</p>
+<p><strong>Nvidia and AMD requirements.</strong> Ollama supports Nvidia cards from compute capability 5.0 and driver 550 or newer. AMD runs through ROCm, and on Windows you need a ROCm v7 capable driver. The full lists of supported cards are in <a href="https://docs.ollama.com/gpu" target="_blank" rel="noopener">Ollama's hardware overview</a>.</p>
+<p><strong>No GPU?</strong> Still works. Ollama falls back to the CPU, but stay with very small models and expect much slower answers.</p>
+<p class="table-note">All sizes come straight from the Ollama model library, checked on September 6, 2026. <a href="https://docs.ollama.com/context-length" target="_blank" rel="noopener noreferrer">More on context and memory requirements</a>.</p>`
+            }
+          }
+        ]
+      },
+
+      {
+        group: "free-claude-code",
+        heading: { de: "So läuft der Proxy-Weg", en: "How the proxy route works" },
+        type: "text",
+        icon: "fa-key",
+        items: [
+          {
+            html: {
+              de: `<p>Free Claude Code, kurz FCC, ist ein lokaler Proxy. Claude Code bleibt genau die Oberfläche, die du kennst, aber die Anfragen laufen nicht mehr zu Anthropic, sondern an einen Anbieter mit kostenlosem Kontingent, zum Beispiel NVIDIA NIM, OpenRouter oder Groq. Der Proxy hört auf Port <code>8082</code> und bringt eine eigene Admin-Oberfläche mit, in der du Key, Modell und Fallback-Modelle einträgst.</p>
+<ol>
+  <li><strong>Installieren.</strong> Ein Installer für macOS, Linux und Windows. Wenn er fragt, welchen Agenten du willst, wähle Claude Code.</li>
+  <li><strong>Proxy starten.</strong> Mit <code>fcc-server</code>, danach öffnet sich die Admin-Oberfläche von selbst.</li>
+  <li><strong>Key eintragen.</strong> Einen kostenlosen Key holen, zum Beispiel bei <a href="https://build.nvidia.com/settings/api-keys" target="_blank" rel="noopener">build.nvidia.com</a>, in der Admin-Oberfläche einfügen, Modell auswählen, ein Fallback-Modell ergänzen, Apply drücken.</li>
+  <li><strong>Session starten.</strong> Mit <code>fcc-claude</code> statt <code>claude</code>.</li>
+</ol>
+<p><strong>Dein An- und Aus-Schalter:</strong> <code>fcc-claude</code> läuft über den Proxy, das normale <code>claude</code> läuft weiter direkt zu Anthropic. Beides funktioniert gleichzeitig in zwei Terminals. Trag <code>ANTHROPIC_BASE_URL</code> deshalb niemals in deine globalen Einstellungen ein.</p>
+<p><strong>Und einmal nachprüfen:</strong> frag die Session etwas Belangloses und schau danach ins Anfrage-Log des Proxys, welcher Anbieter und welches Modell wirklich geantwortet haben. Modelle innerhalb der Claude-Code-Umgebung behaupten gern, sie seien Claude. Das ist Kostüm, nicht Beleg.</p>`,
+              en: `<p>Free Claude Code, FCC for short, is a local proxy. Claude Code stays exactly the interface you know, but the requests no longer go to Anthropic. They go to a provider with a free tier instead, for example NVIDIA NIM, OpenRouter, or Groq. The proxy listens on port <code>8082</code> and ships its own admin UI where you enter the key, the model, and fallback models.</p>
+<ol>
+  <li><strong>Install.</strong> One installer for macOS, Linux, and Windows. When it asks which agent you want, pick Claude Code.</li>
+  <li><strong>Start the proxy.</strong> With <code>fcc-server</code>, after which the admin UI opens by itself.</li>
+  <li><strong>Add the key.</strong> Grab a free key, for example at <a href="https://build.nvidia.com/settings/api-keys" target="_blank" rel="noopener">build.nvidia.com</a>, paste it into the admin UI, pick a model, add one free fallback model, hit Apply.</li>
+  <li><strong>Start a session.</strong> With <code>fcc-claude</code> instead of <code>claude</code>.</li>
+</ol>
+<p><strong>Your on/off switch:</strong> <code>fcc-claude</code> goes through the proxy, plain <code>claude</code> still goes straight to Anthropic. Both work at the same time in two terminals. So never put <code>ANTHROPIC_BASE_URL</code> into your global settings.</p>
+<p><strong>And verify once:</strong> ask the session something trivial, then read the proxy request log to see which provider and model actually answered. Models inside the Claude Code harness like to claim they are Claude. That is costume, not proof.</p>`
+            }
+          }
+        ]
+      },
+
+      {
+        group: "free-claude-code",
+        heading: { de: "Free Claude Code installieren", en: "Install Free Claude Code" },
+        type: "prompts",
+        icon: "fa-terminal",
+        items: [
+          {
+            title: {
+              de: "macOS / Linux",
+              en: "macOS / Linux"
+            },
+            content: `curl -fsSL "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.sh" | sh`
+          },
+          {
+            title: {
+              de: "Windows PowerShell",
+              en: "Windows PowerShell"
+            },
+            content: `& ([scriptblock]::Create((irm "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.ps1")))`
+          },
+          {
+            title: {
+              de: "Danach: starten und routen",
+              en: "Then: start and route"
+            },
+            content: `# Proxy starten, Terminal offen lassen. Die Admin-Oberflaeche oeffnet sich selbst.
+fcc-server
+
+# In einem zweiten Terminal: geroutete Claude-Code-Session
+fcc-claude
+
+# Entspricht manuell:
+# ANTHROPIC_BASE_URL=http://localhost:8082 ANTHROPIC_AUTH_TOKEN=freecc claude
+
+# Normale Session, direkt zu Anthropic, laeuft parallel weiter:
+claude`
+          }
+        ]
+      },
+
+      {
+        group: "free-claude-code",
+        heading: { de: "Setup-Prompt: FCC von Anfang bis Ende einrichten", en: "Setup prompt: set up FCC end to end" },
+        type: "prompts",
+        items: [
+          {
+            title: {
+              de: "In eine bestehende Claude-Code-Session einfügen",
+              en: "Paste into an existing Claude Code session"
+            },
+            content: {
+              de: `Richte free-claude-code fuer mich ein, von Anfang bis Ende:
+
+1. Pruefe mein Betriebssystem. Der folgende Befehl gilt fuer macOS/Linux;
+   unter Windows nutze den PowerShell-Installer aus der offiziellen README.
+   Zeig mir den passenden Befehl und fuehr ihn nach meiner Bestaetigung aus.
+   Waehle Claude Code, wenn er danach fragt:
+   curl -fsSL "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.sh" | sh
+
+2. Starte den Proxy mit fcc-server und oeffne die Admin-Oberflaeche,
+   die er ausliefert (Port 8082).
+
+3. Halt an und sag mir, dass ich einen kostenlosen Provider-Key in die
+   Admin-Oberflaeche einfuegen soll, zum Beispiel von
+   build.nvidia.com/settings/api-keys. Ich waehle ein Modell, ergaenze ein
+   kostenloses Fallback-Modell und druecke Apply. Warte, bis ich fertig sage.
+
+4. Starte eine geroutete Session mit fcc-claude (entspricht:
+   ANTHROPIC_BASE_URL=http://localhost:8082 ANTHROPIC_AUTH_TOKEN=freecc claude).
+
+5. Pruef das Ergebnis mit einem Beleg, niemals mit dem Wort des Modells:
+   stell der gerouteten Session eine belanglose Frage, lies danach das
+   Anfrage-Log des Proxys und sag mir, welcher Provider und welches Modell
+   sie TATSAECHLICH beantwortet haben. Modelle innerhalb der
+   Claude-Code-Umgebung behaupten, sie seien Claude. Das ist Kostuem,
+   ignorier es.
+
+6. Sag mir meinen An- und Aus-Schalter: fcc-claude = ueber deinen gewaehlten Provider geroutet,
+   normales claude = echtes Anthropic. Beides laeuft gleichzeitig in
+   verschiedenen Terminals. Trag ANTHROPIC_BASE_URL niemals in die
+   globalen Einstellungen ein.`,
+              en: `Set up free-claude-code for me, end to end:
+
+1. Check my operating system. The command below is for macOS/Linux; on
+   Windows use the PowerShell installer from the official README. Show me
+   the matching command and run it after I confirm. Pick Claude Code:
+   curl -fsSL "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/main/scripts/install.sh" | sh
+
+2. Start the proxy with fcc-server and open the Admin UI it serves
+   (port 8082).
+
+3. Pause and tell me to paste a free provider key into the Admin UI,
+   e.g. from build.nvidia.com/settings/api-keys, pick a model, add one
+   free fallback model, hit Apply. Wait for me to say done.
+
+4. Launch a routed session with fcc-claude (equivalent to:
+   ANTHROPIC_BASE_URL=http://localhost:8082 ANTHROPIC_AUTH_TOKEN=freecc claude).
+
+5. Verify with a receipt, never the model's word: ask the routed session a
+   trivial question, then read the proxy's request log and report which
+   provider and model ACTUALLY served it. Models inside Claude's harness
+   will claim to be Claude, that is cosplay, ignore it.
+
+6. Tell me my on/off switch: fcc-claude = routed through your chosen provider, plain claude = real
+   Anthropic. Both work at the same time in different terminals. Never put
+   ANTHROPIC_BASE_URL in global settings.`
+            }
+          }
+        ]
+      },
+
+      {
+        group: "opencode",
+        heading: { de: "Was OpenCode kann", en: "What OpenCode does" },
+        type: "text",
+        icon: "fa-cube",
+        items: [
+          {
+            html: {
+              de: `<p>OpenCode ist ein quelloffener KI-Coding-Agent, den es in drei Varianten gibt: als Terminal-Oberfläche, als Desktop-App und als Erweiterung für VS Code, Cursor, Zed, Windsurf und VSCodium. Dazu kommen Anbindungen an GitHub und GitLab.</p>
+<p>Was ihn hier interessant macht: OpenCode ist an keinen Anbieter gebunden. Du hinterlegst den API-Key des Modells, das du nutzen willst, und arbeitest damit weiter. OpenCode Zen bietet eine vom Team getestete Auswahl mit kostenlosen und kostenpflichtigen Modellen. Wähle für diesen Weg ausdrücklich ein als kostenlos markiertes Modell und prüfe dessen Limits.</p>
+<p>Im Alltag am nützlichsten ist der Plan-Modus: mit der Tab-Taste schaltest du den Agenten so um, dass er zunächst plant; Dateiänderungen und Shell-Befehle benötigen in diesem Modus standardmäßig deine Freigabe. Du gibst Feedback, verfeinerst den Plan und lässt ihn erst danach schreiben. Bilder kannst du per Drag-and-drop direkt in den Prompt ziehen, zum Beispiel als Design-Vorlage. Die Desktop-App legt zusätzlich mehrere Sessions in Tabs nebeneinander, damit parallele Aufgaben nicht durcheinanderlaufen.</p>
+<p><strong>Download:</strong> <a href="https://opencode.ai/download" target="_blank" rel="noopener">opencode.ai/download</a> mit Paketen für macOS mit Apple Silicon und Intel, Windows und Linux als .deb oder .rpm.</p>`,
+              en: `<p>OpenCode is an open source AI coding agent available in three shapes: a terminal interface, a desktop app, and an extension for VS Code, Cursor, Zed, Windsurf, and VSCodium. There are also integrations for GitHub and GitLab.</p>
+<p>What makes it interesting here: OpenCode is not tied to a single vendor. You add the API key of whichever model you want and keep working. OpenCode Zen offers a curated selection of free and paid models. For this route, explicitly select a model marked as free and check its limits.</p>
+<p>The most useful thing day to day is plan mode: the Tab key switches the agent into a planning mode where file edits and shell commands require your approval by default. You give feedback, refine the plan, and only then let it write. Images can be dragged straight into the prompt, for example as a design reference. The desktop app additionally keeps several sessions side by side in tabs so parallel tasks stay separate.</p>
+<p><strong>Download:</strong> <a href="https://opencode.ai/download" target="_blank" rel="noopener">opencode.ai/download</a> with packages for macOS on Apple Silicon and Intel, Windows, and Linux as .deb or .rpm.</p>`
+            }
+          }
+        ]
+      },
+
+      {
+        group: "opencode",
+        heading: { de: "OpenCode installieren", en: "Install OpenCode" },
+        type: "prompts",
+        icon: "fa-terminal",
+        items: [
+          {
+            title: {
+              de: "Desktop-App im Browser laden",
+              en: "Get the desktop app in the browser"
+            },
+            content: `https://opencode.ai/download`
+          },
+          {
+            title: {
+              de: "Terminal-Version",
+              en: "Terminal version"
+            },
+            content: `# macOS / Linux
+curl -fsSL https://opencode.ai/install | bash
+
+# Mit npm, plattformunabhaengig
+npm install -g opencode-ai
+
+# Windows: Chocolatey oder Scoop
+choco install opencode
+scoop install opencode
+
+# Desktop-App per Homebrew
+brew install --cask opencode-desktop`
+          },
+          {
+            title: {
+              de: "Erste Schritte im Terminal",
+              en: "First steps in the terminal"
+            },
+            content: `# Starten
+opencode
+
+# Modell-Anbieter verbinden
+/connect
+
+# Plan-Modus an- und ausschalten: Tab-Taste
+# Einmalige Frage ohne Oberflaeche:
+opencode run "Erklaer mir diese Codebase in fuenf Saetzen"`
+          }
+        ]
+      },
+
+      {
+        heading: { de: "Links & Ressourcen", en: "Links & resources" },
+        type: "links",
+        items: [
+          {
+            label: "Ollama Download",
+            url: "https://ollama.com/download",
+            description: {
+              de: "Installer für Windows, macOS und Linux.",
+              en: "Installer for Windows, macOS, and Linux."
+            }
+          },
+          {
+            label: "Ollama Hardware-Übersicht",
+            url: "https://docs.ollama.com/gpu",
+            description: {
+              de: "Offizielle Liste aller unterstützten Nvidia-, AMD- und Intel-GPUs samt Treiber-Voraussetzungen.",
+              en: "Official list of every supported Nvidia, AMD, and Intel GPU including driver requirements."
+            }
+          },
+          {
+            label: "Ollama Modellbibliothek",
+            url: "https://ollama.com/search",
+            description: {
+              de: "Alle Modelle mit Dateigröße und Kontextfenster. Die Quelle für die Tabelle oben.",
+              en: "Every model with file size and context window. The source for the table above."
+            }
+          },
+          {
+            label: "Ollama Hermes Integration",
+            url: "https://docs.ollama.com/integrations/hermes",
+            description: {
+              de: "Offizielle Anleitung zu ollama launch hermes, inklusive empfohlener Modelle.",
+              en: "Official guide for ollama launch hermes, including recommended models."
+            }
+          },
+          {
+            label: "free-claude-code",
+            url: "https://github.com/Alishahryar1/free-claude-code",
+            description: {
+              de: "Das GitHub-Repository des Proxys. Enthält den Installer, die Provider-Liste und alle Client-Anleitungen.",
+              en: "The proxy's GitHub repository. Contains the installer, the provider list, and every client guide."
+            }
+          },
+          {
+            label: "NVIDIA NIM API-Keys",
+            url: "https://build.nvidia.com/settings/api-keys",
+            description: {
+              de: "Kostenloser Key für Free Claude Code. Free-Kontingente legt jeder Anbieter selbst fest und ändert sie auch mal.",
+              en: "Free key for Free Claude Code. Each provider sets its own free tier and does change it from time to time."
+            }
+          },
+          {
+            label: "OpenRouter Keys",
+            url: "https://openrouter.ai/keys",
+            description: {
+              de: "Alternative Key-Quelle für den Proxy, falls du nicht bei NVIDIA landen willst.",
+              en: "Alternative key source for the proxy if you would rather not go with NVIDIA."
+            }
+          },
+          {
+            label: "OpenCode Download",
+            url: "https://opencode.ai/download",
+            description: {
+              de: "Desktop-App, Terminal-Version, IDE-Erweiterungen und Integrationen an einer Stelle.",
+              en: "Desktop app, terminal version, IDE extensions, and integrations in one place."
+            }
+          },
+          {
+            label: "OpenCode Doku",
+            url: "https://opencode.ai/docs/",
+            description: {
+              de: "Einstieg, Provider-Konfiguration und Plan-Modus.",
+              en: "Getting started, provider configuration, and plan mode."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "CQGqd_9pm4k",
     title: {
       de: "Fable 5.1 ist besser und günstiger, als jemals zuvor",
