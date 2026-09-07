@@ -28,6 +28,166 @@
 
 const VIDEOS = [
   {
+    id: "gALQMcffwrw",
+    aliases: ["chatgpt-6-astra"],
+    title: {
+      de: "ChatGPT 6 Astra ist absolut verrückt",
+      en: "ChatGPT 6 Astra is absolutely wild"
+    },
+    publishedAt: "2026-09-07",
+    description: {
+      de: "Ein Praxis-Showcase zu GPT-6 Astra in ChatGPT und Codex: interaktive 3D-Welten, ein per Sprache beauftragter Planetensimulator, selbstständig arbeitende Agenten und ein Video-Workflow mit externen APIs. Dazu die wichtige Gegenperspektive: Kosten, Berechtigungen und die Sicherheitsrisiken, wenn ein Agent zu viel Zugriff auf Browser, Dateien oder den ganzen Rechner bekommt.",
+      en: "A hands-on showcase of GPT-6 Astra in ChatGPT and Codex: interactive 3D worlds, a voice-requested planet simulator, increasingly autonomous agents, and a video workflow using external APIs. It also covers the essential counterpoint: cost, permissions, and the safety risks of giving an agent broad access to your browser, files, or entire computer."
+    },
+    sections: [
+      {
+        heading: { de: "Was du im Video siehst", en: "What you see in the video" },
+        type: "text",
+        icon: "fa-wand-magic-sparkles",
+        items: [
+          {
+            html: {
+              de: `<p>Der Showcase startet mit interaktiven 3D-Projekten und führt dann durch einen vollständigen Agenten-Workflow: In ChatGPT/Codex wird Astra per Sprache beauftragt, ein drehbares Sonnensystem mit einzeln auswählbaren Planeten und einem KIFlowstate-Planeten zu bauen. Das Ergebnis läuft anschließend direkt im Browser.</p>
+<p>Außerdem zeigt das Video einen Video-Agenten, der ElevenLabs für Sprache und perspektivisch HeyGen für einen Avatar anbinden kann. Solche Automationen verbrauchen Tokens und können teuer werden. Gib Agenten deshalb nur die Berechtigungen, die sie für die konkrete Aufgabe wirklich brauchen, und prüfe Aktionen mit Browser-, Datei- oder Kontozugriff.</p>`,
+              en: `<p>The showcase begins with interactive 3D projects and then walks through a complete agent workflow: Astra is asked by voice in ChatGPT/Codex to build a rotatable solar system with individually selectable planets and a custom KIFlowstate planet. The result then runs directly in the browser.</p>
+<p>The video also shows a video agent that can connect ElevenLabs for speech and potentially HeyGen for an avatar. These automations consume tokens and can become expensive. Give agents only the permissions they need for the specific task, and review actions involving browser, file, or account access.</p>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "ChatGPT & GPT-6 Astra", en: "ChatGPT & GPT-6 Astra" },
+        type: "links",
+        icon: "fa-rocket",
+        items: [
+          {
+            label: { de: "ChatGPT herunterladen", en: "Download ChatGPT" },
+            url: "https://chatgpt.com/download/",
+            description: {
+              de: "Offizielle Download-Seite für die ChatGPT-Desktop- und Mobile-Apps.",
+              en: "Official download page for the ChatGPT desktop and mobile apps."
+            }
+          },
+          {
+            label: { de: "GPT-6-Astra-Modellübersicht", en: "GPT-6 Astra model overview" },
+            url: "https://developers.openai.com/api/docs/models/gpt-6-astra",
+            description: {
+              de: "Offizielle OpenAI-Dokumentation zu Fähigkeiten, Kontextfenster und API-Details.",
+              en: "Official OpenAI documentation covering capabilities, context window, and API details."
+            }
+          },
+          {
+            label: { de: "GPT-6 Astra richtig einsetzen", en: "Using GPT-6 Astra" },
+            url: "https://developers.openai.com/api/docs/guides/latest-model",
+            description: {
+              de: "Prompting-Empfehlungen, neue Funktionen und Hinweise für längere Agenten-Workflows.",
+              en: "Prompting recommendations, new capabilities, and guidance for longer agent workflows."
+            }
+          },
+          {
+            label: { de: "Computersteuerung mit ChatGPT", en: "Use your computer with ChatGPT" },
+            url: "https://learn.chatgpt.com/de-DE/use-cases/use-your-computer-with-codex",
+            description: {
+              de: "Offizieller Einstieg in Computer Use mit Hinweisen zu Freigaben und kontrollierten Aufgaben.",
+              en: "Official introduction to computer use, including permissions and bounded tasks."
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Die Warnung hinter ‚An Alien Mind‘", en: "The warning behind ‘An Alien Mind’" },
+        type: "text",
+        icon: "fa-shield-halved",
+        items: [
+          {
+            html: {
+              de: `<p><strong>Einordnung:</strong> „Alien“ meint hier keine außerirdische Technologie. OpenAI-Chefwissenschaftler Jakub Pachocki beschreibt eine maschinelle Intelligenz, deren Entstehung und Verhalten wir nicht vollständig verstehen. Er warnt, dass kein Labor Alignment und Monitoring bereits gut genug gelöst habe, um auf Dauer mit maximalem Tempo weiterzuskalieren, und fordert gemeinsame Sicherheitsstandards sowie internationale Koordination.</p>`,
+              en: `<p><strong>Context:</strong> “Alien” does not mean extraterrestrial technology here. OpenAI Chief Scientist Jakub Pachocki uses it to describe machine intelligence whose development and behavior we do not fully understand. He warns that no lab has solved alignment and monitoring well enough to keep scaling at maximum speed indefinitely, and calls for shared safety standards and international coordination.</p>`
+            }
+          }
+        ]
+      },
+      {
+        heading: { de: "Originalquellen zur Sicherheitsdebatte", en: "Primary sources on the safety debate" },
+        type: "sources",
+        icon: "fa-book-open",
+        items: [
+          {
+            ref: "S1",
+            title: "An Alien Mind",
+            publisher: "OpenAI · Jakub Pachocki",
+            published: { de: "6. September 2026", en: "September 6, 2026" },
+            usedFor: {
+              de: "Warnung vor unzureichendem Alignment, schwächer werdendem Monitoring und ungebremstem Wettrennen",
+              en: "Warning about unresolved alignment, weakening monitoring, and an unchecked race"
+            },
+            description: {
+              de: "Der Originalartikel des OpenAI-Chefwissenschaftlers über immer leistungsfähigere Systeme, rekursive Selbstverbesserung und die Notwendigkeit gemeinsamer Sicherheitsgrenzen.",
+              en: "The OpenAI Chief Scientist's original essay on increasingly capable systems, recursive self-improvement, and the need for shared safety thresholds."
+            },
+            access: { de: "Frei auf der OpenAI-Website lesbar.", en: "Free to read on OpenAI's website." },
+            url: "https://openai.com/index/an-alien-mind/"
+          },
+          {
+            ref: "S2",
+            title: { de: "Jakub Pachockis Originalpost auf X", en: "Jakub Pachocki's original post on X" },
+            publisher: "Jakub Pachocki (@merettm)",
+            published: { de: "6. September 2026", en: "September 6, 2026" },
+            usedFor: {
+              de: "Direkte Ankündigung des Artikels und seine Sorge um die nächsten Jahre",
+              en: "Direct announcement of the essay and his concern about the next few years"
+            },
+            description: {
+              de: "Pachocki schreibt, es gehe um den Zustand der KI und die Entscheidungen, die nötig seien, damit die Zukunft in menschlicher Hand bleibt.",
+              en: "Pachocki says the essay is about the state of AI and the choices needed to keep the future in humanity's hands."
+            },
+            access: { de: "Direkter X-Link.", en: "Direct X link." },
+            url: "https://x.com/merettm/status/2096630018495377464"
+          },
+          {
+            ref: "S3",
+            title: { de: "Sam Altman: „An important post from Jakub“", en: "Sam Altman: “An important post from Jakub”" },
+            publisher: "Sam Altman (@sama)",
+            published: { de: "6. September 2026", en: "September 6, 2026" },
+            usedFor: {
+              de: "Bestätigung, dass Sam Altman den Warnartikel öffentlich hervorgehoben hat",
+              en: "Confirmation that Sam Altman publicly highlighted the warning essay"
+            },
+            description: {
+              de: "Sam Altman teilte Pachockis Beitrag und bezeichnete ihn als wichtigen Post.",
+              en: "Sam Altman shared Pachocki's post and called it important."
+            },
+            access: { de: "Direkter X-Link.", en: "Direct X link." },
+            url: "https://x.com/sama/status/2096647371983880383"
+          }
+        ]
+      },
+      {
+        heading: { de: "Im Video erwähnte Schnittstellen", en: "APIs mentioned in the video" },
+        type: "links",
+        icon: "fa-plug",
+        items: [
+          {
+            label: "ElevenLabs API",
+            url: "https://elevenlabs.io/docs/api-reference/introduction",
+            description: {
+              de: "Dokumentation für Sprachgenerierung und Voice-Workflows wie beim gezeigten Video-Agenten.",
+              en: "Documentation for speech generation and voice workflows like the video agent shown."
+            }
+          },
+          {
+            label: "HeyGen API",
+            url: "https://developers.heygen.com/",
+            description: {
+              de: "Entwickler-Dokumentation für Avatar- und Videogenerierung.",
+              en: "Developer documentation for avatar and video generation."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "rcug4k3Nd5U",
     aliases: ["ki-agenten-kostenlos"],
     title: {
