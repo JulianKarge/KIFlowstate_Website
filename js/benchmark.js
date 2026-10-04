@@ -24,8 +24,8 @@
       <div class="kb-intro">
         <svg class="kb-wave" viewBox="0 0 800 180" preserveAspectRatio="none" aria-hidden="true"><path d="M-50 135C160 -40 330 240 570 55S860 40 900 120"/><path d="M-50 158C170 -18 340 265 600 78S870 65 900 145"/><path d="M-50 180C180 5 350 290 630 101S880 90 900 168"/></svg>
         <span class="kb-eyebrow">KIFlowstate · ${pick('Praxistest','Practical test')}</span>
-        <h4>${pick('Was zählt für Sie?','What matters to you?')}</h4>
-        <p>${pick('Qualität, Tempo oder Kosten: Entdecken Sie, wo jedes Modell seine Stärken hat.','Quality, speed or cost: explore where each model performs best.')}</p>
+        <h4>${pick('Was zählt für dich?','What matters to you?')}</h4>
+        <p>${pick('Qualität, Tempo oder Kosten: Entdecke, wo jedes Modell seine Stärken hat.','Quality, speed or cost: explore where each model performs best.')}</p>
         <div class="kb-highlights"></div>
       </div>
       <div class="kb-controls">
@@ -46,7 +46,7 @@
         <p class="kb-scatter-note"></p>
         <div class="kb-scatter"></div>
         <div class="kb-legend" role="group" aria-label="${pick('Modell hervorheben','Highlight a model')}">${models.map((m,i)=>`<button type="button" data-model="${i}" aria-pressed="false"><span class="kb-mark kb-model-${i}">${initials[i]}</span>${m}</button>`).join('')}</div>
-        <p class="kb-selection" role="status" aria-live="polite">${pick('Wählen Sie ein Modell, um seine Werte hervorzuheben.','Select a model to highlight its values.')}</p>
+        <p class="kb-selection" role="status" aria-live="polite">${pick('Wähle ein Modell, um es in diesem Diagramm hervorzuheben.','Select a model to highlight it in this chart.')}</p>
       </div>
       <div class="kb-table-heading"><div><span class="kb-eyebrow">${pick('Die Zahlen dahinter','Behind the charts')}</span><h4>${pick('Alle Ergebnisse im Detail','Every result in detail')}</h4></div><span class="kb-row-count"></span></div>
       <p class="kb-table-help">${pick('Für alle Spalten die Tabelle seitlich verschieben.','Swipe the table sideways to see all columns.')}</p>
@@ -94,10 +94,10 @@
     highlight(root, totals, state);
   }
   function highlight(root, totals, state) {
-    root.querySelectorAll('[data-highlight]').forEach(el=>el.classList.toggle('kb-dim',state.model!==null&&+el.dataset.highlight!==state.model));
+    root.querySelectorAll('.kb-scatter [data-highlight]').forEach(el=>el.classList.toggle('kb-dim',state.model!==null&&+el.dataset.highlight!==state.model));
     root.querySelectorAll('[data-model]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.model===state.model)));
     const d=totals[state.model];
-    root.querySelector('.kb-selection').textContent = d ? `${d.model} · ${number(d.score,1)}/10 · ${cost(d)} · ${time(d.seconds)} min` : pick('Wählen Sie ein Modell, um seine Werte hervorzuheben.','Select a model to highlight its values.');
+    root.querySelector('.kb-selection').textContent = d ? `${d.model} · ${number(d.score,1)}/10 · ${cost(d)} · ${time(d.seconds)} min` : pick('Wähle ein Modell, um es in diesem Diagramm hervorzuheben.','Select a model to highlight it in this chart.');
   }
   function animate(root) {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;

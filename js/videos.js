@@ -40,7 +40,7 @@ const VIDEOS = [
     "publishedAt": "2026-10-05",
     "thumbnailUrl": "images/claude-vs-codex-thumbnail.png",
     "description": {
-      "de": "Drei Coding-Aufgaben, vier Modelle: 3D-Shooter, Erde und Jetpack-Spiel. Hier finden Sie die Original-Prompts, zwölf Testergebnisse mit Laufzeit und API-Kostenschätzung sowie Quellen zum Vergleich von Claude Code und Codex.",
+      "de": "Drei Coding-Aufgaben, vier Modelle: 3D-Shooter, Erde und Jetpack-Spiel. Hier findest du die Original-Prompts, zwölf Testergebnisse mit Laufzeit und API-Kostenschätzung sowie Quellen zum Vergleich von Claude Code und Codex.",
       "en": "Three coding tasks, four models: a 3D shooter, Earth and a jetpack game. Find the original prompts, twelve results with runtimes and estimated API costs, plus sources for the Claude Code–Codex comparison."
     },
     "groups": [
@@ -115,7 +115,7 @@ const VIDEOS = [
       {
         "group": "ergebnisse",
         "heading": {
-          "de": "Vier Modelle. Drei Aufgaben. Ihr Vergleich.",
+          "de": "Vier Modelle. Drei Aufgaben. Dein Vergleich.",
           "en": "Four models. Three tasks. Your comparison."
         },
         "type": "benchmark",
@@ -272,7 +272,7 @@ const VIDEOS = [
         "items": [
           {
             "html": {
-              "de": "<p>Die folgenden Original-Prompts stammen aus den Testprojekten. Sie bleiben bewusst auf Englisch, damit beim Kopieren keine übersetzte Variante verwendet wird. Die drei Aufgaben: ein Battle-Royale-Spiel mit Bau-Mechanik, eine interaktive Erde und ein Jetpack-Spiel mit wechselnden Themenwelten.</p><p>Für einen eigenen Vergleich dokumentieren Sie Modell, Einstellungen, Laufzeit und eventuelle Fortsetzungen. Gleiche Aufgaben können bei einem neuen Durchlauf andere Ergebnisse liefern.</p>",
+              "de": "<p>Die folgenden Original-Prompts stammen aus den Testprojekten. Sie bleiben bewusst auf Englisch, damit beim Kopieren keine übersetzte Variante verwendet wird. Die drei Aufgaben: ein Battle-Royale-Spiel mit Bau-Mechanik, eine interaktive Erde und ein Jetpack-Spiel mit wechselnden Themenwelten.</p><p>Für deinen eigenen Vergleich dokumentiere Modell, Einstellungen, Laufzeit und eventuelle Fortsetzungen. Gleiche Aufgaben können bei einem neuen Durchlauf andere Ergebnisse liefern.</p>",
               "en": "<p>These original prompts come from the test projects. They remain in English so that copying preserves the original wording. The tasks cover a battle-royale game with building mechanics, an interactive Earth and a jetpack game with changing visual worlds.</p><p>For your own comparison, record the model, settings, runtime and any continuations. Repeating a task can produce different results.</p>"
             }
           }
