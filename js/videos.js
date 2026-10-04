@@ -28,6 +28,268 @@
 
 const VIDEOS = [
   {
+    "id": "8j_BGdhi5w0",
+    "aliases": [
+      "claude-vs-codex",
+      "sam-gegen-dario"
+    ],
+    "title": {
+      "de": "Claude Code vs. Codex: Welcher KI-Coding-Stack gewinnt 2026?",
+      "en": "Claude Code vs. Codex: which AI coding stack wins in 2026?"
+    },
+    "publishedAt": "2026-10-04",
+    "thumbnailUrl": "images/claude-vs-codex-thumbnail.png",
+    "description": {
+      "de": "Drei Coding-Aufgaben, vier Modelle: 3D-Shooter, Erde und Jetpack-Spiel. Hier finden Sie die Original-Prompts, zwölf Testergebnisse mit Laufzeit und API-Kostenschätzung sowie Quellen zum Vergleich von Claude Code und Codex.",
+      "en": "Three coding tasks, four models: a 3D shooter, Earth and a jetpack game. Find the original prompts, twelve results with runtimes and estimated API costs, plus sources for the Claude Code–Codex comparison."
+    },
+    "groups": [
+      {
+        "id": "prompts",
+        "shortTitle": {
+          "de": "Original-Prompts",
+          "en": "Original prompts"
+        },
+        "title": {
+          "de": "Die drei Test-Prompts",
+          "en": "The three test prompts"
+        },
+        "subtitle": {
+          "de": "Unverändert auf Englisch – direkt kopieren und selbst ausprobieren.",
+          "en": "Unchanged English originals – copy them and run your own tests."
+        },
+        "icon": "fa-wand-magic-sparkles",
+        "open": true
+      },
+      {
+        "id": "ergebnisse",
+        "shortTitle": {
+          "de": "Testergebnisse",
+          "en": "Test results"
+        },
+        "title": {
+          "de": "Qualität, Laufzeit & Kosten",
+          "en": "Quality, runtime & cost"
+        },
+        "subtitle": {
+          "de": "Zwölf Ergebnisse aus dem Video, einschließlich der ausgewiesenen Kostenspannen.",
+          "en": "Twelve results from the video, including the reported cost ranges."
+        },
+        "icon": "fa-chart-simple"
+      },
+      {
+        "id": "quellen",
+        "shortTitle": {
+          "de": "Quellen",
+          "en": "Sources"
+        },
+        "title": {
+          "de": "Preise, Tools & Unternehmensdebatte",
+          "en": "Pricing, tools & the company debate"
+        },
+        "subtitle": {
+          "de": "Offizielle Quellen zum Nachlesen und zur Einordnung.",
+          "en": "Official sources for reference and context."
+        },
+        "icon": "fa-book-open"
+      }
+    ],
+    "sections": [
+      {
+        "heading": {
+          "de": "Der Vergleich auf einen Blick",
+          "en": "The comparison at a glance"
+        },
+        "type": "text",
+        "items": [
+          {
+            "html": {
+              "de": "<p>Claude Code gegen Codex: Drei kreative Coding-Aufgaben zeigen, was Opus 5.5, Sonnet 5.5, Sol 6.1 und Astra praktisch liefern. Im Video werden die Ergebnisse auf einer Skala von 1 bis 10 bewertet und zusammen mit Laufzeit, Kosten und dem jeweiligen Ökosystem eingeordnet.</p><p>Das Fazit aus diesem Praxistest: Sol ist beim Preis-Leistungs-Verhältnis stark, die Claude-Modelle überzeugen häufig beim Ergebnis. Bei der Wahl zählen außerdem die Werkzeuge und Arbeitsabläufe, die zum eigenen Alltag passen.</p>",
+              "en": "<p>Claude Code versus Codex: three creative coding tasks show what Opus 5.5, Sonnet 5.5, Sol 6.1 and Astra deliver in practice. The video rates results from 1 to 10 and compares runtime, cost and each provider’s ecosystem.</p><p>The takeaway from this practical test: Sol offers strong value, while Claude models often deliver stronger results. The tools and workflows that fit your own work also matter.</p>"
+            }
+          }
+        ]
+      },
+      {
+        "group": "prompts",
+        "heading": {
+          "de": "Hinweise zum Nachbauen",
+          "en": "Reproducing the tests"
+        },
+        "type": "text",
+        "items": [
+          {
+            "html": {
+              "de": "<p>Die folgenden Original-Prompts stammen aus den Testprojekten. Sie bleiben bewusst auf Englisch, damit beim Kopieren keine übersetzte Variante verwendet wird. Die drei Aufgaben: ein Battle-Royale-Spiel mit Bau-Mechanik, eine interaktive Erde und ein Jetpack-Spiel mit wechselnden Themenwelten.</p><p>Für einen eigenen Vergleich dokumentieren Sie Modell, Einstellungen, Laufzeit und eventuelle Fortsetzungen. Gleiche Aufgaben können bei einem neuen Durchlauf andere Ergebnisse liefern.</p>",
+              "en": "<p>These original prompts come from the test projects. They remain in English so that copying preserves the original wording. The tasks cover a battle-royale game with building mechanics, an interactive Earth and a jetpack game with changing visual worlds.</p><p>For your own comparison, record the model, settings, runtime and any continuations. Repeating a task can produce different results.</p>"
+            }
+          }
+        ]
+      },
+      {
+        "group": "prompts",
+        "heading": {
+          "de": "Prompts zum Kopieren",
+          "en": "Copy the prompts"
+        },
+        "type": "prompts",
+        "items": [
+          {
+            "title": {
+              "de": "3D-Shooter mit Bau-Mechanik",
+              "en": "3D shooter with building mechanics"
+            },
+            "content": "Build a complete, playable third-person 3D battle-royale-style shooter as ONE self-contained HTML file. Three.js via CDN is allowed; no other external assets. All models, textures and sounds must be generated procedurally in code.\n\nRequirements:\n- Bright, cartoonish low-poly look. Original characters, names and logos only (no copyrighted IP).\n- Island map with at least 4 distinct zones, a shrinking storm circle, and a sky gradient.\n- Player: WASD move, mouse look, jump, sprint, crouch, shoot, reload. Third-person camera that does not clip through walls.\n- Building mechanic: place walls, floors and ramps on a grid. They block bullets and can be destroyed.\n- At least 3 weapon types that feel different (fire rate, spread, damage), ground pickups, ammo and health/shield HUD.\n- 10+ AI opponents that loot, move, shoot and avoid the storm. Kill feed, players-alive counter, minimap, win/lose screen with restart.\n- Hit markers, muzzle flash, particles, procedural Web Audio sound effects.\n- Target 60 fps on a mid-range laptop.\nMake all decisions yourself and do not ask questions. Output only the finished index.html plus 3 lines on how to play."
+          },
+          {
+            "title": {
+              "de": "Interaktive 3D-Erde mit Wettersimulation",
+              "en": "Interactive 3D Earth weather simulation"
+            },
+            "content": "Build an interactive 3D Earth weather simulator as ONE self-contained HTML file. Three.js via CDN is allowed; no external textures, so generate continents and oceans procedurally.\n\n- Draggable, zoomable, rotating globe with atmosphere glow, day/night terminator, starfield and an animated cloud layer.\n- Control panel with live sliders: global temperature, humidity, wind speed, wind direction, cloud cover, precipitation, CO2 level, axial tilt (season), time of day, sea level, simulation speed.\n- Visible, plausible response: clouds thicken and drift, cyclones form over warm oceans, rain or snow depends on local temperature, ice caps grow and shrink, coastlines flood with sea level, vegetation and deserts shift color.\n- Click any location for a tooltip with local temperature, wind, humidity and precipitation.\n- Presets: Ice Age, Hothouse Earth, Hurricane Season, Normal.\n- Legend, FPS counter, reset button. Keep 60 fps.\nPrefer physical plausibility over randomness. Make all decisions yourself and do not ask questions."
+          },
+          {
+            "title": {
+              "de": "Jetpack-Spiel mit sieben Themenwelten",
+              "en": "Jetpack game with seven themed worlds"
+            },
+            "content": "Create a 2D side-scrolling browser game as ONE self-contained HTML file (canvas, no external assets, everything drawn and animated in code).\n\nConcept: a jetpack character flies through a long sequence of scene panels. Each time he crosses the portal between two panels, the ENTIRE visual theme changes: art style, palette, background layers, obstacles, character outfit, particle effects, UI font and sound vibe.\n\nRules:\n- Choose at least 7 themes yourself. They must be strongly different in art style and each must be internally consistent. Do not reuse a theme. No copyrighted characters, brands or logos.\n- One overall tone (whimsical, adventurous) must tie them together so it feels like one game, not 7 demos.\n- Hold to thrust, release to fall, plus one special move. Fuel meter, collectibles and obstacles that fit each theme.\n- Each transition must be animated (morph, wipe, shatter, etc.) and different from the others. Show the theme name briefly.\n- Parallax backgrounds, particle trails, screen shake, score/distance HUD, game over and restart.\n- Procedural Web Audio music/SFX that changes per theme.\nMake all decisions yourself and do not ask questions."
+          }
+        ]
+      },
+      {
+        "group": "ergebnisse",
+        "heading": {
+          "de": "So sind die Zahlen zu lesen",
+          "en": "How to read the numbers"
+        },
+        "type": "text",
+        "items": [
+          {
+            "html": {
+              "de": "<p><strong>Quelle: die im Video gezeigte Testübersicht.</strong> Die Punkte sind Julians persönliche Bewertung der konkreten Durchläufe. Die USD-Beträge sind aus dem Tokenverbrauch abgeleitete API-Kostenschätzungen – keine zusätzlich bezahlten Abo-Rechnungen. Die im Video angegebenen Bandbreiten sind beibehalten.</p><p>Die Tokenzahlen werden so wiedergegeben, wie sie auf der Folie stehen. Ohne Aufteilung in Input, Output und Cache-Tokens lassen sich daraus keine neuen Kosten berechnen. Aktuelle Tarife finden Sie im Quellenbereich; sie können vom Testzeitpunkt abweichen.</p><div class=\"table-scroll\" role=\"region\" tabindex=\"0\" aria-label=\"Testergebnisse aus dem Video · Stand 4. Oktober 2026\"><table class=\"routing-table\"><caption>Testergebnisse aus dem Video · Stand 4. Oktober 2026</caption><thead><tr><th scope=\"col\">Modell</th><th scope=\"col\">Test</th><th scope=\"col\">Dauer</th><th scope=\"col\">Punkte</th><th scope=\"col\">API-Schätzung (USD)</th><th scope=\"col\">Tokens</th></tr></thead><tbody><tr><th scope=\"row\">Opus 5.5</th><td>3D-Shooter</td><td>37:59</td><td>9/10</td><td>8,50</td><td>9.532.691</td></tr><tr><th scope=\"row\">Opus 5.5</th><td>3D-Erde</td><td>33:04</td><td>7/10</td><td>8,97</td><td>8.299.917</td></tr><tr><th scope=\"row\">Opus 5.5</th><td>Jetpack</td><td>35:15</td><td>9/10</td><td>8,34</td><td>11.260.104</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>3D-Shooter</td><td>37:56</td><td>8/10</td><td>7,87–8,83</td><td>18.921.543</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>3D-Erde</td><td>32:54</td><td>7/10</td><td>6,56</td><td>13.307.307</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>Jetpack</td><td>37:57</td><td>8/10</td><td>6,81</td><td>17.109.591</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>3D-Shooter</td><td>24:23</td><td>6/10</td><td>0,80–0,87</td><td>1.760.328</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>3D-Erde</td><td>25:39</td><td>8/10</td><td>0,87–0,93</td><td>3.024.041</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>Jetpack</td><td>32:28</td><td>9/10</td><td>0,98–1,05</td><td>3.088.387</td></tr><tr><th scope=\"row\">Astra</th><td>3D-Shooter</td><td>23:34</td><td>7/10</td><td>3,80–3,98</td><td>1.568.278</td></tr><tr><th scope=\"row\">Astra</th><td>3D-Erde</td><td>17:17</td><td>6/10</td><td>3,03–3,16</td><td>1.493.757</td></tr><tr><th scope=\"row\">Astra</th><td>Jetpack</td><td>19:05</td><td>6/10</td><td>3,55–3,72</td><td>1.647.644</td></tr></tbody></table></div>",
+              "en": "<p><strong>Source: the results overview shown in the video.</strong> Scores are Julian’s personal assessments of these specific runs. USD amounts are API cost estimates based on token usage, not extra subscription charges. The ranges reported in the video are preserved.</p><p>Token totals are reproduced as shown on the slide. New costs cannot be calculated from these totals without separating input, output and cached tokens. Current pricing is linked under Sources and may differ from the test date.</p><div class=\"table-scroll\" role=\"region\" tabindex=\"0\" aria-label=\"Results shown in the video · 4 October 2026\"><table class=\"routing-table\"><caption>Results shown in the video · 4 October 2026</caption><thead><tr><th scope=\"col\">Model</th><th scope=\"col\">Test</th><th scope=\"col\">Duration</th><th scope=\"col\">Score</th><th scope=\"col\">API estimate (USD)</th><th scope=\"col\">Tokens</th></tr></thead><tbody><tr><th scope=\"row\">Opus 5.5</th><td>3D-Shooter</td><td>37:59</td><td>9/10</td><td>8.50</td><td>9,532,691</td></tr><tr><th scope=\"row\">Opus 5.5</th><td>3D Earth</td><td>33:04</td><td>7/10</td><td>8.97</td><td>8,299,917</td></tr><tr><th scope=\"row\">Opus 5.5</th><td>Jetpack</td><td>35:15</td><td>9/10</td><td>8.34</td><td>11,260,104</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>3D-Shooter</td><td>37:56</td><td>8/10</td><td>7.87–8.83</td><td>18,921,543</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>3D Earth</td><td>32:54</td><td>7/10</td><td>6.56</td><td>13,307,307</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>Jetpack</td><td>37:57</td><td>8/10</td><td>6.81</td><td>17,109,591</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>3D-Shooter</td><td>24:23</td><td>6/10</td><td>0.80–0.87</td><td>1,760,328</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>3D Earth</td><td>25:39</td><td>8/10</td><td>0.87–0.93</td><td>3,024,041</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>Jetpack</td><td>32:28</td><td>9/10</td><td>0.98–1.05</td><td>3,088,387</td></tr><tr><th scope=\"row\">Astra</th><td>3D-Shooter</td><td>23:34</td><td>7/10</td><td>3.80–3.98</td><td>1,568,278</td></tr><tr><th scope=\"row\">Astra</th><td>3D Earth</td><td>17:17</td><td>6/10</td><td>3.03–3.16</td><td>1,493,757</td></tr><tr><th scope=\"row\">Astra</th><td>Jetpack</td><td>19:05</td><td>6/10</td><td>3.55–3.72</td><td>1,647,644</td></tr></tbody></table></div>"
+            }
+          }
+        ]
+      },
+      {
+        "group": "ergebnisse",
+        "heading": {
+          "de": "Dateien zum Mitnehmen",
+          "en": "Download the data"
+        },
+        "type": "links",
+        "items": [
+          {
+            "label": {
+              "de": "Alle zwölf Testergebnisse als CSV",
+              "en": "All twelve results as CSV"
+            },
+            "url": "media/claude-vs-codex/testergebnisse.csv",
+            "description": {
+              "de": "Modell, Aufgabe, Laufzeit, Punkte, Kostenspanne und Tokenzahl.",
+              "en": "Model, task, runtime, score, cost range and token count."
+            }
+          },
+          {
+            "label": {
+              "de": "Alle drei Original-Prompts als TXT",
+              "en": "All three original prompts as TXT"
+            },
+            "url": "media/claude-vs-codex/original-prompts.txt",
+            "description": {
+              "de": "Die unveränderten englischen Prompts in einer Textdatei.",
+              "en": "The unchanged English prompts in one text file."
+            }
+          }
+        ]
+      },
+      {
+        "group": "quellen",
+        "heading": {
+          "de": "Offizielle Preisübersichten",
+          "en": "Official pricing"
+        },
+        "type": "links",
+        "items": [
+          {
+            "label": "Claude: Pro & Max",
+            "url": "https://claude.com/pricing",
+            "description": {
+              "de": "Abo-Stufen, enthaltene Funktionen und Nutzungshinweise.",
+              "en": "Subscription tiers, included features and usage notes."
+            }
+          },
+          {
+            "label": "ChatGPT: Plus & Pro",
+            "url": "https://chatgpt.com/pricing/",
+            "description": {
+              "de": "Aktuelle Abos und Leistungsumfang.",
+              "en": "Current subscriptions and included capabilities."
+            }
+          },
+          {
+            "label": "Claude: API-Preise",
+            "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+            "description": {
+              "de": "Preise für Input, Output und Prompt-Caching.",
+              "en": "Input, output and prompt-caching prices."
+            }
+          },
+          {
+            "label": "OpenAI: API-Preise",
+            "url": "https://developers.openai.com/api/docs/pricing",
+            "description": {
+              "de": "Modellabhängige Preise, Cache-Raten und weitere Kostenfaktoren.",
+              "en": "Model-specific prices, caching rates and other cost factors."
+            }
+          }
+        ]
+      },
+      {
+        "group": "quellen",
+        "heading": {
+          "de": "Die Debatte um militärische Nutzung",
+          "en": "The military-use debate"
+        },
+        "type": "sources",
+        "items": [
+          {
+            "ref": "Q1",
+            "title": "Anthropic: Statement from Dario Amodei on our discussions with the Department of War",
+            "publisher": "Anthropic",
+            "published": "26.02.2026",
+            "url": "https://www.anthropic.com/news/statement-department-of-war",
+            "usedFor": {
+              "de": "Anthropics erklärte Grenzen bei inländischer Massenüberwachung und vollautonomen Waffen.",
+              "en": "Anthropic’s stated limits on domestic mass surveillance and fully autonomous weapons."
+            },
+            "note": {
+              "de": "Primärquelle zur Position des Unternehmens, keine unabhängige Bewertung.",
+              "en": "A primary source for the company’s position, not an independent assessment."
+            }
+          },
+          {
+            "ref": "Q2",
+            "title": "OpenAI: Our agreement with the Department of War",
+            "publisher": "OpenAI",
+            "published": "28.02.2026 · Update 02.03.2026",
+            "url": "https://openai.com/index/our-agreement-with-the-department-of-war/",
+            "usedFor": {
+              "de": "OpenAIs Darstellung des Abkommens und seiner Schutzvorgaben.",
+              "en": "OpenAI’s account of the agreement and its safeguards."
+            },
+            "note": {
+              "de": "OpenAI nennt ebenfalls Grenzen bei Massenüberwachung und autonomen Waffen. Die ethische Gesamtbewertung im Video ist Julians persönliche Einschätzung.",
+              "en": "OpenAI also states limits on mass surveillance and autonomous weapons. The overall ethical judgement in the video is Julian’s personal assessment."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "KwY-WioBPvc",
     aliases: ["ki-video-setup"],
     title: {

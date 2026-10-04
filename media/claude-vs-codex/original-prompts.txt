@@ -1,0 +1,41 @@
+3D-Shooter mit Bau-Mechanik
+============================================================
+Build a complete, playable third-person 3D battle-royale-style shooter as ONE self-contained HTML file. Three.js via CDN is allowed; no other external assets. All models, textures and sounds must be generated procedurally in code.
+
+Requirements:
+- Bright, cartoonish low-poly look. Original characters, names and logos only (no copyrighted IP).
+- Island map with at least 4 distinct zones, a shrinking storm circle, and a sky gradient.
+- Player: WASD move, mouse look, jump, sprint, crouch, shoot, reload. Third-person camera that does not clip through walls.
+- Building mechanic: place walls, floors and ramps on a grid. They block bullets and can be destroyed.
+- At least 3 weapon types that feel different (fire rate, spread, damage), ground pickups, ammo and health/shield HUD.
+- 10+ AI opponents that loot, move, shoot and avoid the storm. Kill feed, players-alive counter, minimap, win/lose screen with restart.
+- Hit markers, muzzle flash, particles, procedural Web Audio sound effects.
+- Target 60 fps on a mid-range laptop.
+Make all decisions yourself and do not ask questions. Output only the finished index.html plus 3 lines on how to play.
+
+Interaktive 3D-Erde mit Wettersimulation
+============================================================
+Build an interactive 3D Earth weather simulator as ONE self-contained HTML file. Three.js via CDN is allowed; no external textures, so generate continents and oceans procedurally.
+
+- Draggable, zoomable, rotating globe with atmosphere glow, day/night terminator, starfield and an animated cloud layer.
+- Control panel with live sliders: global temperature, humidity, wind speed, wind direction, cloud cover, precipitation, CO2 level, axial tilt (season), time of day, sea level, simulation speed.
+- Visible, plausible response: clouds thicken and drift, cyclones form over warm oceans, rain or snow depends on local temperature, ice caps grow and shrink, coastlines flood with sea level, vegetation and deserts shift color.
+- Click any location for a tooltip with local temperature, wind, humidity and precipitation.
+- Presets: Ice Age, Hothouse Earth, Hurricane Season, Normal.
+- Legend, FPS counter, reset button. Keep 60 fps.
+Prefer physical plausibility over randomness. Make all decisions yourself and do not ask questions.
+
+Jetpack-Spiel mit sieben Themenwelten
+============================================================
+Create a 2D side-scrolling browser game as ONE self-contained HTML file (canvas, no external assets, everything drawn and animated in code).
+
+Concept: a jetpack character flies through a long sequence of scene panels. Each time he crosses the portal between two panels, the ENTIRE visual theme changes: art style, palette, background layers, obstacles, character outfit, particle effects, UI font and sound vibe.
+
+Rules:
+- Choose at least 7 themes yourself. They must be strongly different in art style and each must be internally consistent. Do not reuse a theme. No copyrighted characters, brands or logos.
+- One overall tone (whimsical, adventurous) must tie them together so it feels like one game, not 7 demos.
+- Hold to thrust, release to fall, plus one special move. Fuel meter, collectibles and obstacles that fit each theme.
+- Each transition must be animated (morph, wipe, shatter, etc.) and different from the others. Show the theme name briefly.
+- Parallax backgrounds, particle trails, screen shake, score/distance HUD, game over and restart.
+- Procedural Web Audio music/SFX that changes per theme.
+Make all decisions yourself and do not ask questions.
