@@ -28,6 +28,62 @@
 
 const VIDEOS = [
   {
+    id: "KwY-WioBPvc",
+    aliases: ["ki-video-setup"],
+    title: {
+      de: "ChatGPT hat dieses Video zu 100% erstellt",
+      en: "ChatGPT created 100% of this video"
+    },
+    publishedAt: "2026-10-04",
+    description: {
+      de: "Eine eigene Aufnahme, den Rest übernimmt KI: Schnitt, Animationen, Motion Graphics und MP4-Export. Der kurze Showcase zeigt den Workflow mit ChatGPT, HyperFrames und ElevenLabs. Stimme ab, ob du das vollständige Setup als Tutorial sehen möchtest.",
+      en: "An original recording, with AI handling the rest: editing, animations, motion graphics, and MP4 export. This short showcase presents a workflow with ChatGPT, HyperFrames, and ElevenLabs. Vote on whether you want a tutorial covering the full setup."
+    },
+    poll: {
+      id: "KwY-WioBPvc-full-setup",
+      question: {
+        de: "Willst du ein Video zum vollständigen Setup?",
+        en: "Would you like a video covering the full setup?"
+      },
+      description: {
+        de: "Von der Aufnahme zum fertigen Video: mit deinem Branddesign, deinen Inhalten und deinen bevorzugten Animationen. Deine Stimme hilft mir zu entscheiden, ob ich dazu ein ausführliches Tutorial mache.",
+        en: "From your recording to a finished video: with your branding, your content, and your preferred animations. Your vote helps me decide whether to make an in-depth tutorial."
+      }
+    },
+    sections: [
+      {
+        heading: { de: "Was du im Video siehst", en: "What you see in the video" },
+        type: "text",
+        icon: "fa-film",
+        items: [{ html: {
+          de: `<p>Ich nehme das Ausgangsvideo selbst auf und übergebe die MP4 an den KI-Agenten. Das eingerichtete System übernimmt die weitere Bearbeitung: Schnitt, passende Animationen, ergänzende Clips und den Export des fertigen Videos.</p><p>Im Showcase siehst du unter anderem eine Erklärung zum KI-Agenten-Harness, eine animierte Auflistung und drei Motion Graphics im KIFlowstate-Stil. Als Werkzeuge nenne ich ChatGPT, HyperFrames und ElevenLabs. Das vollständige Setup ist noch kein veröffentlichtes Tutorial – mit dem Voting oben kannst du dein Interesse daran zeigen.</p>`,
+          en: `<p>I record the original video myself and give the MP4 to the AI agent. The configured system handles the remaining production: editing, suitable animations, additional clips, and exporting the finished video.</p><p>The showcase includes an explanation of an AI agent harness, an animated list, and three motion graphics in the KIFlowstate style. The tools mentioned are ChatGPT, HyperFrames, and ElevenLabs. The full setup tutorial has not been published yet – use the vote above to show your interest.</p>`
+        }}]
+      },
+      {
+        heading: { de: "Tools & weiterführende Ressourcen", en: "Tools & related resources" },
+        type: "links",
+        items: [{
+          label: { de: "HyperFrames (GitHub)", en: "HyperFrames (GitHub)" },
+          url: "https://github.com/heygen-com/hyperframes",
+          description: { de: "Das Framework für Animationen und MP4-Rendering aus HTML, CSS und Medien.", en: "The framework for animations and MP4 rendering from HTML, CSS, and media." }
+        }, {
+          label: { de: "Motion Graphics mit ChatGPT: erstes Tutorial", en: "Motion graphics with ChatGPT: introductory tutorial" },
+          url: "resources.html#f2ZTBqFPG3c",
+          description: { de: "Mein bisheriges Video zu Motion Graphics mit HyperFrames und KI-Agenten.", en: "My earlier video about motion graphics with HyperFrames and AI agents." }
+        }, {
+          label: { de: "ChatGPT 6 Astra: Projekte & Agenten-Workflow", en: "ChatGPT 6 Astra: projects & agent workflow" },
+          url: "resources.html#gALQMcffwrw",
+          description: { de: "Der vorherige Showcase mit weiteren Beispielen und Ressourcen.", en: "The previous showcase with more examples and resources." }
+        }, {
+          label: { de: "ElevenLabs", en: "ElevenLabs" },
+          url: "https://elevenlabs.io/",
+          description: { de: "Das im Video erwähnte Werkzeug für die Arbeit mit Audio und Sprache.", en: "The audio and voice tool mentioned in the video." }
+        }]
+      }
+    ]
+  },
+  {
     id: "gALQMcffwrw",
     aliases: ["chatgpt-6-astra"],
     title: {

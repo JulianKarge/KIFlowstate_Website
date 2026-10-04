@@ -451,6 +451,24 @@
 
         ${desc ? `<p class="video-description">${escapeHtml(desc)}</p>` : ""}
 
+        ${video.poll ? `<section class="resource-poll" data-poll-id="${escapeHtml(video.poll.id)}" aria-labelledby="resource-poll-question">
+          <span class="resource-poll-kicker">${escapeHtml(pick({ de: "Deine Stimme zählt", en: "Have your say" }))}</span>
+          <h3 id="resource-poll-question">${escapeHtml(pick(video.poll.question))}</h3>
+          <p>${escapeHtml(pick(video.poll.description))}</p>
+          <div class="resource-poll-options" role="group" aria-labelledby="resource-poll-question">
+            <button type="button" data-poll-choice="yes" aria-pressed="false">
+              <i class="fas fa-thumbs-up" aria-hidden="true"></i>
+              <span><strong>${escapeHtml(pick({ de: "JA", en: "YES" }))}</strong>${escapeHtml(pick({ de: "Interessiert mich", en: "I'm interested" }))}</span>
+            </button>
+            <button type="button" data-poll-choice="no" aria-pressed="false">
+              <i class="fas fa-thumbs-down" aria-hidden="true"></i>
+              <span><strong>${escapeHtml(pick({ de: "NEIN", en: "NO" }))}</strong>${escapeHtml(pick({ de: "Kein Interesse am vollen Setup", en: "Not interested in the full setup" }))}</span>
+            </button>
+          </div>
+          <p class="resource-poll-status" role="status" aria-live="polite"></p>
+          <p class="resource-poll-note">${escapeHtml(pick({ de: "Ohne Anmeldung. Deine Stimme wird über GoatCounter gezählt; deine Auswahl wird in diesem Browser gespeichert, um erneutes Abstimmen zu vermeiden.", en: "No sign-up. Your vote is counted through GoatCounter; your choice is saved in this browser to prevent repeat voting." }))} <a href="datenschutz.html">${escapeHtml(pick({ de: "Datenschutz", en: "Privacy" }))}</a></p>
+        </section>` : ""}
+
         ${video.groups?.length ? `<nav class="resource-jump" aria-label="${escapeHtml(t("resources_routes", "Direkt zur Anleitung"))}">
           ${video.groups.map((g) => `<button type="button" data-open-route="${escapeHtml(g.id)}"><i class="fas ${escapeHtml(g.icon || "fa-book")}" aria-hidden="true"></i>${escapeHtml(pick(g.shortTitle || g.title))}<i class="fas fa-arrow-down" aria-hidden="true"></i></button>`).join("")}
         </nav>` : ""}
@@ -458,6 +476,7 @@
         ${sections}
       </article>
     `;
+    window.KIResourcePoll?.refresh();
   };
 
   /* ── interactions ────────────────────────────────────────── */

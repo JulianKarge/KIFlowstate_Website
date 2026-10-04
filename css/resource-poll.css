@@ -1,0 +1,52 @@
+.resource-poll {
+  margin: 1.8rem 0 2.5rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--primary);
+  border-radius: 18px;
+  background: var(--gray-100);
+  color: var(--gray-900);
+}
+.resource-poll-kicker {
+  display: block;
+  margin-bottom: .65rem;
+  color: var(--primary);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.resource-poll h3 { margin: 0 0 .8rem; font-size: clamp(1.3rem, 2.5vw, 1.7rem); line-height: 1.25; }
+.resource-poll p { line-height: 1.65; }
+.resource-poll-options { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: 1.4rem; }
+.resource-poll-options button {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  min-height: 88px;
+  padding: 1rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--gray-900);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.resource-poll-options button i { color: var(--primary); font-size: 1.2rem; }
+.resource-poll-options button span { line-height: 1.4; }
+.resource-poll-options button strong { display: block; margin-bottom: .25rem; font-size: 1.15rem; }
+.resource-poll-options button:hover:enabled,
+.resource-poll-options button[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.resource-poll-options button:focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
+.resource-poll-options button:disabled { cursor: default; }
+.resource-poll-options button:disabled[aria-pressed="false"] { opacity: .6; }
+.resource-poll-status { margin: .85rem 0 0; font-weight: 600; }
+.resource-poll-status:empty { display: none; }
+.resource-poll-status.is-error { color: var(--gray-900); }
+.resource-poll-note { margin: 1rem 0 0; color: var(--gray-500); font-size: .8rem; }
+.resource-poll-note a { color: inherit; text-decoration: underline; }
+[data-theme="dark"] .resource-poll-options button { background: #121b32; }
+@media (max-width: 560px) {
+  .resource-poll-options { grid-template-columns: 1fr; }
+  .resource-poll-options button { min-height: 76px; }
+}
