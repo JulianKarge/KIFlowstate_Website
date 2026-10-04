@@ -1,0 +1,12 @@
+/* Generated from canonical brand/design-tokens.json for this component. */
+.kif-benchmark {
+  --kb-blue: #3369F2;
+  --kb-deep: #254EBF;
+  --kb-white: #FFFFFF;
+  --kb-surface: #F4F7FF;
+  --kb-ink: #0E1A33;
+  --kb-muted: #5A6478;
+  --kb-border: #D9E1F2;
+  --kb-font: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kb-ease: cubic-bezier(0.2, 0, 0, 1);
+}

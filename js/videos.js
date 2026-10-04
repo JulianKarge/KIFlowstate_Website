@@ -37,13 +37,30 @@ const VIDEOS = [
       "de": "Claude Code vs. Codex: Welcher KI-Coding-Stack gewinnt 2026?",
       "en": "Claude Code vs. Codex: which AI coding stack wins in 2026?"
     },
-    "publishedAt": "2026-10-04",
+    "publishedAt": "2026-10-05",
     "thumbnailUrl": "images/claude-vs-codex-thumbnail.png",
     "description": {
       "de": "Drei Coding-Aufgaben, vier Modelle: 3D-Shooter, Erde und Jetpack-Spiel. Hier finden Sie die Original-Prompts, zwölf Testergebnisse mit Laufzeit und API-Kostenschätzung sowie Quellen zum Vergleich von Claude Code und Codex.",
       "en": "Three coding tasks, four models: a 3D shooter, Earth and a jetpack game. Find the original prompts, twelve results with runtimes and estimated API costs, plus sources for the Claude Code–Codex comparison."
     },
     "groups": [
+      {
+        "id": "ergebnisse",
+        "shortTitle": {
+          "de": "Testergebnisse",
+          "en": "Test results"
+        },
+        "title": {
+          "de": "Qualität, Laufzeit & Kosten",
+          "en": "Quality, runtime & cost"
+        },
+        "subtitle": {
+          "de": "Zwölf Ergebnisse aus dem Video, einschließlich der ausgewiesenen Kostenspannen.",
+          "en": "Twelve results from the video, including the reported cost ranges."
+        },
+        "icon": "fa-chart-simple",
+        "open": true
+      },
       {
         "id": "prompts",
         "shortTitle": {
@@ -59,23 +76,7 @@ const VIDEOS = [
           "en": "Unchanged English originals – copy them and run your own tests."
         },
         "icon": "fa-wand-magic-sparkles",
-        "open": true
-      },
-      {
-        "id": "ergebnisse",
-        "shortTitle": {
-          "de": "Testergebnisse",
-          "en": "Test results"
-        },
-        "title": {
-          "de": "Qualität, Laufzeit & Kosten",
-          "en": "Quality, runtime & cost"
-        },
-        "subtitle": {
-          "de": "Zwölf Ergebnisse aus dem Video, einschließlich der ausgewiesenen Kostenspannen.",
-          "en": "Twelve results from the video, including the reported cost ranges."
-        },
-        "icon": "fa-chart-simple"
+        "open": false
       },
       {
         "id": "quellen",
@@ -91,7 +92,8 @@ const VIDEOS = [
           "de": "Offizielle Quellen zum Nachlesen und zur Einordnung.",
           "en": "Official sources for reference and context."
         },
-        "icon": "fa-book-open"
+        "icon": "fa-book-open",
+        "open": false
       }
     ],
     "sections": [
@@ -106,6 +108,156 @@ const VIDEOS = [
             "html": {
               "de": "<p>Claude Code gegen Codex: Drei kreative Coding-Aufgaben zeigen, was Opus 5.5, Sonnet 5.5, Sol 6.1 und Astra praktisch liefern. Im Video werden die Ergebnisse auf einer Skala von 1 bis 10 bewertet und zusammen mit Laufzeit, Kosten und dem jeweiligen Ökosystem eingeordnet.</p><p>Das Fazit aus diesem Praxistest: Sol ist beim Preis-Leistungs-Verhältnis stark, die Claude-Modelle überzeugen häufig beim Ergebnis. Bei der Wahl zählen außerdem die Werkzeuge und Arbeitsabläufe, die zum eigenen Alltag passen.</p>",
               "en": "<p>Claude Code versus Codex: three creative coding tasks show what Opus 5.5, Sonnet 5.5, Sol 6.1 and Astra deliver in practice. The video rates results from 1 to 10 and compares runtime, cost and each provider’s ecosystem.</p><p>The takeaway from this practical test: Sol offers strong value, while Claude models often deliver stronger results. The tools and workflows that fit your own work also matter.</p>"
+            }
+          }
+        ]
+      },
+      {
+        "group": "ergebnisse",
+        "heading": {
+          "de": "Vier Modelle. Drei Aufgaben. Ihr Vergleich.",
+          "en": "Four models. Three tasks. Your comparison."
+        },
+        "type": "benchmark",
+        "items": [
+          {
+            "model": "Opus 5.5",
+            "task": "3D-Shooter",
+            "seconds": 2279,
+            "score": 9,
+            "low": 8.5,
+            "high": 8.5,
+            "tokens": 9532691
+          },
+          {
+            "model": "Opus 5.5",
+            "task": "3D-Erde",
+            "seconds": 1984,
+            "score": 7,
+            "low": 8.97,
+            "high": 8.97,
+            "tokens": 8299917
+          },
+          {
+            "model": "Opus 5.5",
+            "task": "Jetpack",
+            "seconds": 2115,
+            "score": 9,
+            "low": 8.34,
+            "high": 8.34,
+            "tokens": 11260104
+          },
+          {
+            "model": "Sonnet 5.5",
+            "task": "3D-Shooter",
+            "seconds": 2276,
+            "score": 8,
+            "low": 7.87,
+            "high": 8.83,
+            "tokens": 18921543
+          },
+          {
+            "model": "Sonnet 5.5",
+            "task": "3D-Erde",
+            "seconds": 1974,
+            "score": 7,
+            "low": 6.56,
+            "high": 6.56,
+            "tokens": 13307307
+          },
+          {
+            "model": "Sonnet 5.5",
+            "task": "Jetpack",
+            "seconds": 2277,
+            "score": 8,
+            "low": 6.81,
+            "high": 6.81,
+            "tokens": 17109591
+          },
+          {
+            "model": "Sol 6.1",
+            "task": "3D-Shooter",
+            "seconds": 1463,
+            "score": 6,
+            "low": 0.8,
+            "high": 0.87,
+            "tokens": 1760328
+          },
+          {
+            "model": "Sol 6.1",
+            "task": "3D-Erde",
+            "seconds": 1539,
+            "score": 8,
+            "low": 0.87,
+            "high": 0.93,
+            "tokens": 3024041
+          },
+          {
+            "model": "Sol 6.1",
+            "task": "Jetpack",
+            "seconds": 1948,
+            "score": 9,
+            "low": 0.98,
+            "high": 1.05,
+            "tokens": 3088387
+          },
+          {
+            "model": "Astra",
+            "task": "3D-Shooter",
+            "seconds": 1414,
+            "score": 7,
+            "low": 3.8,
+            "high": 3.98,
+            "tokens": 1568278
+          },
+          {
+            "model": "Astra",
+            "task": "3D-Erde",
+            "seconds": 1037,
+            "score": 6,
+            "low": 3.03,
+            "high": 3.16,
+            "tokens": 1493757
+          },
+          {
+            "model": "Astra",
+            "task": "Jetpack",
+            "seconds": 1145,
+            "score": 6,
+            "low": 3.55,
+            "high": 3.72,
+            "tokens": 1647644
+          }
+        ]
+      },
+      {
+        "group": "ergebnisse",
+        "heading": {
+          "de": "Dateien zum Mitnehmen",
+          "en": "Download the data"
+        },
+        "type": "links",
+        "items": [
+          {
+            "label": {
+              "de": "Alle zwölf Testergebnisse als CSV",
+              "en": "All twelve results as CSV"
+            },
+            "url": "media/claude-vs-codex/testergebnisse.csv",
+            "description": {
+              "de": "Modell, Aufgabe, Laufzeit, Punkte, Kostenspanne und Tokenzahl.",
+              "en": "Model, task, runtime, score, cost range and token count."
+            }
+          },
+          {
+            "label": {
+              "de": "Alle drei Original-Prompts als TXT",
+              "en": "All three original prompts as TXT"
+            },
+            "url": "media/claude-vs-codex/original-prompts.txt",
+            "description": {
+              "de": "Die unveränderten englischen Prompts in einer Textdatei.",
+              "en": "The unchanged English prompts in one text file."
             }
           }
         ]
@@ -154,54 +306,6 @@ const VIDEOS = [
               "en": "Jetpack game with seven themed worlds"
             },
             "content": "Create a 2D side-scrolling browser game as ONE self-contained HTML file (canvas, no external assets, everything drawn and animated in code).\n\nConcept: a jetpack character flies through a long sequence of scene panels. Each time he crosses the portal between two panels, the ENTIRE visual theme changes: art style, palette, background layers, obstacles, character outfit, particle effects, UI font and sound vibe.\n\nRules:\n- Choose at least 7 themes yourself. They must be strongly different in art style and each must be internally consistent. Do not reuse a theme. No copyrighted characters, brands or logos.\n- One overall tone (whimsical, adventurous) must tie them together so it feels like one game, not 7 demos.\n- Hold to thrust, release to fall, plus one special move. Fuel meter, collectibles and obstacles that fit each theme.\n- Each transition must be animated (morph, wipe, shatter, etc.) and different from the others. Show the theme name briefly.\n- Parallax backgrounds, particle trails, screen shake, score/distance HUD, game over and restart.\n- Procedural Web Audio music/SFX that changes per theme.\nMake all decisions yourself and do not ask questions."
-          }
-        ]
-      },
-      {
-        "group": "ergebnisse",
-        "heading": {
-          "de": "So sind die Zahlen zu lesen",
-          "en": "How to read the numbers"
-        },
-        "type": "text",
-        "items": [
-          {
-            "html": {
-              "de": "<p><strong>Quelle: die im Video gezeigte Testübersicht.</strong> Die Punkte sind Julians persönliche Bewertung der konkreten Durchläufe. Die USD-Beträge sind aus dem Tokenverbrauch abgeleitete API-Kostenschätzungen – keine zusätzlich bezahlten Abo-Rechnungen. Die im Video angegebenen Bandbreiten sind beibehalten.</p><p>Die Tokenzahlen werden so wiedergegeben, wie sie auf der Folie stehen. Ohne Aufteilung in Input, Output und Cache-Tokens lassen sich daraus keine neuen Kosten berechnen. Aktuelle Tarife finden Sie im Quellenbereich; sie können vom Testzeitpunkt abweichen.</p><div class=\"table-scroll\" role=\"region\" tabindex=\"0\" aria-label=\"Testergebnisse aus dem Video · Stand 4. Oktober 2026\"><table class=\"routing-table\"><caption>Testergebnisse aus dem Video · Stand 4. Oktober 2026</caption><thead><tr><th scope=\"col\">Modell</th><th scope=\"col\">Test</th><th scope=\"col\">Dauer</th><th scope=\"col\">Punkte</th><th scope=\"col\">API-Schätzung (USD)</th><th scope=\"col\">Tokens</th></tr></thead><tbody><tr><th scope=\"row\">Opus 5.5</th><td>3D-Shooter</td><td>37:59</td><td>9/10</td><td>8,50</td><td>9.532.691</td></tr><tr><th scope=\"row\">Opus 5.5</th><td>3D-Erde</td><td>33:04</td><td>7/10</td><td>8,97</td><td>8.299.917</td></tr><tr><th scope=\"row\">Opus 5.5</th><td>Jetpack</td><td>35:15</td><td>9/10</td><td>8,34</td><td>11.260.104</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>3D-Shooter</td><td>37:56</td><td>8/10</td><td>7,87–8,83</td><td>18.921.543</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>3D-Erde</td><td>32:54</td><td>7/10</td><td>6,56</td><td>13.307.307</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>Jetpack</td><td>37:57</td><td>8/10</td><td>6,81</td><td>17.109.591</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>3D-Shooter</td><td>24:23</td><td>6/10</td><td>0,80–0,87</td><td>1.760.328</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>3D-Erde</td><td>25:39</td><td>8/10</td><td>0,87–0,93</td><td>3.024.041</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>Jetpack</td><td>32:28</td><td>9/10</td><td>0,98–1,05</td><td>3.088.387</td></tr><tr><th scope=\"row\">Astra</th><td>3D-Shooter</td><td>23:34</td><td>7/10</td><td>3,80–3,98</td><td>1.568.278</td></tr><tr><th scope=\"row\">Astra</th><td>3D-Erde</td><td>17:17</td><td>6/10</td><td>3,03–3,16</td><td>1.493.757</td></tr><tr><th scope=\"row\">Astra</th><td>Jetpack</td><td>19:05</td><td>6/10</td><td>3,55–3,72</td><td>1.647.644</td></tr></tbody></table></div>",
-              "en": "<p><strong>Source: the results overview shown in the video.</strong> Scores are Julian’s personal assessments of these specific runs. USD amounts are API cost estimates based on token usage, not extra subscription charges. The ranges reported in the video are preserved.</p><p>Token totals are reproduced as shown on the slide. New costs cannot be calculated from these totals without separating input, output and cached tokens. Current pricing is linked under Sources and may differ from the test date.</p><div class=\"table-scroll\" role=\"region\" tabindex=\"0\" aria-label=\"Results shown in the video · 4 October 2026\"><table class=\"routing-table\"><caption>Results shown in the video · 4 October 2026</caption><thead><tr><th scope=\"col\">Model</th><th scope=\"col\">Test</th><th scope=\"col\">Duration</th><th scope=\"col\">Score</th><th scope=\"col\">API estimate (USD)</th><th scope=\"col\">Tokens</th></tr></thead><tbody><tr><th scope=\"row\">Opus 5.5</th><td>3D-Shooter</td><td>37:59</td><td>9/10</td><td>8.50</td><td>9,532,691</td></tr><tr><th scope=\"row\">Opus 5.5</th><td>3D Earth</td><td>33:04</td><td>7/10</td><td>8.97</td><td>8,299,917</td></tr><tr><th scope=\"row\">Opus 5.5</th><td>Jetpack</td><td>35:15</td><td>9/10</td><td>8.34</td><td>11,260,104</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>3D-Shooter</td><td>37:56</td><td>8/10</td><td>7.87–8.83</td><td>18,921,543</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>3D Earth</td><td>32:54</td><td>7/10</td><td>6.56</td><td>13,307,307</td></tr><tr><th scope=\"row\">Sonnet 5.5</th><td>Jetpack</td><td>37:57</td><td>8/10</td><td>6.81</td><td>17,109,591</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>3D-Shooter</td><td>24:23</td><td>6/10</td><td>0.80–0.87</td><td>1,760,328</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>3D Earth</td><td>25:39</td><td>8/10</td><td>0.87–0.93</td><td>3,024,041</td></tr><tr><th scope=\"row\">Sol 6.1</th><td>Jetpack</td><td>32:28</td><td>9/10</td><td>0.98–1.05</td><td>3,088,387</td></tr><tr><th scope=\"row\">Astra</th><td>3D-Shooter</td><td>23:34</td><td>7/10</td><td>3.80–3.98</td><td>1,568,278</td></tr><tr><th scope=\"row\">Astra</th><td>3D Earth</td><td>17:17</td><td>6/10</td><td>3.03–3.16</td><td>1,493,757</td></tr><tr><th scope=\"row\">Astra</th><td>Jetpack</td><td>19:05</td><td>6/10</td><td>3.55–3.72</td><td>1,647,644</td></tr></tbody></table></div>"
-            }
-          }
-        ]
-      },
-      {
-        "group": "ergebnisse",
-        "heading": {
-          "de": "Dateien zum Mitnehmen",
-          "en": "Download the data"
-        },
-        "type": "links",
-        "items": [
-          {
-            "label": {
-              "de": "Alle zwölf Testergebnisse als CSV",
-              "en": "All twelve results as CSV"
-            },
-            "url": "media/claude-vs-codex/testergebnisse.csv",
-            "description": {
-              "de": "Modell, Aufgabe, Laufzeit, Punkte, Kostenspanne und Tokenzahl.",
-              "en": "Model, task, runtime, score, cost range and token count."
-            }
-          },
-          {
-            "label": {
-              "de": "Alle drei Original-Prompts als TXT",
-              "en": "All three original prompts as TXT"
-            },
-            "url": "media/claude-vs-codex/original-prompts.txt",
-            "description": {
-              "de": "Die unveränderten englischen Prompts in einer Textdatei.",
-              "en": "The unchanged English prompts in one text file."
-            }
           }
         ]
       },

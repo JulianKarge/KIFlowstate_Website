@@ -182,7 +182,10 @@
     let inner = "";
     let icon = "fa-bookmark";
 
-    if (section.type === "prompts") {
+    if (section.type === "benchmark" && window.KIBenchmark) {
+      inner = window.KIBenchmark.render(section.items);
+      icon = "fa-chart-simple";
+    } else if (section.type === "prompts") {
       icon = "fa-wand-magic-sparkles";
       inner = items.map((p, i) => {
         const promptId = `prompt-${sectionIndex}-${i}`;
@@ -477,6 +480,7 @@
       </article>
     `;
     window.KIResourcePoll?.refresh();
+    window.KIBenchmark?.refresh();
   };
 
   /* ── interactions ────────────────────────────────────────── */
