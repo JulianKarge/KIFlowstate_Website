@@ -43,6 +43,8 @@
     if (!videos.de || !videos.en) return;
 
     const section = root.closest(".invoice-showcase-section") || document;
+    document.body.classList.add("has-video-showcase");
+    if (section !== document) section.classList.add("is-video-showcase-section");
     const toggle = section.querySelector("[data-showcase-toggle]");
     const label = toggle && toggle.querySelector("[data-showcase-control-label]");
     const icon = toggle && toggle.querySelector(".invoice-showcase-toggle-icon i");
@@ -71,6 +73,10 @@
     let announcedSecond = -1;
     let announcedPhase = "";
     let lastProgressStep = -1;
+    let videoFrame = null;
+    let frameVideo = null;
+    let playPending = null;
+    let frameTimer = null;
 
     const currentLayout = () => {
       if (window.innerWidth > 1180) return "desktop";
@@ -121,19 +127,64 @@
     const seekAll = seconds => {
       fallbackTime = Math.max(0, Math.min(durationSeconds - 0.025, seconds));
       previousMediaTime = fallbackTime;
-      setVideoTime(videos.de, fallbackTime);
-      setVideoTime(videos.en, fallbackTime);
+      // Seeking a hidden, previously loaded translation can wake its decoder
+      // and download more media. Synchronize it only when it becomes active.
+      setVideoTime(activeVideo, fallbackTime);
+    };
+
+    const stopVideoFrames = () => {
+      if (videoFrame !== null && frameVideo) {
+        frameVideo.cancelVideoFrameCallback(videoFrame);
+      }
+      videoFrame = null;
+      frameVideo = null;
+      if (frameTimer !== null) window.clearTimeout(frameTimer);
+      frameTimer = null;
+    };
+
+    const startVideoFrames = () => {
+      if (videoFrame !== null || frameTimer !== null || !activeVideo.requestVideoFrameCallback || isPaused()) return;
+      frameVideo = activeVideo;
+      videoFrame = activeVideo.requestVideoFrameCallback(() => {
+        videoFrame = null;
+        // Native range inputs recalculate layout when their value changes.
+        // Six updates/second track the short film accurately while leaving
+        // its 60 fps decoder/compositor free to present the actual animation.
+        updateTimelineHooks();
+        updateTimelineUi(false);
+        frameTimer = window.setTimeout(() => {
+          frameTimer = null;
+          startVideoFrames();
+        }, 1000 / 6);
+      });
     };
 
     const pauseAll = () => {
+      stopVideoFrames();
       videos.de.pause();
       videos.en.pause();
     };
 
     const playActive = () => {
-      const playback = activeVideo.play();
+      if (playPending === activeVideo) return;
+      if (!activeVideo.paused) {
+        startVideoFrames();
+        return;
+      }
+      const video = activeVideo;
+      playPending = video;
+      const playback = video.play();
       if (playback && typeof playback.catch === "function") {
-        playback.catch(() => {});
+        playback.catch(error => {
+          if (video === activeVideo && !isPaused() && error.name === "NotAllowedError") {
+            userPaused = true;
+            syncState();
+          }
+        }).finally(() => {
+          if (playPending === video) playPending = null;
+        });
+      } else {
+        playPending = null;
       }
     };
 
@@ -255,6 +306,7 @@
       }
 
       const paused = isPaused();
+      document.body.classList.toggle("is-showcase-playing", !paused);
       root.dataset.showcasePaused = String(paused);
       root.dataset.showcasePauseReasons = pauseReasons.length ? pauseReasons.join(",") : "none";
       root.dataset.showcaseMotion = reducedMotion ? "reduced" : "full";
@@ -291,6 +343,7 @@
 
       video.dataset.showcaseLayout = layout;
       video.dataset.pendingShowcaseTime = String(preserveTime);
+      video.poster = source.replace(/\.mp4(?:\?.*)?$/, ".jpg?v=performance-20261013");
       video.setAttribute("src", source);
       video.load();
     };
@@ -301,7 +354,7 @@
       pauseAll();
 
       Object.values(videos).forEach(video => {
-        video.preload = video === activeVideo ? "auto" : "none";
+        video.preload = video === activeVideo ? (offscreenPaused ? "metadata" : "auto") : "none";
       });
       configureVideoSource(activeVideo, layout, preserveTime);
 
@@ -319,6 +372,7 @@
 
       const outgoing = activeVideo;
       const time = currentTime();
+      stopVideoFrames();
       outgoing.pause();
       outgoing.preload = "none";
       outgoing.classList.remove("is-active");
@@ -349,6 +403,7 @@
     const markActiveVideoReady = video => {
       if (video !== activeVideo || video.readyState < 2) return;
       root.dataset.showcaseVideoReady = "true";
+      delete root.dataset.showcaseVideoError;
     };
 
     Object.entries(videos).forEach(([language, video]) => {
@@ -365,6 +420,7 @@
       ["canplay", "seeked", "playing"].forEach(eventName => {
         video.addEventListener(eventName, () => {
           markActiveVideoReady(video);
+          if (eventName === "playing" && video === activeVideo) startVideoFrames();
         });
       });
       video.addEventListener("timeupdate", () => {
@@ -373,11 +429,17 @@
         if (video.currentTime + 0.5 < previousMediaTime) cycle += 1;
         previousMediaTime = video.currentTime;
         updateTimelineHooks();
-        updateTimelineUi(false);
+        // Older browsers use timeupdate; newer ones sync the timeline to the
+        // presented video frames instead of jumping four times per second.
+        if (!video.requestVideoFrameCallback || video.paused) updateTimelineUi(false);
       });
       video.addEventListener("error", () => {
         if (video !== activeVideo) return;
-        root.dataset.showcaseVideoReady = "false";
+        stopVideoFrames();
+        userPaused = true;
+        syncState();
+        // Keep the workflow poster visible if media decoding/network fails.
+        root.dataset.showcaseVideoReady = "true";
         root.dataset.showcaseVideoError = language;
       });
     });
@@ -388,6 +450,10 @@
         userPaused = !userPaused;
         hasStarted = true;
         fallbackTime = currentTime();
+        if (!userPaused && activeVideo.error) {
+          activeVideo.dataset.pendingShowcaseTime = String(fallbackTime);
+          activeVideo.load();
+        }
         syncState();
       });
     }
@@ -481,16 +547,34 @@
     }
 
     if (hasIntersectionObserver) {
+      // Firefox can composite expensive 3D carousel/filter layers even when
+      // they are below the viewport. Flatten them only while offscreen.
+      const capabilitySection = document.querySelector(".invoice-capabilities");
+      if (capabilitySection) {
+        const rect = capabilitySection.getBoundingClientRect();
+        capabilitySection.classList.toggle("is-offscreen", rect.top >= window.innerHeight || rect.bottom <= 0);
+        const capabilityObserver = new window.IntersectionObserver(([entry]) => {
+          capabilitySection.classList.toggle("is-offscreen", !entry.isIntersecting);
+        });
+        capabilityObserver.observe(capabilitySection);
+      }
       const observer = new window.IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.target !== root) return;
           offscreenPaused = !(entry.isIntersecting && entry.intersectionRatio > 0.02);
+          if (!offscreenPaused) activeVideo.preload = "auto";
           if (!offscreenPaused && !reducedMotion) hasStarted = true;
           fallbackTime = currentTime();
           syncState();
         });
       }, { threshold: [0, 0.02, 0.15, 0.35] });
       observer.observe(root);
+      const preloadObserver = new window.IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        activeVideo.preload = "auto";
+        preloadObserver.disconnect();
+      }, { rootMargin: "300px 0px" });
+      preloadObserver.observe(root);
     } else {
       offscreenPaused = false;
       if (!reducedMotion) hasStarted = true;

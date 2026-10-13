@@ -235,10 +235,8 @@ async function verifyLanguageContinuity(browser, origin) {
     reducedMotion: "no-preference"
   });
   try {
-    await page.waitForFunction(() => {
-      const videos = [...document.querySelectorAll("[data-showcase-video]")];
-      return videos.length === 2 && videos.every(video => video.readyState >= 2);
-    });
+    check("inactive language is not downloaded on initial load",
+      await page.locator('[data-showcase-video="en"]').evaluate(video => !video.getAttribute('src')));
     await page.waitForFunction(() => (
       document.querySelector("[data-showcase]")?.dataset.showcasePaused === "false"
     ));
@@ -254,7 +252,10 @@ async function verifyLanguageContinuity(browser, origin) {
     await page.waitForFunction(() => (
       document.querySelector("[data-showcase]")?.dataset.showcaseVideoLanguage === "en"
     ));
-    await page.waitForTimeout(220);
+    await page.waitForFunction(() => {
+      const video = document.querySelector('[data-showcase-video="en"]');
+      return video.readyState >= 2 && !video.seeking && video.currentTime >= 8;
+    });
     const runningSwitch = await page.evaluate(() => {
       const de = document.querySelector('[data-showcase-video="de"]');
       const en = document.querySelector('[data-showcase-video="en"]');
@@ -273,13 +274,13 @@ async function verifyLanguageContinuity(browser, origin) {
       `before=${beforeSwitch.toFixed(3)} after=${runningSwitch.time.toFixed(3)}`
     );
     check(
-      "language switch changes the visible film without reloading",
+      "language switch loads only the selected translation without navigating",
       runningSwitch.lang === "en" &&
         runningSwitch.active &&
         runningSwitch.dePaused &&
         !runningSwitch.enPaused &&
         runningSwitch.navigationEntries === 1 &&
-        mediaRequests.length === requestsBefore,
+        mediaRequests.slice(requestsBefore).every(url => url.includes('invoice-showcase-en-')),
       JSON.stringify({ ...runningSwitch, requestsBefore, requestsAfter: mediaRequests.length })
     );
 
@@ -450,7 +451,10 @@ async function main() {
   if (failed.length) process.exitCode = 1;
 }
 
-main().catch(error => {
-  console.error(error);
-  process.exitCode = 1;
-});
+module.exports = { createStaticServer, loadPlaywright, openShowcase };
+if (require.main === module) {
+  main().catch(error => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

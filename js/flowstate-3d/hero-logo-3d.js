@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { buildLogo } from './logo-model.js';
+import { buildLogo } from './logo-model.js?v=performance-20261013';
 
 const TAU = Math.PI * 2;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -47,7 +47,7 @@ function studioEnvironment() {
   return texture;
 }
 
-export function mountHeroLogo(container, { backgroundMode = false } = {}) {
+export async function mountHeroLogo(container, { backgroundMode = false } = {}) {
   const landingSlot = container.closest('.hero-logo-slot');
   if (!landingSlot) {
     throw new Error('The hero logo requires a .hero-logo-slot landing element.');
@@ -66,11 +66,18 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: true,
-    powerPreference: 'high-performance',
+    powerPreference: 'default',
   });
-  renderer.setPixelRatio(
-    Math.min(window.devicePixelRatio || 1, backgroundMode ? 1.35 : 2)
-  );
+  const gl = renderer.getContext();
+  const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+  const gpuName = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : '';
+  const limitedDevice = /swiftshader|llvmpipe|software|microsoft basic/i.test(gpuName) ||
+    (navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4) ||
+    (navigator.deviceMemory > 0 && navigator.deviceMemory <= 4);
+  let pixelRatio = Math.min(window.devicePixelRatio || 1,
+    limitedDevice ? 1 : backgroundMode ? 1.25 : 1.5);
+  let simpleLighting = limitedDevice;
+  renderer.setPixelRatio(pixelRatio);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.06;
@@ -95,7 +102,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
   rim.position.set(-2.2, 1.6, -2.5);
   scene.add(hemisphere, key, fill, specular, accentLight, rim);
 
-  const logo = buildLogo(THREE, { standing: false });
+  const logo = buildLogo(THREE, { standing: false, lightweight: true });
   const brandMesh = logo.getObjectByName('flowstate_mark');
   if (brandMesh?.material) {
     brandMesh.material.color.setHex(0x0292f1);
@@ -121,6 +128,44 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
   rotationRoot.add(logo);
   fallRoot.add(rotationRoot);
   scene.add(fallRoot);
+
+  const simplifyLighting = () => {
+    // Keep the studio reflection and blue/white finish; retire the two moving
+    // point lights and clearcoat pass when frame delivery cannot keep up.
+    scene.remove(specular, accentLight);
+    logo.traverse(object => {
+      if (!object.material) return;
+      object.material.clearcoat = 0;
+      object.material.needsUpdate = true;
+    });
+    simpleLighting = true;
+  };
+  if (simpleLighting) simplifyLighting();
+
+  const disposeModel = () => {
+    const geometries = new Set();
+    const materials = new Set();
+    logo.traverse(object => {
+      if (object.geometry) geometries.add(object.geometry);
+      if (object.material) {
+        (Array.isArray(object.material) ? object.material : [object.material])
+          .forEach(material => materials.add(material));
+      }
+    });
+    geometries.forEach(geometry => geometry.dispose());
+    materials.forEach(material => material.dispose());
+    environment.dispose();
+    renderer.dispose();
+    renderer.domElement.remove();
+  };
+  // Compile before starting the entrance so shader startup cannot skip the
+  // drop animation or leave its fixed-position element above the page.
+  try {
+    await renderer.compileAsync(scene, camera);
+  } catch (error) {
+    disposeModel();
+    throw error;
+  }
 
   const rest = { x: -0.035, y: -0.18, z: 0 };
   const startsAtRest = reducedMotion || backgroundMode;
@@ -151,10 +196,16 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
   let lastPointerTime = 0;
 
   let disposed = false;
+  let contextLost = false;
   let inView = true;
   let loopRunning = false;
   let previousFrame = performance.now();
   const animationStartedAt = previousFrame;
+  let qualityWindowStartedAt = previousFrame;
+  let qualityFrames = 0;
+  let renderedAt = 0;
+  let lastShadow = '';
+  let adaptiveStatic = false;
 
   function syncLandingRect() {
     if (!entryPrepared || entrySettled) return;
@@ -193,6 +244,8 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
   function resize() {
     const width = container.clientWidth || 1;
     const height = container.clientHeight || width;
+    // Bound fill rate even on Retina/4K displays.
+    renderer.setPixelRatio(Math.min(pixelRatio, 800 / Math.max(width, height)));
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.position.z = cameraDistance / Math.min(1, camera.aspect);
@@ -201,7 +254,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
 
   const resizeObserver = new ResizeObserver(() => {
     resize();
-    if (reducedMotion && !dragging) updateLoop();
+    if ((reducedMotion || adaptiveStatic) && !dragging) updateLoop();
   });
   resizeObserver.observe(container);
   resize();
@@ -212,6 +265,9 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
     const hoverLift = entrySettled && !reducedMotion ? 0.03 : 0;
     const opacity = 0.28 - heightRatio * 0.2 - hoverLift;
     const scale = 1 - heightRatio * 0.42;
+    const shadow = `${opacity.toFixed(3)},${scale.toFixed(3)}`;
+    if (shadow === lastShadow) return;
+    lastShadow = shadow;
     landingSlot.style.setProperty('--logo-shadow-opacity', opacity.toFixed(3));
     landingSlot.style.setProperty('--logo-shadow-scale', scale.toFixed(3));
   }
@@ -297,9 +353,35 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
   }
 
   function renderFrame(now) {
-    const delta = Math.min((now - previousFrame) / 1000, 1 / 24);
+    if (disposed || contextLost) return;
+    // Idle movement is gentle enough for 30 fps; dragging/entrance stays 60 fps.
+    const frameInterval = (dragging || !entrySettled) ? 1000 / 60 : 1000 / 30;
+    if (now - renderedAt < frameInterval - 1) return;
+    renderedAt = now;
+    const delta = Math.min((now - previousFrame) / 1000, 0.1);
     const time = (now - animationStartedAt) / 1000;
     previousFrame = now;
+    if (!reducedMotion && !dragging && entrySettled) {
+      qualityFrames += 1;
+      const sampleMs = now - qualityWindowStartedAt;
+      if (sampleMs >= 2500) {
+        const fps = qualityFrames * 1000 / sampleMs;
+        if (fps < 24 && pixelRatio > 0.75) {
+          pixelRatio = Math.max(0.75, pixelRatio - 0.25);
+          if (!simpleLighting) simplifyLighting();
+          resize();
+        } else if (fps < 16 && pixelRatio <= 0.75) {
+          // Software/overloaded GPUs still get a fully rendered logo and drag
+          // interaction, without a permanently stuttering idle animation.
+          adaptiveStatic = true;
+        }
+        qualityFrames = 0;
+        qualityWindowStartedAt = now;
+      }
+    } else {
+      qualityFrames = 0;
+      qualityWindowStartedAt = now;
+    }
 
     if (!dragging) {
       updateEntry(now, delta);
@@ -307,7 +389,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
     }
 
     if (backgroundMode) {
-      const mobileMotion = reducedMotion ? 0 : 1;
+      const mobileMotion = reducedMotion || adaptiveStatic ? 0 : 1;
       fallRoot.position.y = mobileMotion * Math.sin(time * 0.54) * 0.014;
       rotationRoot.rotation.set(
         rest.x + mobileMotion * Math.sin(time * 0.41) * 0.055,
@@ -315,7 +397,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
         mobileMotion * Math.sin(time * 0.29) * 0.025
       );
     } else {
-      const ambient = entrySettled && !dragging && !reducedMotion ? 1 : 0;
+      const ambient = entrySettled && !dragging && !reducedMotion && !adaptiveStatic ? 1 : 0;
       const hover = ambient * Math.sin(time * 0.72) * 0.018;
       fallRoot.position.y = hover;
       rotationRoot.rotation.set(
@@ -325,7 +407,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
       );
     }
 
-    if (!reducedMotion) {
+    if (!reducedMotion && !adaptiveStatic) {
       scene.environmentRotation.y = time * 0.24;
       key.position.set(
         2.6 * Math.cos(time * 0.38) + 0.5,
@@ -356,18 +438,24 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
     if (!container.classList.contains('is-ready')) {
       container.classList.add('is-ready');
     }
+    if (loopRunning && adaptiveStatic && !dragging && now >= returnStartsAt + 1800) updateLoop();
   }
 
   function updateLoop() {
     if (disposed) return;
-    const canRender = inView && !document.hidden;
-    const shouldRun = canRender && (!reducedMotion || dragging);
+    const canRender = inView && !document.hidden && !contextLost;
+    const shouldRun = canRender && (dragging || (!reducedMotion &&
+      (!adaptiveStatic || performance.now() < returnStartsAt + 1800)));
     if (shouldRun !== loopRunning) {
       loopRunning = shouldRun;
       previousFrame = performance.now();
+      qualityWindowStartedAt = previousFrame;
+      qualityFrames = 0;
+      renderedAt = 0;
       renderer.setAnimationLoop(shouldRun ? renderFrame : null);
     }
-    if (!shouldRun && canRender && reducedMotion && !dragging) {
+    if (!shouldRun && canRender && (reducedMotion || adaptiveStatic) && !dragging) {
+      renderedAt = 0;
       renderFrame(performance.now());
     }
   }
@@ -390,7 +478,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
   }
 
   function onPointerDown(event) {
-    if (backgroundMode || event.button !== 0) return;
+    if (backgroundMode || contextLost || event.button !== 0) return;
     dragging = true;
     activePointer = event.pointerId;
     lastPointerX = event.clientX;
@@ -461,14 +549,22 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
     updateLoop();
   }
 
-  function onContextLost() {
+  function onContextLost(event) {
+    event.preventDefault();
+    contextLost = true;
+    dragging = false;
+    activePointer = null;
+    container.classList.remove('is-grabbing');
+    settleEntry(performance.now());
     container.classList.remove('is-ready');
     container.classList.add('is-fallback');
+    updateLoop();
   }
 
   function onContextRestored() {
+    contextLost = false;
     container.classList.remove('is-fallback');
-    container.classList.add('is-ready');
+    resize();
     updateLoop();
   }
 
@@ -504,18 +600,7 @@ export function mountHeroLogo(container, { backgroundMode = false } = {}) {
       renderer.domElement.removeEventListener('webglcontextlost', onContextLost);
       renderer.domElement.removeEventListener('webglcontextrestored', onContextRestored);
 
-      logo.traverse((object) => {
-        if (object.geometry) object.geometry.dispose();
-        if (Array.isArray(object.material)) {
-          object.material.forEach((material) => material.dispose());
-        } else if (object.material) {
-          object.material.dispose();
-        }
-      });
-
-      environment.dispose();
-      renderer.dispose();
-      renderer.domElement.remove();
+      disposeModel();
       restoreToLandingSlot();
       container.classList.remove(
         'is-ready',

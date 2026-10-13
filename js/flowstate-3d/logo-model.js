@@ -56,10 +56,10 @@ function splineEdge(THREE, xs, ys, out = 190) {
   return new THREE.SplineCurve(ctrl).getPoints(out).map((p) => [p.x, p.y]);
 }
 
-function stripePoints(THREE, s, cut = CUT) {
+function stripePoints(THREE, s, cut = CUT, samples = 190) {
   const e = extend({ x: s.x, top: smooth(s.top), bot: smooth(s.bot) });
-  const top = splineEdge(THREE, e.x, e.top);
-  const bot = splineEdge(THREE, e.x, e.bot);
+  const top = splineEdge(THREE, e.x, e.top, samples);
+  const bot = splineEdge(THREE, e.x, e.bot, samples);
   const pts = [];
   const push = ([x, y]) => {
     const [cx, cy] = clampR(x, y, cut);
@@ -71,12 +71,15 @@ function stripePoints(THREE, s, cut = CUT) {
   return pts;
 }
 
-export function buildLogo(THREE, { standing = true } = {}) {
+export function buildLogo(THREE, { standing = true, lightweight = false } = {}) {
+  // The hero is at most 560 CSS pixels tall. Fewer contour/bevel samples keep
+  // the same silhouette without spending triangles on subpixel detail.
+  const samples = lightweight ? 64 : 190;
   const shape = new THREE.Shape();
   shape.absarc(0, 0, 1, 0, Math.PI * 2, false);
   for (const s of WAVES) {
     const path = new THREE.Path();
-    const pts = stripePoints(THREE, s);
+    const pts = stripePoints(THREE, s, CUT, samples);
     path.moveTo(pts[0][0], pts[0][1]);
     for (let i = 1; i < pts.length; i++) path.lineTo(pts[i][0], pts[i][1]);
     path.closePath();
@@ -90,8 +93,8 @@ export function buildLogo(THREE, { standing = true } = {}) {
     bevelThickness: bevel,
     bevelSize: bevel,
     bevelOffset: 0,
-    bevelSegments: 6,
-    curveSegments: 128,
+    bevelSegments: lightweight ? 3 : 6,
+    curveSegments: lightweight ? 48 : 128,
   });
   geo.scale(R, R, R);
   geo.center();
@@ -131,7 +134,7 @@ export function buildLogo(THREE, { standing = true } = {}) {
   const RECESS = 0.010;     // how far behind the blue front face it sits
   const fills = WAVES.map((s, i) => {
     const inner = { x: s.x, top: s.top.map((v) => v - INSET), bot: s.bot.map((v) => v + INSET) };
-    const pts = stripePoints(THREE, inner, 0.968);
+    const pts = stripePoints(THREE, inner, 0.968, samples);
     const shp = new THREE.Shape();
     shp.moveTo(pts[0][0], pts[0][1]);
     for (let k = 1; k < pts.length; k++) shp.lineTo(pts[k][0], pts[k][1]);
@@ -141,8 +144,8 @@ export function buildLogo(THREE, { standing = true } = {}) {
       bevelEnabled: true,
       bevelThickness: 0.008,
       bevelSize: 0.008,
-      bevelSegments: 3,
-      curveSegments: 64,
+      bevelSegments: lightweight ? 2 : 3,
+      curveSegments: lightweight ? 32 : 64,
     });
     g.scale(R, R, R);
     g.translate(0, 0, DEPTH / 2 - RECESS - FILL_D);    g.computeVertexNormals();

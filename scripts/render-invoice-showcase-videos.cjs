@@ -20,7 +20,7 @@ const PLAYWRIGHT_FALLBACKS = [
 ];
 const { chromium } = loadPlaywright();
 const DURATION_MS = 26000;
-const FPS = 24;
+const FPS = 60;
 const FRAME_COUNT = Math.round((DURATION_MS / 1000) * FPS);
 
 const ALL_RENDERS = [
@@ -217,6 +217,7 @@ async function renderVideo(browser, origin, render) {
   });
   const page = await context.newPage();
   const outputPath = path.join(OUTPUT, `${render.name}.mp4`);
+  const temporaryPath = path.join(OUTPUT, `${render.name}.rendering.mp4`);
   const { box, animationCount } = await prepareAnimation(page, origin, render);
 
   const ffmpeg = spawn("ffmpeg", [
@@ -231,14 +232,18 @@ async function renderVideo(browser, origin, render) {
     "-vf", "scale=in_range=full:out_range=tv,format=yuv420p,pad=ceil(iw/2)*2:ceil(ih/2)*2:color=#08152f",
     "-c:v", "libx264",
     "-preset", "slow",
-    "-crf", "18",
+    "-crf", "20",
+    "-profile:v", "main",
+    "-threads", "2",
+    "-refs", "2",
+    "-bf", "2",
     "-pix_fmt", "yuv420p",
     "-color_range", "tv",
-    "-g", String(FPS * 2),
-    "-keyint_min", String(FPS * 2),
+    "-g", String(FPS / 2),
+    "-keyint_min", String(FPS / 2),
     "-sc_threshold", "0",
     "-movflags", "+faststart",
-    outputPath
+    temporaryPath
   ], {
     cwd: SITE,
     windowsHide: true,
@@ -285,6 +290,8 @@ async function renderVideo(browser, origin, render) {
     throw new Error(`ffmpeg failed for ${render.name}: ${ffmpegError.trim()}`);
   }
 
+  fs.renameSync(temporaryPath, outputPath);
+
   const bytes = fs.statSync(outputPath).size;
   process.stdout.write(
     `Created ${path.relative(SITE, outputPath)} (${(bytes / 1024 / 1024).toFixed(2)} MB)\n`
@@ -309,7 +316,9 @@ async function main() {
   let browser;
   try {
     await waitForServer(`${origin}/rechnung-demo.html`);
-    browser = await chromium.launch({ headless: true });
+    // Full Chromium's new headless mode uses the available GPU. The headless
+    // shell rasterizes the layered blur effects in software on Windows.
+    browser = await chromium.launch({ headless: true, channel: 'chromium' });
     let nextRenderIndex = 0;
     const workerCount = Math.min(3, RENDERS.length);
     const workers = Array.from({ length: workerCount }, async () => {

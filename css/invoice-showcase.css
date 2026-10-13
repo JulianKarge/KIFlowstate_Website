@@ -417,6 +417,43 @@
   display: none;
 }
 
+/* The film already contains its lighting, glass and depth. Keeping the live
+   rendering layers as well forces some laptop/Firefox compositors to repaint
+   the whole page for every video frame. The authoring/render route retains
+   the original effects because it never enables this production class. */
+.is-video-showcase-section,
+.is-video-showcase-section *,
+.is-video-showcase-section::before,
+.is-video-showcase-section *::before,
+.is-video-showcase-section *::after {
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  perspective: none !important;
+  transform-style: flat !important;
+  mix-blend-mode: normal !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+
+.is-video-showcase .invoice-showcase-aurora,
+.is-video-showcase .invoice-showcase-grain {
+  display: none;
+}
+
+.has-video-showcase.is-showcase-playing .navbar {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.has-video-showcase .invoice-capabilities.is-offscreen .invoice-capability-rail,
+.has-video-showcase .invoice-capabilities.is-offscreen .invoice-capability-card {
+  perspective: none;
+  transform-style: flat;
+  filter: none;
+  will-change: auto;
+}
+
 .showcase-glass-card {
   border: 1px solid var(--showcase-glass-border);
   border-radius: 1.25rem;

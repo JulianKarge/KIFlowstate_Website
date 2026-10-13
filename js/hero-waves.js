@@ -62,7 +62,7 @@
 
   const resize = () => {
     const rect = hero.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     width = Math.max(1, Math.round(rect.width));
     height = Math.max(1, Math.round(rect.height));
     canvas.width = Math.round(width * dpr);
@@ -165,17 +165,20 @@
   let visible = true;
   let lastTime = 0;
   let elapsed = 0;
+  let frame = 0;
 
   const tick = (now) => {
     if (!running) return;
+    frame = requestAnimationFrame(tick);
+    if (now - lastTime < 1000 / 30 - 1) return;
     const delta = Math.min(0.05, (now - lastTime) / 1000 || 0);
     lastTime = now;
     elapsed += delta;
-    pointerX += (targetX - pointerX) * 0.045;
-    pointerY += (targetY - pointerY) * 0.04;
-    response += (responseTarget - response) * 0.045;
+    const ease = 1 - Math.exp(-2.7 * delta);
+    pointerX += (targetX - pointerX) * ease;
+    pointerY += (targetY - pointerY) * ease;
+    response += (responseTarget - response) * ease;
     drawFrame(elapsed);
-    requestAnimationFrame(tick);
   };
 
   const updateLoop = () => {
@@ -183,10 +186,11 @@
     if (shouldRun && !running) {
       running = true;
       lastTime = performance.now();
-      requestAnimationFrame(tick);
+      frame = requestAnimationFrame(tick);
     } else if (!shouldRun) {
       running = false;
-      drawFrame(STATIC_TIME);
+      cancelAnimationFrame(frame);
+      if (visible && !document.hidden) drawFrame(STATIC_TIME);
     }
   };
 
