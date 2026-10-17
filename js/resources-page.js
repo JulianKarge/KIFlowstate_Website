@@ -388,7 +388,19 @@
     `;
   };
 
-  const renderVideo = (video) => {
+  const startPlayer = (player, video) => {
+    const id = videoYouTubeId(video);
+    if (!player || !id || player.querySelector("iframe")) return;
+    player.closest(".video-overview")?.classList.add("is-playing");
+    const frame = document.createElement("iframe");
+    frame.src = ytEmbed(id) + "&playsinline=1";
+    frame.title = pick(video.title) || t("resources_play", "Video abspielen");
+    frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    frame.allowFullscreen = true;
+    player.replaceChildren(frame);
+  };
+
+  const renderVideo = (video, { autoplay = false } = {}) => {
     if (!video) {
       renderEmpty();
       return;
@@ -479,6 +491,7 @@
         ${sections}
       </article>
     `;
+    if (autoplay) startPlayer(content.querySelector(".video-player"), video);
     window.KIResourcePoll?.refresh();
     window.KIBenchmark?.refresh();
   };
@@ -528,7 +541,7 @@
     });
   };
 
-  const setActive = (id, { scroll = false, updateHash = true } = {}) => {
+  const setActive = (id, { scroll = false, updateHash = true, autoplay = false } = {}) => {
     const video = findVideo(id) || VIDEOS[0];
     if (!video) {
       renderEmpty();
@@ -537,7 +550,7 @@
     const restoreFocus = sidebar.contains(document.activeElement);
     renderSidebar(video.id);
     if (restoreFocus) restoreSidebarFocus(video.id);
-    renderVideo(video);
+    renderVideo(video, { autoplay });
     // Wait one frame so layout has settled before measuring.
     requestAnimationFrame(refreshPromptCollapsibility);
 
@@ -548,7 +561,14 @@
       }
     }
 
-    if (scroll) {
+    if (autoplay) {
+      requestAnimationFrame(() => {
+        const player = content.querySelector(".video-player");
+        if (!player) return;
+        player.style.scrollMarginTop = "90px";
+        player.scrollIntoView({ behavior: "auto", block: "start" });
+      });
+    } else if (scroll) {
       content.scrollIntoView({
         behavior: reducedMotion.matches ? "auto" : "smooth",
         block: "start"
@@ -589,20 +609,8 @@
     // Play YouTube video (facade → iframe)
     const player = e.target.closest(".video-player");
     if (player && !player.querySelector("iframe")) {
-      const id = player.dataset.ytId;
-      if (id) {
-        player.closest(".video-overview")?.classList.add("is-playing");
-        const videoId = player.closest("[data-video-id]")?.dataset.videoId;
-        const video = videoId ? findVideo(videoId) : null;
-        const frameTitle = video
-          ? pick(video.title)
-          : t("resources_play", "Video abspielen");
-        player.innerHTML = `<iframe
-          src="${ytEmbed(id)}"
-          title="${escapeHtml(frameTitle)}"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>`;
-      }
+      const videoId = player.closest("[data-video-id]")?.dataset.videoId;
+      startPlayer(player, findVideo(videoId));
       return;
     }
 
@@ -667,8 +675,16 @@
 
   // Hash → video on load
   const initialId = (location.hash || "").replace(/^#/, "");
+  const initialUrl = new URL(location.href);
+  const requestedPlay = initialUrl.searchParams.get("play") === "1" && !!findVideo(initialId);
+  // Consume the explicit play request so refresh, sharing and subsequent
+  // video selections keep the usual click-to-play behavior.
+  if (initialUrl.searchParams.has("play")) {
+    initialUrl.searchParams.delete("play");
+    history.replaceState(history.state, "", initialUrl);
+  }
   if (VIDEOS.length) {
-    setActive(initialId || VIDEOS[0].id, { updateHash: !!initialId });
+    setActive(initialId || VIDEOS[0].id, { updateHash: !!initialId, autoplay: requestedPlay });
   } else {
     renderSidebar(null);
     renderEmpty();
@@ -683,7 +699,10 @@
   // Re-render when language changes (translations.js triggers this
   // via the lang-btn click handler in script.js, which mutates
   // document.documentElement.lang). We watch for that.
+  let currentLanguage = document.documentElement.lang;
   const langObserver = new MutationObserver(() => {
+    if (currentLanguage === document.documentElement.lang) return;
+    currentLanguage = document.documentElement.lang;
     const id = (location.hash || "").replace(/^#/, "") || (VIDEOS[0] && VIDEOS[0].id);
     if (id) setActive(id, { updateHash: false });
   });

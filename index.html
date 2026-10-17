@@ -88,6 +88,7 @@
 
     <!-- Local assets (CORRECTED PATHS) -->
     <link rel="stylesheet" href="css/styles.css?v=performance-20261013" />
+    <link rel="stylesheet" href="css/youtube-promo.css?v=latest-video-20261017" />
     <script type="importmap">
       {
         "imports": {
@@ -95,8 +96,9 @@
         }
       }
     </script>
-    <script defer src="js/translations.js?v=method-20260906"></script>
+    <script defer src="js/translations.js?v=latest-video-20261017"></script>
     <script defer src="js/script.js?v=document-flow-20260906"></script>
+    <script defer src="js/youtube-promo.js?v=latest-video-20261017"></script>
     <script defer src="js/hero-waves.js?v=performance-20261013"></script>
     <script defer src="js/method-flow.js?v=flowfield-3"></script>
     <script defer src="js/ki-news.js"></script>
@@ -342,6 +344,71 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- YouTube / resources: a short, reversible scroll reveal. -->
+    <section id="youtube" class="youtube-promo" aria-labelledby="youtube-title">
+      <div class="youtube-promo-sticky">
+        <div class="youtube-promo-inner">
+          <header class="youtube-promo-head">
+            <p class="youtube-promo-kicker">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.5 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg>
+              <span data-translate="youtube_kicker">YouTube &amp; Ressourcen</span>
+            </p>
+            <h2 id="youtube-title"><span data-translate="youtube_title">Neugierig, was dahintersteckt?</span><br><em data-translate="youtube_title_accent">Gehen wir eine Ebene tiefer.</em></h2>
+            <p class="youtube-promo-lead" data-translate="youtube_lead">Echte Tools. Ehrliche Tests. KI zum Nachbauen.</p>
+          </header>
+
+          <div class="youtube-promo-scene">
+            <div class="youtube-promo-space" aria-hidden="true">
+              <div class="youtube-promo-orbit"></div>
+              <div class="youtube-promo-orbit youtube-promo-orbit-inner"></div>
+              <span class="youtube-promo-coordinate youtube-promo-coordinate-left">KIFlowstate / YouTube</span>
+              <span class="youtube-promo-coordinate youtube-promo-coordinate-right" data-translate="youtube_coordinate">Wissen, das weiterbringt.</span>
+            </div>
+
+            <figure class="youtube-promo-satellite youtube-promo-satellite-left" aria-hidden="true">
+              <img src="images/youtube-promo/hermes.webp" alt="" width="640" height="360" loading="lazy" decoding="async" />
+              <figcaption><span data-translate="youtube_topic_agents">KI-Agenten</span><svg viewBox="0 0 24 24" fill="none"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="1.5"/></svg></figcaption>
+            </figure>
+            <figure class="youtube-promo-satellite youtube-promo-satellite-right" aria-hidden="true">
+              <img src="images/youtube-promo/free-agents.webp" alt="" width="640" height="360" loading="lazy" decoding="async" />
+              <figcaption><span data-translate="youtube_topic_local">Lokale KI</span><svg viewBox="0 0 24 24" fill="none"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="1.5"/></svg></figcaption>
+            </figure>
+
+            <div class="youtube-promo-card">
+              <a class="youtube-promo-front" href="resources.html?play=1#jev" aria-label="Video und Ressourcen: Jev von TypeSafe: KI-Entscheidungen in der Praxis">
+                <div class="youtube-promo-video">
+                  <img src="images/youtube-promo/jev.webp" alt="" width="1000" height="563" loading="lazy" decoding="async" />
+                  <span class="youtube-promo-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m9 5 11 7-11 7V5Z"/></svg></span>
+                  <span class="youtube-promo-video-tag" data-translate="youtube_featured">Neu auf dem Kanal</span>
+                </div>
+                <div class="youtube-promo-caption">
+                  <img src="images/kilogo.png" alt="" width="36" height="36" loading="lazy" decoding="async" />
+                  <div><strong data-youtube-video-title>Jev von TypeSafe: KI-Entscheidungen in der Praxis</strong><span data-translate="youtube_video_caption">Prompts, Anleitungen &amp; Quellen zum Video</span></div>
+                  <svg class="youtube-promo-caption-icon" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg>
+                </div>
+              </a>
+              <article class="youtube-promo-back">
+                <div class="youtube-promo-back-top"><span data-translate="youtube_back_kicker">Vom Anschauen ins Machen</span><svg viewBox="0 0 48 30" fill="none" aria-hidden="true"><path d="M1 7c8-10 16 10 24 0S41-3 49 7M1 15c8-10 16 10 24 0s16-10 24 0M1 23c8-10 16 10 24 0s16-10 24 0" stroke="currentColor" stroke-width="2.5"/></svg></div>
+                <h3 data-translate="youtube_back_title">Das Video ist erst der Anfang.</h3>
+                <p data-translate="youtube_back_text">Tiefer in die Technik? Zu den Videos gibt es die passenden Prompts, Anleitungen und Quellen. Zum Nachlesen, Ausprobieren und Selberbauen.</p>
+                <div class="youtube-promo-actions">
+                  <a class="youtube-promo-primary" href="resources.html"><span data-translate="youtube_resources_cta">Ressourcen entdecken</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.7"/></svg></a>
+                  <a class="youtube-promo-secondary" href="https://www.youtube.com/@kiflowstate" target="_blank" rel="noopener noreferrer"><span data-translate="youtube_channel_cta">Zum YouTube-Kanal</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.7"/></svg></a>
+                </div>
+                <p class="youtube-promo-note" data-translate="youtube_note">Kostenlos zugänglich. Direkt anwendbar.</p>
+              </article>
+            </div>
+          </div>
+
+          <footer class="youtube-promo-footer">
+            <a class="youtube-promo-channel" href="https://www.youtube.com/@kiflowstate" target="_blank" rel="noopener noreferrer">@kiflowstate <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="1.5"/></svg></a>
+            <span class="youtube-promo-scroll" aria-hidden="true"><span data-translate="youtube_scroll">Scrollen &amp; tiefer eintauchen</span><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16m-6-6 6 6 6-6" stroke="currentColor" stroke-width="1.5"/></svg></span>
+            <span class="youtube-promo-progress" aria-hidden="true"><i></i></span>
+          </footer>
         </div>
       </div>
     </section>

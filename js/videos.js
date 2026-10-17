@@ -35,6 +35,7 @@ const VIDEOS = [
     ],
     "youtubeId": "6mu-Y7eSLPs",
     "thumbnailUrl": "images/jev-thumbnail.jpg",
+    "promoThumbnailUrl": "images/youtube-promo/jev.webp",
     "title": {
       "de": "Jev von TypeSafe: KI-Entscheidungen in der Praxis",
       "en": "TypeSafe Jev: AI decisions in practice"
