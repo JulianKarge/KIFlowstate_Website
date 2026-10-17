@@ -28,6 +28,322 @@
 
 const VIDEOS = [
   {
+    "id": "jev",
+    "aliases": [
+      "typesafe-jev",
+      "jev-decision-models"
+    ],
+    "youtubeId": "",
+    "title": {
+      "de": "Jev von TypeSafe: KI-Entscheidungen in der Praxis",
+      "en": "TypeSafe Jev: AI decisions in practice"
+    },
+    "publishedAt": "2026-10-17",
+    "description": {
+      "de": "Alle Referenzlinks zum Jev-Video: TypeSafe, API-Einrichtung, Studien, Modellgrenzen und Alternativen. Dazu das gezeigte AdBlocker-Projekt und die im Video erwähnten Tools.",
+      "en": "Reference links for the Jev video: TypeSafe, API setup, research, model limitations and alternatives. Also includes the AdBlocker project shown in the video and the other tools mentioned."
+    },
+    "groups": [
+      {
+        "id": "start",
+        "title": {
+          "de": "Jev ausprobieren",
+          "en": "Try Jev"
+        },
+        "subtitle": {
+          "de": "Anbieter, API-Konsole und Dokumentation für deinen Einstieg.",
+          "en": "The provider, API console and documentation to get started."
+        },
+        "icon": "fa-bolt",
+        "open": true
+      },
+      {
+        "id": "quellen",
+        "title": {
+          "de": "Hintergrund, Studie und Grenzen",
+          "en": "Background, study and limitations"
+        },
+        "subtitle": {
+          "de": "Originalquellen zu den Erklärungen und Zahlen im Video.",
+          "en": "Original sources behind the explanations and figures in the video."
+        },
+        "icon": "fa-book-open"
+      },
+      {
+        "id": "alternativen",
+        "title": {
+          "de": "Alternativen zu Jev",
+          "en": "Alternatives to Jev"
+        },
+        "subtitle": {
+          "de": "Clef, Clef-flash und Microsoft-Decision-1 direkt bei den Anbietern.",
+          "en": "Clef, Clef-flash and Microsoft-Decision-1, directly from their providers."
+        },
+        "icon": "fa-code-compare"
+      },
+      {
+        "id": "projekte",
+        "title": {
+          "de": "Gezeigtes Projekt und weitere Tools",
+          "en": "Featured project and other tools"
+        },
+        "subtitle": {
+          "de": "Der Jev-AdBlocker sowie Claude, n8n und Make aus dem Video.",
+          "en": "The Jev AdBlocker plus Claude, n8n and Make, as mentioned in the video."
+        },
+        "icon": "fa-link"
+      }
+    ],
+    "sections": [
+      {
+        "heading": {
+          "de": "Links zum Video",
+          "en": "Links for the video"
+        },
+        "type": "text",
+        "items": [
+          {
+            "html": {
+              "de": "<p>Hier findest du die Referenzen zu den Beispielen mit Emoji-Suche, Kommentaren, Support-Anfragen, Lead Scoring und Vertragssuche. Die Quellen sind nach Thema sortiert. Stand der Linkprüfung: 17.10.2026.</p><p>Preise und Modelle können sich ändern. Schau für den aktuellen Stand in die verlinkten Anbieterquellen. Herstellerangaben und Ergebnisse einer einzelnen Studie sind keine Garantie für deinen eigenen Anwendungsfall.</p>",
+              "en": "<p>Find the references behind the emoji search, comment sorting, support routing, lead scoring and contract search examples. Sources are grouped by topic. Links checked on October 17, 2026.</p><p>Prices and models can change. Check the linked provider pages for current information. Vendor claims and results from a single study do not guarantee performance on your own task.</p>"
+            }
+          }
+        ]
+      },
+      {
+        "group": "start",
+        "heading": {
+          "de": "TypeSafe und API-Einstieg",
+          "en": "TypeSafe and API setup"
+        },
+        "type": "links",
+        "items": [
+          {
+            "label": "TypeSafe AI / Jev",
+            "url": "https://typesafe.ai/",
+            "description": {
+              "de": "Die offizielle Website des Anbieters und Ausgangspunkt für Jev.",
+              "en": "The provider's official website and starting point for Jev."
+            }
+          },
+          {
+            "label": {
+              "de": "TypeSafe API-Konsole",
+              "en": "TypeSafe API console"
+            },
+            "url": "https://console.typesafe.ai/",
+            "description": {
+              "de": "Account und API-Zugang einrichten, wie im Video gezeigt. Anmeldung erforderlich.",
+              "en": "Set up your account and API access, as shown in the video. Sign-in required."
+            }
+          },
+          {
+            "label": {
+              "de": "Jev-Dokumentation: Introduction",
+              "en": "Jev documentation: Introduction"
+            },
+            "url": "https://docs.typesafe.ai/introduction",
+            "description": {
+              "de": "State und typisierte Fragen mit choice, score und noul: die Grundlage hinter den gezeigten Entscheidungen.",
+              "en": "State and typed questions with choice, score and noul: the foundation of the decisions demonstrated."
+            }
+          }
+        ]
+      },
+      {
+        "group": "quellen",
+        "heading": {
+          "de": "Originalquellen und Einordnung",
+          "en": "Original sources and context"
+        },
+        "type": "sources",
+        "items": [
+          {
+            "ref": "JEV-01",
+            "title": "Introducing System One Models & Jev",
+            "publisher": "TypeSafe AI / Diogo Almeida",
+            "published": {
+              "de": "15. September 2026",
+              "en": "September 15, 2026"
+            },
+            "usedFor": {
+              "de": "System-One-Konzept, Gründerhintergrund, Preis- und Geschwindigkeitsangaben.",
+              "en": "System One concept, founder background, pricing and latency claims."
+            },
+            "description": {
+              "de": "Die ursprüngliche Vorstellung von Jev und der Unterschied zu Modellen, die freien Text erzeugen.",
+              "en": "The original Jev announcement and how it differs from models that generate free-form text."
+            },
+            "note": {
+              "de": "Herstellerquelle. Die genannten Vorteile hängen vom konkreten Workflow ab.",
+              "en": "Vendor source. The reported benefits depend on the specific workflow."
+            },
+            "url": "https://typesafe.ai/blog/introducing-system-one-models-and-jev"
+          },
+          {
+            "ref": "JEV-02",
+            "title": "TypeSafe emerges from stealth with a new way of doing AI",
+            "publisher": "DCVC / James Hardiman",
+            "published": {
+              "de": "15. September 2026",
+              "en": "September 15, 2026"
+            },
+            "usedFor": {
+              "de": "Die im Video erwähnte Seed-Finanzierung über 40 Millionen US-Dollar und der Unternehmenshintergrund.",
+              "en": "The $40 million seed round mentioned in the video and company background."
+            },
+            "note": {
+              "de": "Bericht des beteiligten Investors über diese Finanzierungsrunde.",
+              "en": "A participating investor's account of that financing round."
+            },
+            "url": "https://www.dcvc.com/news-insights/typesafe-emerges-from-stealth-with-a-new-way-of-doing-ai/"
+          },
+          {
+            "ref": "JEV-03",
+            "title": "Fast Models, Slow Evidence: A Paired and Self-Audited Evaluation of System-1 Decision Models for LLM Agent Harnesses",
+            "publisher": "Jiawei Li / arXiv",
+            "published": {
+              "de": "1. Oktober 2026, Version 1",
+              "en": "October 1, 2026, version 1"
+            },
+            "usedFor": {
+              "de": "Die Studienergebnisse zu Tool-Auswahl, Injection-Erkennung, Support-Routing sowie Grenzen und Kosten von Entscheidungskaskaden.",
+              "en": "Study results on tool selection, injection detection, support routing, and the limitations and costs of decision cascades."
+            },
+            "description": {
+              "de": "Vergleich von Jev und Laya an elf Entscheidungspunkten in Agenten-Systemen.",
+              "en": "A comparison of Jev and Laya across eleven decision points in agent systems."
+            },
+            "note": {
+              "de": "Preprint. Prozentwerte gelten für die jeweiligen Testaufgaben und Teilmengen, nicht für jede Anwendung.",
+              "en": "Preprint. Percentages apply to the particular test tasks and subsets, not to every application."
+            },
+            "url": "https://arxiv.org/html/2610.02267v1"
+          },
+          {
+            "ref": "JEV-04",
+            "title": {
+              "de": "sys1-eval: Code und Daten zur Studie",
+              "en": "sys1-eval: study code and data"
+            },
+            "publisher": "David-DL-Space / GitHub",
+            "usedFor": {
+              "de": "Ergänzung zur Studie: Versuchsaufbau, Rohdaten und Auswertung nachvollziehen.",
+              "en": "Supporting material for the study: inspect the protocol, raw data and analysis."
+            },
+            "url": "https://github.com/David-DL-Space/sys1-eval"
+          },
+          {
+            "ref": "JEV-05",
+            "title": "Jev 1.13 jaggedness",
+            "publisher": "TypeSafe Docs",
+            "usedFor": {
+              "de": "Bekannte Modellgrenzen und Fälle, die du vor einer Automatisierung selbst prüfen solltest.",
+              "en": "Known model limitations and cases to test before automating a workflow."
+            },
+            "description": {
+              "de": "Die dokumentierten Schwächen von Jev 1.13 ergänzen den Abschnitt zu Grenzen und menschlicher Prüfung im Video.",
+              "en": "The documented weaknesses of Jev 1.13 complement the video's discussion of limitations and human review."
+            },
+            "url": "https://docs.typesafe.ai/model-jaggedness/jev-1.13"
+          }
+        ]
+      },
+      {
+        "group": "alternativen",
+        "heading": {
+          "de": "Die genannten Alternativen",
+          "en": "The alternatives mentioned"
+        },
+        "type": "links",
+        "items": [
+          {
+            "label": "Cloudflare: Clef und Clef-flash",
+            "url": "https://blog.cloudflare.com/clef-decision-models/",
+            "description": {
+              "de": "Offizielle Vorstellung der offenen Decision-Modelle von Cloudflare.",
+              "en": "Cloudflare's official introduction to its open decision models."
+            }
+          },
+          {
+            "label": {
+              "de": "Cloudflare: Update zu Clef und Clef-flash",
+              "en": "Cloudflare: Clef and Clef-flash update"
+            },
+            "url": "https://blog.cloudflare.com/clef-faster-cheaper-multimodal/",
+            "description": {
+              "de": "Ergänzung für den Vergleich: Aktualisierungen zu Geschwindigkeit, Preisen und Multimodalität.",
+              "en": "Additional context for the comparison: updates to speed, pricing and multimodality."
+            }
+          },
+          {
+            "label": "Microsoft-Decision-1",
+            "url": "https://commandline.microsoft.com/microsoft-decision-1-model-foundry/",
+            "description": {
+              "de": "Microsofts offizielle Vorstellung des im Vergleich genannten Decision-Modells.",
+              "en": "Microsoft's official announcement of the decision model mentioned in the comparison."
+            }
+          }
+        ]
+      },
+      {
+        "group": "projekte",
+        "heading": {
+          "de": "Das AdBlocker-Projekt aus dem Video",
+          "en": "The AdBlocker project from the video"
+        },
+        "type": "links",
+        "items": [
+          {
+            "label": "TypeSafe Fun AdBlocker / realZachi",
+            "url": "https://github.com/realZachi/typesafe-adblock",
+            "description": {
+              "de": "Das gezeigte Chrome-Experiment: Jev bewertet, ob ausgewählte Seitenelemente Werbung sind. Laut Autor ein Demo-Projekt. Es benötigt deinen eigenen TypeSafe-Key, verursacht API-Kosten und ersetzt keinen vollständigen Werbe- oder Trackingblocker.",
+              "en": "The Chrome experiment shown: Jev judges whether selected page elements are ads. The author describes it as a demo project. It requires your own TypeSafe key, incurs API costs and does not replace a full ad or tracking blocker."
+            }
+          }
+        ]
+      },
+      {
+        "group": "projekte",
+        "heading": {
+          "de": "Weitere im Video erwähnte Tools",
+          "en": "Other tools mentioned in the video"
+        },
+        "type": "links",
+        "items": [
+          {
+            "label": {
+              "de": "Claude: Preise",
+              "en": "Claude: pricing"
+            },
+            "url": "https://claude.com/pricing",
+            "description": {
+              "de": "Anbieterreferenz zu Claude und den Preisen für den LLM-Vergleich. Die Kosten pro Entscheidung hängen zusätzlich von Eingabe, Ausgabe und Nutzung ab.",
+              "en": "Provider reference for Claude and pricing in the LLM comparison. Per-decision cost also depends on input, output and usage."
+            }
+          },
+          {
+            "label": "n8n",
+            "url": "https://n8n.io/",
+            "description": {
+              "de": "Das im Beispielkommentar erwähnte Werkzeug für Automatisierungs-Workflows.",
+              "en": "The workflow automation tool mentioned in the example comment."
+            }
+          },
+          {
+            "label": "Make",
+            "url": "https://www.make.com/",
+            "description": {
+              "de": "Das zweite im Beispielkommentar erwähnte Automatisierungswerkzeug.",
+              "en": "The other automation tool mentioned in the example comment."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "8j_BGdhi5w0",
     "aliases": [
       "claude-vs-codex",
