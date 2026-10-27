@@ -27,3 +27,9 @@ local-feedback-viewer/
 
 # Clipboard screenshot drop — Claude grabs pasted screenshots here.
 _inbox/
+
+# Resource gate: the live rules carry SHA-256 hashes of the unlock codes and
+# stay local. firestore.rules.example is the tracked template without hashes.
+firestore.rules
+firestore.rules.backup-*
+gate-codes.local.json

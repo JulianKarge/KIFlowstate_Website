@@ -1,0 +1,158 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isValidFeedbackSubmission() {
+      let data = request.resource.data;
+
+      return data.keys().hasOnly([
+          "formVersion",
+          "createdAt",
+          "submittedAtClient",
+          "language",
+          "page",
+          "referrer",
+          "userAgent",
+          "name",
+          "company",
+          "source",
+          "sourceOther",
+          "ratings",
+          "workedWell",
+          "couldImprove",
+          "testimonialOk"
+        ])
+        && data.formVersion == 1
+        && data.createdAt == request.time
+        && validShortText(data.submittedAtClient, 40)
+        && validShortText(data.language, 8)
+        && validShortText(data.page, 240)
+        && validShortText(data.referrer, 500)
+        && validShortText(data.userAgent, 500)
+        && validShortText(data.name, 160)
+        && validShortText(data.company, 160)
+        && validShortText(data.source, 80)
+        && validShortText(data.sourceOther, 240)
+        && validLongText(data.workedWell, 4000)
+        && validLongText(data.couldImprove, 4000)
+        && data.testimonialOk is bool
+        && validRatings(data.ratings);
+    }
+
+    function validRatings(ratings) {
+      return ratings is map
+        && ratings.keys().hasOnly([
+          "flow",
+          "problemSolved",
+          "delivery",
+          "communication",
+          "recommendation"
+        ])
+        && validRating(ratings.flow)
+        && validRating(ratings.problemSolved)
+        && validRating(ratings.delivery)
+        && validRating(ratings.communication)
+        && validRating(ratings.recommendation);
+    }
+
+    function validRating(value) {
+      return value is number && value >= 0 && value <= 100;
+    }
+
+    function validShortText(value, maxLength) {
+      return value is string && value.size() <= maxLength;
+    }
+
+    function validLongText(value, maxLength) {
+      return value is string && value.size() <= maxLength;
+    }
+
+    match /feedbackSubmissions/{submissionId} {
+      allow create: if isValidFeedbackSubmission();
+      allow read, update, delete: if false;
+    }
+
+    // ------------------------------------------------------------------
+    // Resource gate (resources.html, series packs): collection resourceLeads.
+    // The unlock code is never checked in the browser. A lead is only created
+    // when the SHA-256 hash of the submitted code is listed below for exactly
+    // the submitted pack and part. Plain-text codes live in
+    // gate-codes.local.json (gitignored). This file is gitignored as well;
+    // firestore.rules.example is the tracked template without hashes.
+    //
+    // New code (new part or replacement code): add ONE line to the map,
+    //   "<sha256 hex, lowercase>": "<pack>/<part>",
+    // e.g. "...": "videostudio/teil-2". Nothing else has to change.
+    // ------------------------------------------------------------------
+    function gateCodeTargets() {
+      return {
+        "<sha256 hex of the Teil-1 code, see gate-codes.local.json>": "videostudio/teil-1"
+      };
+    }
+
+    function gateCodeHash(code) {
+      return hashing.sha256(code).toHexString().lower();
+    }
+
+    function resourceLeadFields() {
+      return [
+        "formVersion",
+        "createdAt",
+        "email",
+        "code",
+        "pack",
+        "part",
+        "consent",
+        "consentText",
+        "marketingConsent",
+        "marketingConsentText",
+        "consentVersion",
+        "doubleOptIn",
+        "language",
+        "page",
+        "submittedAtClient"
+      ];
+    }
+
+    function isValidResourceLead() {
+      let data = request.resource.data;
+
+      return data.keys().hasOnly(resourceLeadFields())
+        && data.keys().hasAll(resourceLeadFields())
+        && data.formVersion == 1
+        && data.createdAt == request.time
+        && data.email is string
+        && data.email.size() >= 5
+        && data.email.size() <= 254
+        && data.email == data.email.lower()
+        && data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && data.code is string
+        && data.code.size() >= 4
+        && data.code.size() <= 32
+        && data.pack is string
+        && data.pack.matches('^[a-z0-9-]{1,40}$')
+        && data.part is string
+        && data.part.matches('^[a-z0-9-]{1,40}$')
+        && gateCodeTargets().get(gateCodeHash(data.code), "") == data.pack + "/" + data.part
+        && data.consent == true
+        && validShortText(data.consentText, 800)
+        && data.consentText.size() > 0
+        && data.marketingConsent is bool
+        && validShortText(data.marketingConsentText, 800)
+        && data.consentVersion == 1
+        && data.doubleOptIn == "pending"
+        && validShortText(data.language, 8)
+        && validShortText(data.page, 240)
+        && validShortText(data.submittedAtClient, 40);
+    }
+
+    match /resourceLeads/{leadId} {
+      allow create: if isValidResourceLead();
+      allow read, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
