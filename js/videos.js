@@ -28,6 +28,296 @@
 
 const VIDEOS = [
   {
+    // Serie "KI schneidet deine Videos" (Teile und Ressourcen-Gate, rein datengetrieben).
+    // Alle Platzhalter sind mit TODO(release) markiert; die Reihenfolge der
+    // Release-Schritte steht in Videos/Video Studio Agent Tutorial/PROJECT.md.
+    // Ein neuer Teil braucht nur einen weiteren Eintrag in "parts" (id "teil-N")
+    // und, wenn er einen eigenen Code bekommt, einen Hash in firestore.rules.
+    "id": "videostudio",
+    "aliases": [
+      "video-studio-agent",
+      "videostudio-serie",
+      "videostudio-teil-1",
+      "videostudio-teil-2",
+      "videostudio-teil-3"
+    ],
+    "series": true,
+    // TODO(release): Echtes Datum von Teil 1 als ISO "YYYY-MM-DD" eintragen, nur zusammen mit youtubeId darunter.
+    "publishedAt": "coming-soon",
+    // TODO(release): YouTube-ID von Teil 1 eintragen (gleich wie parts[0].youtubeId), sonst hält die Startseiten-Promo "videostudio" für eine Video-ID.
+    "youtubeId": null,
+    // TODO(release): Finales Serien-Thumbnail (1672x941) nach images/ legen und hier verlinken.
+    "thumbnailUrl": "images/videostudio-serie.png",
+    "title": {
+      "de": "KI schneidet deine Videos: die Serie",
+      "en": "AI edits your videos: the series"
+    },
+    "description": {
+      "de": "Drei Teile, ein Ziel: KI-Agenten schneiden deine Videos. Teil 1 baut deinen eigenen Video-Studio-Agenten für Longform, Teil 2 macht Shorts mit API-Anbindung, Teil 3 erzeugt Cinematic-Clips über Video-APIs. Zu jedem Teil gibt es ein kostenloses Ressourcenpaket; der Code dafür steht im Video.",
+      "en": "Three parts, one goal: AI agents edit your videos. Part 1 builds your own video studio agent for longform, part 2 produces shorts with an API connection, part 3 creates cinematic clips through video APIs. Each part comes with a free resource pack; the unlock code is shown in the video."
+    },
+    "gate": {
+      "id": "videostudio",
+      // TODO(release): Teaser-Stichpunkte (3 bis 5, DE und EN) an den finalen Paketinhalt anpassen.
+      "teaser": {
+        "de": [
+          "Setup-Prompt für Codex oder Claude Code, mit dem dein Agent das Studio in einem neuen Ordner aufbaut",
+          "Ordnerstruktur und Anleitung für ein wiederverwendbares Video-Studio mit deiner eigenen Marke",
+          "Links zu Hyperframes, ElevenLabs, OBS-Audiospuren und den Agenten-Dokumentationen",
+          "Zugriff auf alle drei Teile der Serie, auch auf die Pakete, die noch kommen"
+        ],
+        "en": [
+          "Setup prompt for Codex or Claude Code that lets your agent build the studio in a fresh folder",
+          "Folder structure and guide for a reusable video studio with your own brand",
+          "Links to Hyperframes, ElevenLabs, OBS audio tracks and the agent documentation",
+          "Access to all three parts of the series, including the packs still to come"
+        ]
+      }
+    },
+    "parts": [
+      {
+        "id": "teil-1",
+        "label": { "de": "Teil 1", "en": "Part 1" },
+        "title": {
+          "de": "Dein eigener Video-Studio-Agent (Longform)",
+          "en": "Your own video studio agent (longform)"
+        },
+        // TODO(release): Auf "published" stellen, sobald das Video online ist.
+        "status": "draft",
+        // TODO(release): YouTube-ID von Teil 1 eintragen (11 Zeichen aus der Video-URL).
+        "youtubeId": null,
+        // TODO(release): Summary an das fertige Video anpassen.
+        "summary": {
+          "de": "Du richtest in einem leeren Ordner einen Agenten ein, der deine Marke kennt, Motion-Graphics rendert, deine Aufnahme schneidet und das fertige MP4 prüft. Das Paket enthält den Setup-Prompt, den Aufbau des Starter-Pakets und alle Werkzeuge aus dem Video.",
+          "en": "You set up an agent in an empty folder that knows your brand, renders motion graphics, edits your recording and checks the finished MP4. The pack contains the setup prompt, the starter package layout and every tool shown in the video."
+        },
+        "sections": [
+          {
+            "heading": { "de": "Setup-Prompt", "en": "Setup prompt" },
+            "type": "prompts",
+            "items": [
+              {
+                "title": {
+                  "de": "Starter-Prompt: dein Video-Studio in einem neuen Ordner",
+                  "en": "Starter prompt: your video studio in a fresh folder"
+                },
+                // TODO(release): Finalen Setup-Prompt aus dem Starter-Paket einsetzen (aktuell Entwurf aus starter-prompt-de.md).
+                "content": `Hilf mir, in diesem Ordner mein eigenes wiederverwendbares KI-Videostudio
+aufzubauen. Ich nutze bereits Codex oder Claude Code. Das Studio soll meine eigene
+Marke, meinen Grafikstil und meine bestätigten Vorlieben verwenden.
+
+Gehe schrittweise vor und prüfe jeden wichtigen Schritt:
+
+1. Prüfe Betriebssystem, vorhandene Werkzeuge und Projektanweisungen. Nutze
+   vorhandene Installationen. Richte Hyperframes mit seinen offiziellen Skills
+   sowie die benötigten lokalen Video-Werkzeuge ein. Bei einer vorhandenen
+   Plugin-Installation nutze deren vorgesehenen Weg. Prüfe die aktuellen offiziellen
+   Anleitungen und rendere zuerst einen sehr kurzen Funktionstest.
+
+2. Frage mich kompakt nach Marke, Zielgruppe, Logo, Farben, Schriften und visuellen
+   Beispielen. Wenn noch keine Identität existiert, schlage wenige klare Richtungen
+   zur Auswahl vor. Übernimm keine fremde Marke als meine. Speichere die gewählte
+   Identität zentral, mit einer kurzen Einstiegskonfiguration für meinen Agenten.
+
+3. Erstelle drei passende Motion-Graphics-Beispiele: eine Keyword-/Sprecherkarte,
+   eine erklärende Punkt- oder Vergleichsgrafik und eine räumlich bewegte Website-
+   oder Video-Vorschau. Zeige Vorschauen, nimm mein Feedback auf und speichere
+   bestätigte Varianten mit bearbeitbarer Quelle, Nutzungszweck und Renderbefehl
+   in einer kleinen Bibliothek. Skaliere diese später nach tatsächlichem Bedarf.
+
+4. Biete ElevenLabs als optionales Audio-Modul an. Erkläre den konkreten Nutzen
+   und mögliche Nutzungskosten, bevor du kostenpflichtige Anfragen startest.
+   Führe mich durch die offizielle Einrichtung. API-Schlüssel gehören ausschließlich
+   in lokale, von Git ausgeschlossene Umgebungsdateien, niemals in den Chat.
+   Erhalte meine Originalsprache; ersetze oder klone meine Stimme nur auf Wunsch.
+
+5. Führe mich zu einer kurzen Testaufnahme mit getrennten Kamera- und Bildschirm-
+   Dateien sowie isoliertem Mikrofonton. Prüfe Synchronisation und Lippenbewegung
+   am tatsächlichen Material. Verwende eine einzige Sprachspur im fertigen Video.
+
+6. Bearbeite diesen Test nach dem vereinbarten Auftrag: sinnvolle Schnitte,
+   lesbare Grafiken, passende Kamera-Ausschnitte, ruhige Übergänge und klarer Ton.
+   Unterscheide ausdrücklich zwischen komplettem Schnitt und reinen Grafik-Overlays.
+   Erhalte die Originaldateien. Liefere Vorschau, fertiges MP4 und Produktionsquellen.
+   Prüfe das tatsächliche Exportvideo einschließlich Ton, Anfang und Ende.
+
+7. Speichere ausdrücklich bestätigte Likes/Dislikes und freigegebene Assets so,
+   dass ein neuer Chat sie findet. Unterscheide projektbezogene Änderungen von
+   allgemeinen Vorlieben. Dokumentiere Versionen, aktuelle Dateien und nächste
+   Schritte. Prüfe die Wiederverwendung an einem zweiten kleinen Beispiel.
+
+Erkläre Entscheidungen kurz. Frage nur nach fehlenden Angaben, die das Ergebnis
+wesentlich beeinflussen. Behaupte keine Installation, Verbindung oder erfolgreiche
+Prüfung, die du nicht tatsächlich durchgeführt hast. Beginne mit der Bestandsaufnahme
+und dem kompakten Marken-Interview.`
+              }
+            ]
+          },
+          {
+            "heading": {
+              "de": "So ist das Starter-Paket aufgebaut",
+              "en": "How the starter package is structured"
+            },
+            "type": "text",
+            "items": [
+              {
+                // TODO(release): Ordnerbaum (DE und EN) mit der finalen Struktur des Starter-Pakets abgleichen.
+                "html": {
+                  "de": `<p>Der Agent legt diese Struktur in einem neuen, leeren Ordner an. Marke, Vorlieben und freigegebene Vorlagen liegen zentral, jedes Video bekommt einen eigenen Projektordner. Der Aufbau ist eine Konvention aus dem Video, keine Vorgabe von Codex oder Hyperframes.</p>
+<pre class="resource-tree">my-video-studio/
+  AGENTS.md
+  brand/
+    tokens.json
+    identity.md
+    motion.md
+    preferences.md
+  library/
+    index.json
+    approved/
+  projects/
+    first-video/
+      PROJECT.md
+      project.json
+      inputs/
+      transcripts/
+      graphics/
+      previews/
+      exports/
+  .agents/skills/
+  scripts/
+  .env.example
+  .gitignore
+  README.md</pre>
+<p>Für Claude Code kommt eine kleine Einstiegsdatei dazu, die auf dieselben Marken- und Workflow-Regeln verweist. API-Schlüssel gehören nur in lokale Umgebungsdateien, nie in den Chat und nie ins Repo.</p>`,
+                  "en": `<p>The agent creates this structure in a fresh, empty folder. Brand, preferences and approved templates live in one place, every video gets its own project folder. The layout is a convention from the video, not a requirement of Codex or Hyperframes.</p>
+<pre class="resource-tree">my-video-studio/
+  AGENTS.md
+  brand/
+    tokens.json
+    identity.md
+    motion.md
+    preferences.md
+  library/
+    index.json
+    approved/
+  projects/
+    first-video/
+      PROJECT.md
+      project.json
+      inputs/
+      transcripts/
+      graphics/
+      previews/
+      exports/
+  .agents/skills/
+  scripts/
+  .env.example
+  .gitignore
+  README.md</pre>
+<p>For Claude Code, a small entry file points to the same brand and workflow rules. API keys belong in local environment files only, never in the chat and never in the repo.</p>`
+                }
+              }
+            ]
+          },
+          {
+            "heading": { "de": "Werkzeuge", "en": "Tools" },
+            "type": "links",
+            "items": [
+              {
+                "label": "Hyperframes auf GitHub",
+                "url": "https://github.com/heygen-com/hyperframes",
+                "description": {
+                  "de": "Der Renderer, mit dem dein Agent HTML zu Video macht. Mit offiziellen Skills für Codex und Claude Code.",
+                  "en": "The renderer your agent uses to turn HTML into video. Comes with official skills for Codex and Claude Code."
+                }
+              },
+              {
+                "label": "ElevenLabs",
+                "url": "https://elevenlabs.io/",
+                "description": {
+                  "de": "Optionales Audio-Modul für Sprachausgabe und Stimmen. Kostenpflichtig; der API-Schlüssel gehört in eine lokale Umgebungsdatei.",
+                  "en": "Optional audio module for speech and voices. Paid; the API key belongs in a local environment file."
+                }
+              },
+              {
+                "label": { "de": "OBS: Audio-Mixer-Guide (Spuren zuweisen)", "en": "OBS: Audio Mixer Guide (assigning tracks)" },
+                "url": "https://obsproject.com/kb/audio-mixer-guide",
+                "description": {
+                  "de": "So landen Mikrofon und Systemton auf getrennten Spuren, damit der Agent sauber schneiden kann.",
+                  "en": "How to put microphone and system audio on separate tracks so the agent can edit cleanly."
+                }
+              },
+              {
+                "label": { "de": "Claude Code: Dokumentation", "en": "Claude Code: documentation" },
+                "url": "https://code.claude.com/docs/en/overview",
+                "description": {
+                  "de": "Einstieg, Skills und Projektanweisungen für Claude Code.",
+                  "en": "Getting started, skills and project instructions for Claude Code."
+                }
+              },
+              {
+                "label": { "de": "Codex: AGENTS.md verstehen", "en": "Codex: understanding AGENTS.md" },
+                "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+                "description": {
+                  "de": "Wie Codex die Projektanweisungen aus AGENTS.md liest und anwendet.",
+                  "en": "How Codex reads and applies the project instructions in AGENTS.md."
+                }
+              }
+            ]
+          },
+          {
+            "heading": { "de": "Starter-Paket herunterladen", "en": "Download the starter package" },
+            "type": "links",
+            "icon": "fa-box-open",
+            "items": [
+              {
+                "label": { "de": "Starter-Paket auf GitHub", "en": "Starter package on GitHub" },
+                // TODO(release): Echte GitHub-URL des veröffentlichten Starter-Pakets eintragen (aktuell Platzhalter, Repo existiert noch nicht).
+                "url": "https://github.com/JulianKarge/video-studio-starter",
+                "description": {
+                  "de": "Ordnerstruktur, AGENTS.md, Beispiel-Skripte und Lizenzhinweise zum Herunterladen. Kommt mit dem Video online.",
+                  "en": "Folder structure, AGENTS.md, example scripts and license notes to download. Goes live with the video."
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "teil-2",
+        "label": { "de": "Teil 2", "en": "Part 2" },
+        "title": {
+          "de": "Shorts mit API-Anbindung (Shortform)",
+          "en": "Shorts with an API connection (shortform)"
+        },
+        // TODO(release Teil 2): status "published", youtubeId, sections füllen und den Code-Hash in firestore.rules eintragen.
+        "status": "coming-soon",
+        "youtubeId": null,
+        "summary": {
+          "de": "Dein Agent schneidet Shorts im 9:16-Format: Hooks, Captions und ein Ablauf, der auch fremdes Videomaterial über eine API verarbeitet. Das Paket folgt mit dem Video.",
+          "en": "Your agent cuts shorts in 9:16: hooks, captions and a flow that also processes third-party footage through an API. The pack follows with the video."
+        },
+        "sections": []
+      },
+      {
+        "id": "teil-3",
+        "label": { "de": "Teil 3", "en": "Part 3" },
+        "title": {
+          "de": "Cinematic-Clips über Video-APIs (Movie-Tool)",
+          "en": "Cinematic clips through video APIs (movie tool)"
+        },
+        // TODO(release Teil 3): status "published", youtubeId, sections füllen und den Code-Hash in firestore.rules eintragen.
+        "status": "coming-soon",
+        "youtubeId": null,
+        "summary": {
+          "de": "Slow-Mo, Themes und Übergänge als Cinematic-Clips, erzeugt über Video-APIs wie Higgsfield und gesteuert aus Claude Code. Das Paket folgt mit dem Video.",
+          "en": "Slow-mo, themes and transitions as cinematic clips, generated through video APIs such as Higgsfield and controlled from Claude Code. The pack follows with the video."
+        },
+        "sections": []
+      }
+    ]
+  },
+  {
     "id": "jev",
     "aliases": [
       "typesafe-jev",
