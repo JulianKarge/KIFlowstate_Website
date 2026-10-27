@@ -116,6 +116,43 @@
     }, 1600);
   };
 
+  /* ── series helpers ──────────────────────────────────────────
+   * A series entry (`video.series === true`) bundles several parts that
+   * share one resource gate. Parts are addressable through the hash
+   * `#<seriesId>-<partId>` (listed in the entry's aliases). The last part a
+   * visitor picked is kept in page memory so `#<seriesId>` reopens it.
+   * ────────────────────────────────────────────────────────── */
+  const GATE_STORAGE_PREFIX = "kif_pack:";
+  const activeParts = new Map();
+
+  const partHashId = (video, part) => `${video.id}-${part.id}`;
+
+  const findPart = (video, id) => {
+    if (!video || !Array.isArray(video.parts) || !id) return null;
+    return video.parts.find((p) => p.id === id || partHashId(video, p) === id) || null;
+  };
+
+  const resolvePart = (video, requestedId) => {
+    if (!video?.series || !Array.isArray(video.parts) || !video.parts.length) return null;
+    return findPart(video, requestedId) || findPart(video, activeParts.get(video.id)) || video.parts[0];
+  };
+
+  // A part rendered through the regular player helpers. The id is the part
+  // hash id (never 11 characters), so it can not be mistaken for a YouTube id.
+  const partAsVideo = (video, part) => ({
+    id: partHashId(video, part),
+    youtubeId: part.status === "published" ? part.youtubeId : null,
+    thumbnailUrl: part.thumbnailUrl || (part.status === "published" ? undefined : video.thumbnailUrl),
+    title: part.title,
+  });
+
+  // resource-gate.js owns the unlock state; until it has loaded (or if the
+  // module failed), fall back to the same localStorage key it writes.
+  const isGateUnlocked = (gateId) => {
+    if (window.KIResourceGate) return window.KIResourceGate.isUnlocked(gateId);
+    try { return !!localStorage.getItem(GATE_STORAGE_PREFIX + gateId); } catch { return false; }
+  };
+
   /* ── rendering ───────────────────────────────────────────── */
   const searchInput = document.getElementById("video-search");
   const searchStatus = document.getElementById("video-search-status");
@@ -400,9 +437,246 @@
     player.replaceChildren(frame);
   };
 
-  const renderVideo = (video, { autoplay = false } = {}) => {
+  // Player facade: YouTube thumbnail with click-to-play, a static draft
+  // thumbnail, or the "coming soon" placeholder.
+  const renderPlayer = ({ ytId, heroThumb, comingSoon = false }) => {
+    if (ytId) {
+      return `<div class="video-player" data-yt-id="${escapeHtml(ytId)}">
+              <img
+                src="${escapeHtml(heroThumb)}"
+                alt=""
+                loading="lazy"
+                onerror="this.onerror=null;this.src='${ytThumb(ytId)}'"
+              />
+              <button type="button" class="video-player-play" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
+                <i class="fas fa-play" aria-hidden="true"></i>
+              </button>
+            </div>`;
+    }
+    if (heroThumb && !comingSoon) {
+      return `<div class="video-player video-player-draft">
+                <img
+                  src="${escapeHtml(heroThumb)}"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>`;
+    }
+    return `<div class="video-player video-player-placeholder" aria-label="${escapeHtml(t("resources_coming_soon", "Kommt bald"))}">
+              <span class="video-player-placeholder-icon" aria-hidden="true">
+                <i class="fas fa-video"></i>
+              </span>
+              <span>${escapeHtml(t("resources_coming_soon", "Kommt bald"))}</span>
+            </div>`;
+  };
+
+  const renderPartsBar = (video, active) => `
+      <nav class="series-parts" aria-label="${escapeHtml(t("resources_series_parts", "Teile der Serie"))}">
+        ${video.parts.map((p, i) => {
+          const isActive = p.id === active.id;
+          const published = p.status === "published";
+          const thumb = published ? thumbUrl(partAsVideo(video, p), "small") : "";
+          const status = published
+            ? t("resources_series_now", "Jetzt")
+            : t("resources_series_soon", "Kommt bald");
+          return `
+          <button
+            type="button"
+            class="series-part-tab${isActive ? " is-active" : ""}"
+            aria-pressed="${isActive}"
+            data-part-id="${escapeHtml(p.id)}"
+          >
+            ${thumb
+              ? `<span class="series-part-thumb"><img src="${escapeHtml(thumb)}" alt="" loading="lazy" /></span>`
+              : `<span class="series-part-index" aria-hidden="true">${i + 1}</span>`}
+            <span class="series-part-meta">
+              <span class="series-part-label">${escapeHtml(pick(p.label))}</span>
+              <span class="series-part-title">${escapeHtml(pick(p.title))}</span>
+              <span class="series-part-status${published ? " is-live" : ""}">${escapeHtml(status)}</span>
+            </span>
+          </button>`;
+        }).join("")}
+      </nav>
+  `;
+
+  // One gate card per series: the locked form and the unlocked content are
+  // both rendered; resource-gate.js toggles which one is visible. The exact
+  // consent wording is stored with each lead, so it lives in translations.js
+  // and is read back from the DOM at submit time.
+  const renderGate = (video, part) => {
+    const gate = video.gate;
+    if (!gate) return renderSections(part);
+
+    const unlocked = isGateUnlocked(gate.id);
+    const teaser = pick(gate.teaser);
+    const teaserItems = Array.isArray(teaser) ? teaser : [];
+    const comingSoon = part.status === "coming-soon";
+    const consentText = t("gate_consent_text", "");
+    const consentLink = t("gate_consent_link", "Datenschutzerklärung");
+    const consentHtml = escapeHtml(consentText).replace(
+      escapeHtml(consentLink),
+      `<a href="datenschutz.html#ressourcenpakete" target="_blank" rel="noopener noreferrer">${escapeHtml(consentLink)}</a>`
+    );
+    const partOrder = video.parts
+      .map((p) => p.id)
+      .sort((a, b) => (a === part.id ? -1 : b === part.id ? 1 : 0));
+    const field = (name) => `gate-${escapeHtml(gate.id)}-${name}`;
+
+    return `
+      <section
+        class="resource-gate${unlocked ? " is-unlocked" : ""}"
+        data-gate-id="${escapeHtml(gate.id)}"
+        data-part-id="${escapeHtml(part.id)}"
+        data-part-order="${escapeHtml(partOrder.join(","))}"
+        aria-labelledby="${field("title")}"
+      >
+        <div class="resource-gate-locked"${unlocked ? " hidden" : ""}>
+          <span class="resource-gate-kicker">${escapeHtml(t("gate_kicker_locked", "Kostenloses Ressourcenpaket"))}</span>
+          <h3 id="${field("title")}" class="resource-gate-title">${escapeHtml(t("gate_title_locked", "Hol dir das Paket zur Serie"))}</h3>
+          ${teaserItems.length
+            ? `<ul class="resource-gate-teaser">
+                ${teaserItems.map((item) => `<li><i class="fas fa-check" aria-hidden="true"></i><span>${escapeHtml(item)}</span></li>`).join("")}
+              </ul>`
+            : ""}
+          <form class="resource-gate-form" novalidate>
+            <p class="resource-gate-notice">${escapeHtml(t("gate_notice", "Das Paket ist kostenlos. Dafür trägst du dich mit deiner E-Mail in die Liste zu dieser Serie ein."))}</p>
+            <div class="resource-gate-fields">
+              <label class="resource-gate-field" for="${field("email")}">
+                <span>${escapeHtml(t("gate_email_label", "E-Mail"))}</span>
+                <input
+                  id="${field("email")}"
+                  type="email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                  inputmode="email"
+                  spellcheck="false"
+                  placeholder="${escapeHtml(t("gate_email_placeholder", "du@beispiel.de"))}"
+                />
+              </label>
+              <label class="resource-gate-field" for="${field("code")}">
+                <span>${escapeHtml(t("gate_code_label", "Code aus dem Video"))}</span>
+                <input
+                  id="${field("code")}"
+                  type="text"
+                  name="code"
+                  required
+                  autocapitalize="characters"
+                  autocomplete="off"
+                  autocorrect="off"
+                  spellcheck="false"
+                  maxlength="32"
+                  placeholder="${escapeHtml(t("gate_code_placeholder", "Code aus dem Video"))}"
+                />
+              </label>
+            </div>
+            <label class="resource-gate-check" for="${field("consent")}">
+              <input id="${field("consent")}" type="checkbox" name="consent" required />
+              <span class="resource-gate-check-text">
+                <span class="resource-gate-check-badge">${escapeHtml(t("gate_required_badge", "Pflicht"))}</span>
+                <span data-consent-text>${consentHtml}</span>
+              </span>
+            </label>
+            <label class="resource-gate-check is-optional" for="${field("marketing")}">
+              <input id="${field("marketing")}" type="checkbox" name="marketing" />
+              <span class="resource-gate-check-text">
+                <span class="resource-gate-check-badge">${escapeHtml(t("gate_optional_badge", "Freiwillig"))}</span>
+                <span data-marketing-text>${escapeHtml(t("gate_marketing_text", ""))}</span>
+              </span>
+            </label>
+            <div class="resource-gate-actions">
+              <button type="submit" class="resource-gate-submit">
+                <i class="fas fa-unlock" aria-hidden="true"></i>
+                <span>${escapeHtml(t("gate_submit", "Paket freischalten"))}</span>
+              </button>
+              <p class="resource-gate-status" role="status" aria-live="polite"></p>
+            </div>
+            <p class="resource-gate-note">${escapeHtml(t("gate_doi_note", ""))}</p>
+            ${comingSoon
+              ? `<p class="resource-gate-note resource-gate-note-code">${escapeHtml(t("gate_coming_soon_code", "Der Code für diesen Teil kommt mit dem Video. Ein Code aus Teil 1 schaltet die ganze Serie frei."))}</p>`
+              : ""}
+          </form>
+        </div>
+        <div class="resource-gate-unlocked"${unlocked ? "" : " hidden"}>
+          <span class="resource-gate-kicker">${escapeHtml(t("gate_kicker_unlocked", "Freigeschaltet"))}</span>
+          <p class="resource-gate-unlocked-line" tabindex="-1">
+            <i class="fas fa-circle-check" aria-hidden="true"></i>
+            ${escapeHtml(t("gate_unlocked_line", "Du hast Zugriff auf alle Teile dieser Serie."))}
+          </p>
+          ${comingSoon
+            ? `<p class="resource-gate-coming">${escapeHtml(t("gate_unlocked_coming_soon", "Die Inhalte zu diesem Teil erscheinen mit dem Video."))}</p>`
+            : renderSections(part)}
+        </div>
+      </section>
+    `;
+  };
+
+  const renderSeries = (video, part, { autoplay = false } = {}) => {
+    const title = pick(video.title);
+    const desc  = pick(video.description);
+    const playable = partAsVideo(video, part);
+    const ytId = videoYouTubeId(playable);
+    const heroThumb = thumbUrl(playable, "hq");
+    const partStatus = part.status === "published"
+      ? t("resources_series_now", "Jetzt")
+      : t("resources_series_soon", "Kommt bald");
+
+    content.innerHTML = `
+      <article class="resource-video resource-series" data-video-id="${escapeHtml(video.id)}" data-part-id="${escapeHtml(part.id)}">
+        <header class="video-header series-header">
+          <div>
+            <span class="series-kicker">
+              <i class="fas fa-layer-group" aria-hidden="true"></i>
+              ${escapeHtml(t("resources_series_kicker", "Videoserie"))} · ${video.parts.length} ${escapeHtml(t("resources_series_parts_count", "Teile"))}
+            </span>
+            <h2>${escapeHtml(title)}</h2>
+            <div class="video-header-meta">
+              ${video.publishedAt ? `<span><i class="far fa-calendar" aria-hidden="true"></i> ${escapeHtml(formatDate(video.publishedAt))}</span>` : ""}
+            </div>
+          </div>
+          <div class="video-header-actions">
+            <button type="button" class="btn-share" data-share-id="${escapeHtml(partHashId(video, part))}">
+              <i class="fas fa-link" aria-hidden="true"></i>
+              <span>${escapeHtml(t("resources_share", "Link kopieren"))}</span>
+            </button>
+          </div>
+        </header>
+
+        ${desc ? `<p class="video-description">${escapeHtml(desc)}</p>` : ""}
+
+        ${renderPartsBar(video, part)}
+
+        <section class="series-part" aria-labelledby="series-part-title">
+          <div class="video-overview series-overview">
+            ${renderPlayer({ ytId, heroThumb, comingSoon: part.status === "coming-soon" })}
+            <div class="series-part-head">
+              <span class="series-part-kicker">${escapeHtml(pick(part.label))} ${escapeHtml(t("resources_series_part_of", "von"))} ${video.parts.length} · ${escapeHtml(partStatus)}</span>
+              <h3 id="series-part-title">${escapeHtml(pick(part.title))}</h3>
+              ${part.summary ? `<p class="series-part-summary">${escapeHtml(pick(part.summary))}</p>` : ""}
+              ${ytId
+                ? `<a class="btn-yt" href="${ytWatch(ytId)}" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-youtube" aria-hidden="true"></i>
+                    <span>${escapeHtml(t("resources_open_yt", "Auf YouTube ansehen"))}</span>
+                  </a>`
+                : ""}
+            </div>
+          </div>
+        </section>
+
+        ${renderGate(video, part)}
+      </article>
+    `;
+    if (autoplay) startPlayer(content.querySelector(".video-player"), playable);
+    window.KIResourceGate?.refresh();
+  };
+
+  const renderVideo = (video, { autoplay = false, part = null } = {}) => {
     if (!video) {
       renderEmpty();
+      return;
+    }
+    if (video.series && part) {
+      renderSeries(video, part, { autoplay });
       return;
     }
 
@@ -415,32 +689,7 @@
     content.innerHTML = `
       <article class="resource-video" data-video-id="${escapeHtml(video.id)}">
         <div class="video-overview">
-        ${ytId
-          ? `<div class="video-player" data-yt-id="${escapeHtml(ytId)}">
-              <img
-                src="${escapeHtml(heroThumb)}"
-                alt=""
-                loading="lazy"
-                onerror="this.onerror=null;this.src='${ytThumb(ytId)}'"
-              />
-              <button type="button" class="video-player-play" aria-label="${escapeHtml(t("resources_play", "Video abspielen"))}">
-                <i class="fas fa-play" aria-hidden="true"></i>
-              </button>
-            </div>`
-          : heroThumb
-            ? `<div class="video-player video-player-draft">
-                <img
-                  src="${escapeHtml(heroThumb)}"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>`
-          : `<div class="video-player video-player-placeholder" aria-label="${escapeHtml(t("resources_coming_soon", "Kommt bald"))}">
-              <span class="video-player-placeholder-icon" aria-hidden="true">
-                <i class="fas fa-video"></i>
-              </span>
-              <span>${escapeHtml(t("resources_coming_soon", "Kommt bald"))}</span>
-            </div>`}
+        ${renderPlayer({ ytId, heroThumb })}
 
         <header class="video-header">
           <div>
@@ -497,7 +746,9 @@
   };
 
   /* ── interactions ────────────────────────────────────────── */
-  const findVideo = (id) => VIDEOS.find((v) => v.id === id || v.youtubeId === id || v.aliases?.includes(id));
+  // Series parts resolve without aliases, so a new part only needs videos.js.
+  const findVideo = (id) => VIDEOS.find((v) => v.id === id || v.youtubeId === id || v.aliases?.includes(id)
+    || (v.series && v.parts?.some((p) => partHashId(v, p) === id)));
 
   searchInput?.addEventListener("input", filterVideos);
 
@@ -547,15 +798,24 @@
       renderEmpty();
       return;
     }
+    const part = resolvePart(video, id);
+    if (part) activeParts.set(video.id, part.id);
     const restoreFocus = sidebar.contains(document.activeElement);
+    const restorePartFocus = !!content.querySelector(".series-part-tab:focus");
     renderSidebar(video.id);
     if (restoreFocus) restoreSidebarFocus(video.id);
-    renderVideo(video, { autoplay });
+    renderVideo(video, { autoplay, part });
+    if (restorePartFocus && part) {
+      content.querySelector(`.series-part-tab[data-part-id="${part.id}"]`)?.focus({ preventScroll: true });
+    }
     // Wait one frame so layout has settled before measuring.
     requestAnimationFrame(refreshPromptCollapsibility);
 
     if (updateHash) {
-      const newHash = "#" + video.id;
+      // A hash that named a part explicitly stays part-specific
+      // (#videostudio-teil-2); the series id alone stays as it is.
+      const explicitPart = part && id !== video.id && findPart(video, id);
+      const newHash = "#" + (explicitPart ? partHashId(video, part) : video.id);
       if (location.hash !== newHash) {
         history.replaceState(null, "", newHash);
       }
@@ -606,11 +866,23 @@
       }
       return;
     }
+    // Switch the active part of a series
+    const partTab = e.target.closest(".series-part-tab");
+    if (partTab) {
+      const article = partTab.closest("[data-video-id]");
+      const video = findVideo(article?.dataset.videoId);
+      const part = findPart(video, partTab.dataset.partId);
+      if (video && part) setActive(partHashId(video, part));
+      return;
+    }
+
     // Play YouTube video (facade → iframe)
     const player = e.target.closest(".video-player");
     if (player && !player.querySelector("iframe")) {
-      const videoId = player.closest("[data-video-id]")?.dataset.videoId;
-      startPlayer(player, findVideo(videoId));
+      const article = player.closest("[data-video-id]");
+      const video = findVideo(article?.dataset.videoId);
+      const part = findPart(video, article?.dataset.partId);
+      startPlayer(player, video?.series && part ? partAsVideo(video, part) : video);
       return;
     }
 

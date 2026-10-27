@@ -22,3 +22,11 @@ export const firebaseConfig = {
 
 export const feedbackCollection =
   configValue("feedbackCollection") || "feedbackSubmissions";
+
+// Resource gate on resources.html (series packs). Same Firebase project.
+export const resourceLeadsCollection =
+  configValue("resourceLeadsCollection") || "resourceLeads";
+
+// Local testing only: "127.0.0.1:8080" points the gate at the Firestore
+// emulator. Leave empty in production; the generated env file never sets it.
+export const firestoreEmulatorHost = configValue("firestoreEmulatorHost");
