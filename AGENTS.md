@@ -1,85 +1,86 @@
 <claude-mem-context>
 # Memory Context
 
-# [Website] recent context, 2026-09-02 1:02am GMT+2
+# [Website] recent context, 2026-10-13 8:14pm GMT+2
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 50 obs (16.794t read) | 406.519t work | 96% savings
+Stats: 50 obs (18.212t read) | 737.721t work | 98% savings
 
-### Jul 24, 2026
-S446 Integrate 3D logo with realistic drop animation from viewport, bounce physics, interactive spinning, and brand color calibration into main website page (Jul 24, 11:39 PM)
-S447 Refactor mobile hero logo from hidden to subtle background animation that spins continuously behind headline content (Jul 24, 11:50 PM)
-### Jul 25, 2026
-S448 Fix mobile centering issue on website logo/element (Jul 25, 12:07 AM)
-S449 Fix the Rechnungs-showcase video demonstration by removing a popup that appeared during recording and replacing it with a simpler, inline call-to-action component (Jul 25, 12:13 AM)
-S450 Fix and publish the Rechnungs-showcase video fix: remove popup, add inline CTA, regenerate videos, and prepare for GitHub PR publication (Jul 25, 12:31 AM)
-S451 Fix Rechnungs-showcase video by removing popup appearing during recording and replacing with simpler, smoother inline CTA component (Jul 25, 12:33 AM)
-S452 Fix Rechnungs-showcase video playback: remove embedded video recording, eliminate popup that appeared during recording, replace CTA with simpler alternative (Jul 25, 12:33 AM)
-1654 12:54a ✅ Production Verification Script Selector Corrected
-1655 7:25a 🔵 Browser runtime unavailable for live site inspection
-1656 7:26a 🔵 Live site content fetched; 3D logo and background images not rendering
-1657 " 🔵 3D logo implementation architecture and background mode configuration discovered
-1658 " 🔵 HTML/CSS hero logo structure complete; 3D logo not called with backgroundMode enabled
-1659 " ✅ Mobile screenshot diagnostic harness created for live site inspection
-1660 7:27a ✅ Mobile review automation added for invoice showcase testing
-1661 " 🔵 Invoice Showcase CTA Popup Issue Identified
-1662 7:33a 🔵 Multi-Viewport Testing Infrastructure Established for Invoice Showcase
-1663 7:49a ✅ Mobile hero logo repositioning from hidden to background layer
-1664 " ✅ Invoice showcase mobile height made responsive with calc-based scaling
-1665 7:50a ✅ Mobile responsiveness verification script created for local testing
-1666 7:51a 🔵 Mobile verification script timeout due to missing local dev server
-1667 " ✅ Mobile verification script made flexible with CLI width arguments
-1668 7:52a 🔵 Video playback fails at mobile widths 320px and 390px, succeeds at 430px
-1669 7:53a ✅ Invoice showcase and hero logo responsive layout refactor
-1670 7:54a ✅ Changes committed and pushed to feature branch
-1671 " 🔵 GitHub API connector lacks PR creation permissions
-1672 " ✅ PR description staged for gh CLI fallback
-1673 " ✅ Pull request #3 created and marked ready for review
-1674 " ✅ Pull request #3 merged to main with squash strategy
-1675 " ✅ Merge completed and GitHub Pages deployment triggered
-1676 7:55a ✅ GitHub Pages build and deployment completed successfully
-1677 " ✅ Production verification script created for mobile and desktop
-S453 Integrate new YouTube video (Sgp9r4ZOn6k, "Does Europe still stand a chance in the AI race?") into KIFlowstate Website and identify video upload/processing skills (Jul 25, 7:56 AM)
 ### Aug 21, 2026
-1678 2:14p 🔵 Existing brand-video skill found in project
-1679 2:15p 🔵 KIFlowstate_Website project verified with dual skill systems
-1680 " 🔵 Comprehensive video production skill ecosystem identified across KIFlowstate projects
-1681 " 🔵 Global claude-video plugin with watch skill available for integration
-1682 " 🔵 Watch skill enables video analysis with frame extraction and transcription
-1683 2:16p 🔵 Existing videos.js infrastructure manages YouTube video metadata with bilingual support
-1684 " 🔵 Watch skill dependency missing: yt-dlp not installed
-1685 " 🔵 Watch skill setup incomplete: missing yt-dlp and Whisper API key configured
-1686 2:17p 🔵 YouTube oEmbed API request blocked with HTTP 403 Forbidden for new video
-1687 " 🔵 YouTube oEmbed 403 persists with User-Agent header; not bot-detection issue
-1688 2:18p 🟣 New video Sgp9r4ZOn6k added to website resources with bilingual metadata
-1689 2:19p ✅ Video Sgp9r4ZOn6k validated and integrated into rendering pipeline
-S454 Implement video upload skill integration for new video "europa-ki-rennen" (Europe AI Race) with proper site/version verification and source reference structure (Aug 21, 2:19 PM)
-1690 2:22p 🔵 Thumbnail source infrastructure identified outside project
-1691 " 🔵 Section rendering architecture documented: three content types with structured schema
-1692 2:23p ✅ Custom thumbnail deployed; video rendering supports draft/coming-soon states
-1693 " 🔵 Thumbnail resolution logic: custom override before YouTube fallback
-1694 2:33p 🟣 Video source documentation system implemented for AI geopolitics video
-1704 2:37p 🟣 New Video: "Europa KI-Rennen" Added with Complete Metadata and Validation
-1705 2:46p 🔵 KIFlowstate Website project has no GitHub workflows configured
-1706 " 🔵 GitHub Pages already configured for KIFlowstate_Website with custom domain
-1707 2:51p 🟣 Video resource with collapsible source cards system implemented
-1708 2:52p ✅ GitHub Pages deployment verified for video feature commit
-1709 " 🔵 End-to-end production verification: video feature live and operational
-1710 2:53p 🔵 Collapsible source card expansion non-functional in production
-1711 2:57p 🔵 Playwright test script created for resource card toggle validation
-1712 " 🔵 Resource card toggle and accessibility tests passed on live site
-S455 Implement video upload skill into KIFlowstate website starting with basics; verify correct site and version for YouTube video Sgp9r4ZOn6k (Aug 21, 2:57 PM)
-**Investigated**: Tested existing resource card functionality on live kiflowstate.de using Playwright automation—verified expand/collapse behavior, keyboard accessibility, thumbnail loading, link security attributes, console errors, and full card rendering across all 20 entries in production
+S464 Website section redesign: remove integrations section, improve appointment booking CTA visual flow, fix seam between method chapter and appointment section (Aug 21, 2:57 PM)
+### Sep 2, 2026
+1745 7:35p 🔵 Website section sequence and styling audit
+1746 7:41p 🔵 Integrations & Appointment Section Structure Mapped
+1747 7:45p 🔵 Appointment Section Copy & Styling Inventory
+1748 " ✅ Integrations Section Removed from Homepage
+1749 7:46p 🟣 Appointment Section Redesigned with 3-Step Process & Animated Crest
+1750 " 🔵 Integrations Marquee CSS Identified for Removal
+1751 " ✅ Integrations & Marquee CSS Blocks Deleted (Partial)
+1752 " 🔵 Orphaned Integrations/Marquee CSS in Media Queries Located
+1753 7:47p ✅ Orphaned Media Query Rules Partially Removed
+1754 " 🔵 Appointment Section CSS Structure & Anchors Located
+1755 " 🟣 Appointment Section CSS Refactored for Crest, Steps, Panel-Bar Design
+1756 7:48p 🔵 Dark Mode Appointment Rules Located for Update
+1757 " ✅ Dark Mode Appointment CSS Updated for New Design
+1758 " ✅ Responsive Appointment CSS Updated; Integrations Mobile Polish Removed
+1759 " 🔵 Orphaned .appointment-meta-item Rules Found in Responsive Breakpoints
+1760 " ✅ Final CSS Cleanup Complete; Marquee JavaScript Block Identified for Removal
+1761 7:49p ✅ Integrations Marquee JavaScript Block Removed
+1762 " 🟣 Translation Keys Updated for Appointment Redesign; Integrations Translations Removed
+1767 7:51p 🔵 Visual sampling of flowfield canvas and appointment section positioning
+1768 7:52p 🟣 Redesigned appointment section crest with wave lines and color matching
+1769 7:53p 🔵 Visual seam detected in flowfield canvas mask gradient at y=420
+1770 7:54p 🔵 Stage bottom edge color measured consistently across responsive viewports and themes
+1771 7:55p 🔴 Visual seam fixed by matching appointment section crest color to measured stage bottom edge
+1772 7:57p 🔵 CSS structure for appointment panel styling located
+1773 " ✅ Appointment panel bar wrapping improved for mobile
+1774 7:58p 🔵 Smoke tests pass in both German and English
+1775 " ✅ Website refactoring completed with CSS and HTML restructuring
+1776 " 🔵 Git validation confirms isolated changes to appointment section
+S466 Create new video page for "So kannst du KI Agenten kostenlos nutzen" with three interactive routes: OLLAMA + Hermes, Free Claude Code (local proxy router), and OpenCode, each with collapsible cards and installation instructions. (Sep 2, 7:58 PM)
+1777 9:35p 🔴 Appointment section crest-to-content spacing via CSS variable
+1778 9:37p 🔵 Crest-to-kicker spacing verified across all breakpoints and themes
+1779 " ✅ Visual verification screenshots captured for crest fix
+1780 9:38p 🔵 Appointment section visual edge consistency verified across viewports
+1781 9:39p 🔵 Gray-100 color token defines theme-specific page backgrounds
+1782 9:40p 🔴 Added responsive crest-fill token to fix appointment section color seams below 900px
+1783 9:41p 🔴 Appointment section color seams resolved across all viewports and themes
+1784 9:42p 🔵 Appointment section cleared final QA across 10 breakpoints and both themes
+### Sep 5, 2026
+1787 2:27p 🔵 Video resource system structure and supported section types
+1788 2:28p 🔵 Existing Ollama + Hermes Agent video entry found in resources
+1789 " 🔵 Video rendering logic supports draft and coming-soon states
+1790 " ✅ Video 19 thumbnail file present and ready
+1791 2:29p 🔵 Official documentation and setup information gathered for three video topics
+1792 " 🔵 OpenCode documentation and popular Ollama models identified
+1794 2:33p ✅ Playwright test suite created for vid19 resource page validation
+1795 " 🔵 vid19 resource page passes cross-viewport validation with no layout or console errors
+1796 2:35p 🟣 New video page "ki-agenten-kostenlos" created and validated
+1797 2:36p 🟣 Browser validation test created for internationalization checking
+1798 2:42p 🟣 Collapsible route grouping for video resource sections
+1799 2:44p ✅ Configured expandable routes for free AI agents video
+1800 2:46p 🟣 Added OpenCode installation section to KIFlowstate video resources page
+1802 2:49p ✅ New video page "ki-agenten-kostenlos" rendering with full component structure
+S486 Investigate website visual layering issue where white elements appear above blue elements; verify if recent git changes were pushed and deployed correctly (Sep 5, 2:50 PM)
+### Sep 26, 2026
+S488 Improve mobile user experience on the homepage—focus exclusively on mobile layout and styling without affecting desktop version. (Sep 26, 11:02 AM)
+S476 Find the full version of a song from a YouTube Shorts link (https://www.youtube.com/shorts/7TYzTqvmWOg) (Sep 26, 11:02 AM)
+S480 Configure winclipshot.exe process to remain active across PC restarts (Sep 26, 11:02 AM)
+S487 Research sidecar for KIFlowstate Website: Find 5-8 professional inspiration patterns for redesigning the #services section ("Was wir in Bewegung bringen") with scroll interactions, creative reveals, and sticky panels—aligned with the upgraded #method KI-Dschungel scrollytelling but with distinct animations. Avoid generic AI aesthetics; maintain German B2B clarity for Mittelstand audience. (Sep 26, 11:02 AM)
+S483 Research GitHub repositories and open-source examples with creative, polished presentations for (1) services/what we do sections and (2) process/transformation sections for KIFlowstate website redesign (Sep 26, 11:02 AM)
+S475 Audit website for navbar consistency and English translation accuracy across all pages, particularly comparing customer feedback and resources sections (Sep 26, 11:02 AM)
+S484 Verify rechnung-demo.html behavior and responsive layout - test live preview, localStorage persistence, email modal, and scroll/layout defects on desktop/mobile (Sep 26, 11:02 AM)
+**Investigated**: None yet - request queued for execution in primary session
 
-**Learned**: Resource cards use HTML details/summary elements for collapsible UI; embed resolves video ID at page load; player shows "Video unavailable" until YouTube upload goes public (self-heals without redeploy); thumbnail is 1.76 MB but could be optimized to 150-250 KB; all links properly secured with rel=noopener noreferrer; keyboard navigation fully functional (Enter toggles open state)
+**Learned**: No findings yet - awaiting tool execution to begin testing
 
-**Completed**: Deployment complete: commit dd7531b pushed to main branch, Pages build finished in 36s, production verified at www.kiflowstate.de. All 20 resource cards render correctly in order with no console errors, no horizontal overflow, expand/collapse works (72px closed → 409px open → 72px), keyboard accessible, thumbnail loads, links open in new tabs with security attributes
+**Completed**: None yet - session preparation phase
 
-**Next Steps**: Await YouTube video going public (player currently shows unavailable but will resolve automatically); optional thumbnail re-encoding from 1.76 MB to 150-250 KB if optimization desired; verify McKinsey link (S4 entry) which was blocked during automated fetch
+**Next Steps**: Primary session will start verification by: (1) Setting up local static server on available port, (2) Running Playwright tests or manual checks on rechnung-demo.html, (3) Testing localStorage for customer/invoice/counter data, (4) Verifying email modal functionality, (5) Testing responsive layout and scroll behavior on desktop/mobile viewports, (6) Documenting exact checks run and any functional issues found
 
 
-Access 407k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 738k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>
