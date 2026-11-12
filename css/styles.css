@@ -5317,6 +5317,16 @@ section:not(.hero) .container {
   background-size: 100% 100%;
   animation: tabWaveBreathe 4.2s ease-in-out infinite;
 }
+@keyframes tabWaveBreathe {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.04);
+  }
+}
 .ki-day-tab-weekday {
   font-size: 0.95rem;
   font-weight: 600;
