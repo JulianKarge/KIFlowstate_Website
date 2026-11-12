@@ -16,11 +16,12 @@ ui-debug.log
 serviceAccount*.json
 *-firebase-adminsdk-*.json
 
-# Local environment/deploy-time config. Never commit real Firebase values.
+# Local environment files. js/firebase-env.js IS committed: it holds only the public
+# Firebase web config, which the live forms need. Access is guarded by firestore.rules.
+# Never commit service account keys or .env files.
 .env
 .env.*
 !.env.example
-js/firebase-env.js
 
 # Local-only feedback dashboard. Do not publish this with the website.
 local-feedback-viewer/

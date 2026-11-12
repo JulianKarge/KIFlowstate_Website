@@ -74,7 +74,7 @@ if (missing.length > 0) {
 
 const output =
   "// Generated from .env.local by scripts/generate-firebase-env.js.\n" +
-  "// Do not edit manually. Do not commit this file.\n" +
+  "// Do not edit manually. Public web config only; committed so the live forms work.\n" +
   "window.__KIFLOWSTATE_FIREBASE_CONFIG__ = Object.freeze(" +
   JSON.stringify(config, null, 2) +
   ");\n";
