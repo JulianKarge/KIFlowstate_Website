@@ -46,8 +46,9 @@ const VIDEOS = [
     "publishedAt": "coming-soon",
     // TODO(release): YouTube-ID von Teil 1 eintragen (gleich wie parts[0].youtubeId), sonst hält die Startseiten-Promo "videostudio" für eine Video-ID.
     "youtubeId": null,
-    // TODO(release): Finales Serien-Thumbnail (1672x941) nach images/ legen und hier verlinken.
-    "thumbnailUrl": "images/videostudio-serie.png",
+    // Thumbnail von Teil 1 (Thumbnails/Vid24.png, 1280x720). Die Promo-Variante ist 1000x563.
+    "thumbnailUrl": "images/vid24-ki-editiert-alles.jpg",
+    "promoThumbnailUrl": "images/youtube-promo/videostudio.webp",
     "title": {
       "de": "KI schneidet deine Videos: die Serie",
       "en": "AI edits your videos: the series"
