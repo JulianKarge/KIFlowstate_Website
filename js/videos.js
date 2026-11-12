@@ -102,11 +102,22 @@ const VIDEOS = [
                   "en": "Onboarding prompt: set up your video studio from the starter package"
                 },
                 // Wörtlich aus ONBOARDING-PROMPT.md des Starter-Pakets
-                // (github.com/JulianKarge/LFVideo-Studio-Agent_KIFlowstate, Stand f68004f).
+                // (github.com/JulianKarge/LFVideo-Studio-Agent_KIFlowstate, Stand f68004f plus Klon-Schritt 0, im Paket lokal ergänzt).
                 // Bei Änderungen am Paket hier mitziehen.
                 "content": `Hilf mir, in diesem Ordner mein eigenes, wiederverwendbares KI-Video-Studio einzurichten.
-Ich nutze bereits Claude Code oder Codex. Lies zuerst AGENTS.md, dann arbeite die Skills
-in dieser Reihenfolge ab und prüfe jeden Schritt, bevor du ihn als erledigt meldest:
+Ich nutze bereits Claude Code oder Codex.
+
+0. Starter-Paket holen: Liegt in diesem Ordner noch keine AGENTS.md, dann klone zuerst das Paket.
+   Ist der Ordner leer, direkt hier hinein:
+   git clone https://github.com/JulianKarge/LFVideo-Studio-Agent_KIFlowstate.git .
+   Ist er nicht leer, klone in den Unterordner my-video-studio und arbeite ab dann nur dort.
+   Fehlt Git, zeig mir den Installationsbefehl oder den ZIP-Download von GitHub. Überschreibe
+   keine vorhandenen Dateien. Liegt das Paket schon hier, überspring diesen Schritt.
+
+Lies danach AGENTS.md. Die Skills liegen als Dateien unter .claude/skills/<name>/SKILL.md
+(für Codex unter .agents/skills/). Lies die jeweilige SKILL.md direkt, falls der Skill in
+dieser Sitzung noch nicht geladen ist. Arbeite die Skills in dieser Reihenfolge ab und prüfe
+jeden Schritt, bevor du ihn als erledigt meldest:
 
 1. Skill studio-setup: Prüfe Betriebssystem, Node, FFmpeg und die gepinnte Hyperframes-Version
    mit scripts/check-setup.mjs. Installiere nichts selbst, zeig mir stattdessen die fehlenden
