@@ -22,7 +22,9 @@
  *  • "text"     — free-form HTML paragraph(s).
  *                 items: [{ html }]   (HTML is rendered as-is)
  *
- *  The thumbnail is fetched automatically from YouTube — no extra work.
+ *  Thumbnails are local files: after adding a video run
+ *      python scripts/fetch-self-hosted-assets.py thumbs
+ *  It saves images/yt/<id>.jpg and <id>-sm.jpg. Nothing loads from YouTube until play.
  * ============================================================
  */
 
@@ -4795,7 +4797,7 @@ After indexing, stop and ask me what I want to build. I'll tell you which shadcn
   {
     id: "LDLa7NZ6eyc",
     title: "3D Websites erstellen war noch nie so einfach",
-    thumbnailUrl: "https://i.ytimg.com/vi/LDLa7NZ6eyc/maxresdefault.jpg",
+    thumbnailUrl: "images/yt/LDLa7NZ6eyc.jpg",
     publishedAt: "2026-04-29",
     description: {
       de: "Mit einem einzigen, gut strukturierten Claude-Prompt baust du eine komplette scroll-gesteuerte 3D-Video-Landingpage. Hier findest du den vollständigen Prompt zum Kopieren sowie die Tools und Inspirationen aus dem Video.",

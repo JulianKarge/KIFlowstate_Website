@@ -13,7 +13,9 @@ import { firebaseConfig, firestoreEmulatorHost, resourceLeadsCollection } from "
      the same CDN build feedback-page.js uses. */
 
 const FIREBASE_VERSION = "12.7.0";
-const FIREBASE_CDN = `https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}`;
+// Self-hosted copy of the Firebase SDK (js/vendor/firebase), so nothing loads from Google
+// until the visitor actually submits the form.
+const FIREBASE_CDN = new URL("./vendor/firebase", import.meta.url).href;
 const STORAGE_PREFIX = "kif_pack:";
 const FORM_VERSION = 1;
 const CONSENT_VERSION = 1;

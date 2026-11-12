@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+/* DM Sans comes from css/fonts.css (self-hosted). */
 
 .kif-benchmark { font-family:var(--kb-font); color:var(--kb-ink); font-size:14px; line-height:1.5; --kb-card:var(--kb-white); --kb-tint:var(--kb-surface); min-width:0; }
 .kif-benchmark * { box-sizing:border-box; }

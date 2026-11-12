@@ -1,10 +1,10 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { initializeApp } from "./vendor/firebase/firebase-app.js";
 import {
   addDoc,
   collection,
   getFirestore,
   serverTimestamp,
-} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+} from "./vendor/firebase/firebase-firestore.js";
 import { feedbackCollection, firebaseConfig } from "./firebase-config.js";
 
 /* feedback-page.js

@@ -35,7 +35,7 @@
     if (!latestVideo) return;
     const image = section.querySelector(".youtube-promo-video > img");
     image.src = latestVideo.promoThumbnailUrl || latestVideo.thumbnailUrl
-      || `https://i.ytimg.com/vi/${youTubeId(latestVideo)}/hqdefault.jpg`;
+      || `images/yt/${youTubeId(latestVideo)}.jpg`;
     updateFeaturedVideo();
   }
 

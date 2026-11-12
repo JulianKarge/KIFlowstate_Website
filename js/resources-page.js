@@ -57,11 +57,12 @@
     });
   };
 
-  const ytThumb = (id) =>
-    `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`;
+  // Thumbnails are local copies (images/yt/, created by
+  // scripts/fetch-self-hosted-assets.py thumbs) so no request reaches YouTube
+  // before the visitor presses play.
+  const ytThumb = (id) => `images/yt/${encodeURIComponent(id)}-sm.jpg`;
 
-  const ytThumbHQ = (id) =>
-    `https://i.ytimg.com/vi/${encodeURIComponent(id)}/maxresdefault.jpg`;
+  const ytThumbHQ = (id) => `images/yt/${encodeURIComponent(id)}.jpg`;
 
   const isLikelyYouTubeId = (id) =>
     typeof id === "string" && /^[A-Za-z0-9_-]{11}$/.test(id);
