@@ -334,16 +334,26 @@ async function validationAndWrongCode(browser, origin) {
   const before = (await storedLeads()).length;
   const attemptsBefore = mockWrites.length;
 
-  await submit(page);
+  // Each rule is checked on its own with the other fields valid, so the test
+  // does not depend on the order in which resource-gate.js validates.
+  const fillForm = async ({ email, code, consent }) => {
+    await page.fill('input[name="email"]', email);
+    await page.fill('input[name="code"]', code);
+    await page.setChecked('input[name="consent"]', consent);
+    await submit(page);
+  };
+
+  await fillForm({ email: "", code: WRONG, consent: true });
   await waitForStatus(page, T.de.gate_status_invalid_email);
   assert.equal(await page.getAttribute('input[name="email"]', "aria-invalid"), "true");
 
-  await page.fill('input[name="email"]', "  Julian.Test@Example.COM ");
-  await submit(page);
+  await fillForm({ email: "kein-at-zeichen", code: WRONG, consent: true });
+  await waitForStatus(page, T.de.gate_status_invalid_email);
+
+  await fillForm({ email: "  Julian.Test@Example.COM ", code: "", consent: true });
   await waitForStatus(page, T.de.gate_status_missing_code);
 
-  await page.fill('input[name="code"]', WRONG);
-  await submit(page);
+  await fillForm({ email: "  Julian.Test@Example.COM ", code: WRONG, consent: false });
   await waitForStatus(page, T.de.gate_status_consent);
   assert.equal(mockWrites.length, attemptsBefore, "nothing is sent before client validation passes");
   check("client validation: empty email, missing code, missing consent; nothing sent");

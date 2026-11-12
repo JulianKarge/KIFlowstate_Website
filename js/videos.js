@@ -98,58 +98,46 @@ const VIDEOS = [
             "items": [
               {
                 "title": {
-                  "de": "Starter-Prompt: dein Video-Studio in einem neuen Ordner",
-                  "en": "Starter prompt: your video studio in a fresh folder"
+                  "de": "Onboarding-Prompt: dein Video-Studio im Starter-Paket einrichten",
+                  "en": "Onboarding prompt: set up your video studio from the starter package"
                 },
-                // TODO(release): Finalen Setup-Prompt aus dem Starter-Paket einsetzen (aktuell Entwurf aus starter-prompt-de.md).
-                "content": `Hilf mir, in diesem Ordner mein eigenes wiederverwendbares KI-Videostudio
-aufzubauen. Ich nutze bereits Codex oder Claude Code. Das Studio soll meine eigene
-Marke, meinen Grafikstil und meine bestätigten Vorlieben verwenden.
+                // Wörtlich aus ONBOARDING-PROMPT.md des Starter-Pakets
+                // (github.com/JulianKarge/LFVideo-Studio-Agent_KIFlowstate, Stand f68004f).
+                // Bei Änderungen am Paket hier mitziehen.
+                "content": `Hilf mir, in diesem Ordner mein eigenes, wiederverwendbares KI-Video-Studio einzurichten.
+Ich nutze bereits Claude Code oder Codex. Lies zuerst AGENTS.md, dann arbeite die Skills
+in dieser Reihenfolge ab und prüfe jeden Schritt, bevor du ihn als erledigt meldest:
 
-Gehe schrittweise vor und prüfe jeden wichtigen Schritt:
+1. Skill studio-setup: Prüfe Betriebssystem, Node, FFmpeg und die gepinnte Hyperframes-Version
+   mit scripts/check-setup.mjs. Installiere nichts selbst, zeig mir stattdessen die fehlenden
+   Befehle. Installiere die offiziellen Hyperframes-Skills nach dem aktuell dokumentierten Weg
+   und rendere den 2-Sekunden-Funktionstest. Sag mir, was der erste Render herunterlädt.
 
-1. Prüfe Betriebssystem, vorhandene Werkzeuge und Projektanweisungen. Nutze
-   vorhandene Installationen. Richte Hyperframes mit seinen offiziellen Skills
-   sowie die benötigten lokalen Video-Werkzeuge ein. Bei einer vorhandenen
-   Plugin-Installation nutze deren vorgesehenen Weg. Prüfe die aktuellen offiziellen
-   Anleitungen und rendere zuerst einen sehr kurzen Funktionstest.
+2. Skill brand-interview: Frag mich kompakt nach Marke, Zielgruppe, Ton, Farben, Schriften und
+   Beispielen, die mir gefallen. Die mitgelieferte Marke "Fjordlicht" ist nur eine Demo; meine
+   Antworten ersetzen sie in brand/tokens.json, identity.md und motion.md. Wenn ich noch keine
+   Identität habe, schlag mir zwei bis drei klare Richtungen vor. Erzeuge danach tokens.css.
 
-2. Frage mich kompakt nach Marke, Zielgruppe, Logo, Farben, Schriften und visuellen
-   Beispielen. Wenn noch keine Identität existiert, schlage wenige klare Richtungen
-   zur Auswahl vor. Übernimm keine fremde Marke als meine. Speichere die gewählte
-   Identität zentral, mit einer kurzen Einstiegskonfiguration für meinen Agenten.
+3. Skill motion-library: Rendere die drei Beispiele (lower-third, point-graphic,
+   floating-preview) mit meiner Marke, zeig mir je ein Vorschaubild, nimm mein Feedback auf
+   und setze freigegebene Beispiele in library/index.json auf approved.
 
-3. Erstelle drei passende Motion-Graphics-Beispiele: eine Keyword-/Sprecherkarte,
-   eine erklärende Punkt- oder Vergleichsgrafik und eine räumlich bewegte Website-
-   oder Video-Vorschau. Zeige Vorschauen, nimm mein Feedback auf und speichere
-   bestätigte Varianten mit bearbeitbarer Quelle, Nutzungszweck und Renderbefehl
-   in einer kleinen Bibliothek. Skaliere diese später nach tatsächlichem Bedarf.
+4. Optional: Biete ElevenLabs als Audio-Modul an. Erkläre Nutzen und Kostenart, bevor etwas
+   kostet. Der Schlüssel kommt nur in .env, nie in den Chat. Meine eigene Stimme bleibt;
+   Transkripte und Zeitmarken sind der Standardnutzen.
 
-4. Biete ElevenLabs als optionales Audio-Modul an. Erkläre den konkreten Nutzen
-   und mögliche Nutzungskosten, bevor du kostenpflichtige Anfragen startest.
-   Führe mich durch die offizielle Einrichtung. API-Schlüssel gehören ausschließlich
-   in lokale, von Git ausgeschlossene Umgebungsdateien, niemals in den Chat.
-   Erhalte meine Originalsprache; ersetze oder klone meine Stimme nur auf Wunsch.
+5. Skill edit-recording: Führe mich zu einer kurzen Testaufnahme (20 bis 40 Sekunden) mit
+   getrennter Kamera- und Bildschirm-Datei und separatem Mikrofon. Miss den Versatz, lege
+   projects/first-video an, plane den Schnitt (Kamera voll, Kamera klein oben rechts, eine
+   Punkt-Grafik, Abschluss) und liefere ein geprüftes MP4 mit Ton.
 
-5. Führe mich zu einer kurzen Testaufnahme mit getrennten Kamera- und Bildschirm-
-   Dateien sowie isoliertem Mikrofonton. Prüfe Synchronisation und Lippenbewegung
-   am tatsächlichen Material. Verwende eine einzige Sprachspur im fertigen Video.
+6. Speichere nur ausdrücklich bestätigte Vorlieben in brand/preferences.md. Projektbezogene
+   Korrekturen bleiben im Projekt. Schreib am Ende in PROJECT.md, was fertig ist und was als
+   Nächstes kommt.
 
-6. Bearbeite diesen Test nach dem vereinbarten Auftrag: sinnvolle Schnitte,
-   lesbare Grafiken, passende Kamera-Ausschnitte, ruhige Übergänge und klarer Ton.
-   Unterscheide ausdrücklich zwischen komplettem Schnitt und reinen Grafik-Overlays.
-   Erhalte die Originaldateien. Liefere Vorschau, fertiges MP4 und Produktionsquellen.
-   Prüfe das tatsächliche Exportvideo einschließlich Ton, Anfang und Ende.
-
-7. Speichere ausdrücklich bestätigte Likes/Dislikes und freigegebene Assets so,
-   dass ein neuer Chat sie findet. Unterscheide projektbezogene Änderungen von
-   allgemeinen Vorlieben. Dokumentiere Versionen, aktuelle Dateien und nächste
-   Schritte. Prüfe die Wiederverwendung an einem zweiten kleinen Beispiel.
-
-Erkläre Entscheidungen kurz. Frage nur nach fehlenden Angaben, die das Ergebnis
-wesentlich beeinflussen. Behaupte keine Installation, Verbindung oder erfolgreiche
-Prüfung, die du nicht tatsächlich durchgeführt hast. Beginne mit der Bestandsaufnahme
-und dem kompakten Marken-Interview.`
+Frag nur nach Angaben, die das Ergebnis wesentlich verändern. Behaupte keine Installation,
+Verbindung oder Prüfung, die du nicht tatsächlich durchgeführt hast. Beginne jetzt mit dem
+Skill studio-setup.`
               }
             ]
           },
@@ -161,60 +149,76 @@ und dem kompakten Marken-Interview.`
             "type": "text",
             "items": [
               {
-                // TODO(release): Ordnerbaum (DE und EN) mit der finalen Struktur des Starter-Pakets abgleichen.
+                // Ordnerbaum aus README.md (Abschnitt "Was im Paket ist") des Starter-Pakets, Stand f68004f.
                 "html": {
-                  "de": `<p>Der Agent legt diese Struktur in einem neuen, leeren Ordner an. Marke, Vorlieben und freigegebene Vorlagen liegen zentral, jedes Video bekommt einen eigenen Projektordner. Der Aufbau ist eine Konvention aus dem Video, keine Vorgabe von Codex oder Hyperframes.</p>
+                  "de": `<p>So sieht das Starter-Paket aus, wenn du es herunterlädst. Marke, Vorlieben und freigegebene Vorlagen liegen zentral, jede neue Produktion startet als Kopie von <code>projects/_template</code>. Die mitgelieferte Marke „Fjordlicht“ ist nur eine Demo; im Onboarding ersetzt dein Agent sie durch deine eigene.</p>
 <pre class="resource-tree">my-video-studio/
+  README.md
   AGENTS.md
+  CLAUDE.md
+  ONBOARDING-PROMPT.md
+  LICENSE
+  LICENSES.md
+  package.json
   brand/
     tokens.json
+    tokens.css
     identity.md
     motion.md
     preferences.md
+    examples/
   library/
     index.json
-    approved/
+    lower-third/
+    point-graphic/
+    floating-preview/
   projects/
-    first-video/
-      PROJECT.md
-      project.json
-      inputs/
-      transcripts/
-      graphics/
-      previews/
-      exports/
+    _template/
+  .claude/skills/
   .agents/skills/
   scripts/
+    check-setup.mjs
+    render.mjs
+    build-tokens.mjs
+    sync-offset.mjs
+    mini-render/
   .env.example
-  .gitignore
-  README.md</pre>
-<p>Für Claude Code kommt eine kleine Einstiegsdatei dazu, die auf dieselben Marken- und Workflow-Regeln verweist. API-Schlüssel gehören nur in lokale Umgebungsdateien, nie in den Chat und nie ins Repo.</p>`,
-                  "en": `<p>The agent creates this structure in a fresh, empty folder. Brand, preferences and approved templates live in one place, every video gets its own project folder. The layout is a convention from the video, not a requirement of Codex or Hyperframes.</p>
+  .gitignore</pre>
+<p>AGENTS.md ist der Arbeitsvertrag deines Agenten, CLAUDE.md bindet ihn für Claude Code ein, und die vier Skills liegen für Claude Code und Codex bei. Jedes Beispiel in <code>library/</code> trägt seine Marken-Tokens direkt in der eigenen index.html; <code>scripts/build-tokens.mjs</code> aktualisiert sie aus <code>brand/tokens.json</code>. API-Schlüssel gehören nur in die lokale .env, nie in den Chat und nie ins Repo.</p>`,
+                  "en": `<p>This is what the starter package looks like when you download it. Brand, preferences and approved templates live in one place, every new production starts as a copy of <code>projects/_template</code>. The bundled brand “Fjordlicht” is only a demo; during onboarding your agent replaces it with your own.</p>
 <pre class="resource-tree">my-video-studio/
+  README.md
   AGENTS.md
+  CLAUDE.md
+  ONBOARDING-PROMPT.md
+  LICENSE
+  LICENSES.md
+  package.json
   brand/
     tokens.json
+    tokens.css
     identity.md
     motion.md
     preferences.md
+    examples/
   library/
     index.json
-    approved/
+    lower-third/
+    point-graphic/
+    floating-preview/
   projects/
-    first-video/
-      PROJECT.md
-      project.json
-      inputs/
-      transcripts/
-      graphics/
-      previews/
-      exports/
+    _template/
+  .claude/skills/
   .agents/skills/
   scripts/
+    check-setup.mjs
+    render.mjs
+    build-tokens.mjs
+    sync-offset.mjs
+    mini-render/
   .env.example
-  .gitignore
-  README.md</pre>
-<p>For Claude Code, a small entry file points to the same brand and workflow rules. API keys belong in local environment files only, never in the chat and never in the repo.</p>`
+  .gitignore</pre>
+<p>AGENTS.md is your agent’s working contract, CLAUDE.md wires it into Claude Code, and the four skills ship for both Claude Code and Codex. Every example in <code>library/</code> carries its brand tokens directly in its own index.html; <code>scripts/build-tokens.mjs</code> updates them from <code>brand/tokens.json</code>. API keys belong in the local .env only, never in the chat and never in the repo.</p>`
                 }
               }
             ]
@@ -272,11 +276,11 @@ und dem kompakten Marken-Interview.`
             "items": [
               {
                 "label": { "de": "Starter-Paket auf GitHub", "en": "Starter package on GitHub" },
-                // TODO(release): Echte GitHub-URL des veröffentlichten Starter-Pakets eintragen (aktuell Platzhalter, Repo existiert noch nicht).
-                "url": "https://github.com/JulianKarge/video-studio-starter",
+                // Öffentliches Starter-Paket (MIT), veröffentlicht 2026-11-12.
+                "url": "https://github.com/JulianKarge/LFVideo-Studio-Agent_KIFlowstate",
                 "description": {
-                  "de": "Ordnerstruktur, AGENTS.md, Beispiel-Skripte und Lizenzhinweise zum Herunterladen. Kommt mit dem Video online.",
-                  "en": "Folder structure, AGENTS.md, example scripts and license notes to download. Goes live with the video."
+                  "de": "Der komplette Studio-Ordner: AGENTS.md, vier Skills für Claude Code und Codex, drei Motion-Beispiele und Prüfskripte. Kostenlos unter MIT-Lizenz.",
+                  "en": "The complete studio folder: AGENTS.md, four skills for Claude Code and Codex, three motion examples and check scripts. Free under the MIT license."
                 }
               }
             ]
