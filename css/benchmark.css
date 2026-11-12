@@ -96,9 +96,6 @@
 [data-theme=dark] .kb-task,[data-theme=dark] .kb-legend button,[data-theme=dark] .kb-method summary { color:var(--kb-surface); }
 [data-theme=dark] .kb-eyebrow,[data-theme=dark] .kb-cost,[data-theme=dark] .kb-highlights strong,[data-theme=dark] .kb-replay { color:var(--kb-white); }
 [data-theme=dark] .kb-point.kb-model-2 text,[data-theme=dark] .kb-mark.kb-model-2,[data-theme=dark] .kb-point.kb-model-3 text,[data-theme=dark] .kb-mark.kb-model-3 { fill:var(--kb-ink); color:var(--kb-ink); }
-@media(min-width:960px) {
-  .resources-container:has(.kif-benchmark) { max-width:1320px; width:94%; grid-template-columns:220px minmax(0,1fr); gap:32px; }
-}
 @media(max-width:700px) {
   .kb-table-help { display:block; font-size:11px; color:var(--kb-muted); margin-bottom:10px; }
   .kb-intro { padding:22px 18px 18px; }
