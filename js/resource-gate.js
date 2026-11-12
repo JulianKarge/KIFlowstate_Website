@@ -87,6 +87,30 @@ const refresh = () => {
     const form = gate.querySelector(".resource-gate-form");
     if (form && !unlocked && !isFirebaseConfigured()) markUnavailable(form);
   });
+  // Header shortcut: "unlock the pack" while locked, "go to the pack" after.
+  document.querySelectorAll("[data-gate-jump]").forEach((button) => {
+    const unlocked = isUnlocked(button.dataset.gateJump);
+    button.classList.toggle("is-unlocked", unlocked);
+    button.querySelectorAll("[data-gate-when]").forEach((label) => {
+      label.hidden = (label.dataset.gateWhen === "unlocked") !== unlocked;
+    });
+  });
+};
+
+const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const setPending = (form, pending) => {
+  const icon = form.querySelector(".resource-gate-submit i");
+  if (!icon) return;
+  icon.className = pending ? "fas fa-circle-notch fa-spin" : "fas fa-unlock";
+};
+
+// Restart the shake so a second wrong attempt animates again.
+const shake = (element) => {
+  if (!element || reducedMotion()) return;
+  element.classList.remove("is-shake");
+  void element.offsetWidth;
+  element.classList.add("is-shake");
 };
 
 /* ── Firebase (lazy) ─────────────────────────────────────── */
@@ -150,16 +174,16 @@ const handleSubmit = async (form) => {
 
   [emailInput, codeInput, consentInput].forEach((el) => el?.setAttribute("aria-invalid", "false"));
 
-  if (!EMAIL_RE.test(email) || email.length < 5 || email.length > 254) {
-    emailInput?.setAttribute("aria-invalid", "true");
-    setStatus(form, t("gate_status_invalid_email", "Bitte gib eine gültige E-Mail-Adresse ein."), { error: true });
-    emailInput?.focus();
-    return;
-  }
   if (code.length < 4 || code.length > 32) {
     codeInput?.setAttribute("aria-invalid", "true");
     setStatus(form, t("gate_status_missing_code", "Bitte gib den Code aus dem Video ein."), { error: true });
     codeInput?.focus();
+    return;
+  }
+  if (!EMAIL_RE.test(email) || email.length < 5 || email.length > 254) {
+    emailInput?.setAttribute("aria-invalid", "true");
+    setStatus(form, t("gate_status_invalid_email", "Bitte gib eine gültige E-Mail-Adresse ein."), { error: true });
+    emailInput?.focus();
     return;
   }
   if (!consentInput?.checked) {
@@ -186,6 +210,7 @@ const handleSubmit = async (form) => {
   gate.setAttribute("aria-busy", "true");
   if (button) button.disabled = true;
   setStatus(form, t("gate_status_sending", "Wird gesendet …"));
+  setPending(form, true);
 
   try {
     const fb = await loadFirestore();
@@ -221,6 +246,7 @@ const handleSubmit = async (form) => {
     if (!via) {
       codeInput?.setAttribute("aria-invalid", "true");
       setStatus(form, t("gate_status_wrong_code", "Der Code stimmt nicht. Schau noch einmal ins Video."), { error: true });
+      shake(codeInput);
       codeInput?.focus();
       codeInput?.select?.();
       return;
@@ -229,11 +255,9 @@ const handleSubmit = async (form) => {
     remember(gateId, via);
     setStatus(form, t("gate_status_success", "Freigeschaltet! Viel Spaß mit dem Paket."), { success: true });
     refresh();
+    gate.classList.add("is-just-unlocked");
     gate.querySelector(".resource-gate-unlocked-line")?.focus({ preventScroll: true });
-    gate.scrollIntoView({
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-      block: "start",
-    });
+    gate.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "start" });
   } catch (error) {
     // Network, timeout or a failed CDN import. Nothing was confirmed, so the
     // gate stays locked and the visitor can retry.
@@ -247,6 +271,7 @@ const handleSubmit = async (form) => {
     );
   } finally {
     form.dataset.pending = "false";
+    setPending(form, false);
     gate.removeAttribute("aria-busy");
     if (button && button.dataset.unavailable !== "true") button.disabled = false;
   }
@@ -258,6 +283,43 @@ document.addEventListener("submit", (event) => {
   if (!form) return;
   event.preventDefault();
   handleSubmit(form);
+});
+
+// Typing clears the error on that field; the code is normalised as typed.
+document.addEventListener("input", (event) => {
+  const input = event.target;
+  const form = input.closest?.(".resource-gate-form");
+  if (!form) return;
+  if (input.name === "code") {
+    const clean = input.value.replace(/\s+/g, "").toUpperCase();
+    if (clean !== input.value) input.value = clean;
+  }
+  if (input.getAttribute("aria-invalid") === "true") {
+    input.setAttribute("aria-invalid", "false");
+    const status = form.querySelector(".resource-gate-status");
+    if (status?.classList.contains("is-error")) setStatus(form, "");
+  }
+});
+document.addEventListener("change", (event) => {
+  const input = event.target;
+  if (input.name !== "consent" || !input.closest?.(".resource-gate-form")) return;
+  if (input.checked && input.getAttribute("aria-invalid") === "true") {
+    input.setAttribute("aria-invalid", "false");
+    setStatus(input.form, "");
+  }
+});
+
+// Header shortcut: scroll to the gate; while locked, put the cursor in the code field.
+document.addEventListener("click", (event) => {
+  const button = event.target.closest?.("[data-gate-jump]");
+  if (!button) return;
+  const gate = document.querySelector(`.resource-gate[data-gate-id="${CSS.escape(button.dataset.gateJump)}"]`);
+  if (!gate) return;
+  gate.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "start" });
+  const target = isUnlocked(gate.dataset.gateId)
+    ? gate.querySelector(".resource-gate-unlocked-line")
+    : gate.querySelector('input[name="code"]');
+  target?.focus({ preventScroll: true });
 });
 
 // Warm up the SDK as soon as the visitor touches the form.

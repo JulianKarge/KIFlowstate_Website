@@ -503,6 +503,38 @@
   // both rendered; resource-gate.js toggles which one is visible. The exact
   // consent wording is stored with each lead, so it lives in translations.js
   // and is read back from the DOM at submit time.
+  const GATE_PREVIEW_TYPES = {
+    prompts: { icon: "fa-terminal", key: "gate_preview_prompts", fallback: "Prompts", one: "Prompt" },
+    links: { icon: "fa-link", key: "gate_preview_links", fallback: "Links", one: "Link" },
+    sources: { icon: "fa-book-open", key: "gate_preview_sources", fallback: "Quellen", one: "Quelle" },
+    text: { icon: "fa-file-lines", key: "gate_preview_text", fallback: "Anleitung" },
+  };
+
+  // Headings of the sections behind the gate, shown as locked rows so the
+  // visitor sees what the code opens. Soft gate: headings are not secret.
+  const renderGatePreview = (part) => {
+    const sections = (Array.isArray(part.sections) ? part.sections : []).filter((s) => pick(s.heading));
+    if (!sections.length) return "";
+    const rows = sections.map((s) => {
+      const type = GATE_PREVIEW_TYPES[s.type] || GATE_PREVIEW_TYPES.text;
+      const count = Array.isArray(s.items) ? s.items.length : 0;
+      const countable = s.type === "prompts" || s.type === "links" || s.type === "sources";
+      const one = countable && count === 1;
+      const tag = `${countable && count ? `${count} ` : ""}${t(one ? `${type.key}_one` : type.key, one ? type.one : type.fallback)}`;
+      return `<li>
+                <span class="resource-gate-preview-icon" aria-hidden="true"><i class="fas ${type.icon}"></i></span>
+                <span class="resource-gate-preview-name">${escapeHtml(pick(s.heading))}</span>
+                <span class="resource-gate-preview-tag">${escapeHtml(tag)}</span>
+                <i class="fas fa-lock resource-gate-preview-lock" aria-hidden="true"></i>
+              </li>`;
+    }).join("");
+    return `
+          <div class="resource-gate-preview">
+            <p class="resource-gate-preview-title">${escapeHtml(t("gate_preview_title", "Das schaltest du in diesem Teil frei"))}</p>
+            <ul>${rows}</ul>
+          </div>`;
+  };
+
   const renderGate = (video, part) => {
     const gate = video.gate;
     if (!gate) return renderSections(part);
@@ -525,86 +557,98 @@
     return `
       <section
         class="resource-gate${unlocked ? " is-unlocked" : ""}"
+        id="${field("card")}"
         data-gate-id="${escapeHtml(gate.id)}"
         data-part-id="${escapeHtml(part.id)}"
         data-part-order="${escapeHtml(partOrder.join(","))}"
         aria-labelledby="${field("title")}"
       >
         <div class="resource-gate-locked"${unlocked ? " hidden" : ""}>
-          <span class="resource-gate-kicker">${escapeHtml(t("gate_kicker_locked", "Kostenloses Ressourcenpaket"))}</span>
-          <h3 id="${field("title")}" class="resource-gate-title">${escapeHtml(t("gate_title_locked", "Hol dir das Paket zur Serie"))}</h3>
-          ${teaserItems.length
-            ? `<ul class="resource-gate-teaser">
-                ${teaserItems.map((item) => `<li><i class="fas fa-check" aria-hidden="true"></i><span>${escapeHtml(item)}</span></li>`).join("")}
-              </ul>`
-            : ""}
-          <form class="resource-gate-form" novalidate>
+          <div class="resource-gate-intro">
+            <span class="resource-gate-kicker"><i class="fas fa-gift" aria-hidden="true"></i>${escapeHtml(t("gate_kicker_locked", "Kostenloses Ressourcenpaket"))}</span>
+            <h3 id="${field("title")}" class="resource-gate-title">${escapeHtml(t("gate_title_locked", "Hol dir das Paket zur Serie"))}</h3>
             <p class="resource-gate-notice">${escapeHtml(t("gate_notice", "Das Paket ist kostenlos. Dafür trägst du dich mit deiner E-Mail in die Liste zu dieser Serie ein."))}</p>
-            <div class="resource-gate-fields">
-              <label class="resource-gate-field" for="${field("email")}">
-                <span>${escapeHtml(t("gate_email_label", "E-Mail"))}</span>
-                <input
-                  id="${field("email")}"
-                  type="email"
-                  name="email"
-                  required
-                  autocomplete="email"
-                  inputmode="email"
-                  spellcheck="false"
-                  placeholder="${escapeHtml(t("gate_email_placeholder", "du@beispiel.de"))}"
-                />
-              </label>
-              <label class="resource-gate-field" for="${field("code")}">
-                <span>${escapeHtml(t("gate_code_label", "Code aus dem Video"))}</span>
-                <input
-                  id="${field("code")}"
-                  type="text"
-                  name="code"
-                  required
-                  autocapitalize="characters"
-                  autocomplete="off"
-                  autocorrect="off"
-                  spellcheck="false"
-                  maxlength="32"
-                  placeholder="${escapeHtml(t("gate_code_placeholder", "Code aus dem Video"))}"
-                />
-              </label>
-            </div>
-            <label class="resource-gate-check" for="${field("consent")}">
-              <input id="${field("consent")}" type="checkbox" name="consent" required />
-              <span class="resource-gate-check-text">
-                <span class="resource-gate-check-badge">${escapeHtml(t("gate_required_badge", "Pflicht"))}</span>
-                <span data-consent-text>${consentHtml}</span>
-              </span>
-            </label>
-            <label class="resource-gate-check is-optional" for="${field("marketing")}">
-              <input id="${field("marketing")}" type="checkbox" name="marketing" />
-              <span class="resource-gate-check-text">
-                <span class="resource-gate-check-badge">${escapeHtml(t("gate_optional_badge", "Freiwillig"))}</span>
-                <span data-marketing-text>${escapeHtml(t("gate_marketing_text", ""))}</span>
-              </span>
-            </label>
-            <div class="resource-gate-actions">
-              <button type="submit" class="resource-gate-submit">
-                <i class="fas fa-unlock" aria-hidden="true"></i>
-                <span>${escapeHtml(t("gate_submit", "Paket freischalten"))}</span>
-              </button>
-              <p class="resource-gate-status" role="status" aria-live="polite"></p>
-            </div>
-            <p class="resource-gate-note">${escapeHtml(t("gate_doi_note", ""))}</p>
-            ${comingSoon
-              ? `<p class="resource-gate-note resource-gate-note-code">${escapeHtml(t("gate_coming_soon_code", "Der Code für diesen Teil kommt mit dem Video. Ein Code aus Teil 1 schaltet die ganze Serie frei."))}</p>`
+          </div>
+          <div class="resource-gate-grid">
+            ${teaserItems.length
+              ? `<ul class="resource-gate-teaser">
+                  ${teaserItems.map((item) => `<li><i class="fas fa-check" aria-hidden="true"></i><span>${escapeHtml(item)}</span></li>`).join("")}
+                </ul>`
               : ""}
-          </form>
+            <form class="resource-gate-form" novalidate>
+              <div class="resource-gate-fields">
+                <label class="resource-gate-field is-code" for="${field("code")}">
+                  <span>${escapeHtml(t("gate_code_label", "Code aus dem Video"))}</span>
+                  <input
+                    id="${field("code")}"
+                    type="text"
+                    name="code"
+                    required
+                    autocapitalize="characters"
+                    autocomplete="off"
+                    autocorrect="off"
+                    spellcheck="false"
+                    maxlength="32"
+                    aria-describedby="${field("code-hint")}"
+                    placeholder="${escapeHtml(t("gate_code_placeholder", "8 Zeichen"))}"
+                  />
+                  <small id="${field("code-hint")}" class="resource-gate-hint${comingSoon ? " resource-gate-note-code" : ""}">${escapeHtml(comingSoon
+                    ? t("gate_coming_soon_code", "Der Code für diesen Teil kommt mit dem Video. Ein Code aus Teil 1 schaltet die ganze Serie frei.")
+                    : t("gate_code_hint", "Den Code zeige ich dir im Video."))}</small>
+                </label>
+                <label class="resource-gate-field" for="${field("email")}">
+                  <span>${escapeHtml(t("gate_email_label", "E-Mail"))}</span>
+                  <input
+                    id="${field("email")}"
+                    type="email"
+                    name="email"
+                    required
+                    autocomplete="email"
+                    inputmode="email"
+                    spellcheck="false"
+                    placeholder="${escapeHtml(t("gate_email_placeholder", "du@beispiel.de"))}"
+                  />
+                </label>
+              </div>
+              <label class="resource-gate-check" for="${field("consent")}">
+                <input id="${field("consent")}" type="checkbox" name="consent" required />
+                <span class="resource-gate-check-text">
+                  <span class="resource-gate-check-badge">${escapeHtml(t("gate_required_badge", "Pflicht"))}</span>
+                  <span data-consent-text>${consentHtml}</span>
+                </span>
+              </label>
+              <label class="resource-gate-check is-optional" for="${field("marketing")}">
+                <input id="${field("marketing")}" type="checkbox" name="marketing" />
+                <span class="resource-gate-check-text">
+                  <span class="resource-gate-check-badge">${escapeHtml(t("gate_optional_badge", "Freiwillig"))}</span>
+                  <span data-marketing-text>${escapeHtml(t("gate_marketing_text", ""))}</span>
+                </span>
+              </label>
+              <div class="resource-gate-actions">
+                <button type="submit" class="resource-gate-submit">
+                  <i class="fas fa-unlock" aria-hidden="true"></i>
+                  <span>${escapeHtml(t("gate_submit", "Paket freischalten"))}</span>
+                </button>
+                <p class="resource-gate-status" role="status" aria-live="polite"></p>
+              </div>
+              <p class="resource-gate-note">${escapeHtml(t("gate_doi_note", ""))}</p>
+            </form>
+            ${renderGatePreview(part)}
+          </div>
         </div>
         <div class="resource-gate-unlocked"${unlocked ? "" : " hidden"}>
-          <span class="resource-gate-kicker">${escapeHtml(t("gate_kicker_unlocked", "Freigeschaltet"))}</span>
-          <p class="resource-gate-unlocked-line" tabindex="-1">
-            <i class="fas fa-circle-check" aria-hidden="true"></i>
-            ${escapeHtml(t("gate_unlocked_line", "Du hast Zugriff auf alle Teile dieser Serie."))}
-          </p>
+          <div class="resource-gate-unlocked-head">
+            <span class="resource-gate-unlocked-icon" aria-hidden="true"><i class="fas fa-unlock"></i></span>
+            <div>
+              <span class="resource-gate-kicker">${escapeHtml(t("gate_kicker_unlocked", "Freigeschaltet"))}</span>
+              <p class="resource-gate-unlocked-line" tabindex="-1">
+                ${escapeHtml(t("gate_unlocked_line", "Du hast Zugriff auf alle Teile dieser Serie."))}
+              </p>
+              <p class="resource-gate-unlocked-hint">${escapeHtml(t("gate_unlocked_hint", "Dieser Browser merkt sich das. Den Code brauchst du hier nicht noch einmal."))}</p>
+            </div>
+          </div>
           ${comingSoon
-            ? `<p class="resource-gate-coming">${escapeHtml(t("gate_unlocked_coming_soon", "Die Inhalte zu diesem Teil erscheinen mit dem Video."))}</p>`
+            ? `<p class="resource-gate-coming"><i class="far fa-clock" aria-hidden="true"></i>${escapeHtml(t("gate_unlocked_coming_soon", "Die Inhalte zu diesem Teil erscheinen mit dem Video."))}</p>`
             : renderSections(part)}
         </div>
       </section>
@@ -635,6 +679,12 @@
             </div>
           </div>
           <div class="video-header-actions">
+            ${video.gate
+              ? `<button type="button" class="btn-gate-jump" data-gate-jump="${escapeHtml(video.gate.id)}">
+                  <span data-gate-when="locked"><i class="fas fa-lock" aria-hidden="true"></i>${escapeHtml(t("gate_jump_locked", "Paket freischalten"))}</span>
+                  <span data-gate-when="unlocked" hidden><i class="fas fa-unlock" aria-hidden="true"></i>${escapeHtml(t("gate_jump_unlocked", "Zum Paket"))}</span>
+                </button>`
+              : ""}
             <button type="button" class="btn-share" data-share-id="${escapeHtml(partHashId(video, part))}">
               <i class="fas fa-link" aria-hidden="true"></i>
               <span>${escapeHtml(t("resources_share", "Link kopieren"))}</span>
