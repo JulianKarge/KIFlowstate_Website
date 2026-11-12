@@ -1812,7 +1812,6 @@ section:not(.hero) .container {
   .highlight,
   .flow-letter,
   .parallax > use,
-  .video-tab.is-active::before,
   .resources-hero::before,
   .feedback-hero::before,
   .feedback-success-logo,
@@ -2113,7 +2112,10 @@ section:not(.hero) .container {
 .resources-main {
   background: var(--gray-100);
   min-height: 60vh;
+  /* clip, not hidden: hidden would turn this into a scroll container and
+     break position: sticky on the sidebar. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .resources-container {
@@ -2135,9 +2137,16 @@ section:not(.hero) .container {
   position: sticky;
   top: 90px;
   align-self: start;
+  /* Title and search stay put, only the list below scrolls. */
+  display: flex;
+  flex-direction: column;
   max-height: calc(100vh - 110px);
-  overflow-y: auto;
-  padding-right: 0.25rem;
+  max-height: calc(100dvh - 110px);
+  min-width: 0;
+}
+
+.resources-sidebar > * {
+  flex: 0 0 auto;
 }
 
 .resources-sidebar-title {
@@ -2235,6 +2244,23 @@ section:not(.hero) .container {
   gap: 0.6rem;
 }
 
+/* Desktop: the list is its own scroll area inside the sticky sidebar.
+   The negative margins park the scrollbar in the grid gap and leave room
+   for the focus ring, so the cards stay flush with the search field. */
+@media (min-width: 901px) {
+  .resources-sidebar > .video-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: -4px -16px -4px -4px;
+    padding: 4px 6px 4px 4px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(51, 105, 242, 0.3) transparent;
+  }
+}
+
 .video-tab {
   display: flex;
   gap: 0.85rem;
@@ -2271,31 +2297,6 @@ section:not(.hero) .container {
 
 .video-tab.is-active:focus-visible {
   box-shadow: var(--shadow-sm), 0 0 0 3px rgba(51, 105, 242, 0.28);
-}
-
-.video-tab.is-active::before {
-  content: "";
-  display: block;
-  width: 14px;
-  align-self: stretch;
-  margin: -0.7rem 0.35rem -0.7rem -0.7rem;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 100' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%233369F2'/><stop offset='1' stop-color='%23254EBF'/></linearGradient></defs><path d='M 11 8 C 11 50 3 50 3 92' stroke='url(%23g)' stroke-width='7' stroke-linecap='round' fill='none' vector-effect='non-scaling-stroke'/></svg>");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 100%;
-  animation: tabWaveBreathe 4.2s ease-in-out infinite;
-  transform-origin: center;
-}
-
-@keyframes tabWaveBreathe {
-  0%, 100% {
-    opacity: 0.85;
-    transform: scaleY(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scaleY(1.04);
-  }
 }
 
 .video-tab-thumb {
@@ -3400,6 +3401,7 @@ section:not(.hero) .container {
      on browsers that don't reliably clip negative-margin bleed. */
   .resources-sidebar {
     position: static;
+    display: block;
     max-height: none;
     overflow: visible;
     padding-right: 0;
@@ -3441,10 +3443,6 @@ section:not(.hero) .container {
     flex-direction: column;
     gap: 0.5rem;
     padding: 0.5rem;
-  }
-
-  .video-tab.is-active::before {
-    display: none;
   }
 
   .video-tab-thumb {

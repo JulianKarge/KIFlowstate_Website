@@ -818,6 +818,22 @@
     if (next) next.focus({ preventScroll: true });
   };
 
+  // Scroll the list itself (never the page) so the active entry is visible.
+  // Only acts when the list is a vertical scroll area, i.e. on desktop.
+  const revealActiveTab = () => {
+    if (sidebar.scrollHeight <= sidebar.clientHeight + 1) return;
+    const active = sidebar.querySelector(".video-tab.is-active");
+    if (!active) return;
+    const listBox = sidebar.getBoundingClientRect();
+    const tabBox = active.getBoundingClientRect();
+    const margin = 8;
+    if (tabBox.top < listBox.top + margin) {
+      sidebar.scrollTop -= listBox.top + margin - tabBox.top;
+    } else if (tabBox.bottom > listBox.bottom - margin) {
+      sidebar.scrollTop += tabBox.bottom - (listBox.bottom - margin);
+    }
+  };
+
   // Mark prompts that are tall enough to be worth collapsing on mobile.
   // The CSS only collapses cards with `.is-collapsible` (and only at mobile
   // widths), so short prompts never get a fade or "Mehr anzeigen" button.
@@ -852,7 +868,12 @@
     if (part) activeParts.set(video.id, part.id);
     const restoreFocus = sidebar.contains(document.activeElement);
     const restorePartFocus = !!content.querySelector(".series-part-tab:focus");
+    // On desktop the list scrolls on its own: keep its position across the
+    // re-render, then make sure the active entry is inside the visible part.
+    const listScrollTop = sidebar.scrollTop;
     renderSidebar(video.id);
+    sidebar.scrollTop = listScrollTop;
+    revealActiveTab();
     if (restoreFocus) restoreSidebarFocus(video.id);
     renderVideo(video, { autoplay, part });
     if (restorePartFocus && part) {
