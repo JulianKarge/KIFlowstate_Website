@@ -11593,3 +11593,201 @@ section:not(.hero) .container {
 .cookie-banner button:focus-visible {
   outline-color: #bfdbfe;
 }
+
+/* ─── VIDEOS: YouTube presence in nav, hero and the videos page ─────
+   The videos page (resources.html) is a main part of the company, so the
+   nav carries it as a red YouTube pill that stays visible on mobile,
+   outside the hamburger menu. #cc0000 keeps white text above 4.5:1. */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-videos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem 0.5rem 0.8rem;
+  border-radius: 999px;
+  background: #cc0000;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgb(204 0 0 / 0.24);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-videos svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: none;
+}
+
+.nav-videos:hover,
+.nav-videos:focus-visible {
+  background: #b00000;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgb(204 0 0 / 0.32);
+}
+
+.nav-videos:focus-visible {
+  outline: 3px solid #cc0000;
+  outline-offset: 3px;
+}
+
+.nav-videos[aria-current="page"] {
+  box-shadow: 0 0 0 3px rgb(204 0 0 / 0.22), 0 6px 16px rgb(204 0 0 / 0.24);
+}
+
+[data-theme="dark"] .nav-videos:focus-visible {
+  outline-color: #ff6b6b;
+}
+
+/* Hero: a quieter second way in, next to the booking CTA */
+.hero-video-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  /* Same top margin and height as the hero CTA, so both sit on one line */
+  margin: 1.8rem 0 0 1.25rem;
+  min-height: 56px;
+  color: var(--gray-900);
+  font-weight: 700;
+  text-decoration: none;
+  vertical-align: top;
+}
+
+.hero-video-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: #cc0000;
+  color: #fff;
+  box-shadow: 0 6px 16px rgb(204 0 0 / 0.26);
+  transition: transform 0.2s ease;
+}
+
+.hero-video-icon svg {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 2px;
+}
+
+.hero-video-link:hover span:last-child,
+.hero-video-link:focus-visible span:last-child {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.hero-video-link:hover .hero-video-icon,
+.hero-video-link:focus-visible .hero-video-icon {
+  transform: scale(1.08);
+}
+
+[data-theme="dark"] .hero-video-link {
+  color: #f1f5f9;
+}
+
+/* Videos page hero: subscribe button */
+.resources-subscribe {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1.35rem;
+  padding: 0.7rem 1.25rem 0.7rem 1rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #0f172a;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgb(15 23 42 / 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.resources-subscribe svg {
+  width: 1.45rem;
+  height: 1.45rem;
+  color: #cc0000;
+  flex: none;
+}
+
+.resources-subscribe:hover,
+.resources-subscribe:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgb(15 23 42 / 0.24);
+}
+
+.resources-subscribe:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-videos,
+  .hero-video-icon,
+  .resources-subscribe {
+    transition: none;
+  }
+  .nav-videos:hover,
+  .nav-videos:focus-visible,
+  .resources-subscribe:hover,
+  .resources-subscribe:focus-visible {
+    transform: none;
+  }
+}
+
+@media (max-width: 950px) {
+  /* The link list collapses into the hamburger; the pill stays in the bar. */
+  nav {
+    margin-left: auto;
+    margin-right: 0.75rem;
+  }
+
+  nav + .lang-switcher {
+    margin-left: 0;
+  }
+
+  .nav-videos {
+    min-height: 40px;
+    padding: 0.45rem 0.85rem 0.45rem 0.7rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-video-link {
+    display: flex;
+    width: fit-content;
+    margin: 1rem 0 0;
+  }
+}
+
+@media (max-width: 380px) {
+  /* Narrow phones: icon only, the label stays for screen readers. */
+  nav {
+    margin-right: 0.4rem;
+  }
+
+  .nav-videos {
+    min-width: 44px;
+    min-height: 40px;
+    justify-content: center;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .nav-videos span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}

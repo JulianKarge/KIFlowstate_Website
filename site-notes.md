@@ -131,6 +131,14 @@ If an entry becomes wrong over time, append `**Updated:** {{YYYY-MM-DD}}` with a
 - **Where it applies:** All site copy across every page, not just resources.
 - **Tags:** copy, typography, style
 
+### The resources page is public and called "Videos"
+- **Date:** 2026-11-13
+- **Context:** Julian now has approval to show his face and YouTube work publicly. Videos are a main part of the company, so the old, quiet "Ressourcen" tab was renamed and promoted.
+- **Source / example:** `.nav-videos` in every page header, `.hero-video-link` in [index.html](index.html), `.resources-subscribe` in [resources.html](resources.html), the `VIDEOS` block at the end of [css/styles.css](css/styles.css).
+- **What:** In visible copy the page is "Videos", never "Ressourcen". The nav shows it as a red YouTube pill (`#cc0000`, white text) that stays visible on mobile outside the hamburger and goes icon-only below 380px. The file stays `resources.html` because YouTube descriptions link to it. The page is now `index,follow`. "Ressourcenpaket" is still fine for the gated packs.
+- **Where it applies:** All page headers and footers, the homepage hero and YouTube promo, resources.html, privacy policy wording.
+- **Tags:** navigation, youtube, copy, branding
+
 ---
 
 ## Pitfalls, things that broke or did not work

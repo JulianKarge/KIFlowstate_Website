@@ -18,7 +18,7 @@
       : latestVideo.title?.[lang] || latestVideo.title?.de || latestVideo.title?.en || "KIFlowstate";
     const label = typeof translations !== "undefined" && translations[lang]?.youtube_featured_aria;
     section.querySelector("[data-youtube-video-title]").textContent = title;
-    front.setAttribute("aria-label", (label || "Video und Ressourcen: {title}").replace("{title}", title));
+    front.setAttribute("aria-label", (label || "Video ansehen: {title}").replace("{title}", title));
     front.href = `resources.html?play=1#${encodeURIComponent(latestVideo.id)}`;
     section.dataset.featuredVideo = latestVideo.id;
   }
