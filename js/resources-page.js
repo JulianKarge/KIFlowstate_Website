@@ -140,10 +140,19 @@
 
   // A part rendered through the regular player helpers. The id is the part
   // hash id (never 11 characters), so it can not be mistaken for a YouTube id.
+  // A part is live once it is marked published AND the series' release
+  // moment has passed. publishedAt may carry a time, so the page flips by
+  // itself at release instead of needing a second deploy.
+  const isSeriesLive = (video) => {
+    const ts = Date.parse(video && video.publishedAt);
+    return Number.isFinite(ts) && ts <= Date.now();
+  };
+  const isPartLive = (video, part) => part.status === "published" && isSeriesLive(video);
+
   const partAsVideo = (video, part) => ({
     id: partHashId(video, part),
-    youtubeId: part.status === "published" ? part.youtubeId : null,
-    thumbnailUrl: part.thumbnailUrl || (part.status === "published" ? undefined : video.thumbnailUrl),
+    youtubeId: isPartLive(video, part) ? part.youtubeId : null,
+    thumbnailUrl: part.thumbnailUrl || (isPartLive(video, part) ? undefined : video.thumbnailUrl),
     title: part.title,
   });
 
@@ -475,7 +484,7 @@
       <nav class="series-parts" aria-label="${escapeHtml(t("resources_series_parts", "Teile der Serie"))}">
         ${video.parts.map((p, i) => {
           const isActive = p.id === active.id;
-          const published = p.status === "published";
+          const published = isPartLive(video, p);
           const thumb = published ? thumbUrl(partAsVideo(video, p), "small") : "";
           const status = published
             ? t("resources_series_now", "Jetzt")
@@ -662,7 +671,7 @@
     const playable = partAsVideo(video, part);
     const ytId = videoYouTubeId(playable);
     const heroThumb = thumbUrl(playable, "hq");
-    const partStatus = part.status === "published"
+    const partStatus = isPartLive(video, part)
       ? t("resources_series_now", "Jetzt")
       : t("resources_series_soon", "Kommt bald");
 

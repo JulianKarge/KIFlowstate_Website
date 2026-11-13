@@ -44,10 +44,10 @@ const VIDEOS = [
       "videostudio-teil-3"
     ],
     "series": true,
-    // TODO(release): Echtes Datum von Teil 1 als ISO "YYYY-MM-DD" eintragen, nur zusammen mit youtubeId darunter.
-    "publishedAt": "coming-soon",
-    // TODO(release): YouTube-ID von Teil 1 eintragen (gleich wie parts[0].youtubeId), sonst hält die Startseiten-Promo "videostudio" für eine Video-ID.
-    "youtubeId": null,
+    // Veröffentlichung von Teil 1. Mit Uhrzeit, damit Startseite und
+    // Ressourcenseite von selbst umschalten, ohne zweiten Deploy.
+    "publishedAt": "2026-11-15T09:00:00+01:00",
+    "youtubeId": "vilBacIGMvI",
     // Thumbnail von Teil 1 (Thumbnails/Vid24.png, 1280x720). Die Promo-Variante ist 1000x563.
     "thumbnailUrl": "images/vid24-ki-editiert-alles.jpg",
     "promoThumbnailUrl": "images/youtube-promo/videostudio.webp",
@@ -85,11 +85,8 @@ const VIDEOS = [
           "de": "Dein eigener Video-Studio-Agent (Longform)",
           "en": "Your own video studio agent (longform)"
         },
-        // TODO(release): Auf "published" stellen, sobald das Video online ist.
-        "status": "draft",
-        // TODO(release): YouTube-ID von Teil 1 eintragen (11 Zeichen aus der Video-URL).
-        "youtubeId": null,
-        // TODO(release): Summary an das fertige Video anpassen.
+        "status": "published",
+        "youtubeId": "vilBacIGMvI",
         "summary": {
           "de": "Du richtest in einem leeren Ordner einen Agenten ein, der deine Marke kennt, Motion-Graphics rendert, deine Aufnahme schneidet und das fertige MP4 prüft. Das Paket enthält den Setup-Prompt, den Aufbau des Starter-Pakets und alle Werkzeuge aus dem Video.",
           "en": "You set up an agent in an empty folder that knows your brand, renders motion graphics, edits your recording and checks the finished MP4. The pack contains the setup prompt, the starter package layout and every tool shown in the video."

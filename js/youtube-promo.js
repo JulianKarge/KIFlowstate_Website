@@ -30,7 +30,9 @@
       : /^[A-Za-z0-9_-]{11}$/.test(video.id || "") ? video.id : "";
     latestVideo = catalog.filter(video => youTubeId(video) && !video.draft && video.published !== false
       && !["draft", "coming-soon"].includes(video.status)
-      && Number.isFinite(Date.parse(video.publishedAt)) && Date.parse(video.publishedAt) <= today.getTime())
+      && Number.isFinite(Date.parse(video.publishedAt))
+      // A plain date counts for the whole day; one with a time (…T09:00) only from then on.
+      && Date.parse(video.publishedAt) <= (String(video.publishedAt).includes("T") ? Date.now() : today.getTime()))
       .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))[0];
     if (!latestVideo) return;
     const image = section.querySelector(".youtube-promo-video > img");
