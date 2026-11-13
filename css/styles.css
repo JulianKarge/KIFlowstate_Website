@@ -11648,51 +11648,63 @@ nav {
   outline-color: #ff6b6b;
 }
 
-/* Hero: a quieter second way in, next to the booking CTA */
+/* Hero: second button next to the booking CTA. Frosted glass like the
+   social chips, white text on the blue hero, red YouTube play icon. */
 .hero-video-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  /* Same top margin and height as the hero CTA, so both sit on one line */
-  margin: 1.8rem 0 0 1.25rem;
+  justify-content: center;
+  gap: 0.65rem;
+  margin: 1.8rem 0 0 0.85rem;
   min-height: 56px;
-  color: var(--gray-900);
+  padding: 0.6rem 1.3rem 0.6rem 0.75rem;
+  vertical-align: top;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(236, 247, 255, 0.45);
+  border-radius: 12px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px rgba(10, 48, 110, 0.16);
+  color: #fff;
+  font-family: "Schibsted Grotesk", sans-serif;
+  font-size: 0.92rem;
   font-weight: 700;
   text-decoration: none;
-  vertical-align: top;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .hero-video-icon {
   display: inline-grid;
   place-items: center;
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 50%;
+  width: 2rem;
+  height: 1.45rem;
+  border-radius: 7px;
   background: #cc0000;
   color: #fff;
-  box-shadow: 0 6px 16px rgb(204 0 0 / 0.26);
-  transition: transform 0.2s ease;
+  flex: none;
 }
 
 .hero-video-icon svg {
-  width: 1rem;
-  height: 1rem;
-  margin-left: 2px;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-left: 1px;
 }
 
-.hero-video-link:hover span:last-child,
-.hero-video-link:focus-visible span:last-child {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+.hero-video-link:hover,
+.hero-video-link:focus-visible {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.8);
+  color: #fff;
+  transform: translateY(-2px);
 }
 
-.hero-video-link:hover .hero-video-icon,
-.hero-video-link:focus-visible .hero-video-icon {
-  transform: scale(1.08);
+.hero-video-link:focus-visible {
+  outline: 2px solid rgba(223, 246, 255, 0.9);
+  outline-offset: 2px;
 }
 
 [data-theme="dark"] .hero-video-link {
-  color: #f1f5f9;
+  color: #fff;
 }
 
 /* Videos page hero: subscribe button */
@@ -11731,12 +11743,14 @@ nav {
 
 @media (prefers-reduced-motion: reduce) {
   .nav-videos,
-  .hero-video-icon,
+  .hero-video-link,
   .resources-subscribe {
     transition: none;
   }
   .nav-videos:hover,
   .nav-videos:focus-visible,
+  .hero-video-link:hover,
+  .hero-video-link:focus-visible,
   .resources-subscribe:hover,
   .resources-subscribe:focus-visible {
     transform: none;
@@ -11764,8 +11778,10 @@ nav {
 @media (max-width: 720px) {
   .hero-video-link {
     display: flex;
-    width: fit-content;
-    margin: 1rem 0 0;
+    width: 100%;
+    max-width: 22rem;
+    min-height: 48px;
+    margin: 0.75rem 0 0;
   }
 }
 
